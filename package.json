@@ -2,14 +2,13 @@
   "name": "projeto-estoque",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "pdf.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.19.2",
-    "pdf-parse": "^1.1.1"
+    "express": "^4.19.2"
   }
 }
