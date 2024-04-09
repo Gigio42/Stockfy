@@ -4,18 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leitura de XML - Dark Mode</title>
+    <!-- link para o Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Seu arquivo CSS personalizado -->
     <link rel="stylesheet" href="pdf.css">
 </head>
 <body>
-    <div id="drop_zone" ondragover="handleDragOver(event)" ondrop="handleFileSelect(event)">
-        <h1>Arraste o arquivo XML aqui</h1>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Div para arrastar o arquivo XML -->
+            <div class="col-md-5 d-flex justify-content-center align-items-center">
+                <div id="drop_zone" ondragover="handleDragOver(event)" ondrop="handleFileSelect(event)">
+                    <h1>Arraste o arquivo XML aqui</h1>
+                </div>
+            </div>
+            <!-- Div para exibir os padrões do XML -->
+            <div id="esquerda" class="col-md-7 d-flex justify-content-center align-items-center">
+                <div id="output">
+                    <div id="patterns"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div id="output">
-        <h2>Medidas das chapas:</h2>
-        <div id="patterns"></div>
-    </div>
-
+    <!-- Adicione os scripts do Bootstrap -->
+    <!-- Via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Se preferir, você pode carregar o Bootstrap localmente -->
+    <!-- <script src="caminho/para/seu/arquivo/bootstrap.bundle.min.js"></script> -->
+    
+    <!-- Script JavaScript personalizado -->
     <script src="pdf.js"></script>
 </body>
 </html>
