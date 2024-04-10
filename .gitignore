@@ -1,3 +1,33 @@
-node_modules
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
 package-lock.json
 package.json
+
+# Build outputs
+dist/
+build/
+out/
+
+# Lixo do VsCode e JetBrains 
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Logs
+logs/
+*.log
+
+# Dependency lock do yarn e npm (O package.json vc deixa, o lock pode tirar)
+package-lock.json
+yarn.lock
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Binários
+node_modules/**/*.node
