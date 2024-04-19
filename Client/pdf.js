@@ -126,7 +126,10 @@ function sendData() {
         body: JSON.stringify(allCellsData)
     })
     .then(response => response.json())
-    .then(data => console.log(data.message))
+    .then(data => {
+        console.log(data.message);
+        allCellsData = [];
+    })
     .catch((error) => {
         console.error('Error:', error);
     });
