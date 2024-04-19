@@ -14,23 +14,23 @@ let db = new sqlite3.Database('./estoque.db', (err) => {
   console.log('Connected to the SQLite database.');
 });
 
-app.post('/data', (req, res) => {
-  console.log(req.body);
+app.post('/data', (request, response) => {
+  console.log(request.body);
 
   let insert = 'INSERT INTO produtos (qualidade, medida, quantidade, vincos) VALUES (?,?,?,?)';
   
-  req.body.forEach(item => {
+  request.body.forEach(item => {
     const [qualidade, medida, quantidade, vincos] = item;
     db.run(insert, [qualidade, medida, quantidade, vincos], function(err) {
       if (err) {
         console.log(err.message);
-        res.status(500).json({ message: 'Error inserting data into SQLite database' });
+        response.status(500).json({ message: 'Error inserting data into SQLite database' });
         return;
       }
     });
   });
 
-  res.json({ message: 'Data received and inserted into SQLite database successfully' });
+  response.json({ message: 'Data received and inserted into SQLite database successfully' });
 });
 
 app.listen(5500, () => console.log('Server is listening on port 5500'));
