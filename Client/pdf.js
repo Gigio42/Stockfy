@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 let allCellsData = [];
 
 // Função para lidar com a seleção de arquivos arrastados
@@ -118,16 +120,13 @@ function sendData() {
     }
     console.log(allCellsData);
 
-    fetch('http://localhost:5500/data', {
-        method: 'POST',
+    axios.post('http://localhost:5500/data', allCellsData, {
         headers: {
             'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(allCellsData)
+        }
     })
-    .then(response => response.json()) 
-    .then(data => {
-        console.log(data.message);
+    .then(response => {
+        console.log(response.data.message);
         allCellsData = [];
     })
     .catch((error) => {
