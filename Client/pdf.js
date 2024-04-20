@@ -1,3 +1,5 @@
+let allCellsData = [];
+
 // Função para lidar com a seleção de arquivos arrastados
 function handleFileSelect(event) {
     // Evita a ação padrão do navegador
@@ -55,6 +57,7 @@ function handleFileSelect(event) {
                     const trBody = document.createElement("tr");
                     // Cria as células com os dados
                     const cellsData = [padrao, info, quantidade, vincos ? "Sim" : "Não"];
+                    allCellsData.push(cellsData);  //MODIFICADO [Gigio] - Adiciona os dados para uma lista global
                     cellsData.forEach(cellText => {
                         const td = document.createElement("td");
                         td.innerText = cellText;
@@ -105,3 +108,30 @@ function handleDragOver(event) {
     event.preventDefault();
     event.dataTransfer.dropEffect = 'copy';
 }
+
+
+// Parte para mandar para o servidor [Gigio]
+function sendData() {
+    if (!allCellsData.length) {
+        console.error('Nenhuma informação para enviar');
+        return;
+    }
+    console.log(allCellsData);
+
+    fetch('http://localhost:5500/data', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(allCellsData)
+    })
+    .then(response => response.json()) 
+    .then(data => {
+        console.log(data.message);
+        allCellsData = [];
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+document.getElementById('sendDataButton').addEventListener('click', sendData);
