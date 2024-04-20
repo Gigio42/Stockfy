@@ -1,5 +1,3 @@
-const axios = require('axios');
-
 let allCellsData = [];
 
 // Função para lidar com a seleção de arquivos arrastados
@@ -115,22 +113,22 @@ function handleDragOver(event) {
 // Parte para mandar para o servidor [Gigio]
 function sendData() {
     if (!allCellsData.length) {
-        console.error('Nenhuma informação para enviar');
-        return;
+        console.error('Nenhuma informação para enviar')
+        return
     }
-    console.log(allCellsData);
+    console.log(allCellsData)
 
-    axios.post('http://localhost:5500/data', allCellsData, {
+    axios.post('http://localhost:5500/recebimento', allCellsData, {
         headers: {
             'Content-Type': 'application/json'
         }
     })
     .then(response => {
-        console.log(response.data.message);
-        allCellsData = [];
+        console.log(response.data.message)
+        allCellsData = []
     })
     .catch((error) => {
-        console.error('Error:', error);
-    });
+        console.error('Error:', error)
+    })
 }
-document.getElementById('sendDataButton').addEventListener('click', sendData);
+document.getElementById('sendDataButton').addEventListener('click', sendData)
