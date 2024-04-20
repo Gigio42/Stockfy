@@ -113,25 +113,22 @@ function handleDragOver(event) {
 // Parte para mandar para o servidor [Gigio]
 function sendData() {
     if (!allCellsData.length) {
-        console.error('Nenhuma informação para enviar');
-        return;
+        console.error('Nenhuma informação para enviar')
+        return
     }
-    console.log(allCellsData);
+    console.log(allCellsData)
 
-    fetch('http://localhost:5500/data', {
-        method: 'POST',
+    axios.post('http://localhost:5500/recebimento', allCellsData, {
         headers: {
             'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(allCellsData)
+        }
     })
-    .then(response => response.json()) 
-    .then(data => {
-        console.log(data.message);
-        allCellsData = [];
+    .then(response => {
+        console.log(response.data.message)
+        allCellsData = []
     })
     .catch((error) => {
-        console.error('Error:', error);
-    });
+        console.error('Error:', error)
+    })
 }
-document.getElementById('sendDataButton').addEventListener('click', sendData);
+document.getElementById('sendDataButton').addEventListener('click', sendData)
