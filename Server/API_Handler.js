@@ -1,4 +1,7 @@
-const fastify = require('fastify')({ logger: true });
+const fastify = require('fastify')({ logger: {
+  level: 'info',
+  redact: ['req.headers.authorization']
+} });
 const cors = require('@fastify/cors');
 const Database = require('./Database');
 
