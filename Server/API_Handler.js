@@ -1,13 +1,21 @@
-const express = require('express');
-const cors = require('cors'); 
-const sqlite3 = require('sqlite3').verbose();
-const app = express();
+const fastify = require('fastify')({ logger: {
+  level: 'info',
+  redact: ['req.headers.authorization']
+} });
+const cors = require('@fastify/cors');
+const Database = require('./Database');
 
-app.use(cors()); // middleware para resolver problema de host com ports diferentes (3000 pro serv e 5500 pro client)
-app.use(express.json());
+fastify.register(cors); // middleware to solve issue with different hosts (3000 for server and 5500 for client)
+
+const database = new Database('./estoque.db'); 
 
 const recebimentoRoutes = require('./Routes/recebimento');
-app.use('/recebimento', recebimentoRoutes);
+fastify.register(recebimentoRoutes, { prefix: '/recebimento', db: database });
 
-const port = 5500;
-app.listen(port, () => console.log(`Server running on http://localhost:${port}`))
+fastify.listen({ port: 5500, host: 'localhost' }, (err, address) => {
+  if (err) {
+    fastify.log.error(err);
+    process.exit(1);
+  }
+  fastify.log.info(`Server running on ${address}`);
+});
