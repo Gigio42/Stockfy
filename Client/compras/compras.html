@@ -56,21 +56,33 @@
         }
 
         function extractData(fullText) {
-            var regex = /VL\s*Total\s*INCLUSÃO([\s\S]*?)Valores\s*expressos/;
+            var regex = /VL\/Kg\s*VL\s*Total\s*(\S+)\s*([\s\S]*?)Valores\s*expressos/;
             var match = regex.exec(fullText);
             if (match) {
-                var data = match[1].trim();
+                var pedidoCompra = match[1];
+                var data = match[2].trim();
                 var dataArray = data.split(/\s+/); // Dividir dados por espaços em branco
+
+                // Encontrar o índice do espaço após a barra na descrição
+                var descricaoIndex = dataArray.findIndex(item => item.includes('/'));
+                if (descricaoIndex !== -1) {
+                    // Extrair a descrição até o espaço após a barra
+                    var descricao = dataArray.slice(8, descricaoIndex + 1).join(' ');
+                } else {
+                    var descricao = dataArray.slice(8).join(' '); // Se não houver espaço após a barra, manter a descrição completa
+                }
+
                 return {
-                    cliente: dataArray[0],
-                    quant_chapa: dataArray[1],
-                    u_m: dataArray[2],
-                    qualidade: dataArray[3],
-                    gramatura: dataArray[4],
-                    peso_total: dataArray[5],
-                    coluna: dataArray[6],
-                    valor_total: dataArray[7],
-                    descrição: dataArray.slice(8).join(' ') // Unir o restante da descrição
+                    Pedido_de_Compra: pedidoCompra,
+                    Cliente: dataArray[0],
+                    Quantidade_de_Chapas: dataArray[1],
+                    Unidade_de_Medida: dataArray[2],
+                    Qualidade: dataArray[3],
+                    Gramatura: dataArray[4],
+                    Peso_Total: dataArray[5],
+                    Coluna: dataArray[6],
+                    Valor_Total: dataArray[7],
+                    Descrição: descricao
                 };
             } else {
                 console.error('Texto não encontrado');
@@ -80,15 +92,16 @@
 
         function displayText(data) {
             var textContentDiv = document.getElementById('text-content');
-            textContentDiv.innerHTML = `<p>Cliente: ${data.cliente}</p>
-                                        <p>Quantidade de Chapas: ${data.quant_chapa}</p>
-                                        <p>Unidade de Medida: ${data.u_m}</p>
-                                        <p>Qualidade: ${data.qualidade}</p>
-                                        <p>Gramatura: ${data.gramatura}</p>
-                                        <p>Peso Total: ${data.peso_total}</p>
-                                        <p>Coluna: ${data.coluna}</p>
-                                        <p>Valor Total: ${data.valor_total}</p>
-                                        <p>Descrição: ${data.descrição}</p>`;
+            textContentDiv.innerHTML = `<p>Pedido de Compra: ${data.Pedido_de_Compra}</p>
+                                        <p>Cliente: ${data.Cliente}</p>
+                                        <p>Quantidade de Chapas: ${data.Quantidade_de_Chapas}</p>
+                                        <p>Unidade de Medida: ${data.Unidade_de_Medida}</p>
+                                        <p>Qualidade: ${data.Qualidade}</p>
+                                        <p>Gramatura: ${data.Gramatura}</p>
+                                        <p>Peso Total: ${data.Peso_Total}</p>
+                                        <p>Coluna: ${data.Coluna}</p>
+                                        <p>Valor Total: ${data.Valor_Total}</p>
+                                        <p>Descrição: ${data.Descrição}</p>`;
         }
     </script>
 </body>
