@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extrair Texto de PDF</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+</head>
+<body>
+    <input type="file" id="pdf-file" accept=".pdf">
+    <button id="extract-btn">Extrair Texto</button>
+    <div id="text-content"></div>
+
+    <script>
+        document.getElementById('extract-btn').addEventListener('click', function() {
+            var file = document.getElementById('pdf-file').files[0];
+            if (!file) {
+                alert('Por favor, selecione um arquivo PDF.');
+                return;
+            }
+
+            var reader = new FileReader();
+            reader.onload = function(event) {
+                var typedarray = new Uint8Array(event.target.result);
+                extractText(typedarray);
+            };
+            reader.readAsArrayBuffer(file);
+        });
+
+        function extractText(data) {
+            pdfjsLib.getDocument(data).promise.then(function(pdf) {
+                var numPages = pdf.numPages;
+                var textContent = '';
+
+                var promises = [];
+                for (var i = 1; i <= numPages; i++) {
+                    promises.push(pdf.getPage(i).then(function(page) {
+                        return page.getTextContent().then(function(pageTextContent) {
+                            var pageText = '';
+                            pageTextContent.items.forEach(function(textItem) {
+                                pageText += textItem.str + ' ';
+                            });
+                            return pageText;
+                        });
+                    }));
+                }
+
+                Promise.all(promises).then(function(pageTexts) {
+                    textContent = pageTexts.join('\n');
+                    displayText(textContent);
+                }).catch(function(error) {
+                    console.error('Erro ao extrair texto:', error);
+                });
+            });
+        }
+
+        function displayText(text) {
+            var textContentDiv = document.getElementById('text-content');
+            textContentDiv.textContent = text;
+        }
+    </script>
+</body>
+</html>

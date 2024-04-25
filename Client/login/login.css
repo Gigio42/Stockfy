@@ -1,0 +1,68 @@
+
+
+nav {
+    padding-top: 5rem;
+    background-color: #161616;
+}
+
+.nav-item{
+    display: flex;
+    justify-content: center;
+}
+
+body {
+    background-color: #1e1e1e;
+}
+
+.nav-link {
+    font-size: 2rem;
+    color: #343434;
+}
+
+.login {
+    display: flex;
+    flex-direction: column;
+    align-items: center
+}
+
+h1.p-5 {
+    color: rgb(139, 139, 139);
+    display: flex;
+}
+
+ /* Ajustes personalizados de estilo */
+ .full-height {
+    height: 100vh;
+}
+
+.card-body {
+    background-color: #1e1e1e;
+    
+}
+
+.card {
+    border: none;
+}
+ 
+.text-center {
+    color: rgb(255, 255, 255);
+}
+
+label {
+    color: rgb(255, 255, 255);
+}
+
+.form-control {
+    background-color: #2d2d2d;
+    border: none;
+    color: blueviolet;
+}
+
+
+@media (min-width: 992px) {
+    .col-lg-4 {
+        -ms-flex: 0 0 33.333333%;
+        flex: 0 0 33.333333%; 
+        max-width: 100%; 
+    }
+}
