@@ -1,3 +1,11 @@
+/*
+Este script define a classe Database, que é uma abstração para interagir com o banco do projeto.
+Essa classe fornece alguns dos métodos originais do sqlite module do node, 
+se precisar de mais, é só re-implementar.
+O motivo da criação dessa classe é para facilitar a interação com o banco de dados SQLite, para não 
+precisar repetir o código de conexão e execução de queries em vários dos outros scripts dos routes.
+*/
+
 const sqlite3 = require('sqlite3').verbose();
 
 class Database {
@@ -54,4 +62,4 @@ class Database {
     }
 }
 
-module.exports = new Database('./estoque.db');
+module.exports = Database;
