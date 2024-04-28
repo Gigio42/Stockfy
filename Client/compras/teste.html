@@ -3,61 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Extrair Texto de PDF</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+    <title>PDF to XML Converter</title>
+    <link rel="stylesheet" href="compras.css">
+    <style>
+        html {
+            background-color: #131313;
+        }
+        
+        #xmlOutput {
+            color: rgb(226, 226, 226);
+            font-family: Arial, Helvetica, sans-serif;
+            counter-reset: line-number; /* Resetando o contador de linhas */
+            padding-left: 20px; /* Espaçamento à esquerda para os números de linha */
+        }
+
+        /* Estilo para as tags XML */
+        .xml-tag {
+            color: rgb(255, 158, 31); /* Cor laranja */
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /* Cor verde para as tags do tipo ide */
+        .xml-tag.ide {
+            color: rgb(0, 255, 0); /* Cor verde */
+        }
+
+        /* Estilo para as linhas numeradas */
+        .line-number {
+            counter-increment: line-number; /* Incrementando o contador de linhas */
+            display: inline-block;
+            width: 40px; /* Largura fixa para os números de linha */
+            text-align: right; /* Alinhamento à direita */
+            color: #555; /* Cor cinza para os números de linha */
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+    </style>
 </head>
 <body>
-    <input type="file" id="pdf-file" accept=".pdf">
-    <button id="extract-btn">Extrair Texto</button>
-    <div id="text-content"></div>
+    <h1>PDF to XML Converter</h1>
+    <form id="pdfForm">
+        <input type="file" id="pdfFile" accept=".pdf">
+        <button type="submit">Converter para XML</button>
+    </form>
+    <pre id="xmlOutput"></pre>
 
     <script>
-        document.getElementById('extract-btn').addEventListener('click', function() {
-            var file = document.getElementById('pdf-file').files[0];
-            if (!file) {
-                alert('Por favor, selecione um arquivo PDF.');
-                return;
-            }
-
+        document.getElementById('pdfForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var fileInput = document.getElementById('pdfFile');
+            var file = fileInput.files[0];
             var reader = new FileReader();
+
             reader.onload = function(event) {
-                var typedarray = new Uint8Array(event.target.result);
-                extractText(typedarray);
+                var pdfData = new Uint8Array(event.target.result);
+                pdfjsLib.getDocument({data: pdfData}).promise.then(function(pdf) {
+                    var xml = ''; // Inicia o XML
+                    pdf.getPage(1).then(function(page) {
+                        page.getTextContent().then(function(textContent) {
+                            var items = textContent.items;
+                            var lineNumber = 1; // Inicia o número de linha
+                            var isInRange = false; // Flag para verificar se estamos dentro do intervalo desejado
+                            items.forEach(function(item) {
+                                // Verifica se a linha é uma das linhas desejadas
+                                if (lineNumber === 1 || lineNumber === 15 || lineNumber === 23 || lineNumber === 53) {
+                                    xml += '<span class="line-number">' + lineNumber + '</span>' + item.str + '\n'; // Adiciona a linha ao XML
+                                }
+                                if (lineNumber === 54) {
+                                    isInRange = true; // Estamos dentro do intervalo desejado
+                                }
+                                if (isInRange) {
+                                    xml += '<span class="line-number">' + lineNumber + '</span>' + item.str + '\n'; // Adiciona a linha ao XML
+                                    if (item.str.trim() === 'Valores expressos em Reais') {
+                                        isInRange = false; // Saímos do intervalo desejado
+                                    }
+                                }
+                                lineNumber++; // Incrementa o número de linha
+                            });
+                            document.getElementById('xmlOutput').innerHTML = xml; // Exibe o XML na tela
+                        });
+                    });
+                });
             };
+
             reader.readAsArrayBuffer(file);
         });
-
-        function extractText(data) {
-            pdfjsLib.getDocument(data).promise.then(function(pdf) {
-                var numPages = pdf.numPages;
-                var textContent = '';
-
-                var promises = [];
-                for (var i = 1; i <= numPages; i++) {
-                    promises.push(pdf.getPage(i).then(function(page) {
-                        return page.getTextContent().then(function(pageTextContent) {
-                            var pageText = '';
-                            pageTextContent.items.forEach(function(textItem) {
-                                pageText += textItem.str + ' ';
-                            });
-                            return pageText;
-                        });
-                    }));
-                }
-
-                Promise.all(promises).then(function(pageTexts) {
-                    textContent = pageTexts.join('\n');
-                    displayText(textContent);
-                }).catch(function(error) {
-                    console.error('Erro ao extrair texto:', error);
-                });
-            });
-        }
-
-        function displayText(text) {
-            var textContentDiv = document.getElementById('text-content');
-            textContentDiv.textContent = text;
-        }
     </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
 </body>
 </html>
+
