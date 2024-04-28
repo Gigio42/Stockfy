@@ -40,11 +40,25 @@
                 </a>
             </li>
             <li class="mb-2 active">
-                <a href="pedidos.html">
+                <a href="#" onclick="criarUsuario()">
                     <img class="imgicon" src="media/relatorio.png" alt="Pedidos Icon">
                 Criar usuário
                 </a>
-            </li>           
+                <div id="modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="fecharModal()">&times;</span>
+                        <h2>Cadastrar usuário</h2>
+                        <form id="formCriarUsuario">
+                            <label for="nomeUsuario">Nome de Usuário:</label>
+                            <input type="text" id="nomeUsuario" name="nomeUsuario">
+                            <label for="senha">Senha:</label>
+                            <input type="password" id="senha" name="senha">
+                            <input type="checkbox" onclick="mostrarSenha()">Mostrar senha
+                            <button type="submit">Cadastrar</button>
+                        </form>
+                    </div>
+                </div>
+            </li>       
         </ul>
     </div>
 </aside>
