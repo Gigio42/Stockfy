@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF to XML Converter</title>
+    <link rel="stylesheet" href="compras.css">
+    <style>
+        html {
+            background-color: #131313;
+        }
+        
+        #xmlOutput {
+            color: rgb(226, 226, 226);
+            font-family: Arial, Helvetica, sans-serif;
+            counter-reset: line-number; /* Resetando o contador de linhas */
+            padding-left: 20px; /* Espaçamento à esquerda para os números de linha */
+        }
+
+        /* Estilo para as tags XML */
+        .xml-tag {
+            color: rgb(255, 158, 31); /* Cor laranja */
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /* Cor verde para as tags do tipo ide */
+        .xml-tag.ide {
+            color: rgb(0, 255, 0); /* Cor verde */
+        }
+
+        /* Estilo para as linhas numeradas */
+        .line-number {
+            counter-increment: line-number; /* Incrementando o contador de linhas */
+            display: inline-block;
+            width: 40px; /* Largura fixa para os números de linha */
+            text-align: right; /* Alinhamento à direita */
+            color: #555; /* Cor cinza para os números de linha */
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <h1>PDF to XML Converter</h1>
+    <form id="pdfForm">
+        <input type="file" id="pdfFile" accept=".pdf">
+        <button type="submit">Converter para XML</button>
+    </form>
+    <pre id="xmlOutput"></pre>
+
+    <script>
+        document.getElementById('pdfForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var fileInput = document.getElementById('pdfFile');
+            var file = fileInput.files[0];
+            var reader = new FileReader();
+
+            reader.onload = function(event) {
+                var pdfData = new Uint8Array(event.target.result);
+                pdfjsLib.getDocument({data: pdfData}).promise.then(function(pdf) {
+                    var xml = '<NFe>\n'; // Inicia o XML
+                    pdf.getPage(1).then(function(page) {
+                        page.getTextContent().then(function(textContent) {
+                            var items = textContent.items;
+                            var lineNumber = 1; // Inicia o número de linha
+                            items.forEach(function(item) {
+                                // Nomes das tags XML para cada item de informação
+                                var tagName = '';
+                                switch (item.str.trim()) {
+                                    case 'cUF:':
+                                        tagName = 'cUF';
+                                        break;
+                                    case 'cNF:':
+                                        tagName = 'cNF';
+                                        break;
+                                    case 'natOp:':
+                                        tagName = 'natOp';
+                                        break;
+                                    case 'mod:':
+                                        tagName = 'mod';
+                                        break;
+                                    case 'serie:':
+                                        tagName = 'serie';
+                                        break;
+                                    case 'nNF:':
+                                        tagName = 'nNF';
+                                        break;
+                                    case 'dhEmi:':
+                                        tagName = 'dhEmi';
+                                        break;
+                                    case 'dhSaiEnt:':
+                                        tagName = 'dhSaiEnt';
+                                        break;
+                                    case 'tpNF:':
+                                        tagName = 'tpNF';
+                                        break;
+                                    case 'idDest:':
+                                        tagName = 'idDest';
+                                        break;
+                                    case 'cMunFG:':
+                                        tagName = 'cMunFG';
+                                        break;
+                                    case 'tpImp:':
+                                        tagName = 'tpImp';
+                                        break;
+                                    case 'tpEmis:':
+                                        tagName = 'tpEmis';
+                                        break;
+                                    case 'cDV:':
+                                        tagName = 'cDV';
+                                        break;
+                                    case 'tpAmb:':
+                                        tagName = 'tpAmb';
+                                        break;
+                                    case 'finNFe:':
+                                        tagName = 'finNFe';
+                                        break;
+                                    case 'indFinal:':
+                                        tagName = 'indFinal';
+                                        break;
+                                    case 'indPres:':
+                                        tagName = 'indPres';
+                                        break;
+                                    case 'indIntermed:':
+                                        tagName = 'indIntermed';
+                                        break;
+                                    case 'procEmi:':
+                                        tagName = 'procEmi';
+                                        break;
+                                    case 'verProc:':
+                                        tagName = 'verProc';
+                                        break;
+                                    default:
+                                        tagName = item.str.replace(/\s+/g, '_').toLowerCase(); // Usa o texto como nome da tag substituindo espaços por underscores
+                                        break;
+                                }
+                                xml += '<span class="line-number">' + lineNumber + '</span><span class="xml-tag ' + tagName + '">&lt;' + tagName + '&gt;</span>' + item.str.replace(/:/g, '') + '<span class="xml-tag ' + tagName + '">&lt;/' + tagName + '&gt;</span>\n'; // Adiciona a tag XML com o conteúdo
+                                lineNumber++; // Incrementa o número de linha
+                            });
+                            xml += '</NFe>'; // Fecha o XML
+                            document.getElementById('xmlOutput').innerHTML = xml; // Exibe o XML na tela
+                        });
+                    });
+                });
+            };
+
+            reader.readAsArrayBuffer(file);
+        });
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+</body>
+</html>
