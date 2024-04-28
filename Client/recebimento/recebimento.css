@@ -1,3 +1,4 @@
+
 body {
     color: #000; /* Text color */
     background-color: #333; /* Background color */
@@ -35,16 +36,17 @@ header {
 }
 #output {
     display: none;
-    width: 95%;
+    width: 90%;
     border-collapse: collapse;
     margin: 80px auto 0; /* Adjusted margin top to clear fixed header */
-    border: 3px solid #4caf50; /* More visually appealing border */
+    border: 3px solid #4caf50;
     border-radius: 10px;
-    overflow: hidden; /* Ensures that child elements adhere to border radius */
+    overflow: hidden;
 }
 th, td {
     padding: 8px;
-    text-align: left;
+    text-align: center; /* Centralizing text */
+    vertical-align: middle; /* Aligning text vertically for aesthetic consistency */
 }
 th {
     background-color: #335c30;
