@@ -3,106 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Extrair Texto de PDF</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+    <title>PDF to JSON Converter</title>
+    <link rel="stylesheet" href="compras.css">
+    <style>
+        html {
+            background-color: #131313;
+        }
+        
+        #jsonOutput {
+            color: rgb(226, 226, 226);
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+    </style>
 </head>
 <body>
-    <input type="file" id="pdf-file" accept=".pdf">
-    <button id="extract-btn">Extrair Texto</button>
-    <div id="text-content"></div>
+    <h1>PDF to JSON Converter</h1>
+    <form id="pdfForm">
+        <input type="file" id="pdfFile" accept=".pdf">
+        <button type="submit">Converter para JSON</button>
+    </form>
+    <pre id="jsonOutput"></pre>
 
     <script>
-        document.getElementById('extract-btn').addEventListener('click', function() {
-            var file = document.getElementById('pdf-file').files[0];
-            if (!file) {
-                alert('Por favor, selecione um arquivo PDF.');
-                return;
-            }
+    document.getElementById('pdfForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    var fileInput = document.getElementById('pdfFile');
+    var file = fileInput.files[0];
+    var reader = new FileReader();
 
-            var reader = new FileReader();
-            reader.onload = function(event) {
-                var typedarray = new Uint8Array(event.target.result);
-                extractText(typedarray);
-            };
-            reader.readAsArrayBuffer(file);
-        });
+    reader.onload = function(event) {
+        var pdfData = new Uint8Array(event.target.result);
+        pdfjsLib.getDocument({data: pdfData}).promise.then(function(pdf) {
+            var infoPedido = {};
+            var pedidoCompra = '';
+            var infoProdComprados = [];
+            var prodComprado = {};
+            var lineNumber = 1;
+            var isInfoPedido = false;
+            var isPedidoCompra = false;
+            var isInfoProdComprados = false;
+            var isValoresExpressos = false;
+            var hasInclusao = false;
 
-        function extractText(data) {
-            pdfjsLib.getDocument(data).promise.then(function(pdf) {
-                var numPages = pdf.numPages;
-                var textContent = '';
+            pdf.getPage(1).then(function(page) {
+                page.getTextContent().then(function(textContent) {
+                    var items = textContent.items;
+                    var fullText = items.map(function(item) {
+                        return item.str.trim().toLowerCase();
+                    }).join(' '); // Concatenar todo o texto em uma única string
+                    // Verificar se a palavra "INCLUSÃO" está presente no texto
+                    hasInclusao = fullText.includes('inclusão');
 
-                var promises = [];
-                for (var i = 1; i <= numPages; i++) {
-                    promises.push(pdf.getPage(i).then(function(page) {
-                        return page.getTextContent().then(function(pageTextContent) {
-                            var pageText = '';
-                            pageTextContent.items.forEach(function(textItem) {
-                                pageText += textItem.str + ' ';
-                            });
-                            return pageText;
-                        });
-                    }));
-                }
-
-                Promise.all(promises).then(function(pageTexts) {
-                    var fullText = pageTexts.join('\n');
-                    var extractedText = extractData(fullText);
-                    displayText(extractedText);
-                }).catch(function(error) {
-                    console.error('Erro ao extrair texto:', error);
+                    items.forEach(function(item) {
+                        var line = item.str.trim();
+                        if (isValoresExpressos) {
+                            return; // Saímos do loop se chegarmos aos valores expressos
+                        }
+                        if (lineNumber === 1 || lineNumber === 15 || lineNumber === 23) {
+                            isInfoPedido = true;
+                            isPedidoCompra = false;
+                            isInfoProdComprados = false;
+                            if (line !== '') {
+                                infoPedido[lineNumber] = line;
+                            }
+                        } else if ((lineNumber === 55 || lineNumber === 53) && line.match(/\d{2}\.\d{3}/)) {
+                            // Verifica se a linha é a linha 55 ou 53 e se contém o padrão xx.xxx
+                            pedidoCompra = line;
+                        } else if (lineNumber >= 54 && !isValoresExpressos) {
+                            if ((lineNumber - 54) % 19 === 0) {
+                                isInfoPedido = false;
+                                isPedidoCompra = false;
+                                isInfoProdComprados = true;
+                                if (Object.keys(prodComprado).length !== 0) {
+                                    // Adiciona as informações do pedido e número do pedido a cada objeto em infoProdComprados
+                                    prodComprado.info_pedido = infoPedido;
+                                    prodComprado.pedido_compra = hasInclusao ? "INCLUSÃO " + pedidoCompra : pedidoCompra;
+                                    infoProdComprados.push(renameProperties(removeEmptyProperties(prodComprado)));
+                                    prodComprado = {};
+                                }
+                            }
+                            if (line === 'Valores expressos em Reais') {
+                                isValoresExpressos = true;
+                                return;
+                            }
+                            if (isInfoProdComprados) {
+                                switch ((lineNumber - 54) % 19) {
+                                    case 1:
+                                        prodComprado.cliente = line;
+                                        break;
+                                    case 3:
+                                        prodComprado['quant.'] = line;
+                                        break;
+                                    case 5:
+                                        prodComprado.unidade = line;
+                                        break;
+                                    case 7:
+                                        prodComprado['qual.'] = line;
+                                        break;
+                                    case 9:
+                                        prodComprado.onda = line;
+                                        break;
+                                    case 11:
+                                        prodComprado['gramat.'] = line;
+                                        break;
+                                    case 13:
+                                        prodComprado['peso_lote_chapa'] = line;
+                                        break;
+                                    case 15:
+                                        prodComprado.coluna = line;
+                                        break;
+                                    case 17:
+                                        prodComprado['valor_lote_chapa'] = line;
+                                        break;
+                                    case 18:
+                                        prodComprado['descrição'] = line;
+                                        break;
+                                }
+                            }
+                        }
+                        lineNumber++;
+                    });
+                    // Se encontramos "INCLUSÃO", procuramos um número no formato "XX.XXX" no texto completo
+                    if (hasInclusao) {
+                        var regex = /\b\d{2}\.\d{3}\b/;
+                        var match = fullText.match(regex);
+                        if (match) {
+                            pedidoCompra = match[0];
+                        }
+                    }
+                    // Construímos o objeto JSON final com base nas informações coletadas
+                    var jsonData = {
+                        "info_pedido": infoPedido,
+                        "pedido_compra": hasInclusao ? "INCLUSÃO " + pedidoCompra : pedidoCompra,
+                        "info_prod_comprados": infoProdComprados
+                    };
+                    // Exibimos o JSON na saída
+                    document.getElementById('jsonOutput').innerText = JSON.stringify(jsonData, null, 2);
                 });
             });
+        });
+    };
+
+    reader.readAsArrayBuffer(file);
+});
+
+// Função para remover propriedades vazias de um objeto
+function removeEmptyProperties(obj) {
+    for (var prop in obj) {
+        if (obj[prop] === '') {
+            delete obj[prop];
         }
+    }
+    return obj;
+}
 
-        function extractData(fullText) {
-            var regex = /VL\/Kg\s*VL\s*Total\s*(\S+)\s*([\s\S]*?)Valores\s*expressos/;
-            var match = regex.exec(fullText);
-            if (match) {
-                var pedidoCompra = match[1];
-                var data = match[2].trim();
-                var dataArray = data.split(/\s+/); // Dividir dados por espaços em branco
+// Função para renomear as propriedades do objeto
+function renameProperties(obj) {
+    var newObj = {};
+    newObj['cliente'] = obj['cliente'];
+    newObj['quant.'] = obj['quant.'];
+    newObj['unidade'] = obj['unidade'];
+    newObj['qual.'] = obj['qual.'];
+    newObj['onda'] = obj['onda'];
+    newObj['gramat.'] = obj['gramat.'];
+    newObj['peso_lote_chapa'] = obj['peso_lote_chapa'];
+    newObj['coluna'] = obj['coluna'];
+    newObj['valor_lote_chapa'] = obj['valor_lote_chapa'];
+    newObj['descrição'] = obj['descrição'];
+    newObj['info_pedido'] = obj['info_pedido'];
+    newObj['pedido_compra'] = obj['pedido_compra'];
+    return newObj;
+}
 
-                // Encontrar o índice do espaço após a barra na descrição
-                var descricaoIndex = dataArray.findIndex(item => item.includes('/'));
-                if (descricaoIndex !== -1) {
-                    // Extrair a descrição até o espaço após a barra
-                    var descricao = dataArray.slice(8, descricaoIndex + 1).join(' ');
-                } else {
-                    var descricao = dataArray.slice(8).join(' '); // Se não houver espaço após a barra, manter a descrição completa
-                }
-
-                return {
-                    Pedido_de_Compra: pedidoCompra,
-                    Cliente: dataArray[0],
-                    Quantidade_de_Chapas: dataArray[1],
-                    Unidade_de_Medida: dataArray[2],
-                    Qualidade: dataArray[3],
-                    Gramatura: dataArray[4],
-                    Peso_Total: dataArray[5],
-                    Coluna: dataArray[6],
-                    Valor_Total: dataArray[7],
-                    Descrição: descricao
-                };
-            } else {
-                console.error('Texto não encontrado');
-                return null;
-            }
-        }
-
-        function displayText(data) {
-            var textContentDiv = document.getElementById('text-content');
-            textContentDiv.innerHTML = `<p>Pedido de Compra: ${data.Pedido_de_Compra}</p>
-                                        <p>Cliente: ${data.Cliente}</p>
-                                        <p>Quantidade de Chapas: ${data.Quantidade_de_Chapas}</p>
-                                        <p>Unidade de Medida: ${data.Unidade_de_Medida}</p>
-                                        <p>Qualidade: ${data.Qualidade}</p>
-                                        <p>Gramatura: ${data.Gramatura}</p>
-                                        <p>Peso Total: ${data.Peso_Total}</p>
-                                        <p>Coluna: ${data.Coluna}</p>
-                                        <p>Valor Total: ${data.Valor_Total}</p>
-                                        <p>Descrição: ${data.Descrição}</p>`;
-        }
     </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
 </body>
 </html>

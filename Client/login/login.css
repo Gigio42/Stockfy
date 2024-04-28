@@ -19,6 +19,13 @@ body {
     color: #343434;
 }
 
+li:hover{
+    background-color: #0004ff;
+    border-radius: 10px;
+    color: #ffffff;
+    cursor: pointer;
+}
+
 .login {
     display: flex;
     flex-direction: column;
