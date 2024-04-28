@@ -19,7 +19,7 @@
                             <a class="nav-link active" href="../recebimento/index.html">Recebimento</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">PCP</a>
+                            <a class="nav-link" href="../PCP/pcp.html">PCP</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">ADM</a>
@@ -45,6 +45,25 @@
                                 <div class="card-body">
                                     <form>
                                         <div class="form-group">
+                                            <label for="selectMaquina">Selecione a máquina</label>
+                                            <select class="form-control" id="selectMaquina" required>
+                                                <option value="">Selecione...</option>
+                                                <option value="Corte e vinco">Corte e vinco</option>
+                                                <option value="Riscador">Riscador</option>
+                                                <option value="Grampeador">Grampeador</option>
+                                                <option value="Impressora">Impressora</option>
+                                                <option value="Rotativa">Rotativa</option>
+                                                <option value="Coladeira">Coladeira</option>
+                                                <option value="Serra">Serra</option>
+                                                <option value="Prensa">Prensa</option>
+                                                <option value="Corte e vinco plana">Corte e vinco plana</option>
+                                                <option value="Corte e vinco 3">Corte e vinco 3</option>
+                                                <option value="Corte e vinco 4">Corte e vinco 4</option>
+                                                <option value="Corte e vinco 5">Corte e vinco 5</option>
+                                                <option value="Corte e vinco 7">Corte e vinco 7</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
                                             <label for="username">Nome de usuário</label>
                                             <input type="text" class="form-control" id="username" placeholder="Insira o nome de usuário" required>
                                         </div>
@@ -57,11 +76,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                        
 
     <!-- jQuery e JS do Bootstrap -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
