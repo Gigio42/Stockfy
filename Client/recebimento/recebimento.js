@@ -1,3 +1,4 @@
+
 document.getElementById('drop_zone').addEventListener('dragover', function(event) {
     event.preventDefault();
     event.dataTransfer.dropEffect = 'copy';
@@ -23,37 +24,35 @@ function parseXML(xml) {
     var table = document.getElementById('output').getElementsByTagName('tbody')[0];
     table.innerHTML = '';
 
-    var today = new Date().toISOString().slice(0, 10); // Get today's date in YYYY-MM-DD format
-
     for (var i = 0; i < products.length; i++) {
         var product = products[i];
+        var row = table.insertRow(-1);  // Corrected the row insertion
+
+        var supplier = extractSupplier(xmlDoc);
+        var purchaseDate = extractPurchaseDate(xmlDoc);
+        
         var xPed = product.getElementsByTagName("xPed")[0].textContent;
         var qCom = product.getElementsByTagName("qCom")[0].textContent;
         var vUnCom = product.getElementsByTagName("vUnCom")[0].textContent;
         var vProd = product.getElementsByTagName("vProd")[0].textContent;
         var xProd = product.getElementsByTagName("xProd")[0].textContent;
-
+        
         var qualidade = xProd.match(/-QUAL\.(.*)-MED\./)[1];
         var medida = xProd.match(/-MED\.(.*)--REF\./)[1];
         var tipoOnda = xProd.match(/ONDA (.*?)-SEU PEDIDO/)[1];
         var vincada = /VINCADA/.test(xProd) ? "Sim" : "Não";
 
-        var purchaseDate = extractPurchaseDate(xmlDoc);
-        var supplier = extractSupplier(xmlDoc);
-
-        var row = table.insertRow();
-        row.insertCell().textContent = supplier;
-        row.insertCell().textContent = purchaseDate;
-
-        [xPed, qCom, vUnCom, vProd, qualidade, medida, tipoOnda, vincada].forEach(text => {
-            row.insertCell().textContent = text;
+        // Populate cells
+        [supplier, purchaseDate, xPed, qCom, vUnCom, vProd, qualidade, medida, tipoOnda, vincada].forEach(text => {
+            var cell = row.insertCell();
+            cell.textContent = text;
         });
 
         var statusCell = row.insertCell();
         statusCell.innerHTML = '<select><option>Comprado</option><option>Recebido</option><option>Parcialmente</option><option>Atrasado</option><option>Cancelado</option></select>';
 
         var dateCell = row.insertCell();
-        dateCell.innerHTML = '<input type="date" value="' + today + '">';
+        dateCell.innerHTML = '<input type="date" value="' + new Date().toISOString().slice(0, 10) + '">';
 
         // Add update button
         var updateCell = row.insertCell();
