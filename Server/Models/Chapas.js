@@ -4,16 +4,16 @@ const Chapas = new EntitySchema({
     name: 'Chapas',
     columns: {
         id_grupo_chapas: {
-            type: Number,
+            type: "int",
             primary: true,
             generated: true,
         },
         id_compra: {
-            type: Number,
+            type: "int",
             default: () => Math.floor(Math.random() * 1000000),
         },
         numero_cliente: {
-            type: Number,
+            type: "int",
             default: () => Math.floor(Math.random() * 1000000),
         },
         fornecedor: {
@@ -26,6 +26,7 @@ const Chapas = new EntitySchema({
         },
         medida: {
             type: String,
+            nullable: true,
         },
         quantidade_comprada: {
             type: Number,
@@ -85,6 +86,16 @@ const Chapas = new EntitySchema({
             columns: ['id_grupo_chapas', 'id_compra'],
         },
     ],
+    relations: {
+        lote: {
+            target: "Lotes",
+            type: "many-to-one",
+            inverseSide: "chapas",
+            joinColumn: {
+                name: 'loteId',
+            },
+        }
+    }
 });
 
 export default Chapas;
