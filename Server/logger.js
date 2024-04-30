@@ -1,3 +1,8 @@
+//Arquivo destinado para formatação e estilização dos logs do servidor (pois o fastify deixa muito bagunçado),
+//ele mascara informações sensíveis como endereços IP e porta para fins de print de tela, imprime as mensagens
+//de log em cores diferentes para facilitar a leitura, reduz a quantidade de informações desnecessárias e
+//formata a data e hora de forma mais legível. Esse é o tipo de arquivo que não é necessário para o funcionamento.
+//aliás o que você está fazendo aqui? você não deveria estar nos arquivos de conexão com o banco de dados?
 import stream from 'stream';
 import pino from 'pino';
 import chalk from 'chalk';

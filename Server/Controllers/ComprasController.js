@@ -15,6 +15,26 @@ class ComprasController {
         valor_total, qualidade, medida, onda, vincos, status
       ] = item;
 
+      //Verificar quais dados a mais devem ser inseridos
+      /* id_grupo_chapas
+      id_compra
+      numero_cliente
+      fornecedor
+      qualidade
+      medida
+      quantidade_comprada
+      quantidade_recebida
+      onda
+      coluna
+      vincos
+      gramatura
+      peso_total
+      valor_total
+      status
+      data_compra
+      data_prevista
+      data_recebimento */
+
       let lote = await loteRepository
         .createQueryBuilder('lote')
         .innerJoin('lote.chapas', 'chapa')

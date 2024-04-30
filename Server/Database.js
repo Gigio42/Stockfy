@@ -1,3 +1,6 @@
+//Conexão com o banco de dados por meio do typeorm, que faz uma instância de uma conexão com o banco de dados SQLite
+//para ser utilizada em outros arquivos. Esse arquivo é necessário para o funcionamento do sistema e só precisa ser
+//modificado caso haja mudanças na estrutura do banco de dados como adição de novas entidades ou mudanças nas entidades.
 import { createConnection } from 'typeorm';
 import Chapas from './Models/Chapas.js';
 import Lotes from './Models/Lotes.js';
