@@ -1,7 +1,7 @@
 
 body {
-    color: #000; /* Text color */
-    background-color: #333; /* Background color */
+    color: #000;
+    background-color: #333;
     margin: 0;
     padding: 0;
     display: flex;
@@ -36,17 +36,17 @@ header {
 }
 #output {
     display: none;
-    width: 90%;
+    width: 95%;
     border-collapse: collapse;
-    margin: 80px auto 0; /* Adjusted margin top to clear fixed header */
+    margin: 80px auto 0;
     border: 3px solid #4caf50;
     border-radius: 10px;
     overflow: hidden;
 }
 th, td {
     padding: 8px;
-    text-align: center; /* Centralizing text */
-    vertical-align: middle; /* Aligning text vertically for aesthetic consistency */
+    text-align: center;
+    vertical-align: middle;
 }
 th {
     background-color: #335c30;
@@ -65,12 +65,25 @@ tr:nth-child(odd) {
     padding: 5px 10px;
     cursor: pointer;
     color: #fff;
-    background-color: #335c30; /* Matching category header color */
+    background-color: #335c30;
     border: none;
     border-radius: 5px;
 }
-select, input[type="date"] {
+input[type="text"], select, input[type="date"] {
     padding: 5px;
     border-radius: 5px;
-    border: 1px solid #ccc;
+    border: none; /* Removed borders */
+    width: 100%;
+    box-sizing: border-box;
+    background-color: transparent; /* Makes the input background transparent */
+    text-align: center; /* Centers the text inside the inputs */
+}
+.currency-input {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.currency-symbol {
+    color: black;
+    margin-right: 5px;
 }
