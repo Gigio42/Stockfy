@@ -81,6 +81,28 @@ h2 {
     width: 20%;
 }
 
-.gray-row {
-    background-color: #f2f2f2;
+/* Estilo para linhas pares da tabela */
+tr.even-row {
+    background-color: #979797;
+    border-radius: 2rem;
+}
+
+/* Estilo para linhas ímpares da tabela */
+.odd-row {
+    background-color: #ffffff;
+}
+
+/* Adicione esta classe CSS ao seu arquivo compras.css */
+.rounded-rows td:first-child {
+    border-top-left-radius: 1rem; /* Borda arredondada superior esquerda */
+    border-bottom-left-radius: 1rem; /* Borda arredondada inferior esquerda */
+}
+
+.rounded-rows td:last-child {
+    border-top-right-radius: 1rem; /* Borda arredondada superior direita */
+    border-bottom-right-radius: 1rem; /* Borda arredondada inferior direita */
+}
+
+tr {
+    font-size: 1.2rem;
 }

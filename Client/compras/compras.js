@@ -137,28 +137,28 @@ document.addEventListener('DOMContentLoaded', function() {
                                             prodComprado.cliente = line;
                                             break;
                                         case 3:
-                                            prodComprado['quant.'] = line;
+                                            prodComprado['quantidade'] = line; // Alterado de 'quant.' para 'quantidade'
                                             break;
                                         case 5:
                                             prodComprado.unidade = line;
                                             break;
                                         case 7:
-                                            prodComprado['qual.'] = line;
+                                            prodComprado['qualidade'] = line; // Alterado de 'qual.' para 'qualidade'
                                             break;
                                         case 9:
                                             prodComprado.onda = line;
                                             break;
                                         case 11:
-                                            prodComprado['gramat.'] = line;
+                                            prodComprado['gramatura'] = line;
                                             break;
                                         case 13:
-                                            prodComprado['peso_lote_chapa'] = line;
+                                            prodComprado['peso_total'] = line; // Alterado de 'peso_lote_chapa' para 'peso_total'
                                             break;
                                         case 15:
-                                            prodComprado.coluna = line;
+                                            prodComprado['valor_kilo'] = line; // Renomeado de 'coluna' para 'valor_kilo'
                                             break;
                                         case 17:
-                                            prodComprado['valor_lote_chapa'] = line;
+                                            prodComprado['valor_total'] = line; // Alterado de 'valor_lote_chapa' para 'valor_total'
                                             break;
                                         // Dentro da função handleFile()
                                         case 18:
@@ -204,11 +204,12 @@ document.addEventListener('DOMContentLoaded', function() {
                                     cell.textContent = value; // Define o valor da célula como o valor do objeto
                                 });
 
-                                // Adiciona a classe 'gray-row' a cada segunda linha da tabela (linha par)
-                                if (index % 2 === 1) {
-                                    row.classList.add('gray-row');
-                                }
+                                // Adiciona uma classe específica para cada linha, alternando entre duas classes para linhas pares e ímpares
+                                row.classList.add(index % 2 === 0 ? 'even-row' : 'odd-row');
                             });
+
+                            // Adiciona bordas arredondadas às linhas da tabela
+                            addRoundedBordersToTableRows();
                         } else {
                             console.error("Elemento da tabela não encontrado.");
                         }
@@ -270,16 +271,23 @@ document.addEventListener('DOMContentLoaded', function() {
     function renameProperties(obj) {
         var newObj = {};
         newObj['cliente'] = obj['cliente'];
-        newObj['quant.'] = obj['quant.'];
+        newObj['quantidade'] = obj['quantidade']; // Renomeado de 'quant.' para 'quantidade'
         newObj['unidade'] = obj['unidade'];
-        newObj['qual.'] = obj['qual.'];
+        newObj['qualidade'] = obj['qualidade']; // Renomeado de 'qual.' para 'qualidade'
         newObj['onda'] = obj['onda'];
-        newObj['gramat.'] = obj['gramat.'];
-        newObj['peso_lote_chapa'] = obj['peso_lote_chapa'];
-        newObj['coluna'] = obj['coluna'];
-        newObj['valor_lote_chapa'] = obj['valor_lote_chapa'];
+        newObj['gramatura'] = obj['gramatura'];
+        newObj['peso_total'] = obj['peso_total']; // Renomeado de 'peso_lote_chapa' para 'peso_total'
+        newObj['valor_kilo'] = obj['valor_kilo']; // Renomeado de 'coluna' para 'valor_kilo'
+        newObj['valor_total'] = obj['valor_total']; // Renomeado de 'valor_lote_chapa' para 'valor_total'
         newObj['descrição'] = obj['descrição'];
         return newObj;
+    }
+
+    function addRoundedBordersToTableRows() {
+        var tableRows = document.querySelectorAll('#dataTable tbody tr');
+        tableRows.forEach(function(row) {
+            row.classList.add('rounded-rows'); // Adiciona a classe de bordas arredondadas a cada linha
+        });
     }
 
     // Adiciona um evento de clique ao botão "Enviar"
@@ -290,5 +298,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     } else {
         console.error("Botão 'Enviar' não encontrado.");
+    }
+
+    // Adiciona um evento de clique ao botão "Editar"
+    var editButton = document.getElementById('editButton');
+    if (editButton) {
+        editButton.addEventListener('click', function() {
+            var jsonContent = document.getElementById('jsonContent');
+            if (jsonContent) {
+                jsonContent.textContent = JSON.stringify(jsonData, null, 2);
+                jsonContent.style.display = 'block';
+            } else {
+                console.error("Elemento 'jsonContent' não encontrado.");
+            }
+        });
+    } else {
+        console.error("Botão 'Editar' não encontrado.");
     }
 });

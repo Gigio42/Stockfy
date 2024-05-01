@@ -7,12 +7,7 @@
     <!-- Adicionando o Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="compras.css">
-    <style>
-        /* Estilo para linhas pares da tabela */
-        .gray-row {
-            background-color: #f2f2f2;
-        }
-    </style>
+    
 </head>
 <body>
     <h1>Bem vindo à página de compras</h1>
@@ -27,8 +22,10 @@
             <table id="dataTable" class="table"></table> <!-- Tabela para mostrar os dados -->
             <pre id="jsonContent" style="display: none;"></pre>
             <button id="sendButton" class="btn btn-success">Enviar</button> <!-- Botão para enviar os dados -->
+            <button id="editButton" class="btn btn-warning">Editar</button> <!-- Botão para editar e mostrar o JSON -->
         </div>
     </div>
+    
 
     <!-- Adicionando o jQuery (necessário para o Bootstrap) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
