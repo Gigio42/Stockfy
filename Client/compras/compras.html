@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compras</title>
+    <!-- Adicionando o Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="compras.css">
+    
+</head>
+<body>
+    <h1>Bem vindo à página de compras</h1>
+    <div id="dropzone" class="dropzone">Arraste e solte o arquivo PDF aqui</div>
+    <pre id="jsonOutput"></pre>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <div class="fecharbtn">
+                <h2>Confirme todas as informações dos itens que chegaram</h2>
+                <button id="backButton" class="btn voltar btn-primary">Voltar</button>
+            </div>
+            
+            <!-- Tabela para mostrar os dados -->
+            <table id="dataTable" class="table"></table>
+            
+            <div class="btninferior">
+                <button id="sendButton" class="btn btn-success">Enviar</button> <!-- Botão para enviar os dados -->
+                <button id="editButton" class="btn btn-warning">Editar</button> <!-- Botão para editar e mostrar o JSON -->
+            </div>
+            
+        </div>
+    </div>
+    
+
+    <!-- Adicionando o jQuery (necessário para o Bootstrap) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <!-- Adicionando o Popper.js (necessário para o Bootstrap) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+    <!-- Adicionando o Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Adicionando a biblioteca pdf.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+    <!-- Adicionando o seu script JavaScript -->
+    <script src="compras.js"></script>
+</body>
+</html>
