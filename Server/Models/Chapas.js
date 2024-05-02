@@ -1,4 +1,5 @@
 import { EntitySchema } from 'typeorm';
+import Item from './Item.js';
 
 const Chapas = new EntitySchema({
     name: 'Chapas',
@@ -34,6 +35,11 @@ const Chapas = new EntitySchema({
             nullable: true,
         },
         quantidade_recebida: {
+            type: Number,
+            default: 0,
+            nullable: true,
+        },
+        quantidade_estoque: {
             type: Number,
             default: 0,
             nullable: true,
@@ -87,13 +93,11 @@ const Chapas = new EntitySchema({
         },
     ],
     relations: {
-        lote: {
-            target: "Lotes",
-            type: "many-to-one",
-            inverseSide: "chapas",
-            joinColumn: {
-                name: 'loteId',
-            },
+        items: {
+            target: "Item",
+            type: 'many-to-many',
+            joinTable: true,
+            cascade: true
         }
     }
 });
