@@ -1,131 +1,39 @@
-html {
+html, body {
+    height: 100%;
     background-color: #131313;
-}
-
-#jsonOutput {
-    color: rgb(226, 226, 226);
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: #131313;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    flex-direction: column;  
-}
-
-h1 {
-    margin-top: 2rem;
-    display: flex;
-    background: #131313;
     color: #ffffff;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+}
+
+.container {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.dropzone {
+    height: 10rem;
+    line-height: 10rem;
+    border: dashed 2px #2c2c2c;
+    border-radius: 2rem;
+    margin: 2rem;
 }
 
 .modal-content {
     background-color: #fefefe;
     border: 1px solid #888;
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
+    min-height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: stretch;
-}
-
-.dropzone{
-    display: flex;
-    background: #131313;
-    height: 10rem;
-    color: #3b3b3b;
-    align-items: center;
-    align-content: center;
-    justify-content: center;
-    font-size: 2rem;
-    margin: 2rem;
-    border-radius: 2rem;
-    border: dashed 2px #2c2c2c;
-    padding: 2rem;
-}
-
-.btn-primary {
-    width: 20%;
-}
-
-.table {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 2rem;
-    width: 70%;
-    margin-left: 2rem;
-}
-
-.table td {
-    align-items: center;
-    align-content: center;
-    justify-content: center;
-    text-align: center;
-    padding: 1rem;
-}
-
-.btn-success {
-    width: 100%;
-}
-
-/* Estilo para linhas pares da tabela */
-tr.even-row {
-    background-color: #979797;
-    border-radius: 2rem;
-}
-
-/* Estilo para linhas ímpares da tabela */
-.odd-row {
-    background-color: #ffffff;
-}
-
-/* Adicione esta classe CSS ao seu arquivo compras.css */
-.rounded-rows td:first-child {
-    border-top-left-radius: 1rem; /* Borda arredondada superior esquerda */
-    border-bottom-left-radius: 1rem; /* Borda arredondada inferior esquerda */
-}
-
-.rounded-rows td:last-child {
-    border-top-right-radius: 1rem; /* Borda arredondada superior direita */
-    border-bottom-right-radius: 1rem; /* Borda arredondada inferior direita */
-}
-
-tr {
-    font-size: 1rem;
-    height: 5rem;
-}
-
-input.form-control {
-    background: #131313;
-    width: 5rem;
 }
 
 .fecharbtn {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    padding: 1rem 2rem;
     background: #d9d9d9;
-    height: 5rem;
-    padding-left: 2rem;
-    padding-right: 2rem;
 }
 
 .btn-primary {
     background: #d9d9d9;
     border: none;
-    height: 3rem;
     font-size: 1.3rem;
     color: #797979;
     border-radius: 1rem;
@@ -136,38 +44,17 @@ input.form-control {
     color: #797979;
 }
 
-.btninferior{
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    width: 70%;
+.table {
+    margin-top: 2rem;
+}
+
+.btninferior {
+    margin-top: auto;
     margin-right: 2rem;
 }
 
-.btn-warning {
-    width: 100%;
-}
-
-.tablecontainer {
-    display: flex;
-    flex-direction: column; /* Coloca os botões abaixo da tabela */
-    align-items: center;
-    width: 100%;
-}
-
-.btncontainer {
-    display: flex;
-    flex-direction: column; /* Coloca cada par de botões em uma nova linha */
-    width: 100%;
-}
-
-.btnContainer .btn {
-    margin-bottom: 10px; /* Espaçamento entre os botões */
-}
-
-.button-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
+@media (max-width: 576px) {
+    .btninferior {
+        justify-content: center;
+    }
 }

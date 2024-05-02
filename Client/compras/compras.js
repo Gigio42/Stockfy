@@ -258,11 +258,6 @@ function confirmData(row) {
     }
 }
 
-
-
-
-
-
                             // Adiciona bordas arredondadas às linhas da tabela
                             addRoundedBordersToTableRows();
                         } else {

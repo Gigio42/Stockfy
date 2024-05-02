@@ -7,32 +7,32 @@
     <!-- Adicionando o Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="compras.css">
-    
 </head>
 <body>
-    <h1>Bem vindo à página de compras</h1>
-    <div id="dropzone" class="dropzone">Arraste e solte o arquivo PDF aqui</div>
-    <pre id="jsonOutput"></pre>
+    <div class="container">
+        <h1 class="text-center mt-4">Bem-vindo à página de compras</h1>
+        <div id="dropzone" class="dropzone text-center mt-4">Arraste e solte o arquivo PDF aqui</div>
+        <pre id="jsonOutput" class="mt-4"></pre>
 
-    <!-- Modal -->
-    <div id="myModal" class="modal">
-        <div class="modal-content">
-            <div class="fecharbtn">
-                <h2>Confirme todas as informações dos itens que chegaram</h2>
-                <button id="backButton" class="btn voltar btn-primary">Voltar</button>
+        <!-- Modal -->
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <div class="fecharbtn d-flex justify-content-between align-items-center">
+                    <h2>Confirme todas as informações dos itens que chegaram</h2>
+                    <button id="backButton" class="btn voltar btn-primary">Voltar</button>
+                </div>
+                
+                <!-- Tabela para mostrar os dados -->
+                <table id="dataTable" class="table mt-4"></table>
+                
+                <div class="btninferior mt-4 d-flex justify-content-end">
+                    <button id="sendButton" class="btn btn-success mr-2">Enviar</button>
+                    <button id="editButton" class="btn btn-warning">Editar</button>
+                </div>
+                
             </div>
-            
-            <!-- Tabela para mostrar os dados -->
-            <table id="dataTable" class="table"></table>
-            
-            <div class="btninferior">
-                <button id="sendButton" class="btn btn-success">Enviar</button> <!-- Botão para enviar os dados -->
-                <button id="editButton" class="btn btn-warning">Editar</button> <!-- Botão para editar e mostrar o JSON -->
-            </div>
-            
         </div>
     </div>
-    
 
     <!-- Adicionando o jQuery (necessário para o Bootstrap) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
