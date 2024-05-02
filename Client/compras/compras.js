@@ -162,8 +162,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                             break;
                                         // Dentro da função handleFile()
                                         case 18:
-                                            var descricao = line.split('-')[0]; // Remove tudo após o caractere "-"
-                                            prodComprado['descrição'] = descricao.trim(); // Remove espaços em branco extras antes e depois da descrição
+                                            var medida = line.split('-')[0]; // Remove tudo após o caractere "-"
+                                            prodComprado['medida'] = medida.trim(); // Remove espaços em branco extras antes e depois da descrição
                                             break;
 
                                     }
@@ -196,17 +196,21 @@ document.addEventListener('DOMContentLoaded', function() {
                             // Limpa a tabela antes de adicionar novos dados
                             dataTable.innerHTML = '';
 
-                            // Loop sobre cada item de infoProdComprados
+                           // Loop sobre cada item de infoProdComprados
                             infoProdComprados.forEach(function(prod, index) {
                                 var row = dataTable.insertRow(); // Insere uma nova linha na tabela
-                                Object.values(prod).forEach(function(value, colIndex) {
+                                // Exibir apenas as informações desejadas na tabela
+                                var infoToShow = ['quantidade', 'qualidade', 'onda', 'medida'];
+                                infoToShow.forEach(function(info) {
                                     var cell = row.insertCell(); // Insere uma nova célula na linha
-                                    cell.textContent = value; // Define o valor da célula como o valor do objeto
+                                    cell.textContent = prod[info]; // Define o valor da célula como o valor do objeto
                                 });
 
                                 // Adiciona uma classe específica para cada linha, alternando entre duas classes para linhas pares e ímpares
                                 row.classList.add(index % 2 === 0 ? 'even-row' : 'odd-row');
                             });
+
+
 
                             // Adiciona bordas arredondadas às linhas da tabela
                             addRoundedBordersToTableRows();
@@ -267,7 +271,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return obj;
     }
 
-    // Função para renomear as propriedades do objeto
+    // Função para renomear as propriedades do objeto quantidade qualidade onda e medida
     function renameProperties(obj) {
         var newObj = {};
         newObj['cliente'] = obj['cliente'];
@@ -279,7 +283,7 @@ document.addEventListener('DOMContentLoaded', function() {
         newObj['peso_total'] = obj['peso_total']; // Renomeado de 'peso_lote_chapa' para 'peso_total'
         newObj['valor_kilo'] = obj['valor_kilo']; // Renomeado de 'coluna' para 'valor_kilo'
         newObj['valor_total'] = obj['valor_total']; // Renomeado de 'valor_lote_chapa' para 'valor_total'
-        newObj['descrição'] = obj['descrição'];
+        newObj['medida'] = obj['medida'];
         return newObj;
     }
 

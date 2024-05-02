@@ -17,8 +17,11 @@
     <!-- Modal -->
     <div id="myModal" class="modal">
         <div class="modal-content">
-            <button id="backButton" class="btn btn-primary">Voltar</button>
-            <h2>Confirme todas as informações dos itens que chegaram</h2>
+            <div class="fecharbtn">
+                <h2>Confirme todas as informações dos itens que chegaram</h2>
+                <button id="backButton" class="btn voltar btn-primary">Voltar</button>
+            </div>
+            
             <table id="dataTable" class="table"></table> <!-- Tabela para mostrar os dados -->
             <pre id="jsonContent" style="display: none;"></pre>
             <button id="sendButton" class="btn btn-success">Enviar</button> <!-- Botão para enviar os dados -->
