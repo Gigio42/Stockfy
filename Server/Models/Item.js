@@ -1,5 +1,5 @@
 import { EntitySchema } from "typeorm";
-import Lotes from "./Lotes.js";
+import Chapas from './Chapas.js';
 
 const Item = new EntitySchema({
     name: "Item",
@@ -24,14 +24,17 @@ const Item = new EntitySchema({
         Status: {
             type: "text",
             default: ""
-        }
+        },
+        id_grupo_chapas: {
+            type: "int",
+            default: 0
+        },
     },
     relations: {
-        id_lote: {
-            target: "Lotes",
-            type: "many-to-one",
-            joinTable: true,
-            cascade: true
+        chapas: {
+            target: "Chapas",
+            type: 'many-to-many',
+            inverseSide: 'items'
         }
     }
 });

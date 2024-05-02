@@ -19,11 +19,10 @@ const Lotes = new EntitySchema({
         }
     },
     relations: {
-        id_grupo_chapas: {
+        chapas: {
             target: "Chapas",
-            type: "many-to-one",
-            joinTable: true,
-            cascade: true
+            type: "one-to-many",
+            inverseSide: "lote"
         }
     }
 });
