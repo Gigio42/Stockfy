@@ -2,6 +2,11 @@ html, body {
     height: 100%;
     background-color: #131313;
     color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centraliza verticalmente */
+    align-items: center; /* Centraliza horizontalmente */
+    padding: 5rem;
 }
 
 .container {
@@ -18,12 +23,17 @@ html, body {
     margin: 2rem;
 }
 
+.dropzone:hover {
+    border: dashed 2px #84e789;
+}
+
 .modal-content {
     background-color: #fefefe;
     border: 1px solid #888;
     min-height: 100%;
     display: flex;
     flex-direction: column;
+    
 }
 
 .fecharbtn {
@@ -35,7 +45,7 @@ html, body {
 .btn-primary {
     background: #d9d9d9;
     border: none;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     color: #797979;
     border-radius: 1rem;
 }
@@ -45,9 +55,34 @@ html, body {
     color: #797979;
 }
 
-.table {
-    margin-top: 2rem;
+.mt-4{
+    margin-top: 0 !important;
 }
+
+.table-container {
+    max-height: 75vh; /* Define a altura máxima do contêiner da tabela */
+    overflow-y: auto; /* Adiciona rolagem vertical quando necessário */
+}
+
+.jsonshow {
+    max-height: 20vh;
+    overflow-y: auto; /* Adiciona rolagem vertical quando necessário */
+}
+
+.precontainer {
+    max-height: 80vh;
+    overflow-y: auto; /* Adiciona rolagem vertical quando necessário */
+}
+
+
+.table td {
+    align-content: center;
+    text-align: center;
+    font-size: 1.5rem;
+    justify-content: center;
+    height: 5rem;
+}
+
 
 .btninferior {
     margin-top: auto;
@@ -107,4 +142,10 @@ body button.confirm:focus,
 body button.confirm:hover {
     background: #84e789 !important;
     box-shadow: none !important;
+}
+
+.form-control {
+    width: 60%;
+    height: 80%;
+    font-size: 1.5rem;
 }

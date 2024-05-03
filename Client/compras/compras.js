@@ -96,7 +96,6 @@ document.addEventListener('DOMContentLoaded', function() {
                                 isPedidoCompra = false;
                                 isInfoProdComprados = false;
                                 if (line !== '') {
-                                    // Alteração para definir as informações do pedido conforme o novo formato
                                     switch (lineNumber) {
                                         case 1:
                                             infoPedido.comprador = line;
@@ -107,8 +106,26 @@ document.addEventListener('DOMContentLoaded', function() {
                                         case 23:
                                             infoPedido.fornecedor = line;
                                             break;
+                                        case 54: // Adicionamos o case para a linha 54
+                                        case 57: // Adicionamos o case para a linha 57
+                                            // Lógica para processar as informações de pedido com base no início do grupo
+                                            isInfoPedido = true;
+                                            isPedidoCompra = false;
+                                            isInfoProdComprados = false;
+                                            if (line !== '') {
+                                                // Alteração para definir as informações do pedido conforme o novo formato
+                                                switch (lineNumber) {
+                                                    case 54:
+                                                    case 57:
+                                                        pedidoCompra = line;
+                                                        break;
+                                                }
+                                            }
+                                            break;
                                     }
+                                    
                                 }
+                                    
                             } else if ((lineNumber === 55 || lineNumber === 53) && line.match(/\d{2}\.\d{3}/)) {
                                 // Verifica se a linha é a linha 55 ou 53 e se contém o padrão xx.xxx
                                 pedidoCompra = line;
@@ -157,12 +174,27 @@ document.addEventListener('DOMContentLoaded', function() {
                                         case 17:
                                             prodComprado['valor_total'] = line; // Alterado de 'valor_lote_chapa' para 'valor_total'
                                             break;
-                                        // Dentro da função handleFile()
-                                        case 18:
-                                            var descricao = line.split('-')[0]; // Remove tudo após o caractere "-"
-                                            prodComprado['medida'] = descricao.trim(); // Remove espaços em branco extras antes e depois da descrição
-                                            break;
-
+                                            case 18:
+                                                // Verifica se a linha contém o caractere "-" antes de tentar dividir a linha
+                                                if (line.includes('-')) {
+                                                    var parts = line.split('-');
+                                                    // Verifica se o array resultante da divisão tem pelo menos dois elementos
+                                                    if (parts.length >= 2) {
+                                                        var descricao = parts[0]; // Remove tudo após o caractere "-"
+                                                        prodComprado['medida'] = descricao.trim(); // Remove espaços em branco extras antes e depois da descrição
+                                                    } else {
+                                                        console.error("Formato de linha inválido para a medida:", line);
+                                                        // Lidar com a situação em que a linha não está no formato esperado
+                                                        // Por exemplo, definir um valor padrão para a medida ou deixá-la em branco
+                                                        prodComprado['medida'] = ''; // Definindo medida como vazio
+                                                    }
+                                                } else {
+                                                    console.error("Caractere '-' não encontrado na linha:", line);
+                                                    // Lidar com a situação em que o caractere "-" não está presente na linha
+                                                    // Por exemplo, definir um valor padrão para a medida ou deixá-la em branco
+                                                    prodComprado['medida'] = ''; // Definindo medida como vazio
+                                                }
+                                                break;
                                     }
                                 }
                             }
@@ -193,93 +225,93 @@ document.addEventListener('DOMContentLoaded', function() {
                             // Limpa a tabela antes de adicionar novos dados
                             dataTable.innerHTML = '';
 
-// Loop sobre cada item de infoProdComprados
-infoProdComprados.forEach(function(prod, index) {
-    var row = dataTable.insertRow(); // Insere uma nova linha na tabela
+                        // Loop sobre cada item de infoProdComprados
+                        infoProdComprados.forEach(function(prod, index) {
+                            var row = dataTable.insertRow(); // Insere uma nova linha na tabela
 
-    // Exibir apenas as informações desejadas na tabela
-    var infoToShow = ['quantidade', 'qualidade', 'onda', 'medida'];
-    infoToShow.forEach(function(info) {
-        var cell = row.insertCell(); // Insere uma nova célula na linha
-        cell.textContent = prod[info]; // Define o valor da célula como o valor do objeto
-    });
+                            // Exibir apenas as informações desejadas na tabela
+                            var infoToShow = ['quantidade', 'qualidade', 'onda', 'medida'];
+                            infoToShow.forEach(function(info) {
+                                var cell = row.insertCell(); // Insere uma nova célula na linha
+                                cell.textContent = prod[info]; // Define o valor da célula como o valor do objeto
+                            });
 
-    // Adiciona uma classe específica para cada linha, alternando entre duas classes para linhas pares e ímpares
-    row.classList.add(index % 2 === 0 ? 'even-row' : 'odd-row');
+                            // Adiciona uma classe específica para cada linha, alternando entre duas classes para linhas pares e ímpares
+                            row.classList.add(index % 2 === 0 ? 'even-row' : 'odd-row');
 
-    // Criação dos botões "Editar" e "Confirmar"
-    var buttonContainer = document.createElement('div');
-    buttonContainer.classList.add('button-container');
+                            // Criação dos botões "Editar" e "Confirmar"
+                            var buttonContainer = document.createElement('div');
+                            buttonContainer.classList.add('button-container');
 
-    var editButton = document.createElement('button');
-    editButton.classList.add('btn', 'btn-info', 'edit', 'mr-2');
-    editButton.addEventListener('click', function() {
-        editRow(row); // Função para editar os dados da linha
-    });
+                            var editButton = document.createElement('button');
+                            editButton.classList.add('btn', 'btn-info', 'edit', 'mr-2');
+                            editButton.addEventListener('click', function() {
+                                editRow(row); // Função para editar os dados da linha
+                            });
 
-    var editIcon = document.createElement('img');
-    editIcon.src = 'media/edit_icon_128873.svg';
-    editIcon.alt = 'Edit';
-    editIcon.classList.add('edit-icon'); // Aplica a classe CSS ao elemento img
-    editButton.appendChild(editIcon);
-
-
-    var confirmButton = document.createElement('button');
-    confirmButton.classList.add('btn', 'confirm', 'btn-success');
-    confirmButton.addEventListener('click', function() {
-        confirmData(row); // Função para confirmar os dados da linha
-    });
-    
-    // Criar um elemento SVG
-    var confirmIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    confirmIcon.setAttribute("width", "24");
-    confirmIcon.setAttribute("height", "24");
-    confirmIcon.setAttribute("viewBox", "0 0 512 512");
-    confirmIcon.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-    
-    // Adicionar o conteúdo do SVG
-    confirmIcon.innerHTML = `
-      <path fill="#0c9113" d="M505.942,29.589c-8.077-8.077-21.172-8.077-29.249,0L232.468,273.813l-55.971-55.971c-8.077-8.076-21.172-8.076-29.249,0    c-8.077,8.077-8.077,21.172,0,29.249l70.595,70.596c3.879,3.879,9.14,6.058,14.625,6.058c5.485,0,10.746-2.179,14.625-6.058    l258.85-258.85C514.019,50.761,514.019,37.666,505.942,29.589z"/>
-      <path fill="#0c9113" d="M444.254,235.318c-11.423,0-20.682,9.26-20.682,20.682v164.722c0,14.547-11.835,26.381-26.381,26.381H67.746    c-14.547,0-26.381-11.835-26.381-26.381V91.277c0-14.547,11.835-26.381,26.381-26.381h258.85c11.423,0,20.682-9.26,20.682-20.682    c0-11.422-9.259-20.682-20.682-20.682H67.746C30.391,23.532,0,53.923,0,91.277v329.445c0,37.356,30.391,67.746,67.746,67.746    h329.445c37.355,0,67.746-30.39,67.746-67.746V256C464.936,244.578,455.677,235.318,444.254,235.318z"/>
-    `;
-    
-    // Adicionar o ícone ao botão
-    confirmButton.appendChild(confirmIcon);
-    
+                            var editIcon = document.createElement('img');
+                            editIcon.src = 'media/edit_icon_128873.svg';
+                            editIcon.alt = 'Edit';
+                            editIcon.classList.add('edit-icon'); // Aplica a classe CSS ao elemento img
+                            editButton.appendChild(editIcon);
 
 
-    // Insere os botões no container
-    buttonContainer.appendChild(editButton); // Adiciona o botão "Editar" ao container
-    buttonContainer.appendChild(confirmButton); // Adiciona o botão "Confirmar" ao container
+                            var confirmButton = document.createElement('button');
+                            confirmButton.classList.add('btn', 'confirm', 'btn-success');
+                            confirmButton.addEventListener('click', function() {
+                                confirmData(row); // Função para confirmar os dados da linha
+                            });
+                            
+                            // Criar um elemento SVG
+                            var confirmIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                            confirmIcon.setAttribute("width", "24");
+                            confirmIcon.setAttribute("height", "24");
+                            confirmIcon.setAttribute("viewBox", "0 0 512 512");
+                            confirmIcon.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+                            
+                            // Adicionar o conteúdo do SVG
+                            confirmIcon.innerHTML = `
+                            <path fill="#0c9113" d="M505.942,29.589c-8.077-8.077-21.172-8.077-29.249,0L232.468,273.813l-55.971-55.971c-8.077-8.076-21.172-8.076-29.249,0    c-8.077,8.077-8.077,21.172,0,29.249l70.595,70.596c3.879,3.879,9.14,6.058,14.625,6.058c5.485,0,10.746-2.179,14.625-6.058    l258.85-258.85C514.019,50.761,514.019,37.666,505.942,29.589z"/>
+                            <path fill="#0c9113" d="M444.254,235.318c-11.423,0-20.682,9.26-20.682,20.682v164.722c0,14.547-11.835,26.381-26.381,26.381H67.746    c-14.547,0-26.381-11.835-26.381-26.381V91.277c0-14.547,11.835-26.381,26.381-26.381h258.85c11.423,0,20.682-9.26,20.682-20.682    c0-11.422-9.259-20.682-20.682-20.682H67.746C30.391,23.532,0,53.923,0,91.277v329.445c0,37.356,30.391,67.746,67.746,67.746    h329.445c37.355,0,67.746-30.39,67.746-67.746V256C464.936,244.578,455.677,235.318,444.254,235.318z"/>
+                            `;
+                            
+                            // Adicionar o ícone ao botão
+                            confirmButton.appendChild(confirmIcon);
+                            
 
-    // Insere o container de botões na última célula da linha na tabela
-    var lastCell = row.insertCell();
-    lastCell.appendChild(buttonContainer);
-});
 
-// Função para editar os dados da linha
-function editRow(row) {
-    // Percorre todas as células da linha, exceto a última que contém os botões
-    for (var i = 0; i < row.cells.length - 1; i++) {
-        var cell = row.cells[i];
-        var text = cell.textContent.trim();
-        // Substitui o texto pela entrada de texto para edição
-        cell.innerHTML = '<input type="text" class="form-control" value="' + text + '">';
-    }
-}
+                            // Insere os botões no container
+                            buttonContainer.appendChild(editButton); // Adiciona o botão "Editar" ao container
+                            buttonContainer.appendChild(confirmButton); // Adiciona o botão "Confirmar" ao container
 
-// Função para confirmar os dados da linha
-function confirmData(row) {
-    // Percorre todas as células da linha, exceto a última que contém os botões
-    for (var i = 0; i < row.cells.length - 1; i++) {
-        var cell = row.cells[i];
-        var input = cell.querySelector('input');
-        if (input) {
-            // Atualiza o texto da célula com o valor do campo de entrada
-            cell.textContent = input.value;
-        }
-    }
-}
+                            // Insere o container de botões na última célula da linha na tabela
+                            var lastCell = row.insertCell();
+                            lastCell.appendChild(buttonContainer);
+                        });
+
+                        // Função para editar os dados da linha
+                        function editRow(row) {
+                            // Percorre todas as células da linha, exceto a última que contém os botões
+                            for (var i = 0; i < row.cells.length - 1; i++) {
+                                var cell = row.cells[i];
+                                var text = cell.textContent.trim();
+                                // Substitui o texto pela entrada de texto para edição
+                                cell.innerHTML = '<input type="text" class="form-control" value="' + text + '">';
+                            }
+                        }
+
+                        // Função para confirmar os dados da linha
+                        function confirmData(row) {
+                            // Percorre todas as células da linha, exceto a última que contém os botões
+                            for (var i = 0; i < row.cells.length - 1; i++) {
+                                var cell = row.cells[i];
+                                var input = cell.querySelector('input');
+                                if (input) {
+                                    // Atualiza o texto da célula com o valor do campo de entrada
+                                    cell.textContent = input.value;
+                                }
+                            }
+                        }
 
                             // Adiciona bordas arredondadas às linhas da tabela
                             addRoundedBordersToTableRows();
@@ -371,19 +403,20 @@ function confirmData(row) {
         console.error("Botão 'Enviar' não encontrado.");
     }
 
-    // Adiciona um evento de clique ao botão "Editar"
-    var editButton = document.getElementById('editButton');
-    if (editButton) {
-        editButton.addEventListener('click', function() {
-            var jsonContent = document.getElementById('jsonContent');
-            if (jsonContent) {
-                jsonContent.textContent = JSON.stringify(jsonData, null, 2);
-                jsonContent.style.display = 'block';
-            } else {
-                console.error("Elemento 'jsonContent' não encontrado.");
-            }
-        });
-    } else {
-        console.error("Botão 'Editar' não encontrado.");
-    }
-});
+// Adiciona um evento de clique ao botão "Editar"
+var editButton = document.getElementById('editButton');
+if (editButton) {
+    editButton.addEventListener('click', function() {
+        var jsonContent = document.getElementById('jsonContent');
+        if (jsonContent) {
+            // Exibe o conteúdo JSON formatado no elemento com id 'jsonContent'
+            jsonContent.textContent = JSON.stringify(jsonData, null, 2);
+            jsonContent.style.display = 'block'; // Exibe o elemento
+        } else {
+            console.error("Elemento 'jsonContent' não encontrado.");
+        }
+    });
+} else {
+    console.error("Botão 'Editar' não encontrado.");
+}
+})
