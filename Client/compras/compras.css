@@ -29,6 +29,7 @@ html, body {
 .fecharbtn {
     padding: 1rem 2rem;
     background: #d9d9d9;
+    color: #555555;
 }
 
 .btn-primary {
@@ -57,4 +58,53 @@ html, body {
     .btninferior {
         justify-content: center;
     }
+}
+
+.button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.edit {
+    background-color: #fdb6b6; /* Cor de fundo geral */
+    border:none; /* Cor da borda geral */
+    border-radius: 0.5rem;
+    width: 2.5rem;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+
+/* Aumentando ainda mais a especificidade e usando !important */
+body button.edit:active,
+body button.edit:focus,
+body button.edit:hover {
+    background-color: #f8a0a0 !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+}
+
+
+.confirm {
+    background: #9dffa2;
+    border:none; /* Cor da borda geral */
+    border-radius: 0.5rem;
+    width: 2.5rem;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    height: 2.2rem;
+}
+
+
+/* Aumentando ainda mais a especificidade e usando !important */
+body button.confirm:active,
+body button.confirm:focus,
+body button.confirm:hover {
+    background: #84e789 !important;
+    box-shadow: none !important;
 }

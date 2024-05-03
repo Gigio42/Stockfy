@@ -212,18 +212,41 @@ infoProdComprados.forEach(function(prod, index) {
     buttonContainer.classList.add('button-container');
 
     var editButton = document.createElement('button');
-    editButton.textContent = 'Editar';
-    editButton.classList.add('btn', 'btn-info', 'mr-2');
+    editButton.classList.add('btn', 'btn-info', 'edit', 'mr-2');
     editButton.addEventListener('click', function() {
         editRow(row); // Função para editar os dados da linha
     });
 
+    var editIcon = document.createElement('img');
+    editIcon.src = 'media/edit_icon_128873.svg';
+    editIcon.alt = 'Edit';
+    editIcon.classList.add('edit-icon'); // Aplica a classe CSS ao elemento img
+    editButton.appendChild(editIcon);
+
+
     var confirmButton = document.createElement('button');
-    confirmButton.textContent = 'Confirmar';
-    confirmButton.classList.add('btn', 'btn-success');
+    confirmButton.classList.add('btn', 'confirm', 'btn-success');
     confirmButton.addEventListener('click', function() {
         confirmData(row); // Função para confirmar os dados da linha
     });
+    
+    // Criar um elemento SVG
+    var confirmIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    confirmIcon.setAttribute("width", "24");
+    confirmIcon.setAttribute("height", "24");
+    confirmIcon.setAttribute("viewBox", "0 0 512 512");
+    confirmIcon.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    
+    // Adicionar o conteúdo do SVG
+    confirmIcon.innerHTML = `
+      <path fill="#0c9113" d="M505.942,29.589c-8.077-8.077-21.172-8.077-29.249,0L232.468,273.813l-55.971-55.971c-8.077-8.076-21.172-8.076-29.249,0    c-8.077,8.077-8.077,21.172,0,29.249l70.595,70.596c3.879,3.879,9.14,6.058,14.625,6.058c5.485,0,10.746-2.179,14.625-6.058    l258.85-258.85C514.019,50.761,514.019,37.666,505.942,29.589z"/>
+      <path fill="#0c9113" d="M444.254,235.318c-11.423,0-20.682,9.26-20.682,20.682v164.722c0,14.547-11.835,26.381-26.381,26.381H67.746    c-14.547,0-26.381-11.835-26.381-26.381V91.277c0-14.547,11.835-26.381,26.381-26.381h258.85c11.423,0,20.682-9.26,20.682-20.682    c0-11.422-9.259-20.682-20.682-20.682H67.746C30.391,23.532,0,53.923,0,91.277v329.445c0,37.356,30.391,67.746,67.746,67.746    h329.445c37.355,0,67.746-30.39,67.746-67.746V256C464.936,244.578,455.677,235.318,444.254,235.318z"/>
+    `;
+    
+    // Adicionar o ícone ao botão
+    confirmButton.appendChild(confirmIcon);
+    
+
 
     // Insere os botões no container
     buttonContainer.appendChild(editButton); // Adiciona o botão "Editar" ao container
