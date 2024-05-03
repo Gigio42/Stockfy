@@ -5,15 +5,14 @@ class RecebimentoController {
     constructor() {}
 
     async createRecebimentos(data) {
-        const chapasRepository = getRepository(Chapas);
+    const chapasRepository = getRepository(Chapas);
 
-        const promises = data.map(item => {
-            const [qualidade, medida, quantidade, vincos] = item;
-            const chapa = chapasRepository.create({ qualidade, medida, quantidade, vincos });
-            return chapasRepository.save(chapa);
-        });
+    const promises = data.info_prod_comprados.map(item => {
+        const chapa = chapasRepository.create(item);
+        return chapasRepository.save(chapa);
+    });
 
-        return await Promise.all(promises);
+    return await Promise.all(promises);
     }
 }
   

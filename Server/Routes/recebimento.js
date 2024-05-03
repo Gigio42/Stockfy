@@ -1,4 +1,4 @@
-import RecebimentoController from '../Controllers/RecebimentoController.js';
+import RecebimentoController from '../';
 
 async function recebimentoRoute(fastify, options) {
   const recebimentoController = new RecebimentoController(options.db);
