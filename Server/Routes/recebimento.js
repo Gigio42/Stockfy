@@ -14,6 +14,17 @@ async function recebimentoRoute(fastify, options) {
       reply.code(500).send({ message: 'Error inserting data into SQLite database', error: err.message });
     }
   });
+
+  fastify.get('/chapafornecedor/:fornecedor', async (request, reply) => {
+    try {
+      const fornecedor = request.params.fornecedor;
+      const chapas = await recebimentoController.getChapasByFornecedor(fornecedor);
+      return reply.send(chapas);
+    } catch (err) {
+      console.log(err.message);
+      return reply.code(500).send({ message: 'Error retrieving data from SQLite database', error: err.message });
+    }
+  });
 };
 
 export default recebimentoRoute;
