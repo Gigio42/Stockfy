@@ -2,11 +2,7 @@ import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import database from './Database.js';
 import log from './logger.js';
-
-import comprasRoute from './Routes/compras.js'
-import recebimentoRoute from './Routes/recebimento.js';
-import pcpRoute from './Routes/PCP.js';
-
+import registerRoutes from './API/Routes/index.js';
 
 const fastify = Fastify({ logger: log });
 fastify.register(cors);
@@ -16,12 +12,7 @@ fastify.get('/', async (request, reply) => {
 });
 
 database().then(() => {
-
-  fastify.register(comprasRoute, { prefix: '/compras' });
-
-  fastify.register(recebimentoRoute, { prefix: '/recebimento' });
-
-  fastify.register(pcpRoute, { prefix: '/PCP' });
+  registerRoutes(fastify);
 
   fastify.listen({ port: 5500, host: 'localhost' }, (err, address) => {
     if (err) {

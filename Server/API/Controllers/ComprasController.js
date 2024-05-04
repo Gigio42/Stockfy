@@ -6,19 +6,12 @@ class ComprasController {
 
   async createCompra(orderData) {
     const chapasRepository = getRepository(Chapas);
-
+  
     const promises = orderData.info_prod_comprados.map(async item => {
-      const [id_compra, id_compra_chapa] = item.id_compra.split('/').map(Number);
-
-      const newChapa = chapasRepository.create({
-        ...item,
-        id_compra,
-        id_compra_chapa: id_compra_chapa || 1,
-      });
-
+      const newChapa = chapasRepository.create(item);
       return chapasRepository.save(newChapa);
     });
-
+  
     return await Promise.all(promises);
   }
 }

@@ -16,19 +16,16 @@ class RecebimentoController {
         throw new Error('id_compra is undefined');
       }
   
-      const [id_compra, id_compra_chapa_inicial] = item.id_compra.split('/').map(Number);
-      let id_compra_chapa = !isNaN(id_compra_chapa_inicial) ? id_compra_chapa_inicial : 1;
+      const id_compra = item.id_compra;
   
-      const chapa = await chapasRepository.findOne({ where: { id_compra, id_compra_chapa } });
+      const chapa = await chapasRepository.findOne({ where: { id_compra } });
       if (!chapa) {
         throw new Error(`Chapa with id ${item.id_compra} not found`);
       }
   
       chapa.data_recebimento = item.data_recebimento;
-      chapa.quantidade_recebida = item.quantidade_recebida;
-      // Perguntar se no XML, quando recebe parcialmente, a quantidade
-      //vem depois só o que restou ou a quantidade total que foi comprada
-      chapa.quantidade_estoque += item.quantidade_recebida - chapa.quantidade_estoque; 
+      chapa.quantidade_recebida += item.quantidade_recebida;
+      chapa.quantidade_estoque += item.quantidade_recebida; 
       chapa.status = item.status;
   
       return chapasRepository.save(chapa);
@@ -47,8 +44,8 @@ class RecebimentoController {
     const chapas = await chapasRepository.find({ 
       where: { id_compra },
       select: [
+        'id_grupo_chapas',
         'id_compra',
-        'id_compra_chapa',
         'fornecedor',
         'qualidade',
         'medida',
