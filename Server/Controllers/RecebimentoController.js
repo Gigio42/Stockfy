@@ -16,8 +16,8 @@ class RecebimentoController {
         throw new Error('id_compra is undefined');
       }
   
-      const [id_compra, id_compra_chapa_initial] = item.id_compra.split('/').map(Number);
-      let id_compra_chapa = !isNaN(id_compra_chapa_initial) ? id_compra_chapa_initial : 1;
+      const [id_compra, id_compra_chapa_inicial] = item.id_compra.split('/').map(Number);
+      let id_compra_chapa = !isNaN(id_compra_chapa_inicial) ? id_compra_chapa_inicial : 1;
   
       const chapa = await chapasRepository.findOne({ where: { id_compra, id_compra_chapa } });
       if (!chapa) {
@@ -44,7 +44,21 @@ class RecebimentoController {
   
     const chapasRepository = getRepository(Chapas);
   
-    const chapas = await chapasRepository.find({ where: { id_compra } });
+    const chapas = await chapasRepository.find({ 
+      where: { id_compra },
+      select: [
+        'id_compra',
+        'id_compra_chapa',
+        'fornecedor',
+        'qualidade',
+        'medida',
+        'quantidade_comprada',
+        'onda',
+        'coluna',
+        'vincos',
+        'status'
+      ],
+    });
   
     if (!chapas.length) {
       throw new Error(`No chapas found with id_compra ${id_compra}`);
