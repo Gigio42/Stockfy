@@ -2,7 +2,7 @@ import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import database from './Database.js';
 import log from './logger.js';
-import registerRoutes from './Routes/index.js';
+import registerRoutes from './API/Routes/index.js';
 
 const fastify = Fastify({ logger: log });
 fastify.register(cors);
