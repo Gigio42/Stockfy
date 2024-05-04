@@ -13,6 +13,10 @@ const Chapas = new EntitySchema({
             type: "int",
             default: () => Math.floor(Math.random() * 1000000),
         },
+        id_compra_chapa: {
+            type: "int",
+            default: 0,
+        },
         numero_cliente: {
             type: "int",
             default: () => Math.floor(Math.random() * 1000000),
@@ -63,6 +67,10 @@ const Chapas = new EntitySchema({
         },
         peso_total: {
             type: Number,
+            nullable: true,
+        },
+        valor_unitario: {   
+            type: 'decimal',
             nullable: true,
         },
         valor_total: {

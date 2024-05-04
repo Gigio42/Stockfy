@@ -8,16 +8,12 @@ class ComprasController {
     const chapasRepository = getRepository(Chapas);
 
     const promises = orderData.info_prod_comprados.map(async item => {
-      const {
-        fornecedor, data_compra, descrição: codigoDoProduto, "quant.": quantidade_comprada, 
-        "valor_lote_chapa": valorUnitario, "valor_lote_chapa": valor_total, 
-        "qual.": qualidade, descrição: medida, onda, "coluna": vincos, 
-        "pedido_compra": status
-      } = item;
+      const [id_compra, id_compra_chapa] = item.id_compra.split('/').map(Number);
 
       const newChapa = chapasRepository.create({
-        fornecedor, data_compra, codigoDoProduto, quantidade_comprada, valorUnitario,
-        valor_total, qualidade, medida, onda, vincos, status
+        ...item,
+        id_compra,
+        id_compra_chapa: id_compra_chapa || 1,
       });
 
       return chapasRepository.save(newChapa);
