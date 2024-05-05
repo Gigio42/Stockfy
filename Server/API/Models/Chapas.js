@@ -1,5 +1,4 @@
 import { EntitySchema } from 'typeorm';
-import Item from './Item.js';
 
 const Chapas = new EntitySchema({
     name: 'Chapas',
@@ -18,6 +17,10 @@ const Chapas = new EntitySchema({
             default: () => Math.floor(Math.random() * 1000000),
         },
         fornecedor: {
+            type: String,
+            nullable: true,
+        },
+        unidade: {
             type: String,
             nullable: true,
         },
@@ -56,6 +59,7 @@ const Chapas = new EntitySchema({
         vincos: {
             type: String,
             length: 3,
+            nullable: true,
         },
         gramatura: {
             type: Number,

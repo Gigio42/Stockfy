@@ -30,3 +30,4 @@ yarn.lock
 
 # Binários
 node_modules/**/*.node
+/qodana.yaml

@@ -14,7 +14,6 @@ async function comprasRoutes (fastify, options) {
       reply.code(500).send({ message: 'Error inserting data into SQLite database', error: err.message });
     }
   });
-
-};
+}
 
 export default comprasRoutes;
