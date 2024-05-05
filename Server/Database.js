@@ -3,7 +3,6 @@
 //modificado caso haja mudanças na estrutura do banco de dados como adição de novas entidades ou mudanças nas entidades.
 import { createConnection } from 'typeorm';
 import Chapas from './API/Models/Chapas.js';
-import Lotes from './API/Models/Lotes.js';
 import Item from './API/Models/Item.js';
 
 const connection = async () => {
