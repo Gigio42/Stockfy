@@ -6,6 +6,7 @@ import registerRoutes from './API/Routes/index.js';
 
 const fastify = Fastify({ logger: log });
 fastify.register(cors);
+const port = process.env.PORT || 5500;
 
 fastify.get('/', async (request, reply) => {
   return { text: 'Hello, World!' };
@@ -14,7 +15,7 @@ fastify.get('/', async (request, reply) => {
 database().then(() => {
   registerRoutes(fastify);
 
-  fastify.listen({ port: 5500, host: 'localhost' }, (err, address) => {
+  fastify.listen({ port: port, host: 'localhost' }, (err, address) => {
     if (err) {
       fastify.log.error(err);
       process.exit(1);
