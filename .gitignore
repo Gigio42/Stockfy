@@ -2,7 +2,6 @@
 node_modules/
 npm-debug.log
 yarn-error.log
-quodana.yaml
 temp/
 
 # Build outputs
@@ -31,3 +30,4 @@ yarn.lock
 
 # Binários
 node_modules/**/*.node
+/qodana.yaml
