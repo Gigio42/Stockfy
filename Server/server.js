@@ -15,7 +15,7 @@ fastify.get('/', async (request, reply) => {
 database().then(() => {
   registerRoutes(fastify);
 
-  fastify.listen({ port: port, host: 'localhost' }, (err, address) => {
+  fastify.listen({ port: port, host: '0.0.0.0' }, (err, address) => {
     if (err) {
       fastify.log.error(err);
       process.exit(1);
