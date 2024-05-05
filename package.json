@@ -16,6 +16,7 @@
     "fastify": "^4.26.2",
     "pino-pretty": "^11.0.0",
     "serve": "^14.2.1",
+    "sqlite3": "^5.1.7",
     "typeorm": "^0.3.20"
   },
   "devDependencies": {

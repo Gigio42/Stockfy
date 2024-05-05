@@ -8,14 +8,14 @@ const fastify = Fastify({ logger: log });
 fastify.register(cors);
 const port = process.env.PORT || 5500;
 
-fastify.get('/', async (request, reply) => {
+fastify.get('/', async () => {
   return { text: 'Hello, World!' };
 });
 
 database().then(() => {
   registerRoutes(fastify);
 
-  fastify.listen({ port: port, host: '0.0.0.0' }, (err, address) => {
+  fastify.listen({port: port, host: '0.0.0.0'}, (err, address) => {
     if (err) {
       fastify.log.error(err);
       process.exit(1);
