@@ -9,7 +9,7 @@ const connection = async () => {
   await createConnection({
     type: 'sqlite',
     database: './estoque.db',
-    entities: [Chapas, Lotes, Item],
+    entities: [Chapas, Item],
     synchronize: true,
   });
 };
