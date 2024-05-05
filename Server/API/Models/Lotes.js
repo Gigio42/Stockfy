@@ -1,5 +1,4 @@
 import { EntitySchema } from "typeorm";
-import Chapas from "./Chapas.js";
 
 const Lotes = new EntitySchema({
     name: "Lotes",

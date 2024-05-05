@@ -16,7 +16,7 @@ class PCPController {
                     medida: chapa.medida,
                     onda: chapa.onda,
                     coluna: chapa.coluna,
-                    vinco: chapa.vinco,
+                    vinco: chapa.vincos,
                     quantidade_comprada: 0
                 };
             }

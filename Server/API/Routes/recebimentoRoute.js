@@ -24,6 +24,6 @@ async function recebimentoRoute(fastify, options) {
       reply.code(500).send({ message: 'Error retrieving data from SQLite database', error: err.message });
     }
   });
-};
+}
 
 export default recebimentoRoute;

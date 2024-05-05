@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                             prodComprado.cliente = line;
                                             break;
                                         case 3:
-                                            prodComprado['quantidade'] = line; // Alterado de 'quant.' para 'quantidade'
+                                            prodComprado['quantidade_comprada'] = line; // Alterado de 'quant.' para 'quantidade'
                                             break;
                                         case 5:
                                             prodComprado.unidade = line;
@@ -336,30 +336,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Função para enviar os dados JSON para o backend
     function sendJSONDataToBackend() {
-        // Aqui você pode fazer uma requisição HTTP para enviar os dados JSON ao backend
-        // Por exemplo, usando fetch() ou XMLHttpRequest
-        // Substitua a URL pelo endpoint do seu backend
-        var url = 'http://seu-backend.com/api/salvar_dados';
-        fetch(url, {
-            method: 'POST', // Método POST para enviar os dados
+        let url = 'http://localhost:5500/compras';
+        axios.post(url, jsonData, {
             headers: {
-                'Content-Type': 'application/json' // Tipo de conteúdo JSON
-            },
-            body: JSON.stringify(jsonData) // Converte os dados JSON em uma string JSON
-        })
-        .then(response => {
-            if (response.ok) {
-                // Se a requisição foi bem sucedida, faça algo, como mostrar uma mensagem de sucesso
-                console.log('Dados enviados com sucesso!');
-            } else {
-                // Se a requisição falhou, mostre uma mensagem de erro
-                console.error('Erro ao enviar dados:', response.statusText);
+                'Content-Type': 'application/json'
             }
         })
-        .catch(error => {
-            // Se ocorreu um erro durante a requisição, mostre a mensagem de erro
-            console.error('Erro ao enviar dados:', error);
-        });
+            .then(() => {
+                console.log('Dados enviados com sucesso!');
+            })
+            .catch(error => {
+                console.error('Erro ao enviar dados:', error);
+            });
     }
 
     // Função para remover propriedades vazias de um objeto
@@ -375,16 +363,17 @@ document.addEventListener('DOMContentLoaded', function() {
     // Função para renomear as propriedades do objeto quantidade qualidade onda e medida
     function renameProperties(obj) {
         var newObj = {};
-        newObj['cliente'] = obj['cliente'];
-        newObj['quantidade'] = obj['quantidade']; // Renomeado de 'quant.' para 'quantidade'
+        newObj['numero_cliente'] = obj.cliente;
+        newObj['quantidade_comprada'] = obj['quantidade_comprada']; // Renomeado de 'quant.' para 'quantidade'
         newObj['unidade'] = obj['unidade'];
         newObj['qualidade'] = obj['qualidade']; // Renomeado de 'qual.' para 'qualidade'
         newObj['onda'] = obj['onda'];
         newObj['gramatura'] = obj['gramatura'];
         newObj['peso_total'] = obj['peso_total']; // Renomeado de 'peso_lote_chapa' para 'peso_total'
-        newObj['valor_kilo'] = obj['valor_kilo']; // Renomeado de 'coluna' para 'valor_kilo'
+        newObj['valor_unitario'] = obj['valor_kilo']; // Renomeado de 'coluna' para 'valor_kilo'
         newObj['valor_total'] = obj['valor_total']; // Renomeado de 'valor_lote_chapa' para 'valor_total'
         newObj['medida'] = obj['medida'];
+        newObj['status'] = "COMPRADO";
         return newObj;
     }
 
