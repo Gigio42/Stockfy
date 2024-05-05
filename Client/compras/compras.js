@@ -336,7 +336,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Função para enviar os dados JSON para o backend
     function sendJSONDataToBackend() {
-        let url = 'http://localhost:5500/compras';
+        let url = 'https://pisegundosem-server.onrender.com/compras';
         axios.post(url, jsonData, {
             headers: {
                 'Content-Type': 'application/json'
