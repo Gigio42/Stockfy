@@ -124,7 +124,7 @@ items.forEach(function(item, index) {
                 }
             }
         } else if (lineNumber > pedidoCompraLine && !isValoresExpressos) {
-            if ((lineNumber - 54) % 19 === 0) {
+            if ((lineNumber - 56) % 19 === 0) {
                 isInfoPedido = false;
                 isPedidoCompra = false;
                 isInfoProdComprados = true;
@@ -142,7 +142,7 @@ items.forEach(function(item, index) {
             }
             if (isInfoProdComprados) {
 
-                                    switch ((lineNumber - 54) % 19) {
+                                    switch ((lineNumber - 56) % 19) {
                                         case 1:
                                             prodComprado.cliente = line;
                                             break;

@@ -20,7 +20,18 @@
                 <div class="fecharbtn d-flex justify-content-between align-items-center">
                     <h2>Confirme todas as informações dos itens que chegaram</h2>
                     <button id="backButton" class="btn voltar btn-primary">Voltar</button>
+                    <div class="select-wrapper">
+                        <select id="fornecedor" name="fornecedor">
+                            <option value="" disabled selected>fornecedor</option> <!-- Opção padrão desativada -->
+                            <option value="penha">Penha</option>
+                            <option value="fernandez">Fernandez</option>
+                            <option value="irani">Irani</option>
+                        </select>
+                    </div>
+                    
                 </div>
+                
+                
                 
                 <!-- Tabela para mostrar os dados -->
                 <div class="table-container">
@@ -39,8 +50,37 @@
         </div>
     </div>
 
+
+        
+
     <!-- Adicionando o jQuery (necessário para o Bootstrap) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+    $('#fornecedor').change(function() {
+        var fornecedorSelecionado = $(this).val();
+        if (fornecedorSelecionado === 'penha') {
+            // Carregar o script correspondente ao fornecedor Penha
+            carregarScript('penha-irani.js');
+        } else if (fornecedorSelecionado === 'fernandez') {
+            // Carregar o script correspondente ao fornecedor Fernandez
+            carregarScript('fernandez.js');
+        } else if (fornecedorSelecionado === 'irani') {
+            // Carregar o script correspondente ao fornecedor Irani
+            carregarScript('penha-irani.js');
+        }
+    });
+});
+
+function carregarScript(url) {
+    var script = document.createElement('script');
+    script.src = url;
+    document.head.appendChild(script);
+}
+
+    </script>
+
     <!-- Adicionando o Popper.js (necessário para o Bootstrap) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
     <!-- Adicionando o Bootstrap JS -->

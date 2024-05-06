@@ -149,3 +149,45 @@ body button.confirm:hover {
     height: 80%;
     font-size: 1.5rem;
 }
+
+.select-wrapper {
+    display: inline-block;
+    position: relative;
+}
+
+#fornecedor {
+    border-radius: 1rem;
+    border: none;
+    font-size: 1.5rem;
+    background-color: #b3b3b3;
+    padding: 0.5rem;
+    margin-left: 0.8rem;
+    color: #363636;
+    -moz-appearance: none;
+    appearance: none;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    width: 150px; /* largura personalizada */
+    height: 40px; /* altura personalizada */
+    cursor: pointer; /* cursor personalizado */
+    outline: none; /* remova a borda de foco padrão */
+
+}
+
+#fornecedor:hover {
+    background-color: #aeaeae; /* Mudar a cor de fundo ao passar o mouse */
+}
+
+#fornecedor:focus {
+    border:none; /* borda personalizada quando focado */
+}
+
+#fornecedor option:hover {
+    background-color: #aeaeae; /* Mudar a cor de fundo das opções ao passar o mouse */
+}
+
+option {
+    background-color: #d9d9d9;
+    border: none;
+}
