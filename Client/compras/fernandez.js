@@ -1,52 +1,35 @@
-document.addEventListener('DOMContentLoaded', function() {
-    
-    var dropzone = document.getElementById('dropzone');
-    var jsonData; // Variável global para armazenar os dados JSON processados
+var dropzone = document.getElementById('dropzone');
+var jsonData; // Variável global para armazenar os dados JSON processados
+var dropEnabled = true; // Variável para controlar se o evento de solta (drop) está habilitado
 
-    // Evento de clique no dropzone
-    dropzone.addEventListener('click', openFilePicker);
+// Evento de clique no dropzone
+dropzone.addEventListener('click', openFilePicker);
 
-    // Adiciona um evento de clique ao botão "Voltar" para fechar o modal
-    var backButton = document.getElementById('backButton');
-    if (backButton) {
-        backButton.addEventListener('click', function() {
-            var modal = document.getElementById('myModal');
-            if (modal) {
-                modal.style.display = 'none';
-            }
-        });
-    } else {
-        console.error("Botão 'Voltar' não encontrado.");
-    }
-
-
-    // Adiciona um listener de evento de dragover no elemento document
-    document.addEventListener('dragover', function(event) {
-        event.preventDefault(); // Impede o comportamento padrão de abrir o PDF no navegador
-        event.stopPropagation();
+// Adiciona um listener de evento de dragover no elemento document
+document.addEventListener('dragover', function(event) {
+    event.preventDefault(); // Impede o comportamento padrão de abrir o PDF no navegador
+    event.stopPropagation();
+    if (dropEnabled) {
         dropzone.classList.add('dragover');
-        return false; // Evita o comportamento padrão do navegador
-    });
+    }
+    return false; // Evita o comportamento padrão do navegador
+});
 
-    // Remove a classe 'dragover' quando o cursor do mouse sai da área de dropzone
-    document.addEventListener('dragleave', function(event) {
-        event.preventDefault(); // Impede o comportamento padrão de abrir o PDF no navegador
-        event.stopPropagation();
-        dropzone.classList.remove('dragover');
-        return false; // Evita o comportamento padrão do navegador
-    });
+// Adiciona um listener de evento de drop no elemento document
+document.addEventListener('drop', function(event) {
+    event.preventDefault(); // Impede o comportamento padrão de abrir o PDF no navegador
+    event.stopPropagation();
+    dropzone.classList.remove('dragover');
 
-    // Adiciona um listener de evento de drop no elemento document
-    document.addEventListener('drop', function(event) {
-        event.preventDefault(); // Impede o comportamento padrão de abrir o PDF no navegador
-        event.stopPropagation();
-        dropzone.classList.remove('dragover');
-
+    if (dropEnabled) {
         var file = event.dataTransfer.files[0];
+        console.log("Arquivo solto:", file.name);
         handleFile(file);
-    });
+    }
+});
 
-    function openFilePicker() {
+function openFilePicker() {
+    if (dropEnabled) {
         var fileInput = document.createElement('input');
         fileInput.type = 'file';
         fileInput.accept = '.pdf';
@@ -55,19 +38,25 @@ document.addEventListener('DOMContentLoaded', function() {
         // Evento de mudança no input de arquivo
         fileInput.addEventListener('change', function(event) {
             var file = event.target.files[0];
+            console.log("Arquivo selecionado:", file.name);
             handleFile(file);
         });
 
         // Simula o clique no input de arquivo
         fileInput.click();
     }
+}
 
-    function handleFile(file) {
-        var reader = new FileReader();
+function handleFile(file) {
+    dropEnabled = false; // Desativa o evento de solta (drop) no documento
+    console.log("Lendo arquivo:", file.name);
+    var reader = new FileReader();
 
-        reader.onload = function(event) {
-            var pdfData = new Uint8Array(event.target.result);
-            pdfjsLib.getDocument({data: pdfData}).promise.then(function(pdf) {
+    reader.onload = function(event) {
+        console.log("Arquivo lido com sucesso:", file.name);
+        var pdfData = new Uint8Array(event.target.result);
+        pdfjsLib.getDocument({ data: pdfData }).promise.then(function(pdf) {
+            console.log("PDF processado com sucesso:", file.name);
                 var infoPedido = {};
                 var pedidoCompra = '';
                 var infoProdComprados = [];
@@ -79,7 +68,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 var isValoresExpressos = false;
                 var hasInclusao = false;
 
-                pdf.getPage(1).then(function(page) {
+                // Função para abrir o modal
+function abrirModal() {
+    var modal = document.getElementById('myModal');
+    if (modal) {
+        modal.style.display = 'block';
+    } else {
+        console.error("Modal não encontrado.");
+    }
+}
+
+// Dentro da função handleFile(file), após todas as operações de processamento do arquivo, chame a função para abrir o modal
+pdf.getPage(1).then(function(page) {
 page.getTextContent().then(function(textContent) {
     var items = textContent.items;
     var fullText = items.map(function(item) {
@@ -326,12 +326,26 @@ items.forEach(function(item, index) {
                         }
                     });
                 });
-            });
-        };
+                abrirModal();
+        }).finally(function() {
+            dropEnabled = true; // Reativa o evento de solta (drop) no documento
+            console.log("Evento de solta reativado.");
+        });
+    };
 
-        reader.readAsArrayBuffer(file);
+    reader.readAsArrayBuffer(file);
+}
+
+// Função para abrir o modal
+function abrirModal() {
+    var modal = document.getElementById('myModal');
+    if (modal) {
+        modal.style.display = 'block';
+        console.log("Modal aberto.");
+    } else {
+        console.error("Modal não encontrado.");
     }
-
+}
     // Função para enviar os dados JSON para o backend
     function sendJSONDataToBackend() {
         let url = 'https://pisegundosem-server.onrender.com/compras';
@@ -406,4 +420,3 @@ if (editButton) {
 } else {
     console.error("Botão 'Editar' não encontrado.");
 }
-})

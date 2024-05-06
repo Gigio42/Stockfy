@@ -9,87 +9,145 @@
     <link rel="stylesheet" href="compras.css">
 </head>
 <body>
-    <div class="container">
+    <div class="select-wrapper d-flex">
+        <select id="fornecedor" name="fornecedor">
+            <option value="" disabled selected>fornecedor</option> <!-- Opção padrão desativada -->
+            <option value="penha">Penha</option>
+            <option value="fernandez">Fernandez</option>
+            <option value="irani">Irani</option>
+        </select>
         <h1 class="text-center mt-4">Bem-vindo à página de compras</h1>
+    </div>
+    <div class="container">
         <div id="dropzone" class="dropzone text-center mt-4">Arraste e solte o arquivo PDF aqui</div>
         <pre id="jsonOutput" class="mt-4"></pre>
-
         <!-- Modal -->
         <div id="myModal" class="modal">
             <div class="modal-content">
                 <div class="fecharbtn d-flex justify-content-between align-items-center">
                     <h2>Confirme todas as informações dos itens que chegaram</h2>
                     <button id="backButton" class="btn voltar btn-primary">Voltar</button>
-                    <div class="select-wrapper">
-                        <select id="fornecedor" name="fornecedor">
-                            <option value="" disabled selected>fornecedor</option> <!-- Opção padrão desativada -->
-                            <option value="penha">Penha</option>
-                            <option value="fernandez">Fernandez</option>
-                            <option value="irani">Irani</option>
-                        </select>
-                    </div>
-                    
                 </div>
-                
-                
-                
                 <!-- Tabela para mostrar os dados -->
                 <div class="table-container">
                     <table id="dataTable" class="table mt-4"></table>
                 </div>
-
-                
                 <div class="btninferior mt-4 d-flex justify-content-end">
                     <button id="sendButton" class="btn btn-success mr-2">Enviar</button>
                     <button id="editButton" class="btn btn-warning">Editar</button>
                     <div class="jsonshow"> <pre id="jsonContent"></pre></div>
-                    
                 </div>
-                
             </div>
         </div>
     </div>
-
-
-        
-
-    <!-- Adicionando o jQuery (necessário para o Bootstrap) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
     <script>
         $(document).ready(function() {
-    $('#fornecedor').change(function() {
-        var fornecedorSelecionado = $(this).val();
-        if (fornecedorSelecionado === 'penha') {
-            // Carregar o script correspondente ao fornecedor Penha
-            carregarScript('penha-irani.js');
-        } else if (fornecedorSelecionado === 'fernandez') {
-            // Carregar o script correspondente ao fornecedor Fernandez
-            carregarScript('fernandez.js');
-        } else if (fornecedorSelecionado === 'irani') {
-            // Carregar o script correspondente ao fornecedor Irani
-            carregarScript('penha-irani.js');
-        }
-    });
-});
-
-function carregarScript(url) {
-    var script = document.createElement('script');
-    script.src = url;
-    document.head.appendChild(script);
-}
-
+            // Função para limpar o conteúdo carregado e estar pronto para carregar outro PDF
+            function limparConteudo() {
+                $('#dataTable').html('');
+                $('#jsonContent').text('');
+                $('#myModal').modal('hide');
+            }
+    
+            $('#backButton').on('click', function() {
+                limparConteudo();
+                window.location.reload(); // Recarrega a página
+            });
+    
+            async function lerTextoPdf(url, fornecedor) {
+                const pdf = await pdfjsLib.getDocument(url).promise;
+                const totalPaginas = pdf.numPages;
+                let textoCompleto = '';
+    
+                for (let i = 1; i <= totalPaginas; i++) {
+                    const pagina = await pdf.getPage(i);
+                    const texto = await pagina.getTextContent();
+                    texto.items.forEach(function(item) {
+                        textoCompleto += item.str;
+                    });
+                }
+    
+                validarTextoPdf(textoCompleto, fornecedor);
+    
+                const scriptUrl = obterScriptUrlFornecedor(fornecedor);
+                if (scriptUrl) {
+                    carregarScript(scriptUrl);
+                }
+            }
+    
+            function validarTextoPdf(texto, fornecedor) {
+                const fornecedorSelecionado = $('#fornecedor').val().toLowerCase();
+                if (texto.toLowerCase().includes(fornecedorSelecionado)) {
+                    const existingScript = document.querySelector('script[data-fornecedor]');
+                    if (existingScript) {
+                        existingScript.parentNode.removeChild(existingScript);
+                    }
+                    const scriptUrl = obterScriptUrlFornecedor(fornecedor);
+                    if (scriptUrl) {
+                        carregarScript(scriptUrl);
+                    }
+                } else {
+                    alert('O PDF não contém o nome do fornecedor selecionado.');
+                }
+            }
+    
+            $('#dropzone').off('drop').on('drop', function(event) {
+                event.preventDefault();
+                const arquivo = event.originalEvent.dataTransfer.files[0];
+                const fornecedor = $('#fornecedor').val();
+    
+                if (arquivo && arquivo.type == 'application/pdf' && fornecedor) {
+                    lerTextoPdf(URL.createObjectURL(arquivo), fornecedor);
+                } else if (!fornecedor) {
+                    alert('Por favor, selecione um fornecedor.');
+                } else {
+                    alert('Por favor, carregue um arquivo PDF.');
+                }
+            });
+    
+            function carregarScript(url) {
+                const existingScript = document.querySelector('script[data-fornecedor]');
+                if (existingScript) {
+                    existingScript.parentNode.removeChild(existingScript);
+                }
+    
+                const script = document.createElement('script');
+                script.src = url;
+                script.setAttribute('data-fornecedor', '');
+                document.head.appendChild(script);
+            }
+    
+            function obterScriptUrlFornecedor(fornecedor) {
+                const scripts = {
+                    'penha': 'penha-irani.js',
+                    'fernandez': 'fernandez.js',
+                    'irani': 'penha-irani.js'
+                };
+                return scripts[fornecedor];
+            }
+    
+            $('#fornecedor').on('change', function(event) {
+                const fornecedorSelecionado = $(this).val();
+                if (!fornecedorSelecionado) {
+                    alert('Por favor, selecione um fornecedor.');
+                }
+            });
+    
+            $('#dropzone').on('dragover', function(event) {
+                event.preventDefault();
+            });
+    
+            window.onclick = function(event) {
+                const modal = document.getElementById('myModal');
+                if (event.target == modal) {
+                    limparConteudo();
+                }
+            };
+        });
     </script>
-
-    <!-- Adicionando o Popper.js (necessário para o Bootstrap) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
-    <!-- Adicionando o Bootstrap JS -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <!-- Adicionando a biblioteca pdf.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
-    <!-- Adicionando o seu script JavaScript -->
-    <script src="compras.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    
 </body>
 </html>
