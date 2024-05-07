@@ -196,12 +196,24 @@ items.forEach(function(item, index) {
                             }
                             lineNumber++;
                         });
-                        // Se encontramos "INCLUSÃO", procuramos um número no formato "XX.XXX" no texto completo
+                                                // Se encontramos "INCLUSÃO", procuramos um número no formato "XX.XXX" no texto completo
                         if (hasInclusao) {
                             var regex = /\b\d{2}\.\d{3}\b/;
                             var match = fullText.match(regex);
                             if (match) {
                                 pedidoCompra = match[0];
+                            }
+                        } else {
+                            // Se não houver "INCLUSÃO", tentamos extrair o número do pedido de compra da linha 53
+                            var pedidoCompraLine = items[52].str.trim(); // Linha 53 é indexada como 52
+                            var pedidoCompraMatch = pedidoCompraLine.match(/\b\d{2}\.\d{3}\b/);
+                            if (pedidoCompraMatch) {
+                                pedidoCompra = pedidoCompraMatch[0];
+                            } else {
+                                console.error("Número do pedido de compra não encontrado na linha 53.");
+                                // Lidar com a situação em que o número do pedido de compra não é encontrado na linha 53
+                                // Por exemplo, definir um valor padrão para o pedido de compra ou lançar um erro
+                                pedidoCompra = ''; // Definindo pedidoCompra como vazio
                             }
                         }
                         // Construímos o objeto JSON final com base nas informações coletadas
