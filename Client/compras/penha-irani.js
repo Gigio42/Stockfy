@@ -68,64 +68,63 @@ function handleFile(file) {
                 var isValoresExpressos = false;
                 var hasInclusao = false;
 
-        // Dentro da função handleFile(file), após todas as operações de processamento do arquivo, chame a função para abrir o modal
-        pdf.getPage(1).then(function(page) {
-            page.getTextContent().then(function(textContent) {
-                var items = textContent.items;
-                var fullText = items.map(function(item) {
-                    return item.str.trim().toLowerCase();
-                }).join(' '); // Concatenar todo o texto em uma única string
 
-                // Verificar se a palavra "INCLUSÃO" está presente no texto
-                var hasInclusao = fullText.includes('inclusão');
+// Dentro da função handleFile(file), após todas as operações de processamento do arquivo, chame a função para abrir o modal
+pdf.getPage(1).then(function(page) {
+    page.getTextContent().then(function(textContent) {
+        var items = textContent.items;
+        var fullText = items.map(function(item) {
+            return item.str.trim().toLowerCase();
+        }).join(' '); // Concatenar todo o texto em uma única string
 
-                // Extrair o número do cliente
-                var numeroClienteMatch = fullText.match(/\b\d+(?:\.\d+)?\b/);
-                var numeroCliente = numeroClienteMatch ? numeroClienteMatch[0] : '';
+        // Verificar se a palavra "INCLUSÃO" está presente no texto
+        var hasInclusao = fullText.includes('inclusão');
 
-                // Encontre a linha que contém o pedido de compra
-                var pedidoCompraLine = 0;
-                items.forEach(function(item, index) {
-                    if (item.str.includes("INCLUSÃO")) {
-                        pedidoCompraLine = index + 1; // Adicionamos 1 porque o índice começa em 0, mas as linhas começam em 1
-                    }
-                });
-                var shouldSkipNextLine = false;
+        // Extrair o número do cliente
+        var numeroClienteMatch = fullText.match(/\b\d+(?:\.\d+)?\b/);
+        var numeroCliente = numeroClienteMatch ? numeroClienteMatch[0] : '';
+
+        // Encontre a linha que contém o pedido de compra
+        var pedidoCompraLine = 0;
+        items.forEach(function(item, index) {
+            if (item.str.includes("INCLUSÃO")) {
+                pedidoCompraLine = index + 1; // Adicionamos 1 porque o índice começa em 0, mas as linhas começam em 1
+            }
+        });
+        var shouldSkipNextLine = false;
+
 // Loop sobre cada item do texto
 var skipNextValue = false; // Variável para controlar se devemos ignorar o próximo valor
 items.forEach(function(item, index) {
     var line = item.str.trim();
     
-    // Verifica se a linha contém o número do cliente
-    if (line.includes('/') || line === 'E') {
-        if (line === 'E') {
-            numeroCliente = line;
-        } else {
-            var parts = line.split('/');
-            var leftPart = parts[0].trim();
-            var rightPart = parts[1].trim();
+    // Verifica se a linha contém o caractere "E" seguido por um número
+    if (line.startsWith('E ') && !isNaN(parseFloat(line.split(' ')[1]))) {
+        // Ignora a linha que contém o "E" e pula para a próxima
+        skipNextValue = true;
+        return;
+    }
 
-            // Verifica se ambos os lados da barra contêm valores numéricos
-            if (!isNaN(parseFloat(leftPart)) && !isNaN(parseFloat(rightPart))) {
-                // Se ambos os lados forem números, é um número de cliente
-                numeroCliente = line;
-                skipNextValue = true; // Ignora a próxima linha após o número do cliente
-                return; // Retorna para pular o restante do processamento desta linha
-            }
+    // Verifica se a linha contém o número do cliente
+    if (line.includes('/ENCAIX')) {
+        // Captura o número do cliente usando uma expressão regular
+        var numeroClienteMatch = line.match(/\b\d+\/ENCAIX\b/);
+        if (numeroClienteMatch) {
+            numeroCliente = numeroClienteMatch[0];
+        } else {
+            console.error("Não foi possível capturar o número do cliente.");
         }
+        skipNextValue = false; // Reinicia a variável para não ignorar o próximo valor
     }
 
     // Verifica se devemos adicionar o valor atual ao JSON
     if (!skipNextValue) {
-        // Adiciona os valores ao JSON
-        // O restante do seu código permanece o mesmo
+        // Restante do código permanece o mesmo para adicionar os valores ao JSON
         // ...
     } else {
         // Reinicia a variável para não ignorar o próximo valor
         skipNextValue = false;
-        return; // Retorna para pular o restante do processamento desta linha
     }
-
 
         if (isValoresExpressos) {
             return; // Saímos do loop se chegarmos aos valores expressos
@@ -311,8 +310,6 @@ items.forEach(function(item, index) {
                             
                             // Adicionar o ícone ao botão
                             confirmButton.appendChild(confirmIcon);
-                            
-
 
                             // Insere os botões no container
                             buttonContainer.appendChild(editButton); // Adiciona o botão "Editar" ao container
@@ -456,4 +453,3 @@ if (editButton) {
 } else {
     console.error("Botão 'Editar' não encontrado.");
 }
-
