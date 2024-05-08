@@ -126,7 +126,6 @@ html, body {
     height: 60%;
     width: 10rem;
     font-size: 1.5rem;
-    background: ;
 }
 
 
@@ -204,8 +203,9 @@ body button.confirm:hover {
 }
 
 option {
-    background-color: #f5f5f5;
-    border: none;
+    background-color: #131313;
+    color: #cccccc;
+
 }
 
 h1 {
