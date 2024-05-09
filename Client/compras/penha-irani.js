@@ -68,41 +68,64 @@ function handleFile(file) {
                 var isValoresExpressos = false;
                 var hasInclusao = false;
 
-                // Função para abrir o modal
-function abrirModal() {
-    var modal = document.getElementById('myModal');
-    if (modal) {
-        modal.style.display = 'block';
-    } else {
-        console.error("Modal não encontrado.");
-    }
-}
 
 // Dentro da função handleFile(file), após todas as operações de processamento do arquivo, chame a função para abrir o modal
 pdf.getPage(1).then(function(page) {
-page.getTextContent().then(function(textContent) {
-    var items = textContent.items;
-    var fullText = items.map(function(item) {
-        return item.str.trim().toLowerCase();
-    }).join(' '); // Concatenar todo o texto em uma única string
+    page.getTextContent().then(function(textContent) {
+        var items = textContent.items;
+        var fullText = items.map(function(item) {
+            return item.str.trim().toLowerCase();
+        }).join(' '); // Concatenar todo o texto em uma única string
 
-    // Verificar se a palavra "INCLUSÃO" está presente no texto
-    hasInclusao = fullText.includes('inclusão');
+        // Verificar se a palavra "INCLUSÃO" está presente no texto
+        var hasInclusao = fullText.includes('inclusão');
 
-    // Extrair o número do cliente
-    var numeroClienteMatch = fullText.match(/\b\d+(?:\.\d+)?\b/);
-    var numeroCliente = numeroClienteMatch ? numeroClienteMatch[0] : '';
-
-    items.forEach(function(item) {
+        // Extrair o número do cliente
+        var numeroClienteMatch = fullText.match(/\b\d+(?:\.\d+)?\b/);
+        var numeroCliente = numeroClienteMatch ? numeroClienteMatch[0] : '';
 
         // Encontre a linha que contém o pedido de compra
-var pedidoCompraLine = 0;
+        var pedidoCompraLine = 0;
+        items.forEach(function(item, index) {
+            if (item.str.includes("INCLUSÃO")) {
+                pedidoCompraLine = index + 1; // Adicionamos 1 porque o índice começa em 0, mas as linhas começam em 1
+            }
+        });
+        var shouldSkipNextLine = false;
+
+// Loop sobre cada item do texto
+var skipNextValue = false; // Variável para controlar se devemos ignorar o próximo valor
 items.forEach(function(item, index) {
-    if (item.str.includes("INCLUSÃO")) {
-        pedidoCompraLine = index + 1; // Adicionamos 1 porque o índice começa em 0, mas as linhas começam em 1
+    var line = item.str.trim();
+    
+    // Verifica se a linha contém o caractere "E" seguido por um número
+    if (line.startsWith('E ') && !isNaN(parseFloat(line.split(' ')[1]))) {
+        // Ignora a linha que contém o "E" e pula para a próxima
+        skipNextValue = true;
+        return;
     }
-}); 
-        var line = item.str.trim();
+
+    // Verifica se a linha contém o número do cliente
+    if (line.includes('/ENCAIX')) {
+        // Captura o número do cliente usando uma expressão regular
+        var numeroClienteMatch = line.match(/\b\d+\/ENCAIX\b/);
+        if (numeroClienteMatch) {
+            numeroCliente = numeroClienteMatch[0];
+        } else {
+            console.error("Não foi possível capturar o número do cliente.");
+        }
+        skipNextValue = false; // Reinicia a variável para não ignorar o próximo valor
+    }
+
+    // Verifica se devemos adicionar o valor atual ao JSON
+    if (!skipNextValue) {
+        // Restante do código permanece o mesmo para adicionar os valores ao JSON
+        // ...
+    } else {
+        // Reinicia a variável para não ignorar o próximo valor
+        skipNextValue = false;
+    }
+
         if (isValoresExpressos) {
             return; // Saímos do loop se chegarmos aos valores expressos
         }
@@ -196,12 +219,24 @@ items.forEach(function(item, index) {
                             }
                             lineNumber++;
                         });
-                        // Se encontramos "INCLUSÃO", procuramos um número no formato "XX.XXX" no texto completo
+                                                // Se encontramos "INCLUSÃO", procuramos um número no formato "XX.XXX" no texto completo
                         if (hasInclusao) {
                             var regex = /\b\d{2}\.\d{3}\b/;
                             var match = fullText.match(regex);
                             if (match) {
                                 pedidoCompra = match[0];
+                            }
+                        } else {
+                            // Se não houver "INCLUSÃO", tentamos extrair o número do pedido de compra da linha 53
+                            var pedidoCompraLine = items[54].str.trim(); // Linha 53 é indexada como 52
+                            var pedidoCompraMatch = pedidoCompraLine.match(/\b\d{2}\.\d{3}\b/);
+                            if (pedidoCompraMatch) {
+                                pedidoCompra = pedidoCompraMatch[0];
+                            } else {
+                                console.error("Número do pedido de compra não encontrado na linha 55.");
+                                // Lidar com a situação em que o número do pedido de compra não é encontrado na linha 53
+                                // Por exemplo, definir um valor padrão para o pedido de compra ou lançar um erro
+                                pedidoCompra = ''; // Definindo pedidoCompra como vazio
                             }
                         }
                         // Construímos o objeto JSON final com base nas informações coletadas
@@ -275,8 +310,6 @@ items.forEach(function(item, index) {
                             
                             // Adicionar o ícone ao botão
                             confirmButton.appendChild(confirmIcon);
-                            
-
 
                             // Insere os botões no container
                             buttonContainer.appendChild(editButton); // Adiciona o botão "Editar" ao container
