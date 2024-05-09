@@ -1,32 +1,37 @@
-import { getRepository } from 'typeorm';
+import {getRepository} from 'typeorm';
 import Chapas from '../Models/Chapas.js';
 
 class PCPController {
-    constructor() {}
+    constructor() {
+    }
 
-    async getChapas(query) {
+    async getChapas(query, groupingCriteria, sortOrder, sortBy) {
         const chapasRepository = getRepository(Chapas);
-        const data = await chapasRepository.find();
-    
+        let data = await chapasRepository.find();
+
+        if (sortOrder === 'asc') {
+            data.sort((a, b) => a[sortBy] - b[sortBy]);
+        } else if (sortOrder === 'desc') {
+            data.sort((a, b) => b[sortBy] - a[sortBy]);
+        }
+
         const grupoChapas = data.reduce((groups, chapa) => {
-            const key = `${chapa.qualidade}-${chapa.medida}-${chapa.onda}-${chapa.coluna}-${chapa.vinco}`;
+            const key = groupingCriteria.map(criterion => chapa[criterion]).join('-');
             if (!groups[key]) {
                 groups[key] = {
-                    qualidade: chapa.qualidade,
-                    medida: chapa.medida,
-                    onda: chapa.onda,
-                    coluna: chapa.coluna,
-                    vinco: chapa.vincos,
+                    chapas: [],
                     quantidade_comprada: 0
                 };
+                groupingCriteria.forEach(criterion => {
+                    groups[key][criterion] = chapa[criterion];
+                });
             }
             groups[key].quantidade_comprada += chapa.quantidade_comprada;
+            groups[key].chapas.push(chapa);
             return groups;
         }, {});
-    
-        const groupedChapasArray = Object.values(grupoChapas);
-    
-        return groupedChapasArray;
+
+        return Object.values(grupoChapas);
     }
 
     async orderItem(body) {
