@@ -68,41 +68,34 @@ function handleFile(file) {
                 var isValoresExpressos = false;
                 var hasInclusao = false;
 
-                // Função para abrir o modal
-function abrirModal() {
-    var modal = document.getElementById('myModal');
-    if (modal) {
-        modal.style.display = 'block';
-    } else {
-        console.error("Modal não encontrado.");
-    }
-}
 
 // Dentro da função handleFile(file), após todas as operações de processamento do arquivo, chame a função para abrir o modal
 pdf.getPage(1).then(function(page) {
-page.getTextContent().then(function(textContent) {
-    var items = textContent.items;
-    var fullText = items.map(function(item) {
-        return item.str.trim().toLowerCase();
-    }).join(' '); // Concatenar todo o texto em uma única string
+    page.getTextContent().then(function(textContent) {
+        var items = textContent.items;
+        var fullText = items.map(function(item) {
+            return item.str.trim().toLowerCase();
+        }).join(' '); // Concatenar todo o texto em uma única string
 
-    // Verificar se a palavra "INCLUSÃO" está presente no texto
-    hasInclusao = fullText.includes('inclusão');
+        // Verificar se a palavra "INCLUSÃO" está presente no texto
+        var hasInclusao = fullText.includes('inclusão');
 
-    // Extrair o número do cliente
-    var numeroClienteMatch = fullText.match(/\b\d+(?:\.\d+)?\b/);
-    var numeroCliente = numeroClienteMatch ? numeroClienteMatch[0] : '';
-
-    items.forEach(function(item) {
+        // Extrair o número do cliente
+        var numeroClienteMatch = fullText.match(/\b\d+(?:\.\d+)?\b/);
+        var numeroCliente = numeroClienteMatch ? numeroClienteMatch[0] : '';
 
         // Encontre a linha que contém o pedido de compra
-var pedidoCompraLine = 0;
+        var pedidoCompraLine = 0;
+        items.forEach(function(item, index) {
+            if (item.str.includes("INCLUSÃO")) {
+                pedidoCompraLine = index + 1; // Adicionamos 1 porque o índice começa em 0, mas as linhas começam em 1
+            }
+        });
+        var shouldSkipNextLine = false;
+
 items.forEach(function(item, index) {
-    if (item.str.includes("INCLUSÃO")) {
-        pedidoCompraLine = index + 1; // Adicionamos 1 porque o índice começa em 0, mas as linhas começam em 1
-    }
-}); 
-        var line = item.str.trim();
+    var line = item.str.trim();
+
         if (isValoresExpressos) {
             return; // Saímos do loop se chegarmos aos valores expressos
         }
@@ -210,7 +203,7 @@ items.forEach(function(item, index) {
                             if (pedidoCompraMatch) {
                                 pedidoCompra = pedidoCompraMatch[0];
                             } else {
-                                console.error("Número do pedido de compra não encontrado na linha 53.");
+                                console.error("Número do pedido de compra não encontrado na linha 55.");
                                 // Lidar com a situação em que o número do pedido de compra não é encontrado na linha 53
                                 // Por exemplo, definir um valor padrão para o pedido de compra ou lançar um erro
                                 pedidoCompra = ''; // Definindo pedidoCompra como vazio
@@ -236,6 +229,9 @@ items.forEach(function(item, index) {
                         // Loop sobre cada item de infoProdComprados
                         infoProdComprados.forEach(function(prod, index) {
                             var row = dataTable.insertRow(); // Insere uma nova linha na tabela
+
+                            // Definir o atributo 'data-id' com o índice do item em infoProdComprados
+                        row.setAttribute('data-id', index);
 
                             // Exibir apenas as informações desejadas na tabela
                             // Exibir apenas as informações desejadas na tabela
@@ -287,8 +283,6 @@ items.forEach(function(item, index) {
                             
                             // Adicionar o ícone ao botão
                             confirmButton.appendChild(confirmIcon);
-                            
-
 
                             // Insere os botões no container
                             buttonContainer.appendChild(editButton); // Adiciona o botão "Editar" ao container
@@ -299,7 +293,13 @@ items.forEach(function(item, index) {
                             lastCell.appendChild(buttonContainer);
                         });
 
-                        // Função para editar os dados da linha
+                        // Função para desativar o botão "Editar" após ser clicado
+                        function disableEditButton(button) {
+                            button.disabled = true; // Desativa o botão
+                            button.classList.add('disabled'); // Adiciona a classe 'disabled' para aplicar o estilo
+                        }
+
+                       // Função para editar os dados da linha
                         function editRow(row) {
                             // Percorre todas as células da linha, exceto a última que contém os botões
                             for (var i = 0; i < row.cells.length - 1; i++) {
@@ -308,20 +308,58 @@ items.forEach(function(item, index) {
                                 // Substitui o texto pela entrada de texto para edição
                                 cell.innerHTML = '<input type="text" class="form-control" value="' + text + '">';
                             }
+                            // Desativa o botão "Editar" da linha
+                            var editButton = row.querySelector('.edit');
+                            editButton.disabled = true; // Desativa o botão
+                            editButton.classList.add('disabled'); // Adiciona a classe 'disabled' para alterar o estilo do botão
+
+                            // Define a imagem dentro do botão como cinza
+                            var editIcon = editButton.querySelector('.edit-icon');
+                            editIcon.style.filter = 'grayscale(100%)'; // Torna a imagem cinza
                         }
 
                         // Função para confirmar os dados da linha
                         function confirmData(row) {
-                            // Percorre todas as células da linha, exceto a última que contém os botões
-                            for (var i = 0; i < row.cells.length - 1; i++) {
-                                var cell = row.cells[i];
-                                var input = cell.querySelector('input');
-                                if (input) {
-                                    // Atualiza o texto da célula com o valor do campo de entrada
-                                    cell.textContent = input.value;
+                            // Verifica se jsonData está definido e se possui a propriedade info_prod_comprados
+                            if (jsonData && jsonData.info_prod_comprados) {
+                                var rowId = row.getAttribute('data-id'); // Obtém o identificador exclusivo da linha
+                                var rowData = jsonData.info_prod_comprados[rowId]; // Obtém os dados correspondentes no objeto jsonData
+
+                                // Verifica se rowData está definido antes de atualizar seus valores
+                                if (rowData) {
+                                    // Atualiza os valores correspondentes no objeto jsonData com os valores das células editadas
+                                    rowData.quantidade_comprada = row.cells[0].querySelector('input').value;
+                                    rowData.qualidade = row.cells[1].querySelector('input').value;
+                                    rowData.onda = row.cells[2].querySelector('input').value;
+                                    rowData.medida = row.cells[3].querySelector('input').value;
+
+                                    // Percorre todas as células da linha, exceto a última que contém os botões
+                                    for (var i = 0; i < row.cells.length - 1; i++) {
+                                        var cell = row.cells[i];
+                                        var input = cell.querySelector('input');
+                                        if (input) {
+                                            // Atualiza o texto da célula com o valor do campo de entrada
+                                            cell.textContent = input.value;
+                                        }
+                                    }
+
+                                    // Reativa o botão "Editar" da linha
+                                    var editButton = row.querySelector('.edit');
+                                    editButton.disabled = false; // Ativa o botão
+                                    editButton.classList.remove('disabled'); // Remove a classe 'disabled' para restaurar o estilo normal
+
+                                    // Restaura a cor original da imagem dentro do botão
+                                    var editIcon = editButton.querySelector('.edit-icon');
+                                    editIcon.style.filter = 'none'; // Remove o efeito de escala de cinza
+                                } else {
+                                    console.error("Não foi possível encontrar os dados da linha no objeto jsonData.");
                                 }
+                            } else {
+                                console.error("Objeto jsonData ou sua propriedade info_prod_comprados não estão definidos.");
                             }
                         }
+
+                        
 
                             // Adiciona bordas arredondadas às linhas da tabela
                             addRoundedBordersToTableRows();

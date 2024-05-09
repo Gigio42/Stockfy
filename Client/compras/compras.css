@@ -43,6 +43,7 @@ html, body {
     padding: 1rem 2rem;
     background: #d9d9d9;
     color: #555555;
+    height: 20%;
 }
 
 .btn-primary {
@@ -63,9 +64,10 @@ html, body {
 }
 
 .table-container {
-    max-height: 75vh; /* Define a altura máxima do contêiner da tabela */
+    max-height: calc(100vh - 10rem); /* Altura máxima - altura dos botões inferiores e do fecharbtn */
     overflow-y: auto; /* Adiciona rolagem vertical quando necessário */
 }
+
 
 .jsonshow {
     max-height: 20vh;
@@ -94,7 +96,7 @@ html, body {
     width: 100%;
     padding-right: 2rem;
     background-color: #ffffff;
-    height: 5rem;
+    height: 15%;
     align-items: center;
     box-shadow: 0px 0px 30px 10px rgb(255, 255, 255); /* Adiciona sombra branca */
 }
@@ -172,6 +174,9 @@ body button.confirm:hover {
     margin-top: 0.5rem;
     height: 6rem;
     align-items: center;
+    background-color: #232323;
+    margin: 0;
+    padding: 2rem;
 }
 
 #fornecedor {
@@ -179,10 +184,10 @@ body button.confirm:hover {
     margin-top: 0.5rem;
     border-radius: 1rem;
     border: none;
-    background-color: #131313;
+    background-color: #232323;
     height: 4rem;
     margin-left: 0.8rem;
-    color: #515151;
+    color: #878787;
     -moz-appearance: none;
     appearance: none;
     text-align: center;
@@ -191,11 +196,12 @@ body button.confirm:hover {
     width: 200px; /* largura personalizada */
     cursor: pointer; /* cursor personalizado */
     outline: none; /* remova a borda de foco padrão */
+    margin:0 ;
 
 }
 
 #fornecedor:hover {
-    background-color: #202020; /* Mudar a cor de fundo ao passar o mouse */
+    background-color: #2a2a2a; /* Mudar a cor de fundo ao passar o mouse */
 }
 
 #fornecedor:focus {
@@ -210,4 +216,10 @@ option {
 
 h1 {
     margin-left: 12rem;
+    color:#84e789
+}
+
+body button.edit.disabled {
+    background-color: #ccc !important; /* Cor de fundo cinza */
+    cursor: default; /* Cursor padrão */
 }
