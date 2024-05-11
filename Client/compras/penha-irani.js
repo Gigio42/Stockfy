@@ -260,6 +260,9 @@ items.forEach(function(item, index) {
                         infoProdComprados.forEach(function(prod, index) {
                             var row = dataTable.insertRow(); // Insere uma nova linha na tabela
 
+                            // Definir o atributo 'data-id' com o índice do item em infoProdComprados
+                        row.setAttribute('data-id', index);
+
                             // Exibir apenas as informações desejadas na tabela
                             // Exibir apenas as informações desejadas na tabela
                             var infoToShow = ['quantidade_comprada', 'qualidade', 'onda', 'medida'];
@@ -320,7 +323,13 @@ items.forEach(function(item, index) {
                             lastCell.appendChild(buttonContainer);
                         });
 
-                        // Função para editar os dados da linha
+                        // Função para desativar o botão "Editar" após ser clicado
+                        function disableEditButton(button) {
+                            button.disabled = true; // Desativa o botão
+                            button.classList.add('disabled'); // Adiciona a classe 'disabled' para aplicar o estilo
+                        }
+
+                       // Função para editar os dados da linha
                         function editRow(row) {
                             // Percorre todas as células da linha, exceto a última que contém os botões
                             for (var i = 0; i < row.cells.length - 1; i++) {
@@ -329,20 +338,58 @@ items.forEach(function(item, index) {
                                 // Substitui o texto pela entrada de texto para edição
                                 cell.innerHTML = '<input type="text" class="form-control" value="' + text + '">';
                             }
+                            // Desativa o botão "Editar" da linha
+                            var editButton = row.querySelector('.edit');
+                            editButton.disabled = true; // Desativa o botão
+                            editButton.classList.add('disabled'); // Adiciona a classe 'disabled' para alterar o estilo do botão
+
+                            // Define a imagem dentro do botão como cinza
+                            var editIcon = editButton.querySelector('.edit-icon');
+                            editIcon.style.filter = 'grayscale(100%)'; // Torna a imagem cinza
                         }
 
                         // Função para confirmar os dados da linha
                         function confirmData(row) {
-                            // Percorre todas as células da linha, exceto a última que contém os botões
-                            for (var i = 0; i < row.cells.length - 1; i++) {
-                                var cell = row.cells[i];
-                                var input = cell.querySelector('input');
-                                if (input) {
-                                    // Atualiza o texto da célula com o valor do campo de entrada
-                                    cell.textContent = input.value;
+                            // Verifica se jsonData está definido e se possui a propriedade info_prod_comprados
+                            if (jsonData && jsonData.info_prod_comprados) {
+                                var rowId = row.getAttribute('data-id'); // Obtém o identificador exclusivo da linha
+                                var rowData = jsonData.info_prod_comprados[rowId]; // Obtém os dados correspondentes no objeto jsonData
+
+                                // Verifica se rowData está definido antes de atualizar seus valores
+                                if (rowData) {
+                                    // Atualiza os valores correspondentes no objeto jsonData com os valores das células editadas
+                                    rowData.quantidade_comprada = row.cells[0].querySelector('input').value;
+                                    rowData.qualidade = row.cells[1].querySelector('input').value;
+                                    rowData.onda = row.cells[2].querySelector('input').value;
+                                    rowData.medida = row.cells[3].querySelector('input').value;
+
+                                    // Percorre todas as células da linha, exceto a última que contém os botões
+                                    for (var i = 0; i < row.cells.length - 1; i++) {
+                                        var cell = row.cells[i];
+                                        var input = cell.querySelector('input');
+                                        if (input) {
+                                            // Atualiza o texto da célula com o valor do campo de entrada
+                                            cell.textContent = input.value;
+                                        }
+                                    }
+
+                                    // Reativa o botão "Editar" da linha
+                                    var editButton = row.querySelector('.edit');
+                                    editButton.disabled = false; // Ativa o botão
+                                    editButton.classList.remove('disabled'); // Remove a classe 'disabled' para restaurar o estilo normal
+
+                                    // Restaura a cor original da imagem dentro do botão
+                                    var editIcon = editButton.querySelector('.edit-icon');
+                                    editIcon.style.filter = 'none'; // Remove o efeito de escala de cinza
+                                } else {
+                                    console.error("Não foi possível encontrar os dados da linha no objeto jsonData.");
                                 }
+                            } else {
+                                console.error("Objeto jsonData ou sua propriedade info_prod_comprados não estão definidos.");
                             }
                         }
+
+                        
 
                             // Adiciona bordas arredondadas às linhas da tabela
                             addRoundedBordersToTableRows();
