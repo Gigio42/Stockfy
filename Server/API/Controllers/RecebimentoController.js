@@ -49,12 +49,16 @@ class RecebimentoController {
         'fornecedor',
         'qualidade',
         'medida',
-        'quantidade_comprada',
         'onda',
-        'coluna',
         'vincos',
-        'status'
+        'status',
+        'data_compra',
+        'data_prevista',
+        'data_recebimento',
+        'quantidade_comprada',
+        'quantidade_recebida'
       ],
+
     });
   
     if (!chapas.length) {
