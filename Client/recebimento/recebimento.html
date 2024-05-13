@@ -1,39 +1,282 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>XML File Reader</title>
-<link rel="stylesheet" href="recebimento.css">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor de PDF para Texto</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="file-info.js"></script>
+    <script src="atualizar.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <button class="button" onclick="toggleDropZone()">Mostrar/Esconder Área de Arrastar</button>
-        <button class="button" onclick="toggleTheme()">Modo Claro/Escuro</button>
-    </header>
-    <div id="drop_zone">Arraste e solte o arquivo XML aqui</div>
-    <table id="output">
-        <thead>
-            <tr>
-                <th>Fornecedor</th>
-                <th>Data da Compra</th>
-                <th>Código do Produto</th>
-                <th>Quantidade</th>
-                <th>Valor Unitário</th>
-                <th>Valor Total</th>
-                <th>Qualidade</th>
-                <th>Medida</th>
-                <th>Tipo de Onda</th>
-                <th>Vincada</th>
-                <th>Status</th>
-                <th>Data</th>
-                <th>Atualizar</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+    <div id="button-container">
+        <button id="toggle-drop-zone">Mostrar/Ocultar Área de Solta</button>
+    </div>
+    <div id="drop-zone" style="display:flex;">Arraste e solte seu arquivo aqui</div>
+
+    <div id="tables" style="display:none;">
+        <div id="text-content"></div>
+        <!-- Suas tabelas aqui -->
+        <div style="height: 20px;"></div>
+        <div>
+        <h2 style="display: flex; justify-content: center;">Informações da compra</h2>
+        </div>
+        <table id="bancoDados">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Fornecedor</th>
+                    <th>Id_compra</th>
+                    <th>Quantidade</th>
+                    <th>Valor Unitário</th>
+                    <th>Valor Total</th>
+                    <th>Qualidade</th>
+                    <th>Medida</th>
+                    <th>Tipo de Onda</th>
+                    <th>Vincada</th>
+                    <th>Status</th>
+                    <th>Data_compra</th>
+                    <th>Atualizar</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+            </tbody>
+        </table>
+        </table>
+        <div style="height: 10px;"></div>
+        <div>
+        <h2 style="display: flex; justify-content: center;">Recebimento</h2>
+    </div>
+        <table id="recebimento">
+            <thead>
+                <tr>
+                    <th>ID</th> <!-- Nova coluna ID adicionada aqui -->
+                    <th>Fornecedor</th>
+                    <th>Id_compra</th>
+                    <th>Quantidade</th>
+                    <th>Valor Unitário</th>
+                    <th>Valor Total</th>
+                    <th>Qualidade</th>
+                    <th>Medida</th>
+                    <th>Tipo de Onda</th>
+                    <th>Vincada</th>
+                    <th>Status</th>
+                    <th>Data_recebimento</th>
+                    <th>Atualizar</th>
+                </tr>
+            </thead>
+            
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+
+
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
+
+        const dropZone = document.getElementById('drop-zone');
+
+        dropZone.addEventListener('dragover', function(event) {
+            event.stopPropagation();
+            event.preventDefault();
+            event.dataTransfer.dropEffect = 'copy';
+        });
+
+        dropZone.addEventListener('drop', function(event) {
+            event.stopPropagation();
+            event.preventDefault();
+            const file = event.dataTransfer.files[0]; // Obtenha o primeiro arquivo que foi solto
+
+            if (!file) {
+                alert('Por favor, solte um arquivo válido.');
+                return;
+            }
+
+            switch (file.type) {
+                case 'application/pdf':
+                    processPDF(file);
+                    break;
+                case 'text/xml':
+                    processXML(file);
+                    break;
+                default:
+                    alert('Formato de arquivo não suportado!');
+                    break;
+            }
+        });
+
+        function processPDF(file) {
+            var reader = new FileReader();
+            reader.onload = function(event) {
+                var typedarray = new Uint8Array(event.target.result);
+                extractText(typedarray);
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function processXML(file) {
+            var reader = new FileReader();
+            reader.onload = function(event) {
+                var xml = event.target.result;
+                parseXML(xml);
+
+            };
+            reader.readAsText(file);
+        }
+
+
+//criar tabelas
+
+function fetchChapas(xPed) {
+
+            axios.get(`https://pisegundosem-server.onrender.com/recebimento/789777`)  //alterar o id para puxar as 
+                .then(response => {
+                    const data = response.data;
+                    const tableBody = document.getElementById('bancoDados');
+                        if (data && data.length > 0) {
+                        data.forEach(chapa => {
+                            chapa.valor_unitario = data[0].valor_unitario
+                            chapa.quantidade_recebida = data[0].quantidade_comprada
+                            criarTable(tableBody, chapa);
+                        });
+                    }
+                })
+                .catch(error => {
+                    var id_compra = xPed
+                    var chapa = {id_compra} 
+                    criarTable(tableBody, chapa);
+                    console.error('Erro ao buscar dados: ', error);
+                });
+        }
+
+
+        function clearTable(tableName) {
+    const table = document.getElementById(tableName).getElementsByTagName('tbody')[0];
+    while (table.rows.length > 0) {
+        table.deleteRow(0);
+    }
+}
+      
+
     
-    <script src="recebimento.js"></script>
-    </body>
+var rowId = 1;    // Variável global para manter o ID da linha
+function criarTable(table, chapaData) {
+    var row = table.insertRow(-1);
+
+    // Criar a célula do ID com um campo de entrada para que seja editável
+    var idCell = row.insertCell(0);
+    idCell.innerHTML = `<input type='text' value='${chapaData.id_grupo_chapas ? chapaData.id_grupo_chapas : ''}' class='editable-id'>`; // Campo editável para ID
+
+    var valorUnitarioNumerico = parseFloat(chapaData.valor_unitario);
+    var valorTotal = (chapaData.quantidade_recebida * valorUnitarioNumerico).toFixed(2);
+
+    var cellContents = [
+        `<input type='text' value='${chapaData.fornecedor}'>`,
+        `<input type='text' value='${chapaData.id_compra}'>`,
+        `<input type='text' class='quantity' value='${chapaData.quantidade_recebida}' oninput='calculateTotal(this.parentNode.parentNode, chapaData)'>`,
+        '<div class="currency-input"><input type="text" class="currency" value="' + valorUnitarioNumerico.toFixed(2) + '" oninput="calculateTotal(this.parentNode.parentNode)"></div>',
+        '<div class="currency-input"><span class="currency-symbol">R$</span><span class="currency total">' + valorTotal + '</span></div>',
+        `<input type='text' value='${chapaData.qualidade}'>`,
+        `<input type='text' value='${chapaData.medida}'>`,
+        `<select>${["E", "B", "C", "BB", "BC", ""].map(type => `<option value="${type}" ${type === chapaData.onda ? "selected" : ""}>${type}</option>`).join("")}</select>`,
+        `<select><option value="">Vazio</option><option value="Sim" ${"Sim" === chapaData.vincos ? "selected" : ""}>Sim</option><option value="Não" ${"Não" === chapaData.vincos ? "selected" : ""}>Não</option></select>`,
+        `<select style='width: 120px;'>${["Comprado", "Recebido", "Parcialmente", "Atrasado", "Cancelado"].map(status => `<option>${status}</option>`).join("")}</select>`,
+        `<input type='date' value='${new Date().toISOString().slice(0, 10)}'>`,
+        `<button class='update-button' onclick='sendDataToServer()'>Atualizar</button>`
+    ];
+
+    cellContents.forEach((content, index) => {
+        var cell = row.insertCell(index + 1); // +1 para considerar a célula ID
+        cell.innerHTML = content;
+    });
+}
+
+function calculateTotal(row) {
+    let quantityInput = row.querySelector('.quantity');
+    let unitPriceInput = row.querySelector('.currency-input .currency');
+    let totalPriceDisplay = row.querySelector('.currency-input .total');
+
+    // Removendo caracteres não numéricos exceto ponto e vírgula, e substituindo vírgula por ponto.
+    let quantity = parseFloat(quantityInput.value) || 0;
+    let unitPriceValue = unitPriceInput.value.replace(/[^0-9,.-]+/g, '').replace(',', '.');
+    let unitPrice = parseFloat(unitPriceValue) || 0;
+    let totalPrice = (quantity * unitPrice).toFixed(2);
+
+    totalPriceDisplay.textContent = 'R$ ' + totalPrice;
+}
+    function formatDate(date) {
+        const [day, month, year] = date.split('/');
+        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    }
+
+
+document.getElementById('toggle-drop-zone').addEventListener('click', function() {
+    var dropZone = document.getElementById('drop-zone');
+    var tables = document.getElementById('tables');
+    if (dropZone.style.display === 'none') {
+        dropZone.style.display = 'flex';
+        tables.style.display = 'none';
+    } else {
+        dropZone.style.display = 'none';
+        tables.style.display = 'block';
+    }
+});
+
+
+const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+            if (node.nodeType === 1) { // Verifica se o nó é do tipo Element
+                // Aplica readonly aos inputs de texto e de data
+                if (node.matches('#bancoDados input[type="text"], #bancoDados input[type="date"]')) {
+                    node.setAttribute('readonly', 'true');
+                }
+                // Aplica disabled aos selects
+                if (node.matches('#bancoDados select')) {
+                    node.setAttribute('disabled', 'true');
+                }
+                // Verifica e modifica elementos filhos dentro de nó adicionado
+                node.querySelectorAll('#bancoDados input[type="text"], #bancoDados input[type="date"], #bancoDados select').forEach(child => {
+                    if (child.tagName === 'INPUT' && (child.type === 'text' || child.type === 'date')) {
+                        child.setAttribute('readonly', 'true');
+                    }
+                    if (child.tagName === 'SELECT') {
+                        child.setAttribute('disabled', 'true');
+                    }
+                });
+            }
+        });
+    });
+});
+
+// Configura o observer para observar mudanças na árvore do DOM
+observer.observe(document.body, {
+    childList: true,
+    subtree: true
+});
+
+
+document.getElementById('drop-zone').addEventListener('dragover', function(event) {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'copy';
+});
+
+document.getElementById('drop-zone').addEventListener('drop', function(event) {
+    event.preventDefault();
+    const file = event.dataTransfer.files[0];
+    if (file) {
+        document.getElementById('drop-zone').style.display = 'none';
+        document.getElementById('tables').style.display = 'block';
+        // Processar o arquivo aqui
+    } else {
+        alert('Por favor, solte um arquivo válido.');
+    }
+});
+    </script>
+
+</body>
 </html>
