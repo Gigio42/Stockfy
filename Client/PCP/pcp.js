@@ -102,3 +102,22 @@ function showMore(id) {
         x.style.display = "none";
     }
 }
+
+// Lógica para o modal do botão criar usuário
+
+function criarUsuario() {
+    document.getElementById("modal").style.display = "block";
+}
+
+function fecharModal() {
+    document.getElementById("modal").style.display = "none";
+}
+
+function mostrarSenha(){
+    const senha = document.getElementById("senha");
+    if(senha.type === "password"){
+        senha.type = "text";
+    } else {
+        senha.type = "password";
+    }
+}
