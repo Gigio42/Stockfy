@@ -5,9 +5,6 @@ class RecebimentoController {
   constructor() {}
 
   async updateRecebimento(data) {
-    if (!data.info_prod_recebidos) {
-      throw new Error('info_prod_recebidos is undefined');
-    }
   
     const chapasRepository = getRepository(Chapas);
   
