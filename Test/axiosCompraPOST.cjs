@@ -20,6 +20,7 @@ async function postData() {
       return {
         fornecedor: fornecedor,
         // id_compra: id_compra,
+        id_compra: 28543,
         cliente_numero: faker.datatype.number(),
         data_compra: faker.date.past().toISOString().split('T')[0],
         data_prevista: faker.date.future().toISOString().split('T')[0],
