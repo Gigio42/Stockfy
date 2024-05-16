@@ -13,6 +13,8 @@
 <body>
     <div id="button-container">
         <button id="toggle-drop-zone">Mostrar/Ocultar Área de Solta</button>
+        <button id="compare-tables">Comparar Tabelas</button>
+
     </div>
     <div id="drop-zone" style="display:flex;">Arraste e solte seu arquivo aqui</div>
 
@@ -129,41 +131,44 @@
         }
 
 
-//criar tabelas
+//criar tabelasconst tableb = document.getElementById('bancoDados').getElementsByTagName('tbody')[0];
 
 function fetchChapas(xPed) {
-
-            axios.get(`https://pisegundosem-server.onrender.com/recebimento/789777`)  //alterar o id para puxar as 
-                .then(response => {
-                    const data = response.data;
-                    const tableBody = document.getElementById('bancoDados');
-                        if (data && data.length > 0) {
-                        data.forEach(chapa => {
-                            chapa.valor_unitario = data[0].valor_unitario
-                            chapa.quantidade_recebida = data[0].quantidade_comprada
-                            criarTable(tableBody, chapa);
-                        });
-                    }
-                })
-                .catch(error => {
-                    var id_compra = xPed
-                    var chapa = {id_compra} 
-                    criarTable(tableBody, chapa);
-                    console.error('Erro ao buscar dados: ', error);
+    clearTable();  // Limpa as tabelas antes de buscar e adicionar novos dados
+    axios.get(`http://localhost:5500/recebimento/${xPed}`)  // Altera o ID para puxar as chapas
+        .then(response => {
+            const data = response.data;
+            if (data && data.length > 0) {
+                data.forEach(chapa => {
+                    const tableb = document.getElementById('bancoDados').getElementsByTagName('tbody')[0];
+                    chapa.valor_unitario = data[0].valor_unitario;  // Copia o valor unitário da primeira chapa
+                    chapa.quantidade_recebida = data[0].quantidade_comprada;  // Define a quantidade recebida para a quantidade comprada da primeira chapa
+                    criarTable(tableb, chapa);
                 });
-        }
-
-
-        function clearTable(tableName) {
-    const table = document.getElementById(tableName).getElementsByTagName('tbody')[0];
-    while (table.rows.length > 0) {
-        table.deleteRow(0);
-    }
+            }
+        })
+        .catch(error => {
+            var id_compra = xPed;
+            var chapa = { id_compra };
+            criarTable(tableBody, chapa);
+            console.error('Erro ao buscar dados: ', error);
+        });
 }
-      
+
+function clearTable() {
+    const tables = document.querySelectorAll('table');  // Seleciona todas as tabelas
+    tables.forEach(table => {
+        let tbody = table.getElementsByTagName('tbody')[0];
+        while (tbody.firstChild) {
+            tbody.removeChild(tbody.firstChild);  // Remove todas as linhas (children) do tbody
+        }
+    });
+}
+
+
 
     
-var rowId = 1;    // Variável global para manter o ID da linha
+var rowId = 0;    // Variável global para manter o ID da linha
 function criarTable(table, chapaData) {
     var row = table.insertRow(-1);
 
@@ -171,15 +176,14 @@ function criarTable(table, chapaData) {
     var idCell = row.insertCell(0);
     idCell.innerHTML = `<input type='text' value='${chapaData.id_grupo_chapas ? chapaData.id_grupo_chapas : ''}' class='editable-id'>`; // Campo editável para ID
 
-    var valorUnitarioNumerico = parseFloat(chapaData.valor_unitario);
-    var valorTotal = (chapaData.quantidade_recebida * valorUnitarioNumerico).toFixed(2);
+
 
     var cellContents = [
         `<input type='text' value='${chapaData.fornecedor}'>`,
         `<input type='text' value='${chapaData.id_compra}'>`,
         `<input type='text' class='quantity' value='${chapaData.quantidade_recebida}' oninput='calculateTotal(this.parentNode.parentNode, chapaData)'>`,
-        '<div class="currency-input"><input type="text" class="currency" value="' + valorUnitarioNumerico.toFixed(2) + '" oninput="calculateTotal(this.parentNode.parentNode)"></div>',
-        '<div class="currency-input"><span class="currency-symbol">R$</span><span class="currency total">' + valorTotal + '</span></div>',
+        '<div class="currency-input"><input type="text" class="currency" value="' + parseFloat(chapaData.valor_unitario).toFixed(2) + '" oninput="calculateTotal(this.parentNode.parentNode)"></div>',
+        '<div class="currency-input"><span class="currency-symbol"></span><p class="currency total">R$' + parseFloat(chapaData.valor_total).toFixed(2) + '</p></div>',
         `<input type='text' value='${chapaData.qualidade}'>`,
         `<input type='text' value='${chapaData.medida}'>`,
         `<select>${["E", "B", "C", "BB", "BC", ""].map(type => `<option value="${type}" ${type === chapaData.onda ? "selected" : ""}>${type}</option>`).join("")}</select>`,
@@ -195,23 +199,6 @@ function criarTable(table, chapaData) {
     });
 }
 
-function calculateTotal(row) {
-    let quantityInput = row.querySelector('.quantity');
-    let unitPriceInput = row.querySelector('.currency-input .currency');
-    let totalPriceDisplay = row.querySelector('.currency-input .total');
-
-    // Removendo caracteres não numéricos exceto ponto e vírgula, e substituindo vírgula por ponto.
-    let quantity = parseFloat(quantityInput.value) || 0;
-    let unitPriceValue = unitPriceInput.value.replace(/[^0-9,.-]+/g, '').replace(',', '.');
-    let unitPrice = parseFloat(unitPriceValue) || 0;
-    let totalPrice = (quantity * unitPrice).toFixed(2);
-
-    totalPriceDisplay.textContent = 'R$ ' + totalPrice;
-}
-    function formatDate(date) {
-        const [day, month, year] = date.split('/');
-        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-    }
 
 
 document.getElementById('toggle-drop-zone').addEventListener('click', function() {
@@ -276,6 +263,66 @@ document.getElementById('drop-zone').addEventListener('drop', function(event) {
         alert('Por favor, solte um arquivo válido.');
     }
 });
+
+
+document.getElementById('compare-tables').addEventListener('click', function() {
+    const table1 = document.getElementById('bancoDados').getElementsByTagName('tbody')[0];
+    const table2 = document.getElementById('recebimento').getElementsByTagName('tbody')[0];
+
+    for (let i = 0; i < table2.rows.length; i++) {
+        const row2 = table2.rows[i];
+        let foundMatch = false; // Flag para indicar se uma correspondência foi encontrada
+
+        outerLoop: // Label para o loop externo
+        for (let j = 0; j < table1.rows.length; j++) {
+            const row1 = table1.rows[j];
+            let allMatch = true;
+
+            for (let k = 1; k < row1.cells.length; k++) { // Começa de 1 para ignorar a primeira coluna
+                if (k === 2) continue; // Pula a terceira coluna
+
+                if (row2.cells.length <= k) { // Garante que não haverá erro se row2 tiver menos células
+                    allMatch = false;
+                    break;
+                }
+
+                let cell1 = row1.cells[k].querySelector('input, select') ? row1.cells[k].querySelector('input, select').value.trim().toLowerCase() : row1.cells[k].textContent.trim().toLowerCase();
+                let cell2 = row2.cells[k].querySelector('input, select') ? row2.cells[k].querySelector('input, select').value.trim().toLowerCase() : row2.cells[k].textContent.trim().toLowerCase();
+
+                if (cell1 !== cell2) {
+                    allMatch = false;
+                    break;
+                }
+            }
+
+            if (allMatch) {
+                const clonedRow = row1.cloneNode(true);
+                // Modifica a décima primeira coluna para "recebido"
+                if (clonedRow.cells.length > 10) {  // Certifica-se de que existe uma décima primeira coluna
+                    const cell = clonedRow.cells[10];
+                    if (cell.querySelector('input, select')) {
+                        cell.querySelector('input, select').value = "Recebido";
+                    } else {
+                        cell.textContent = "Recebido";
+                    }
+                }
+                table2.replaceChild(clonedRow, row2);
+                foundMatch = true;
+                break outerLoop; // Sai do loop assim que encontrar a primeira correspondência
+            }
+        }
+
+        if (!foundMatch) {
+            console.log('Nenhuma linha correspondente encontrada para a linha ' + (i + 1) + ' da tabela de baixo.');
+        }
+    }
+
+    alert('Comparação e possível cópia de linhas concluídas.');
+});
+
+
+
+
     </script>
 
 </body>

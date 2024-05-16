@@ -16,8 +16,9 @@ function sendDataToServer() {
         alert('Nenhum dado para enviar.');
         return;
     }
+    console.log(data)
+    axios.put('http://localhost:5500/recebimento', data)
     
-    axios.put('https://pisegundosem-server.onrender.com/recebimento', data)
         .then(function(response) {
             alert('Dados atualizados com sucesso!');
         })
