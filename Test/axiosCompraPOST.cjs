@@ -6,22 +6,22 @@ const pedidos = 10;
 async function postData() {
   const data = {
     info_prod_comprados: Array.from({ length: pedidos }, (_, index) => {
-      let fornecedor = faker.random.arrayElement(['Irani', 'Penha', 'Fernandez']);
+      let fornecedor = faker.random.arrayElement(['IRANI', 'PENHA', 'FERNANDEZ']);
       let qualidade;
 
-      if (fornecedor === 'Fernandez') {
+      if (fornecedor === 'FERNANDEZ') {
         qualidade = faker.random.arrayElement(['KMK', 'FK2']);
-      } else if (fornecedor === 'Irani') {
+      } else if (fornecedor === 'IRANI') {
         qualidade = 'SLL40';
-      } else if (fornecedor === 'Penha') {
-        qualidade = 'BRJJ11';
+      } else if (fornecedor === 'PENHA') {
+        qualidade = 'BRJJ11'; 
       }
 
       return {
         fornecedor: fornecedor,
         // id_compra: id_compra,
         id_compra: 28543,
-        cliente_numero: faker.datatype.number(),
+        numero_cliente: faker.datatype.number(),
         data_compra: faker.date.past().toISOString().split('T')[0],
         data_prevista: faker.date.future().toISOString().split('T')[0],
         quantidade_comprada: faker.datatype.number({ min: 1, max: 12 }) * 500,

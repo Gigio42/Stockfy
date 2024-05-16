@@ -34,16 +34,14 @@ class RecebimentoController {
   }
 
   async getChapasByIdCompra(id_compra) {
-    if (!id_compra) {
-      throw new Error('id_compra is undefined');
-    }
+    if (!id_compra) throw new Error('id_compra is undefined');
   
     const chapasRepository = getRepository(Chapas);
   
     const chapas = await chapasRepository.find({ 
       where: { id_compra },
       select: [
-        'id_grupo_chapas',
+        'id_chapa',
         'id_compra',
         'fornecedor',
         'qualidade',
