@@ -5,9 +5,9 @@ async function pcpRoute(fastify, options) {
 
     fastify.get('/chapas', async (request, reply) => {
         try {
-            const groupingCriteria = request.query.groupingCriteria.split(',');
-            const sortBy = request.query.sortBy;
-            const sortOrder = request.query.sortOrder;
+            const groupingCriteria = request.query.groupingCriteria ? request.query.groupingCriteria.split(',') : ['fornecedor'];
+            const sortBy = request.query.sortBy || 'fornecedor';
+            const sortOrder = request.query.sortOrder || 'asc';
             const data = await pcpRouteController.getChapas(request.query, groupingCriteria, sortOrder, sortBy);
             reply.send(data);
         } catch (err) {

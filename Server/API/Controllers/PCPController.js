@@ -9,12 +9,6 @@ class PCPController {
         const chapasRepository = getRepository(Chapas);
         let data = await chapasRepository.find();
 
-        if (sortOrder === 'asc') {
-            data.sort((a, b) => a[sortBy] - b[sortBy]);
-        } else if (sortOrder === 'desc') {
-            data.sort((a, b) => b[sortBy] - a[sortBy]);
-        }
-
         const grupoChapas = data.reduce((groups, chapa) => {
             const key = groupingCriteria.map(criterion => chapa[criterion]).join('-');
             if (!groups[key]) {
@@ -30,6 +24,12 @@ class PCPController {
             groups[key].chapas.push(chapa);
             return groups;
         }, {});
+
+        if (sortOrder === 'asc') {
+            data.sort((a, b) => a[sortBy] - b[sortBy]);
+        } else if (sortOrder === 'desc') {
+            data.sort((a, b) => b[sortBy] - a[sortBy]);
+        }
 
         return Object.values(grupoChapas);
     }
