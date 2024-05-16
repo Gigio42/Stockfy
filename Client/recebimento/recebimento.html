@@ -188,7 +188,7 @@ function criarTable(table, chapaData) {
         `<input type='text' value='${chapaData.medida}'>`,
         `<select>${["E", "B", "C", "BB", "BC", ""].map(type => `<option value="${type}" ${type === chapaData.onda ? "selected" : ""}>${type}</option>`).join("")}</select>`,
         `<select><option value="">Vazio</option><option value="Sim" ${"Sim" === chapaData.vincos ? "selected" : ""}>Sim</option><option value="Não" ${"Não" === chapaData.vincos ? "selected" : ""}>Não</option></select>`,
-        `<select style='width: 120px;'>${["Comprado", "Recebido", "Parcialmente", "Atrasado", "Cancelado"].map(status => `<option>${status}</option>`).join("")}</select>`,
+        `<select style='width: 120px;'>${["Comprado", "Recebido", "Parcialmente", "Atrasado", "Cancelado"].map(status => `<option ${status === chapaData.status ? "selected" : ""}>${status}</option>`).join("")}</select>`,
         `<input type='date' value='${new Date().toISOString().slice(0, 10)}'>`,
         `<button class='update-button' onclick='sendDataToServer()'>Atualizar</button>`
     ];
