@@ -1,7 +1,7 @@
 const axios = require('axios');
 const faker = require('faker');
 
-const pedidos = 1;
+const pedidos = 10;
 
 async function postData() {
   const data = {

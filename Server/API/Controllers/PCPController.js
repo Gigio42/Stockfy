@@ -1,9 +1,9 @@
 import {getRepository} from 'typeorm';
 import Chapas from '../Models/Chapas.js';
+import Item from '../Models/Item.js';
 
 class PCPController {
-    constructor() {
-    }
+    constructor() {}
 
     async getChapas(query, groupingCriteria, sortOrder, sortBy) {
         const chapasRepository = getRepository(Chapas);
@@ -34,11 +34,32 @@ class PCPController {
         return Object.values(grupoChapas);
     }
 
-    async orderItem(body) {
-        /* TODO
+    async createItemWithChapa(body) {
+        const { chapaId: chapaID, quantity, partNumber } = body;
+
         const chapasRepository = getRepository(Chapas);
-        const newChapa = chapasRepository.create(body);
-        await chapasRepository.save(newChapa); */
+        const itemRepository = getRepository(Item);
+
+        const chapa = await chapasRepository.findOne({ where: { id_chapa: chapaID } });
+        console.log(chapa);
+    
+        if (!chapa) {
+            throw new Error('Chapa not found');
+        }
+    
+        chapa.quantidade_estoque -= quantity;
+    
+        const item = itemRepository.create({
+            part_number: partNumber,
+            quantidade_part_number: quantity,
+            Status: 'RESERVADO',
+            chapas: [chapa]
+        });
+    
+        await chapasRepository.save(chapa);
+        await itemRepository.save(item);
+    
+        return item;
     }
 }
 

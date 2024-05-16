@@ -18,7 +18,7 @@ async function pcpRoute(fastify, options) {
 
     fastify.post('/', async (request, reply) => {
         try {
-            await pcpRouteController.orderItem(request.body);
+            await pcpRouteController.createItemWithChapa(request.body);
             reply.send({message: 'Data received and inserted into SQLite database successfully'});
         } catch (err) {
             console.log(err.message);

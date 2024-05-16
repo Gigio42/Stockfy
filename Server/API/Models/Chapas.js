@@ -104,7 +104,7 @@ const Chapas = new EntitySchema({
         items: {
             target: "Item",
             type: 'many-to-many',
-            joinTable: true,
+            inverseSide: 'chapas',
             cascade: true
         }
     }
