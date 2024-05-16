@@ -8,7 +8,7 @@ class RecebimentoController {
   
     const chapasRepository = getRepository(Chapas);
   
-    const promises = data.info_prod_recebidos.map(async item => {
+    const promises = data.map(async item => {
       if (!item.id_compra) {
         throw new Error('id_compra is undefined');
       }
@@ -32,16 +32,14 @@ class RecebimentoController {
   }
 
   async getChapasByIdCompra(id_compra) {
-    if (!id_compra) {
-      throw new Error('id_compra is undefined');
-    }
+    if (!id_compra) throw new Error('id_compra is undefined');
   
     const chapasRepository = getRepository(Chapas);
   
     const chapas = await chapasRepository.find({ 
       where: { id_compra },
       select: [
-        'id_grupo_chapas',
+        'id_chapa',
         'id_compra',
         'fornecedor',
         'qualidade',

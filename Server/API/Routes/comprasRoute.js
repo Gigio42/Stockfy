@@ -1,9 +1,10 @@
 import ComprasController from '../Controllers/ComprasController.js';
+import { compraSchema } from '../validators/compraValidators.js';
 
 async function comprasRoutes (fastify, options) {
   const comprasController = new ComprasController(options.db);
 
-  fastify.post('/', async (request, reply) => {
+  fastify.post('/', { schema: compraSchema, handler: async (request, reply) => {
     console.log(request.body);
 
     try {
@@ -13,7 +14,7 @@ async function comprasRoutes (fastify, options) {
       console.log(err.message);
       reply.code(500).send({ message: 'Error inserting data into SQLite database', error: err.message });
     }
-  });
+  }});
 }
 
 export default comprasRoutes;

@@ -1,7 +1,7 @@
 const axios = require('axios');
 const faker = require('faker');
 
-const pedidos = 10;
+const pedidos = 1;
 
 async function postData() {
   const data = {
@@ -21,7 +21,7 @@ async function postData() {
         fornecedor: fornecedor,
         // id_compra: id_compra,
         id_compra: 28543,
-        cliente_numero: faker.datatype.number(),
+        numero_cliente: faker.datatype.number(),
         data_compra: faker.date.past().toISOString().split('T')[0],
         data_prevista: faker.date.future().toISOString().split('T')[0],
         quantidade_comprada: faker.datatype.number({ min: 1, max: 12 }) * 500,

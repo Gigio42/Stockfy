@@ -8,7 +8,7 @@ const Item = new EntitySchema({
             primary: true,
             generated: true
         },
-        id_grupo_chapas: {
+        id_chapa: {
             type: "int",
             default: 0
         },

@@ -3,7 +3,7 @@ import { EntitySchema } from 'typeorm';
 const Chapas = new EntitySchema({
     name: 'Chapas',
     columns: {
-        id_grupo_chapas: {
+        id_chapa: {
             type: "int",
             primary: true,
             generated: true,
@@ -97,7 +97,7 @@ const Chapas = new EntitySchema({
     },
     uniques: [
         {
-            columns: ['id_grupo_chapas', 'id_compra'],
+            columns: ['id_chapa', 'id_compra'],
         },
     ],
     relations: {
