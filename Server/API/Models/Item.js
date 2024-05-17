@@ -8,15 +8,11 @@ const Item = new EntitySchema({
             primary: true,
             generated: true
         },
-        id_grupo_chapas: {
-            type: "int",
-            default: 0
-        },
         part_number: {
             type: "int",
             default: 0
         },
-        Quantidade_part_number: {
+        quantidade_part_number: {
             type: "int",
             default: 0
         },
@@ -29,7 +25,8 @@ const Item = new EntitySchema({
         chapas: {
             target: "Chapas",
             type: 'many-to-many',
-            inverseSide: 'items'
+            inverseSide: 'items',
+            joinTable: true,
         }
     }
 });

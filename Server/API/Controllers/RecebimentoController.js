@@ -5,16 +5,18 @@ class RecebimentoController {
   constructor() {}
 
   async updateRecebimento(data) {
+    if (!Array.isArray(data)) {
+      throw new Error('Data must be an array');
+    }
   
     const chapasRepository = getRepository(Chapas);
   
-    const promises = data.info_prod_recebidos.map(async item => {
+    const promises = data.map(async item => {
       if (!item.id_compra) {
         throw new Error('id_compra is undefined');
       }
   
       const id_compra = item.id_compra;
-  
       const chapa = await chapasRepository.findOne({ where: { id_compra } });
       if (!chapa) {
         throw new Error(`Chapa with id ${item.id_compra} not found`);
@@ -32,16 +34,14 @@ class RecebimentoController {
   }
 
   async getChapasByIdCompra(id_compra) {
-    if (!id_compra) {
-      throw new Error('id_compra is undefined');
-    }
+    if (!id_compra) throw new Error('id_compra is undefined');
   
     const chapasRepository = getRepository(Chapas);
   
     const chapas = await chapasRepository.find({ 
       where: { id_compra },
       select: [
-        'id_grupo_chapas',
+        'id_chapa',
         'id_compra',
         'fornecedor',
         'qualidade',
@@ -53,7 +53,9 @@ class RecebimentoController {
         'data_prevista',
         'data_recebimento',
         'quantidade_comprada',
-        'quantidade_recebida'
+        'valor_unitario',
+        'quantidade_recebida',
+        'valor_total'
       ],
 
     });
