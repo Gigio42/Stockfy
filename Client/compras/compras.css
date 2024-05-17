@@ -168,15 +168,10 @@ body button.confirm:hover {
     font-size: 1.5rem;
 }
 
-.select-wrapper {
-    display: inline-block;
-    position: relative;
-    margin-top: 0.5rem;
-    height: 6rem;
-    align-items: center;
+.header-principal {
+    padding: 1rem;
     background-color: #232323;
-    margin: 0;
-    padding: 2rem;
+
 }
 
 #fornecedor {
@@ -215,11 +210,86 @@ option {
 }
 
 h1 {
-    margin-left: 12rem;
-    color:#84e789
+    margin: 0 auto;
+    color:#84e789;
+
 }
 
 body button.edit.disabled {
     background-color: #ccc !important; /* Cor de fundo cinza */
     cursor: default; /* Cursor padrão */
+}
+
+.notification {
+    display: flex;
+    background-color: #ff3f3f;
+    color: #410f0f;
+    position: absolute;
+    border-radius: 1rem;
+    height: 4rem;
+    align-content: center;
+    width: 30rem;
+    padding-left: 1rem;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.5rem;
+}
+
+#closeNotification {
+    border: NONE;   
+    background: #ff3f3f;
+    color: #3b0c0c;
+    border-radius: 50%;
+    width: 1.7rem;
+    text-align:center ;
+    padding-bottom: 0.2rem;
+    margin-right: 1rem;
+    font-size: 2rem;
+}
+
+#closeNotification:hover {
+    background-color: #a02525;
+    
+    
+}
+
+.errormodal {
+    background-color: #1212126e;
+    z-index: 9999999;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    backdrop-filter: blur(7px);
+}
+
+.header-button {
+    display: flex;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    height: 5rem;
+    padding: 1rem;
+}
+
+.closeButton {
+    border-radius:.7rem ;
+    border: none;
+    width: 5rem;
+}
+
+.alert {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.alertimg {
+    margin-top: 2REM;
+    margin-bottom: 2REM;
+}
+
+#errorMessage {
+    padding: 2rem;
+    font-size: 2rem;
 }

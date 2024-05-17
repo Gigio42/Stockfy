@@ -93,8 +93,38 @@ pdf.getPage(1).then(function(page) {
         });
         var shouldSkipNextLine = false;
 
+// Loop sobre cada item do texto
+var skipNextValue = false; // Variável para controlar se devemos ignorar o próximo valor
 items.forEach(function(item, index) {
     var line = item.str.trim();
+    
+    // Verifica se a linha contém o caractere "E" seguido por um número
+    if (line.startsWith('E ') && !isNaN(parseFloat(line.split(' ')[1]))) {
+        // Ignora a linha que contém o "E" e pula para a próxima
+        skipNextValue = true;
+        return;
+    }
+
+    // Verifica se a linha contém o número do cliente
+    if (line.includes('/ENCAIX')) {
+        // Captura o número do cliente usando uma expressão regular
+        var numeroClienteMatch = line.match(/\b\d+\/ENCAIX\b/);
+        if (numeroClienteMatch) {
+            numeroCliente = numeroClienteMatch[0];
+        } else {
+            console.error("Não foi possível capturar o número do cliente.");
+        }
+        skipNextValue = false; // Reinicia a variável para não ignorar o próximo valor
+    }
+
+    // Verifica se devemos adicionar o valor atual ao JSON
+    if (!skipNextValue) {
+        // Restante do código permanece o mesmo para adicionar os valores ao JSON
+        // ...
+    } else {
+        // Reinicia a variável para não ignorar o próximo valor
+        skipNextValue = false;
+    }
 
         if (isValoresExpressos) {
             return; // Saímos do loop se chegarmos aos valores expressos
@@ -117,7 +147,7 @@ items.forEach(function(item, index) {
                 }
             }
         } else if (lineNumber > pedidoCompraLine && !isValoresExpressos) {
-            if ((lineNumber - 54) % 19 === 0) {
+            if ((lineNumber - 56) % 19 === 0) {
                 isInfoPedido = false;
                 isPedidoCompra = false;
                 isInfoProdComprados = true;
@@ -135,7 +165,7 @@ items.forEach(function(item, index) {
             }
             if (isInfoProdComprados) {
 
-                                    switch ((lineNumber - 54) % 19) {
+                                    switch ((lineNumber - 56) % 19) {
                                         case 1:
                                             prodComprado.cliente = line;
                                             break;
@@ -198,7 +228,7 @@ items.forEach(function(item, index) {
                             }
                         } else {
                             // Se não houver "INCLUSÃO", tentamos extrair o número do pedido de compra da linha 53
-                            var pedidoCompraLine = items[52].str.trim(); // Linha 53 é indexada como 52
+                            var pedidoCompraLine = items[54].str.trim(); // Linha 53 é indexada como 52
                             var pedidoCompraMatch = pedidoCompraLine.match(/\b\d{2}\.\d{3}\b/);
                             if (pedidoCompraMatch) {
                                 pedidoCompra = pedidoCompraMatch[0];
