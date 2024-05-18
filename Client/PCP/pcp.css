@@ -1,23 +1,27 @@
-/* Estilos para o header */
-.header-custom {
-
+/* ======================================
+   Header Styles
+   ====================================== */
+   .header-custom {
     display: flex;
     color: #1a1a1a; /* Cor do texto padrão para o header */
-    border-bottom: solid 1px  #6a6a6a45;
+    border-bottom: solid 1px #6a6a6a45;
     background-color: #d4d4d4;
     height: 5rem;
-  }
-  
-  h1 {
+}
+
+h1 {
     color: #0f0f0f;
     font-size: 2rem;
-  }
-  
-  .dark-mode-toggle input[type="checkbox"] {
+}
+
+/* ======================================
+   Dark Mode Toggle Styles
+   ====================================== */
+.dark-mode-toggle input[type="checkbox"] {
     display: none;
-  }
-  
-  .dark-mode-toggle label {
+}
+
+.dark-mode-toggle label {
     margin-right: 1rem;
     display: block;
     width: 2.7em;
@@ -26,9 +30,9 @@
     border-radius: 2rem;
     position: relative;
     cursor: pointer;
-  }
-  
-  .dark-mode-toggle label:after {
+}
+
+.dark-mode-toggle label:after {
     content: "";
     display: block;
     width: 1.2em;
@@ -39,32 +43,34 @@
     top: 2px;
     left: 2px;
     transition: transform 0.3s ease-in-out;
-  }
-  
-  .dark-mode-toggle input[type="checkbox"]:checked+label {
+}
+
+.dark-mode-toggle input[type="checkbox"]:checked + label {
     background-color: #6eec07;
     box-shadow: 0 0 30px 20px #6eec074f;
-  }
-  
-  .dark-mode-toggle input[type="checkbox"]:checked+label:after {
+}
+
+.dark-mode-toggle input[type="checkbox"]:checked + label:after {
     transform: translateX(100%);
-  }
-  
-  /* Estilos para o navbar */
-  #aside {
+}
+
+/* ======================================
+   Navbar Styles
+   ====================================== */
+#aside {
     display: flex;
     height: 100%;
     background: #e6e6e6; /* Cor de fundo para o aside no modo escuro */
     min-height: 70%;
-    overflow-y: auto; /* Adicione isso para permitir rolagem se o conteúdo for maior do que a altura da página */
+    overflow-y: auto; /* Permite rolagem se o conteúdo for maior do que a altura da página */
     padding: 0;
-  }
-  
-  .logo {
+}
+
+.logo {
     width: 7rem;
-  }
-  
-  .logo-container {
+}
+
+.logo-container {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -74,195 +80,191 @@
     align-items: center;
     width: 100%;
     border-left: none;
-    
-  }
-  
-  .navbar {
+}
+
+.navbar {
     display: flex;
     margin-top: 3rem;
     justify-content: center;
-    
-  /* Estilo para o link ativo */
-  .active {
+}
+
+/* ======================================
+   Active Link Styles
+   ====================================== */
+.active {
     background-color: #007bff; /* Cor de fundo do link ativo */
-  }
-  
-  /* Estilo para a imagem dentro do link ativo */
-  .active img.imgicon {
+}
+
+.active img.imgicon {
     filter: brightness(0) invert(1);
-  }
-  
-  .active a {
+}
+
+.active a {
     color: #ffffff;
-  }
-  
-  /* Desativa o comportamento de hover nos li ativos */
-  .active:hover {
+}
+
+.active:hover {
     background-color: #007bff; /* Mantém a cor de fundo do link ativo */
     cursor: default; /* Define o cursor como padrão */
-  }
-  
-  /* Estilo para o link ativo durante o hover */
-  .active:hover a {
+}
+
+.active:hover a {
     color: #ffffff; /* Mantém a cor do texto do link ativo */
-  }
-  
-  
-  }
-  
-  a {
+}
+
+/* ======================================
+   General Link Styles
+   ====================================== */
+a {
     color: #535353;
     padding: 1rem;
     border-radius: 1.2rem;
     font-size: 1.5rem;
-  
-  }
-  
-  a:HOVER {
+}
+
+a:hover {
     color: #535353;
     text-decoration: none; /* Remove o sublinhado */
-  }
-  
-  .icon-home {
+}
+
+.icon-home {
     fill: red; /* Altere "red" para a cor desejada */
-  }
-  
-  
-  li {
+}
+
+li {
     color: #ffffff;
     padding: 1rem;
     font-size: 1.1rem;
-    border-radius:1.2REM ;
+    border-radius: 1.2rem;
     text-decoration: none; /* Remove o sublinhado */
-  }
-  
-  li:hover {
+}
+
+li:hover {
     background-color: #cacaca;
-  }
-  
-  .col-md-2 {
+}
+
+/* ======================================
+   Grid and Layout Styles
+   ====================================== */
+.col-md-2 {
     padding: 0%;
-  }
-  
-  .imgicon {
-    width: 1.5REM;
-  
-    /* Cor azul */
-  
-  }
-  
-  
-  /* Estilos gerais */
-  html {
+}
+
+.imgicon {
+    width: 1.5rem;
+}
+
+html {
     height: 100%;
-  }
-  
-  body {
+}
+
+body {
     background: #ffffff;
     height: 100%;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif ;
-  }
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
 
 .header {
-  padding: 0;
+    padding: 0;
 }
 
 .col-md-12 {
-  padding: 0;
-  margin-right: 2rem;
+    padding: 0;
+    margin-right: 2rem;
 }
-  
-  .row {
+
+.row {
     display: flex; /* Para fazer os elementos dentro da linha se comportarem como flexíveis */
     height: 100%;
-  }
-  
-  .container-fluid {
+}
+
+.container-fluid {
     height: 100%;
-  }
-  
-  /* Barra de rolagem */
-  ::-webkit-scrollbar {
-    width: 10px;
-    /* largura da barra de rolagem */
-  }
-  
-  ::-webkit-scrollbar-thumb {
-    background-color: #424242;
-    /* cor do 'thumb' (a parte que você arrasta) */
-    border-radius: 5px;
-    /* borda arredondada */
-  }
-  
-  ::-webkit-scrollbar-track {
-    background-color: #212121;
-    /* cor do fundo da barra de rolagem */
-  }
-  
-  /* Estilos para o modo escuro */
-  .dark-mode #aside {
+}
+
+/* ======================================
+   Scrollbar Styles
+   ====================================== */
+::-webkit-scrollbar {
+    width: 10px; /* largura da barra de rolagem */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #424242; /* cor do 'thumb' (a parte que você arrasta) */
+    border-radius: 5px; /* borda arredondada */
+}
+
+::-webkit-scrollbar-track {
+    background-color: #212121; /* cor do fundo da barra de rolagem */
+}
+
+/* ======================================
+   Dark Mode Styles
+   ====================================== */
+.dark-mode #aside {
     background: #9a9a9a27; /* Altere o fundo do modo escuro para a barra lateral conforme necessário */
     border: solid 1px #6a6a6a45;
     backdrop-filter: blur(5px);
     border-top: 0;
-  }
-  
-  .dark-mode h1, li {
+}
+
+.dark-mode h1, .dark-mode li {
     color: #cccccc;
-  }
-  
-  .dark-mode .logo {
+}
+
+.dark-mode .logo {
     filter: invert(1); /* Exemplo de inversão de cores */
-  }
-  
-  .dark-mode.body {
+}
+
+.dark-mode.body {
     background: #191919;
-  }
-  
-  .dark-mode .dark-mode-aside {
+}
+
+.dark-mode .dark-mode-aside {
     background: #1c1c1c; /* Altere o fundo do modo escuro para a barra lateral conforme necessário */
-  }
-  
-  .dark-mode .header-custom {
+}
+
+.dark-mode .header-custom {
     display: flex;
     background: #0f0f0f;
-  }
-  
-  .dark-mode .logo-container {
-    background: #2f2f2f;
-   
-    border: solid 1px #6a6a6a45;
-  }
-  
-  
-  
-  .dark-mode .logo {
-    filter: invert(1); /* Exemplo de inversão de cores */
-  }
-  
-  .dark-mode li:hover {
-    background-color: #333333;
-  }
-  .dark-mode a {
-    color: #b3b3b3;
-  }
+}
 
-  .modal {
-    display: none; 
-    position: fixed; 
-    z-index: 1; 
-    padding-top: 50px; 
+.dark-mode .logo-container {
+    background: #2f2f2f;
+    border: solid 1px #6a6a6a45;
+}
+
+.dark-mode .logo {
+    filter: invert(1); /* Exemplo de inversão de cores */
+}
+
+.dark-mode li:hover {
+    background-color: #333333;
+}
+
+.dark-mode a {
+    color: #b3b3b3;
+}
+
+/* ======================================
+   Modal Styles
+   ====================================== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 50px;
     left: 0;
     top: 0;
-    width: 100%; 
-    height: 100%; 
-    overflow: auto; 
-    background-color: rgba(0,0,0,0.4); 
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
 }
 
 .modal-content {
     background-color: #252525;
-    margin: auto; 
+    margin: auto;
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
@@ -270,30 +272,91 @@
 }
 
 .modal-content input {
-  display: flex;
-  align-items: center;
-  width: 100%; 
-  box-sizing: border-box; 
-  margin-bottom: 10px; 
+    display: flex;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
 }
 
-input [type=checkbox]{
-  text-align: center;
+input[type="checkbox"] {
+    text-align: center;
 }
 
 .close {
-  display: flex;
-  justify-content: flex-end;
+    display: flex;
+    justify-content: flex-end;
 }
 
 button {
-  padding: 15px;
-  background-color: #111111;
-  color: #fff;
-  border-radius: 15px;
+    padding: 15px;
+    background-color: #111111;
+    color: #fff;
+    border-radius: 15px;
 }
 
-button:hover{
-  background-color: #424242;
-  color: #0e0e0e;
+button:hover {
+    background-color: #424242;
+    color: #0e0e0e;
+}
+
+/* ======================================
+   Grouping Form Styles
+   ====================================== */
+   .agrupar-button {
+    background: transparent;
+    border: 1px solid #6d6d6d;
+    color: #fff;
+    padding: 10px 20px;
+    margin: 0 10px 0 0;
+    transition: background 0.3s ease;
+    font-size: 1em;
+}
+
+.agrupar-button:hover {
+    background: #6d6d6d;
+    color: #fff;
+}
+
+.grouping-form {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #6d6d6d;
+    padding: 20px;
+    border-radius: 5px;
+    margin: 10px 0;
+    color: #fff;
+}
+
+.grouping-form label,
+.grouping-form select,
+.grouping-form input[type="checkbox"] {
+    color: #fff;
+    font-size: 1em;
+    margin-right: 10px;
+}
+
+.grouping-form select,
+.grouping-form input[type="checkbox"] {
+    background: transparent;
+    border: 1px solid #6d6d6d;
+}
+
+.grouping-form select:hover,
+.grouping-form input[type="checkbox"]:hover {
+    background: #6d6d6d;
+    color: #fff;
+}
+
+.checkbox-container {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.checkbox-container label {
+    flex: 0 0 auto;
+    margin-right: 10px;
 }

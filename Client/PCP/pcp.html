@@ -80,8 +80,40 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Título do Card</h5>
-                            <p class="card-text">Conteúdo do Card</p>
+                            <h5 class="card-title">Chapas Disponíveis</h5>
+                            <form id="groupingForm" class="grouping-form">
+                                <button type="submit" class="agrupar-button">AGRUPAR</button>
+                                <div class="checkbox-container">
+                                    <label>
+                                        <input type="checkbox" name="groupingKeys" value="fornecedor" checked> Fornecedor
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="groupingKeys" value="qualidade" checked> Qualidade
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="groupingKeys" value="medida" checked> Medida
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="groupingKeys" value="onda"> Onda
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="groupingKeys" value="coluna"> Coluna
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="groupingKeys" value="vinco"> Vinco
+                                    </label>
+                                </div>
+                                <label for="sortKey">Sort by:</label>
+                                <select id="sortKey">
+                                    <option value="quantidade_comprada">Quantidade Comprada</option>
+                                    <option value="fornecedor">Fornecedor</option>
+                                    <option value="qualidade">Qualidade</option>
+                                    <option value="medida">Medida</option>
+                                </select>
+                                <label for="filterCriteria">Filter by:</label>
+                                <input type="text" id="filterCriteria" name="filterCriteria">
+                            </form>
+                            <div id="container"></div>
                         </div>
                     </div>
                 </div>
@@ -94,7 +126,8 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="pcp.js"></script> <!-- Seu script personalizado -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script type="module" src="pcp.js"></script>
 
 </body>
 </html>

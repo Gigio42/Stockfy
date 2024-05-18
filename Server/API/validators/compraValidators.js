@@ -18,7 +18,7 @@ export const compraSchema = {
                         quantidade_estoque: { type: 'number' },
                         onda: { type: 'string', maxLength: 2 },
                         coluna: { type: 'integer' },
-                        vincos: { type: 'string', maxLength: 3 },
+                        vincos: { type: 'string', maxLength: 200 },
                         gramatura: { type: 'number' },
                         peso_total: { type: 'number' },
                         valor_unitario: { type: 'number' },
