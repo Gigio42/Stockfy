@@ -10,7 +10,8 @@ async function pcpRoute(fastify, options) {
             const sortOrder = request.query.sortOrder || 'asc';
             const data = await pcpRouteController.getChapas(request.query, groupingCriteria, sortOrder, sortBy);
             reply.send(data);
-        } catch (err) {
+        } 
+        catch (err) {
             console.log(err.message);
             reply.code(500).send({message: 'Error retrieving data from SQLite database', error: err.message});
         }
@@ -20,7 +21,8 @@ async function pcpRoute(fastify, options) {
         try {
             await pcpRouteController.createItemWithChapa(request.body);
             reply.send({message: 'Data received and inserted into SQLite database successfully'});
-        } catch (err) {
+        } 
+        catch (err) {
             console.log(err.message);
             reply.code(500).send({message: 'Error inserting data into SQLite database', error: err.message});
         }
