@@ -293,3 +293,44 @@ body button.edit.disabled {
     padding: 2rem;
     font-size: 2rem;
 }
+
+.table-header {
+    width: 100vw;
+    text-align: center;
+    align-content: center;
+    font-size: 1.2rem;
+}
+
+/* Centraliza o conteúdo das células da tabela */
+td, th {
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Define o estilo do input para ocupar 100% da altura da célula e estar centralizado */
+td input {
+    width: 90%; /* Pode ajustar conforme necessário */
+    height: 100%; /* Define a altura do input igual à altura da célula */
+    box-sizing: border-box; /* Garante que o padding não adicione largura extra */
+    text-align: center; /* Centraliza o texto dentro do input */
+}
+
+/* Classe para bordas arredondadas nas linhas da tabela */
+.rounded-rows {
+    border-radius: 5px;
+}
+
+/* CSS para centralizar o input dentro do td */
+td, th {
+    position: relative;
+    text-align: center;
+    vertical-align: middle;
+}
+
+td .centered-input {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+}
