@@ -82,6 +82,8 @@
                         <div class="card-body">
                             <h5 class="card-title">Chapas Disponíveis</h5>
                             <form id="groupingForm" class="grouping-form">
+                                <button id="showSelectedButton" class="agrupar-button">Show Selected</button>
+                                <div id="popup" style="display: none;"></div>
                                 <button type="submit" class="agrupar-button">AGRUPAR</button>
                                 <div class="checkbox-container">
                                     <label>
@@ -118,6 +120,13 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Popup -->
+            <div id="popupContainer" class="modal" style="display: none;">
+                <div class="modal-content" id="modalContent">
+                    <span class="close" id="closeModal">&times;</span>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -127,7 +136,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script type="module" src="pcp.js"></script>
+<script type="module" src="./scripts/pcp.js"></script>
 
 </body>
 </html>

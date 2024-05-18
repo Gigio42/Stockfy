@@ -1,4 +1,6 @@
 import { Card } from './card.js';
+import { filterItem } from './filter.js';
+import { handleShowSelectedButtonClick } from './popup.js';
 
 var darkModeToggle = document.getElementById('darkModeToggle');
 var body = document.body;
@@ -43,48 +45,37 @@ async function populateCards() {
         const response = await axios.get(`http://localhost:3000/PCP/chapas?groupingCriteria=${keys.join(',')}`);
         let items = response.data;
 
-        const filterItem = (item, filterCriteria) => {
-            if (!filterCriteria) return true;
-
-            filterCriteria = filterCriteria.toUpperCase();
-
-            const itemMatches = (item.fornecedor && item.fornecedor.toUpperCase().includes(filterCriteria)) ||
-                                (item.qualidade && item.qualidade.toUpperCase().includes(filterCriteria)) ||
-                                (item.medida && item.medida.toUpperCase() === filterCriteria);
-
-            item.chapas = item.chapas.filter(chapa => {
-                return (chapa.fornecedor && chapa.fornecedor.toUpperCase().includes(filterCriteria)) ||
-                        (chapa.qualidade && chapa.qualidade.toUpperCase().includes(filterCriteria)) ||
-                        (chapa.medida && chapa.medida.toUpperCase() === filterCriteria) ||
-                        (chapa.onda && chapa.onda.toUpperCase().includes(filterCriteria)) ||
-                        (chapa.coluna && chapa.coluna.toUpperCase().includes(filterCriteria)) ||
-                        (chapa.vinco && chapa.vinco.toUpperCase().includes(filterCriteria));
-            });
-
-            return itemMatches || item.chapas.length > 0;
-        };
-
         items = items.filter(item => filterItem(item, filterCriteria));
-
         items.sort((a, b) => a[sortKey] < b[sortKey] ? -1 : a[sortKey] > b[sortKey] ? 1 : 0);
+
+        const selectedSubcards = new Set();
+
+        const onSubcardSelectionChange = (chapa, isSelected) => {
+            if (isSelected) {
+                selectedSubcards.add(chapa);
+            } else {
+                selectedSubcards.delete(chapa);
+            }
+        };
 
         const container = document.getElementById('container');
         container.innerHTML = '';
         items.forEach((item, index) => {
-            const card = new Card(item, keys, index, sortKey);
+            const card = new Card(item, keys, index, sortKey, onSubcardSelectionChange);
             const cardElement = card.create();
             container.appendChild(cardElement);
         });
+
+        handleShowSelectedButtonClick(() => Array.from(selectedSubcards));
+
     } catch (error) {
         console.error('Error fetching data: ', error);
     }
 }
-
 document.getElementById('groupingForm').addEventListener('submit', event => {
     event.preventDefault();
     populateCards();
 });
-
 populateCards();
 
 function showMore(id) {

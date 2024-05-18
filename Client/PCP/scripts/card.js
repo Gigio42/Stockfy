@@ -1,9 +1,10 @@
 export class Card {
-    constructor(group, keys, index, sortKey) {
+    constructor(group, keys, index, sortKey, onSubcardSelectionChange) {
         this.group = group;
         this.keys = keys;
         this.index = index;
         this.sortKey = sortKey;
+        this.onSubcardSelectionChange = onSubcardSelectionChange;
     }
 
     createDivWithClass(className) {
@@ -39,7 +40,7 @@ export class Card {
         quantidadeCompradaDiv.className = 'col text-center';
         quantidadeCompradaDiv.textContent = this.group.quantidade_comprada;
         valueRow.appendChild(quantidadeCompradaDiv);
-        
+
         return valueRow;
     }
 
@@ -57,6 +58,25 @@ export class Card {
     }
 
     createSubcard(chapa) {
+        let subcardWrapper = this.createDivWithClass('subcard-wrapper');
+        subcardWrapper.style.display = 'flex';
+
+        let checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.className = 'chapa-checkbox';
+        checkbox.id = 'chapa-checkbox-' + JSON.stringify(chapa);
+        checkbox.style.display = 'none';
+        checkbox.value = JSON.stringify(chapa);
+        checkbox.addEventListener('change', (event) => {
+            this.onSubcardSelectionChange(chapa, event.target.checked);
+        });
+        subcardWrapper.appendChild(checkbox);
+
+        let label = document.createElement('label');
+        label.htmlFor = checkbox.id;
+        label.className = 'custom-checkbox';
+        subcardWrapper.appendChild(label);
+
         let subcard = this.createDivWithClass('card card-body mt-2 shadow-sm');
         let subcardHeaderRow = this.createHeaderRow(Object.keys(chapa));
         subcard.appendChild(subcardHeaderRow);
@@ -70,7 +90,9 @@ export class Card {
         });
         subcard.style.minWidth = `${totalWidth}px`;
 
-        return subcard;
+        subcardWrapper.appendChild(subcard);
+
+        return subcardWrapper;
     }
 
     createCard(group, keys, index, sortKey) {

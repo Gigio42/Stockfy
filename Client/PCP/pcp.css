@@ -361,6 +361,34 @@ button:hover {
     margin-right: 10px;
 }
 
+.custom-checkbox {
+    width: 30px;
+    height: 30px;
+    border: 20px solid #0000002a;
+    border-radius: 5px;
+    background-color: #ffffff00;
+    margin: 12px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.custom-checkbox::after {
+    content: "";
+    display: none;
+}
+
+.chapa-checkbox:checked + .custom-checkbox::after {
+    display: block;
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    background-color: #5468ad;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 /* ======================================
    row
    ====================================== */
