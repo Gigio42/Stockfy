@@ -46,7 +46,7 @@ async function postData() {
   };
 
   try {
-    const response = await axios.post('http://localhost:5500/compras', data);
+    const response = await axios.post('http://localhost:3000/compras', data);
     console.log(response.data);
   } catch (error) {
     console.error(error);

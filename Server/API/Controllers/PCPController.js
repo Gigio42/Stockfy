@@ -1,13 +1,14 @@
 import {getRepository} from 'typeorm';
 import Chapas from '../Models/Chapas.js';
 import Item from '../Models/Item.js';
+import Chapa_Item from '../Models/Chapa_Item.js';
 
 class PCPController {
     constructor() {}
 
     async getChapas(query, groupingCriteria, sortOrder, sortBy) {
         const chapasRepository = getRepository(Chapas);
-        let data = await chapasRepository.find();
+        let data = await chapasRepository.find({ relations: ['conjugacoes'] });
 
         const grupoChapas = data.reduce((groups, chapa) => {
             const key = groupingCriteria.map(criterion => chapa[criterion]).join('-');
@@ -36,10 +37,11 @@ class PCPController {
 
     async createItemWithChapa(body) {
         const { chapaId: chapaID, quantity, partNumber } = body;
-
+    
         const chapasRepository = getRepository(Chapas);
         const itemRepository = getRepository(Item);
-
+        const chapaItemRepository = getRepository(Chapa_Item);
+    
         const chapa = await chapasRepository.findOne({ where: { id_chapa: chapaID } });
         console.log(chapa);
     
@@ -58,6 +60,13 @@ class PCPController {
     
         await chapasRepository.save(chapa);
         await itemRepository.save(item);
+    
+        const chapaItem = chapaItemRepository.create({
+            chapa: chapa,
+            item: item
+        });
+    
+        await chapaItemRepository.save(chapaItem); 
     
         return item;
     }

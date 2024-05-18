@@ -23,11 +23,15 @@ const Item = new EntitySchema({
     },
     relations: {
         chapas: {
-            target: "Chapas",
-            type: 'many-to-many',
-            inverseSide: 'items',
-            joinTable: true,
-        }
+            target: "Chapa_Item",
+            type: 'one-to-many',
+            inverseSide: 'item',
+        },
+        itemMaquinas: {
+            target: "Item_Maquinas",
+            type: 'one-to-many',
+            inverseSide: 'maquina',
+        },
     }
 });
 

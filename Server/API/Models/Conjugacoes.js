@@ -1,26 +1,24 @@
 import { EntitySchema } from "typeorm";
 
-const Chapa_Item = new EntitySchema({
-    name: "Chapa_Item",
+const Conjugacoes = new EntitySchema({
+    name: "Conjugacoes",
     columns: {
         id: {
             type: "int",
             primary: true,
             generated: true
         },
+        medida: {
+            type: "text"
+        },
     },
     relations: {
         chapa: {
             target: "Chapas",
             type: 'many-to-one',
-            inverseSide: 'chapaItems',
-        },
-        item: {
-            target: "Item",
-            type: 'many-to-one',
-            inverseSide: 'chapaItems',
+            inverseSide: 'conjugacoes',
         }
     }
 });
 
-export default Chapa_Item;
+export default Conjugacoes;
