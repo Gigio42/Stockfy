@@ -40,7 +40,7 @@ async function populateCards() {
     let filterCriteria = document.getElementById('filterCriteria').value;
 
     try {
-        const response = await axios.get(`http://localhost:5500/PCP/chapas?groupingCriteria=${keys.join(',')}`);
+        const response = await axios.get(`http://localhost:3000/PCP/chapas?groupingCriteria=${keys.join(',')}`);
         let items = response.data;
 
         const filterItem = (item, filterCriteria) => {

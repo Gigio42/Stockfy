@@ -13,7 +13,7 @@ export class Card {
     }
 
     createHeaderRow(keys) {
-        let headerRow = this.createDivWithClass('row flex-nowrap overflow-auto bg-primary text-white');
+        let headerRow = this.createDivWithClass('rowstyle row flex-nowrap overflow-auto bg-primary text-white');
         keys.forEach(key => {
             let headerDiv = this.createDivWithClass('col text-center');
             headerDiv.textContent = key.toUpperCase();

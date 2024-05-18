@@ -360,3 +360,15 @@ button:hover {
     flex: 0 0 auto;
     margin-right: 10px;
 }
+
+/* ======================================
+   row
+   ====================================== */
+
+   .rowstyle {
+    background: red;
+    align-content: center;
+    margin-left: 0.1rem;
+   }
+
+  
