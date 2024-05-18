@@ -193,27 +193,37 @@ function handleFile(file) {
                                     case 17:
                                         prodComprado['valor_total'] = line; // Alterado de 'valor_lote_chapa' para 'valor_total'
                                         break;
-                                    case 18:
-                                        // Verifica se a linha contém o caractere "-"
-                                        if (line.includes('-')) {
-                                            var parts = line.split('-');
-                                            // Verifica se o array resultante da divisão tem pelo menos dois elementos
-                                            if (parts.length >= 2) {
-                                                var descricao = parts[0].trim(); // Extrai a descrição antes do "-"
-                                                var vincos = parts[1].trim().replace(/^vincos:\s*/i, ''); // Remove "vincos:" do início do texto
-                                                prodComprado['medida'] = descricao; // Define a descrição como a medida
-                                                prodComprado['vincos'] = vincos; // Define o valor após o "-" como vincos
+                                        case 18:
+                                            // Verifica se a linha contém o caractere "-"
+                                            if (line.includes('-')) {
+                                                var parts = line.split('-');
+                                                // Verifica se o array resultante da divisão tem pelo menos dois elementos
+                                                if (parts.length >= 2) {
+                                                    var descricao = parts[0].trim(); // Extrai a descrição antes do "-"
+                                                    var vincos = parts[1].trim().replace('VINCOS:', '').replace('vincos:', '').trim(); // Remove "VINCOS:" ou "vincos:"
+                                        
+                                                    // Verifica se vincos contém o caractere "+"
+                                                    if (!vincos.includes('+')) {
+                                                        vincos = 'não'; // Define vincos como "não" se não contiver "+"
+                                                    }
+                                        
+                                                    prodComprado['medida'] = descricao; // Define a descrição como a medida
+                                                    prodComprado['vincos'] = vincos; // Define o valor após o "-" como vincos
+                                                } else {
+                                                    console.error("Formato de linha inválido para a medida:", line);
+                                                    prodComprado['medida'] = ''; // Definindo medida como vazio
+                                                    prodComprado['vincos'] = ''; // Definindo vincos como vazio
+                                                }
                                             } else {
-                                                console.error("Formato de linha inválido para a medida:", line);
+                                                console.error("Caractere '-' não encontrado na linha:", line);
                                                 prodComprado['medida'] = ''; // Definindo medida como vazio
                                                 prodComprado['vincos'] = ''; // Definindo vincos como vazio
                                             }
-                                        } else {
-                                            console.error("Caractere '-' não encontrado na linha:", line);
-                                            prodComprado['medida'] = ''; // Definindo medida como vazio
-                                            prodComprado['vincos'] = ''; // Definindo vincos como vazio
-                                        }
-                                        break;
+                                            break;
+                                        
+
+
+
                                 }
                             }
                         }
