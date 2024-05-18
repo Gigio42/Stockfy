@@ -1,7 +1,7 @@
 const axios = require('axios');
 const faker = require('faker');
 
-const pedidos = 10;
+const pedidos = 30;
 
 async function postData() {
   const data = {
@@ -28,7 +28,7 @@ async function postData() {
         valor_unitario: faker.commerce.price(),
         valor_total: faker.commerce.price(),
         qualidade: qualidade,
-        medida: `${faker.datatype.number({ min: 600, max: 1200 })}x${faker.datatype.number({ min: 800, max: 2000 })}`,
+        medida: `${faker.datatype.number({ min: 1, max: 6 }) * 500}x${faker.datatype.number({ min: 1, max: 6 }) * 500}`,
         onda: faker.random.arrayElement(['B', 'C', 'BC', 'BB', 'E']),
         vincos: faker.datatype.number({ min: 1, max: 100 }) <= 75 ? 'Não' : 'Sim',
         coluna: faker.random.arrayElement([12, 28]),
