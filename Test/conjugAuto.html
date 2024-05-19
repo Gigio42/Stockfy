@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Rectangles</title>
+    <style>
+        canvas {
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="myCanvas" width="500" height="500"></canvas>
+
+    <script>
+        const canvas = document.getElementById('myCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let rectangles = [
+        { width: 75, height: 60, name: 'Box A1', color: 'green' },
+        { width: 85, height: 70, name: 'Box B1', color: 'green' },
+        { width: 95, height: 80, name: 'Box C1', color: 'green' },
+        { width: 65, height: 90, name: 'Box D1', color: 'green' },
+        { width: 75, height: 100, name: 'Box E1', color: 'green' },
+        { width: 85, height: 60, name: 'Box F1', color: 'green' },
+        { width: 95, height: 70, name: 'Box G1', color: 'green' },
+        { width: 65, height: 80, name: 'Box H1', color: 'green' },
+        { width: 75, height: 90, name: 'Box I1', color: 'green' },
+        { width: 85, height: 100, name: 'Box J1', color: 'green' },
+        { width: 95, height: 60, name: 'Box K1', color: 'green' },
+        { width: 65, height: 70, name: 'Box L1', color: 'green' },
+        { width: 75, height: 80, name: 'Box M1', color: 'green' },
+        { width: 85, height: 90, name: 'Box N1', color: 'green' },
+        { width: 95, height: 100, name: 'Box O1', color: 'green' },
+        { width: 65, height: 60, name: 'Box P1', color: 'green' },
+        { width: 75, height: 70, name: 'Box Q1', color: 'green' },
+        { width: 85, height: 80, name: 'Box R1', color: 'green' },
+        { width: 95, height: 90, name: 'Box S1', color: 'green' },
+        { width: 65, height: 100, name: 'Box T1', color: 'green' },
+        { width: 75, height: 60, name: 'Box U1', color: 'green' },
+        { width: 85, height: 70, name: 'Box V1', color: 'green' },
+        { width: 95, height: 80, name: 'Box W1', color: 'green' },
+        { width: 65, height: 90, name: 'Box X1', color: 'green' },
+        { width: 75, height: 100, name: 'Box Y1', color: 'green' },
+        { width: 85, height: 60, name: 'Box Z1', color: 'green' }
+        ];
+
+        rectangles = rectangles.sort((a, b) => (b.width * b.height) - (a.width * a.height));
+
+        let x = 0;
+        let y = 0;
+        let rowHeight = 0;
+
+        rectangles.forEach(rect => {
+            if (x + rect.width > canvas.width) {
+                x = 0;
+                y += rowHeight;
+                rowHeight = 0;
+            }
+
+            if (rect.height > rowHeight) {
+                rowHeight = rect.height;
+            }
+
+            if (y + rowHeight > canvas.height) {
+                canvas.height = y + rowHeight;
+            }
+
+            ctx.fillStyle = rect.color;
+            ctx.fillRect(x, y, rect.width, rect.height);
+
+            ctx.strokeStyle = 'black';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(x, y, rect.width, rect.height);
+
+            ctx.fillStyle = 'white';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(rect.name, x + rect.width / 2, y + rect.height / 2);
+
+            x += rect.width;
+
+            if (x > canvas.width) {
+                canvas.width = x;
+            }
+        });
+    </script>
+</body>
+</html>
