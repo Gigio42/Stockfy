@@ -58,7 +58,11 @@
                         </form>
                     </div>
                 </div>
-            </li>       
+            </li>  
+            <li class="mb-2 active">
+                <button id="showSelectedButton" class="agrupar-button">Show Selected</button>
+                <div id="popup" style="display: none;"></div>
+            </li>   
         </ul>
     </div>
 </aside>
@@ -82,8 +86,6 @@
                         <div class="card-body">
                             <h5 class="card-title">Chapas Disponíveis</h5>
                             <form id="groupingForm" class="grouping-form">
-                                <button id="showSelectedButton" class="agrupar-button">Show Selected</button>
-                                <div id="popup" style="display: none;"></div>
                                 <button type="submit" class="agrupar-button">AGRUPAR</button>
                                 <div class="checkbox-container">
                                     <label>
@@ -125,6 +127,11 @@
             <div id="popupContainer" class="modal" style="display: none;">
                 <div class="modal-content" id="modalContent">
                     <span class="close" id="closeModal">&times;</span>
+                    <form id="partNumberForm">
+                        <label for="partNumber">Part Number:</label>
+                        <input type="text" id="partNumber" name="partNumber">
+                        <button id="reserveButton">Reserve</button>
+                    </form>
                 </div>
             </div>
         </div>

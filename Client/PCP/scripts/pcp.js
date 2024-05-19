@@ -1,6 +1,6 @@
 import { Card } from './card.js';
 import { filterItem } from './filter.js';
-import { handleShowSelectedButtonClick } from './popup.js';
+import { handleShowSelectedButtonClick as handlePopupButtonClick } from './popup.js';
 
 var darkModeToggle = document.getElementById('darkModeToggle');
 var body = document.body;
@@ -48,13 +48,12 @@ async function populateCards() {
         items = items.filter(item => filterItem(item, filterCriteria));
         items.sort((a, b) => a[sortKey] < b[sortKey] ? -1 : a[sortKey] > b[sortKey] ? 1 : 0);
 
-        const selectedSubcards = new Set();
-
+        const selectedChapas = new Set();
         const onSubcardSelectionChange = (chapa, isSelected) => {
             if (isSelected) {
-                selectedSubcards.add(chapa);
+                selectedChapas.add(chapa);
             } else {
-                selectedSubcards.delete(chapa);
+                selectedChapas.delete(chapa);
             }
         };
 
@@ -66,9 +65,10 @@ async function populateCards() {
             container.appendChild(cardElement);
         });
 
-        handleShowSelectedButtonClick(() => Array.from(selectedSubcards));
+        handlePopupButtonClick(() => Array.from(selectedChapas));
 
-    } catch (error) {
+    } 
+    catch (error) {
         console.error('Error fetching data: ', error);
     }
 }

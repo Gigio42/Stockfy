@@ -264,11 +264,11 @@ body {
 
 .modal-content {
     background-color: #252525;
-    margin: auto;
+    margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
-    max-width: 400px;
+    overflow: auto; 
 }
 
 .modal-content input {
@@ -398,5 +398,7 @@ button:hover {
     align-content: center;
     margin-left: 0.1rem;
    }
+
+   
 
   
