@@ -15,12 +15,12 @@
     "axios": "^1.6.8",
     "fastify": "^4.27.0",
     "pino-pretty": "^11.0.0",
-    "serve": "^14.2.1",
     "sqlite3": "^5.1.7",
     "typeorm": "^0.3.20"
   },
   "devDependencies": {
     "faker": "^5.5.3",
-    "nodemon": "^3.1.0"
+    "nodemon": "^3.1.0",
+    "serve": "^14.2.3"
   }
 }

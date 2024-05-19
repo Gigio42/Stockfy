@@ -12,14 +12,14 @@ class RecebimentoController {
     const chapasRepository = getRepository(Chapas);
   
     const promises = data.map(async item => {
-      if (!item.id_compra) {
-        throw new Error('id_compra is undefined');
+      if (!item.id_chapa) {
+        throw new Error('id_chapa is undefined');
       }
   
-      const id_compra = item.id_compra;
-      const chapa = await chapasRepository.findOne({ where: { id_compra } });
+      const chapaProcurada = item.id_chapa;
+      const chapa = await chapasRepository.findOne({ where: { id_chapa: chapaProcurada } });
       if (!chapa) {
-        throw new Error(`Chapa with id ${item.id_compra} not found`);
+        throw new Error(`Chapa with id ${item.id_chapa} not found`);
       }
   
       chapa.data_recebimento = item.data_recebimento;

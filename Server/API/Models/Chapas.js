@@ -58,7 +58,7 @@ const Chapas = new EntitySchema({
         },
         vincos: {
             type: String,
-            length: 3,
+            length: 200,
             nullable: true,
         },
         gramatura: {
