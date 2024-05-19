@@ -8,6 +8,11 @@ const Chapa_Item = new EntitySchema({
             primary: true,
             generated: true
         },
+        quantidade: {
+            type: "int",
+            nullable: false,
+            default: 0
+        },
     },
     relations: {
         chapa: {

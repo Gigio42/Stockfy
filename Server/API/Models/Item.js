@@ -12,10 +12,6 @@ const Item = new EntitySchema({
             type: "int",
             default: 0
         },
-        quantidade_part_number: {
-            type: "int",
-            default: 0
-        },
         Status: {
             type: "text",
             default: ""
