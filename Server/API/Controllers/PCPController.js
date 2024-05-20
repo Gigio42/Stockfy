@@ -38,37 +38,41 @@ class PCPController {
     }
 
     async createItemWithChapa(body) {
-        const { chapaId: chapaID, quantity, medida, partNumber, keepRemaining } = body;
-
+        console.log(body)
+        const { chapaID, quantity, medida, partNumber, keepRemaining } = body;
+    
         const chapasRepository = getRepository(Chapas);
         const itemRepository = getRepository(Item);
         const chapaItemRepository = getRepository(Chapa_Item);
 
+        console.log("the chapa id is: ", chapaID)
+    
         const chapa = await chapasRepository.findOne({ where: { id_chapa: chapaID } });
 
+        console.log(chapa)
+    
         if (!chapa) {
             throw new Error('Chapa not found');
         }
-
+    
         if (!quantity) {
             throw new Error('Quantity is required');
         }
-
-        const [chapaWidth, chapaHeight] = chapa.medida.split('x').map(Number);
-
-        const [chosenWidth, chosenHeight] = medida.split('x').map(Number);
-
-        if (chapaWidth < chosenWidth || chapaHeight < chosenHeight) {
-            throw new Error('Not enough chapas of the specified dimensions');
-        }
-
+    
         chapa.quantidade_estoque -= quantity;
 
-        const originalArea = chapaWidth * chapaHeight;
-        const usedArea = chosenWidth * chosenHeight;
-        const remainingArea = originalArea - usedArea;
-
         if (keepRemaining) {
+            const [chapaWidth, chapaHeight] = chapa.medida.split('x').map(Number);
+            const [chosenWidth, chosenHeight] = medida.split('x').map(Number);
+
+            if (chapaWidth < chosenWidth || chapaHeight < chosenHeight) {
+                throw new Error('Not enough chapas of the specified dimensions');
+            }
+
+            const originalArea = chapaWidth * chapaHeight;
+            const usedArea = chosenWidth * chosenHeight;
+            const remainingArea = originalArea - usedArea;
+
             const { id_chapa, medida, ...chapaProps } = chapa;
 
             const newChapa = chapasRepository.create({

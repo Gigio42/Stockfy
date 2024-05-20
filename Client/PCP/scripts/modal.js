@@ -35,7 +35,7 @@ function createTable(selectedSubcards) {
     const table = document.createElement('table');
     table.className = 'table';
 
-    const headers = ['id_chapa', 'fornecedor', 'medida', 'qualidade', 'quantidade', 'Reciclar'];
+    const headers = ['Chapa ID', 'Fornecedor', 'Medida', 'Qualidade', 'Comprado', 'Estoque', 'Quantidade', 'Reciclar'];
     table.appendChild(createTableHeader(headers));
     table.appendChild(createTableBody(selectedSubcards));
 
@@ -61,7 +61,7 @@ function createTableBody(selectedSubcards) {
 
     selectedSubcards.forEach(chapa => {
         const row = document.createElement('tr');
-        ['id_chapa', 'fornecedor', 'medida', 'qualidade'].forEach(key => {
+        ['id_chapa', 'fornecedor', 'medida', 'qualidade', 'quantidade_comprada', 'quantidade_estoque'].forEach(key => {
             const td = document.createElement('td');
             td.textContent = chapa[key];
             row.appendChild(td);
@@ -74,8 +74,6 @@ function createTableBody(selectedSubcards) {
         row.appendChild(medidaTd);
 
         const recycleTd = document.createElement('td');
-        recycleTd.style.display = 'flex';
-        recycleTd.style.justifyContent = 'center';
         const recycleCheckbox = document.createElement('input');
         recycleCheckbox.type = 'checkbox';
         recycleCheckbox.id = `recycleCheckbox-${chapa.id_chapa}`;
