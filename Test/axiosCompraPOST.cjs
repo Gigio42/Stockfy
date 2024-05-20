@@ -1,3 +1,7 @@
+// Gerador de dados para encher a tabela de chapas para testes, escolha 
+// a quantidade de chapas que vc quiser em 'pedidos' e go crazy, mas
+// detalhe, atualmente o id_compra precisa mudar manualmente
+
 const axios = require('axios');
 const faker = require('faker');
 
@@ -25,7 +29,7 @@ async function postData() {
 
       return {
         fornecedor: fornecedor,
-        // id_compra: id_compra,
+        unidade: faker.random.arrayElement(['CH', 'AA']),
         id_compra: 28543,
         numero_cliente: faker.datatype.number(),
         data_compra: faker.date.past().toISOString().split('T')[0],
@@ -46,7 +50,7 @@ async function postData() {
   };
 
   try {
-    const response = await axios.post('http://localhost:5500/compras', data);
+    const response = await axios.post('http://localhost:3000/compras', data);
     console.log(response.data);
   } catch (error) {
     console.error(error);

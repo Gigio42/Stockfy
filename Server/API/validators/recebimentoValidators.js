@@ -5,11 +5,11 @@ export const updateRecebimentoSchema = {
             type: 'object',
             properties: {
                 id_compra: { type: 'integer' },
-                data_recebimento: { type: 'string', format: 'date-time' },
+                data_recebimento: { type: 'string' },
                 quantidade_recebida: { type: 'number' },
                 status: { type: 'string' }
             },
-            required: ['id_compra', 'data_recebimento', 'quantidade_recebida', 'status']
+            required: ['id_chapa', 'data_recebimento', 'quantidade_recebida', 'status']
         }
     }
 };
