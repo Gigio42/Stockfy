@@ -135,7 +135,7 @@
 
 function fetchChapas(xPed) {
     clearTable();  // Limpa as tabelas antes de buscar e adicionar novos dados
-    axios.get(`http://localhost:5500/recebimento/${xPed}`)  // Altera o ID para puxar as chapas
+    axios.get(`http://localhost:3000/recebimento/${xPed}`)  // Altera o ID para puxar as chapas
         .then(response => {
             const data = response.data;
             if (data && data.length > 0) {
@@ -171,10 +171,9 @@ function clearTable() {
 var rowId = 0;    // Variável global para manter o ID da linha
 function criarTable(table, chapaData) {
     var row = table.insertRow(-1);
-
     // Criar a célula do ID com um campo de entrada para que seja editável
     var idCell = row.insertCell(0);
-    idCell.innerHTML = `<input type='text' value='${chapaData.id_grupo_chapas ? chapaData.id_grupo_chapas : ''}' class='editable-id'>`; // Campo editável para ID
+    idCell.innerHTML = `<input type='text' value='${chapaData.id_chapa ? chapaData.id_chapa : ''}' class='editable-id'>`; // Campo editável para ID
 
 
 

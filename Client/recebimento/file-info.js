@@ -149,7 +149,6 @@ function organizarpenha(array) {
 }
 
 function criaObjPenha(array) {
-   
     let id_compra = array[7] || '';
     const slashIndex = id_compra.indexOf('/');
     if (slashIndex !== -1) {
@@ -159,6 +158,7 @@ function criaObjPenha(array) {
 
     var qRec = parseFloat(array[2].replace(/[,.]/g, ''));
     var valorUnitario = parseFloat(array[1].replace(',', '.')); // Correção para formato de número
+    var valor_total = parseFloat(array[0].replace('.', '').replace(',', '.'));
 
     return {
         id_compra: (id_compra || '').trim(),
@@ -169,6 +169,7 @@ function criaObjPenha(array) {
         vincos: array[5] || '',
         valor_unitario: valorUnitario || '0', // Verificação e correção
         quantidade_recebida: qRec || '',
+        valor_total: valor_total
     };
 }
 
