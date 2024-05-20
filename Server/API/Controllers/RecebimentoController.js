@@ -8,6 +8,8 @@ class RecebimentoController {
     if (!Array.isArray(data)) {
       throw new Error('Data must be an array');
     }
+
+    console.log(data);
   
     const chapasRepository = getRepository(Chapas);
   
