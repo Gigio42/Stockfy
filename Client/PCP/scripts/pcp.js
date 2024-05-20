@@ -37,8 +37,9 @@ $(document).ready(function () {
 
 
 async function populateCards() {
-    const keys = Array.from(document.querySelectorAll('input[name="groupingKeys"]:checked')).map(checkbox => checkbox.value);
+    const keys = Array.from(document.querySelectorAll('.checkbox-button[data-checked="true"]')).map(button => button.getAttribute('data-value'));
     const sortKey = document.getElementById('sortKey').value;
+    const sortOrder = document.getElementById('sortOrder').getAttribute('data-sort');
     let filterCriteria = document.getElementById('filterCriteria').value;
 
     try {
@@ -46,6 +47,7 @@ async function populateCards() {
             params: {
                 groupingCriteria: keys.join(','),
                 sortBy: sortKey,
+                sortOrder: sortOrder,
                 filterCriteria: filterCriteria
             }
         });
@@ -79,6 +81,25 @@ async function populateCards() {
 }
 document.getElementById('groupingForm').addEventListener('submit', event => {
     event.preventDefault();
+    populateCards();
+});
+document.querySelectorAll('.checkbox-button').forEach(function(checkboxButton) {
+    checkboxButton.addEventListener('click', function() {
+        if (checkboxButton.getAttribute('data-checked') === 'true') {
+            checkboxButton.setAttribute('data-checked', 'false');
+        } else {
+            checkboxButton.setAttribute('data-checked', 'true');
+        }
+    });
+});
+document.getElementById('sortOrder').addEventListener('click', function() {
+    if (this.getAttribute('data-sort') === 'ascending') {
+        this.setAttribute('data-sort', 'descending');
+        this.innerHTML = ' &#8595;';
+    } else {
+        this.setAttribute('data-sort', 'ascending');
+        this.innerHTML = ' &#8593;';
+    }
     populateCards();
 });
 populateCards();

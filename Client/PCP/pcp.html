@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Seu Nome">
-    <title>Estoque</title>
+    <title>Controle de Produção</title>
     <!-- Bootstrap CSS -->
-    <link id="theme" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css" rel="stylesheet">
+    <link id="theme" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css"
+        rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
     <!-- CSS Personalizado -->
@@ -16,134 +18,139 @@
 
 <body class="body">
 
-<div class="container-fluid">
-    <div class="row">
-        <!-- Aside -->
-        <aside id="aside" class="aside col-md-3 navbar-lateral d-none d-md-block">
-            <div class="logo-container">
-            
-            </div>
-          
-    <div class="p-2 navbar">
-        
-        <ul class="list-unstyled">
-            <li class="icon-li mb-2">
-                <a href="dashboard.html">
-                    <img class="imgicon" src="media/bandeira (1).png" alt="Dashboard Icon">
-                    Reservar Chapa
-                </a>
-            </li>
-            <li class="mb-2 active">
-                <a href="pedidos.html">
-                    <img class="imgicon" src="media/relatorio.png" alt="Pedidos Icon">
-                Relatório
-                </a>
-            </li>
-            <li class="mb-2 active">
-                <a href="#" onclick="criarUsuario()">
-                    <img class="imgicon" src="media/relatorio.png" alt="Pedidos Icon">
-                Criar usuário
-                </a>
-                <div id="modal" class="modal">
-                    <div class="modal-content">
-                        <span class="close" onclick="fecharModal()">&times;</span>
-                        <h2>Cadastrar usuário</h2>
-                        <form id="formCriarUsuario">
-                            <label for="nomeUsuario">Nome de Usuário:</label>
-                            <input type="text" id="nomeUsuario" name="nomeUsuario">
-                            <label for="senha">Senha:</label>
-                            <input type="password" id="senha" name="senha">
-                            <input type="checkbox" onclick="mostrarSenha()">Mostrar senha
-                            <button type="submit">Cadastrar</button>
-                        </form>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Aside -->
+            <aside id="aside" class="aside col-md-3 navbar-lateral d-none d-md-block">
+                <div class="logo-container">
+
+                </div>
+
+                <div class="p-2 navbar">
+
+                    <ul class="list-unstyled">
+                        <li class="icon-li mb-2">
+                            <a href="dashboard.html">
+                                <img class="imgicon" src="media/bandeira (1).png" alt="Dashboard Icon">
+                                Reservar Chapa
+                            </a>
+                        </li>
+                        <li class="mb-2 active">
+                            <a href="pedidos.html">
+                                <img class="imgicon" src="media/relatorio.png" alt="Pedidos Icon">
+                                Relatório
+                            </a>
+                        </li>
+                        <li class="mb-2 active">
+                            <a href="#" onclick="criarUsuario()">
+                                <img class="imgicon" src="media/relatorio.png" alt="Pedidos Icon">
+                                Criar usuário
+                            </a>
+                            <div id="modal" class="modal">
+                                <div class="modal-content">
+                                    <span class="close" onclick="fecharModal()">&times;</span>
+                                    <h2>Cadastrar usuário</h2>
+                                    <form id="formCriarUsuario">
+                                        <label for="nomeUsuario">Nome de Usuário:</label>
+                                        <input type="text" id="nomeUsuario" name="nomeUsuario">
+                                        <label for="senha">Senha:</label>
+                                        <input type="password" id="senha" name="senha">
+                                        <input type="checkbox" onclick="mostrarSenha()">Mostrar senha
+                                        <button type="submit">Cadastrar</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="mb-2 active">
+                            <button id="showSelectedButton" class="agrupar-button">Show Selected</button>
+                            <div id="popup" style="display: none;"></div>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- Header -->
+            <div class="col-md-9 header">
+                <div class="header-custom text-light d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <h1 class="m-0">Gerenciamento PCP</h1>
+                    </div>
+                    <div class="dark-mode-toggle">
+                        <input type="checkbox" id="darkModeToggle" />
+                        <label for="darkModeToggle"></label>
                     </div>
                 </div>
-            </li>  
-            <li class="mb-2 active">
-                <button id="showSelectedButton" class="agrupar-button">Show Selected</button>
-                <div id="popup" style="display: none;"></div>
-            </li>   
-        </ul>
-    </div>
-</aside>
 
-        <!-- Header -->
-        <div class="col-md-9 header">
-            <div class="header-custom text-light d-flex justify-content-between align-items-center">
-                <div class="d-flex align-items-center">
-                    <h1 class="m-0">Gerenciamento PCP</h1>
-                </div>
-                <div class="dark-mode-toggle">
-                    <input type="checkbox" id="darkModeToggle" />
-                    <label for="darkModeToggle"></label>
-                </div>
-            </div>
-
-            <!-- Card -->
-            <div class=" rowstyle ">
-                <div class="col-md-11">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Chapas Disponíveis</h5>
-                            <form id="groupingForm" class="grouping-form">
-                                <button type="submit" class="agrupar-button">AGRUPAR</button>
-                                <div class="checkbox-container">
-                                    <label>
-                                        <input type="checkbox" name="groupingKeys" value="fornecedor" checked> Fornecedor
-                                    </label>
-                                    <label>
-                                        <input type="checkbox" name="groupingKeys" value="qualidade" checked> Qualidade
-                                    </label>
-                                    <label>
-                                        <input type="checkbox" name="groupingKeys" value="medida" checked> Medida
-                                    </label>
-                                    <label>
-                                        <input type="checkbox" name="groupingKeys" value="onda"> Onda
-                                    </label>
-                                    <label>
-                                        <input type="checkbox" name="groupingKeys" value="coluna"> Coluna
-                                    </label>
-                                    <label>
-                                        <input type="checkbox" name="groupingKeys" value="vinco"> Vinco
-                                    </label>
-                                </div>
-                                <label for="sortKey">Sort by:</label>
-                                <select id="sortKey">
-                                    <option value="quantidade_comprada">Quantidade Comprada</option>
-                                    <option value="fornecedor">Fornecedor</option>
-                                    <option value="qualidade">Qualidade</option>
-                                    <option value="medida">Medida</option>
-                                </select>
-                                <label for="filterCriteria">Filter by:</label>
-                                <input type="text" id="filterCriteria" name="filterCriteria">
-                            </form>
-                            <div id="container"></div>
+                <!-- Card -->
+                <div class=" rowstyle ">
+                    <div class="col-md-11">
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="groupingForm" class="grouping-form">
+                                    <div class="row">
+                                        <div class="col-md-6 order-md-2">
+                                            <div class="checkbox-container">
+                                                <div class="checkbox-button" data-value="fornecedor" data-checked="true">Fornecedor</div>
+                                                <div class="checkbox-button" data-value="qualidade" data-checked="true">Qualidade</div>
+                                                <div class="checkbox-button" data-value="medida" data-checked="true">Medida</div>
+                                                <div class="checkbox-button" data-value="unidade">Unidade</div>
+                                                <div class="checkbox-button" data-value="onda">Onda</div>
+                                                <div class="checkbox-button" data-value="coluna">Coluna</div>
+                                                <div class="checkbox-button" data-value="vincos">Vinco</div>
+                                                <div class="checkbox-button" data-value="gramatura">Gramatura</div>
+                                                <div class="checkbox-button" data-value="peso_total">Peso Total</div>
+                                                <div class="checkbox-button" data-value="valor_unitario">Valor unitário</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 order-md-1">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" id="filterCriteria" name="filterCriteria" placeholder="Pesquisar">
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="d-flex align-items-center">
+                                                    <select class="form-control" id="sortKey" style="flex-grow: 1;">
+                                                        <option value="quantidade_comprada">Quantidade Comprada</option>
+                                                        <option value="fornecedor">Fornecedor</option>
+                                                        <option value="qualidade">Qualidade</option>
+                                                        <option value="medida">Medida</option>
+                                                    </select>
+                                                    <button type="button" class="btn btn-secondary agrupar-button ml-2" id="sortOrder" data-sort="ascending"> &#8593;</button>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-primary agrupar-button w-100">AGRUPAR</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div id="container"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Popup -->
-            <div id="popupContainer" class="modal" style="display: none;">
-                <div class="modal-content" id="modalContent">
-                    <span class="close" id="closeModal">&times;</span>
-                    <form id="partNumberForm">
-                        <label for="partNumber">Part Number:</label>
-                        <input type="text" id="partNumber" name="partNumber">
-                        <button id="reserveButton">Reserve</button>
-                    </form>
+                <!-- Popup -->
+                <div id="popupContainer" class="modal" style="display: none;">
+                    <div class="modal-content" id="modalContent">
+                        <span class="close" id="closeModal">&times;</span>
+                        <form id="partNumberForm">
+                            <label for="partNumber">Part Number:</label>
+                            <input type="text" id="partNumber" name="partNumber">
+                            <button id="reserveButton">Reserve</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Bootstrap JS e JavaScript personalizado -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script type="module" src="./scripts/pcp.js"></script>
+    <!-- Bootstrap JS e JavaScript personalizado -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script type="module" src="./scripts/pcp.js"></script>
 
 </body>
+
 </html>

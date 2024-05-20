@@ -300,28 +300,11 @@ button:hover {
     color: #0e0e0e;
 }
 
-/* ======================================
-   Grouping Form Styles
-   ====================================== */
-   .agrupar-button {
-    background: transparent;
-    border: 1px solid #6d6d6d;
-    color: #fff;
-    padding: 10px 20px;
-    margin: 0 10px 0 0;
-    transition: background 0.3s ease;
-    font-size: 1em;
-}
-
-.agrupar-button:hover {
-    background: #6d6d6d;
-    color: #fff;
-}
-
 .grouping-form {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    justify-content: space-between;
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid #6d6d6d;
     padding: 20px;
@@ -330,63 +313,82 @@ button:hover {
     color: #fff;
 }
 
-.grouping-form label,
-.grouping-form select,
-.grouping-form input[type="checkbox"] {
+.grouping-form label {
     color: #fff;
     font-size: 1em;
-    margin-right: 10px;
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
 }
 
-.grouping-form select,
-.grouping-form input[type="checkbox"] {
+.grouping-form input[type="text"],
+.grouping-form select {
     background: transparent;
     border: 1px solid #6d6d6d;
+    padding: 10px;
+    box-sizing: border-box;
+    color: #fff;
+    font-size: 1em;
 }
 
-.grouping-form select:hover,
-.grouping-form input[type="checkbox"]:hover {
+.grouping-form input[type="text"]:hover,
+.grouping-form select:hover {
     background: #6d6d6d;
     color: #fff;
 }
 
+.agrupar-button {
+    background: transparent;
+    border: 1px solid #6d6d6d;
+    color: #fff;
+    padding: 10px 10px;
+    transition: background 0.3s ease;
+    font-size: 1em;
+    grid-column: span 2;
+}
+
+.agrupar-button:hover {
+    background: #6d6d6d;
+    color: #fff;
+}
+
+#sortOrder {
+    width: 50px;
+    height: 38px;
+    padding: 0;
+    font-size: 1.5em; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .checkbox-container {
     display: flex;
-    flex-wrap: nowrap;
+    padding: 0%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
     align-items: center;
+    width: 100%;
 }
 
-.checkbox-container label {
-    flex: 0 0 auto;
-    margin-right: 10px;
-}
-
-.custom-checkbox {
-    width: 30px;
-    height: 30px;
-    border: 20px solid #0000002a;
-    border-radius: 5px;
-    background-color: #ffffff00;
-    margin: 12px;
-    cursor: pointer;
+.checkbox-button {
     display: inline-block;
-}
-
-.custom-checkbox::after {
-    content: "";
-    display: none;
-}
-
-.chapa-checkbox:checked + .custom-checkbox::after {
-    display: block;
-    width: 30px;
-    height: 30px;
+    padding: 10px;
+    background: #56565600;
+    border: 1px solid #6d6d6d;
+    color: #fff;
     border-radius: 5px;
-    background-color: #5468ad;
-    position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    margin: 2px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.checkbox-button[data-checked="true"] {
+    background-color: #00000054 !important;
+    border: #0e0e0e;
+    color: #fff !important;
 }
 
 /* ======================================
@@ -399,6 +401,64 @@ button:hover {
     margin-left: 0.1rem;
    }
 
-   
+/* ======================================
+   cards
+   ====================================== */
 
-  
+.card {
+    padding: 0px;
+    margin-bottom: 10px;
+    background-color: rgb(34, 34, 34);
+}
+
+.card-body {
+    background-color: #f8f9fa00;
+}
+
+.rowstyle {
+    display: flex;
+    overflow: auto;
+    background-color: #007bff00;
+    color: white;
+}
+
+.header {
+    text-align: center;
+    
+}
+
+.value {
+    text-align: center;
+}
+
+.custom-checkbox {
+    display: inline-block; 
+}
+
+.subcard-checkbox-input:checked + .subcard-checkbox::after {
+    display: block;
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    background-color: #ffffffcb;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.subcard-checkbox {
+    width: 30px;
+    height: 30px;
+    border: 20px solid #0000002a;
+    border-radius: 5px;
+    background-color: #ffffff00;
+    margin: 12px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.subcard-checkbox::after {
+    content: "";
+    display: none;
+}

@@ -14,14 +14,14 @@ export class Card {
     }
 
     createHeaderRow(keys) {
-        let headerRow = this.createDivWithClass('rowstyle row flex-nowrap overflow-auto bg-primary text-white');
+        let headerRow = this.createDivWithClass('rowstyle row flex-nowrap overflow-auto bg-primary text-white w-100');
         keys.forEach(key => {
-            let headerDiv = this.createDivWithClass('col text-center');
+            let headerDiv = this.createDivWithClass('col text-center header');
             headerDiv.textContent = key.toUpperCase();
             headerRow.appendChild(headerDiv);
         });
 
-        let headerDiv = this.createDivWithClass('col text-center');
+        let headerDiv = this.createDivWithClass('col text-center header');
         headerDiv.textContent = 'QUANTIDADE COMPRADA';
         headerRow.appendChild(headerDiv);
 
@@ -31,13 +31,13 @@ export class Card {
     createValueRow(group, keys) {
         let valueRow = this.createDivWithClass('row flex-nowrap overflow-auto');
         keys.forEach(key => {
-            let valueDiv = this.createDivWithClass('col text-center');
+            let valueDiv = this.createDivWithClass('col text-center value');
             valueDiv.textContent = group[key];
             valueRow.appendChild(valueDiv);
         });
 
         let quantidadeCompradaDiv = document.createElement('div');
-        quantidadeCompradaDiv.className = 'col text-center';
+        quantidadeCompradaDiv.className = 'col text-center value';
         quantidadeCompradaDiv.textContent = this.group.quantidade_comprada;
         valueRow.appendChild(quantidadeCompradaDiv);
 
@@ -46,7 +46,7 @@ export class Card {
 
     createButton(index) {
         let button = document.createElement('button');
-        button.className = 'btn btn-primary mt-2';
+        button.className = 'btn btn-primary mt-2 w-100';
         button.type = 'button';
         button.dataset.toggle = 'collapse';
         button.dataset.target = `#collapse${index}`;
@@ -58,41 +58,60 @@ export class Card {
     }
 
     createSubcard(chapa) {
-        let subcardWrapper = this.createDivWithClass('subcard-wrapper');
-        subcardWrapper.style.display = 'flex';
+        let subcard = this.createDivWithClass('card card-body mt-2 shadow-sm rounded');
+        subcard.style.display = 'inline-block';
+
+        let flexContainer = document.createElement('div');
+        flexContainer.style.display = 'flex';
+        flexContainer.style.flexDirection = 'row';
+        subcard.appendChild(flexContainer);
+
+        let checkboxContainer = document.createElement('div');
+        checkboxContainer.className = 'bg-primary';
+        checkboxContainer.style.borderTopLeftRadius = '0.25rem';
+        checkboxContainer.style.borderBottomLeftRadius = '0.25rem';
+        checkboxContainer.style.display = 'flex';
+        checkboxContainer.style.justifyContent = 'center';
+        checkboxContainer.style.alignItems = 'center';
+        flexContainer.appendChild(checkboxContainer);
 
         let checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
-        checkbox.className = 'chapa-checkbox';
-        checkbox.id = 'chapa-checkbox-' + JSON.stringify(chapa);
+        checkbox.className = 'subcard-checkbox-input';
+        checkbox.id = 'subcard-checkbox-' + JSON.stringify(chapa);
         checkbox.style.display = 'none';
         checkbox.value = JSON.stringify(chapa);
         checkbox.addEventListener('change', (event) => {
             this.onSubcardSelectionChange(chapa, event.target.checked);
         });
-        subcardWrapper.appendChild(checkbox);
+        checkboxContainer.appendChild(checkbox);
 
         let label = document.createElement('label');
         label.htmlFor = checkbox.id;
-        label.className = 'custom-checkbox';
-        subcardWrapper.appendChild(label);
+        label.className = 'subcard-checkbox';
+        label.style.width = '20px';
+        label.style.height = '20px';
+        checkboxContainer.appendChild(label);
 
-        let subcard = this.createDivWithClass('card card-body mt-2 shadow-sm');
+        let cardContentContainer = this.createDivWithClass('card-content-container');
+        flexContainer.appendChild(cardContentContainer);
+
+        let cardContent = this.createDivWithClass('card-content');
+        cardContentContainer.appendChild(cardContent);
+
         let subcardHeaderRow = this.createHeaderRow(Object.keys(chapa));
-        subcard.appendChild(subcardHeaderRow);
+        cardContent.appendChild(subcardHeaderRow);
 
         let subcardRow = this.createValueRow(chapa, Object.keys(chapa));
-        subcard.appendChild(subcardRow);
+        cardContent.appendChild(subcardRow);
 
         let totalWidth = 0;
         Object.keys(chapa).forEach(() => {
             totalWidth += 200;
         });
-        subcard.style.minWidth = `${totalWidth}px`;
+        cardContent.style.minWidth = `${totalWidth}px`;
 
-        subcardWrapper.appendChild(subcard);
-
-        return subcardWrapper;
+        return subcard;
     }
 
     createCard(group, keys, index, sortKey) {
