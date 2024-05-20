@@ -102,9 +102,14 @@ const Chapas = new EntitySchema({
     ],
     relations: {
         items: {
-            target: "Item",
-            type: 'many-to-many',
-            inverseSide: 'chapas',
+            target: "Chapa_Item",
+            type: 'one-to-many',
+            inverseSide: 'chapa',
+        },
+        conjugacoes: {
+            target: "Conjugacoes",
+            type: 'one-to-many',
+            inverseSide: 'chapa',
             cascade: true
         }
     }

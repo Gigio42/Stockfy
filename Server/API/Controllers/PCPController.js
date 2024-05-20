@@ -1,13 +1,14 @@
-import {getRepository} from 'typeorm';
+import { getRepository } from 'typeorm';
 import Chapas from '../Models/Chapas.js';
 import Item from '../Models/Item.js';
+import Chapa_Item from '../Models/Chapa_Item.js';
 
 class PCPController {
-    constructor() {}
+    constructor() { }
 
     async getChapas(query, groupingCriteria, sortOrder, sortBy) {
         const chapasRepository = getRepository(Chapas);
-        let data = await chapasRepository.find();
+        let data = await chapasRepository.find({ relations: ['conjugacoes'] });
 
         const grupoChapas = data.reduce((groups, chapa) => {
             const key = groupingCriteria.map(criterion => chapa[criterion]).join('-');
@@ -25,40 +26,83 @@ class PCPController {
             return groups;
         }, {});
 
-        if (sortOrder === 'asc') {
-            data.sort((a, b) => a[sortBy] - b[sortBy]);
-        } else if (sortOrder === 'desc') {
-            data.sort((a, b) => b[sortBy] - a[sortBy]);
-        }
+        const sortedChapas = Object.values(grupoChapas).sort((a, b) => {
+            if (sortOrder === 'asc') {
+                return a[sortBy] < b[sortBy] ? -1 : a[sortBy] > b[sortBy] ? 1 : 0;
+            } else {
+                return a[sortBy] > b[sortBy] ? -1 : a[sortBy] < b[sortBy] ? 1 : 0;
+            }
+        });
 
-        return Object.values(grupoChapas);
+        return sortedChapas;
     }
 
     async createItemWithChapa(body) {
-        const { chapaId: chapaID, quantity, partNumber } = body;
-
+        console.log(body)
+        const { chapaID, quantity, medida, partNumber, keepRemaining } = body;
+    
         const chapasRepository = getRepository(Chapas);
         const itemRepository = getRepository(Item);
+        const chapaItemRepository = getRepository(Chapa_Item);
 
+        console.log("the chapa id is: ", chapaID)
+    
         const chapa = await chapasRepository.findOne({ where: { id_chapa: chapaID } });
-        console.log(chapa);
+
+        console.log(chapa)
     
         if (!chapa) {
             throw new Error('Chapa not found');
         }
     
-        chapa.quantidade_estoque -= quantity;
+        if (!quantity) {
+            throw new Error('Quantity is required');
+        }
     
+        chapa.quantidade_estoque -= quantity;
+
+        if (keepRemaining) {
+            const [chapaWidth, chapaHeight] = chapa.medida.split('x').map(Number);
+            const [chosenWidth, chosenHeight] = medida.split('x').map(Number);
+
+            if (chapaWidth < chosenWidth || chapaHeight < chosenHeight) {
+                throw new Error('Not enough chapas of the specified dimensions');
+            }
+
+            const originalArea = chapaWidth * chapaHeight;
+            const usedArea = chosenWidth * chosenHeight;
+            const remainingArea = originalArea - usedArea;
+
+            const { id_chapa, medida, ...chapaProps } = chapa;
+
+            const newChapa = chapasRepository.create({
+                ...chapaProps,
+                area: remainingArea,
+                quantidade_estoque: quantity,
+                status: 'RESTO'
+            });
+
+            await chapasRepository.save(newChapa);
+        }
+
+        await chapasRepository.save(chapa);
+
         const item = itemRepository.create({
             part_number: partNumber,
-            quantidade_part_number: quantity,
             Status: 'RESERVADO',
             chapas: [chapa]
         });
-    
-        await chapasRepository.save(chapa);
+
         await itemRepository.save(item);
-    
+
+        const chapaItem = chapaItemRepository.create({
+            chapa: chapa,
+            item: item,
+            quantidade: quantity
+        });
+
+        await chapaItemRepository.save(chapaItem);
+
         return item;
     }
 }
