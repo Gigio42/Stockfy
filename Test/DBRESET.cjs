@@ -1,3 +1,9 @@
+// Use esse script se vc quiser resetar o banco de dados inteiro. 
+
+// Como eu faço bastante testes as vezes o banco fica poluido de informações erradas 
+// e preciso limpar, mas como é cansativo ficar colocando o nome de cada tabela   
+// para deletar toda vez, fiz esse script pra facilitar.
+
 const sqlite3 = require('sqlite3').verbose();
 
 let db = new sqlite3.Database('../Server/estoque.db', (err) => {

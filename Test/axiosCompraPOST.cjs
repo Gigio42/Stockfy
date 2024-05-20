@@ -1,3 +1,7 @@
+// Gerador de dados para encher a tabela de chapas para testes, escolha 
+// a quantidade de chapas que vc quiser em 'pedidos' e go crazy, mas
+// detalhe, atualmente o id_compra precisa mudar manualmente
+
 const axios = require('axios');
 const faker = require('faker');
 
