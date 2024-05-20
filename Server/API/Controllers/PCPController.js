@@ -26,13 +26,15 @@ class PCPController {
             return groups;
         }, {});
 
-        if (sortOrder === 'asc') {
-            data.sort((a, b) => a[sortBy] - b[sortBy]);
-        } else if (sortOrder === 'desc') {
-            data.sort((a, b) => b[sortBy] - a[sortBy]);
-        }
+        const sortedChapas = Object.values(grupoChapas).sort((a, b) => {
+            if (sortOrder === 'asc') {
+                return a[sortBy] < b[sortBy] ? -1 : a[sortBy] > b[sortBy] ? 1 : 0;
+            } else {
+                return a[sortBy] > b[sortBy] ? -1 : a[sortBy] < b[sortBy] ? 1 : 0;
+            }
+        });
 
-        return Object.values(grupoChapas);
+        return sortedChapas;
     }
 
     async createItemWithChapa(body) {

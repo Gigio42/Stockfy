@@ -31,7 +31,7 @@ function highlightCurrentPage() {
     $("ul.list-unstyled li a[href='" + currentPage + "']").parent().addClass("active"); // Adiciona a classe 'active' ao item de menu correspondente à página atual
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
     highlightCurrentPage(); // Chama a função ao carregar a página
 });
 
@@ -42,11 +42,16 @@ async function populateCards() {
     let filterCriteria = document.getElementById('filterCriteria').value;
 
     try {
-        const response = await axios.get(`http://localhost:3000/PCP/chapas?groupingCriteria=${keys.join(',')}`);
+        const response = await axios.get(`http://localhost:3000/PCP/chapas`, {
+            params: {
+                groupingCriteria: keys.join(','),
+                sortBy: sortKey,
+                filterCriteria: filterCriteria
+            }
+        });
         let items = response.data;
 
         items = items.filter(item => filterItem(item, filterCriteria));
-        items.sort((a, b) => a[sortKey] < b[sortKey] ? -1 : a[sortKey] > b[sortKey] ? 1 : 0);
 
         const selectedChapas = new Set();
         const onSubcardSelectionChange = (chapa, isSelected) => {
@@ -67,7 +72,7 @@ async function populateCards() {
 
         handlePopupButtonClick(() => Array.from(selectedChapas));
 
-    } 
+    }
     catch (error) {
         console.error('Error fetching data: ', error);
     }
@@ -97,9 +102,9 @@ function fecharModal() {
     document.getElementById("modal").style.display = "none";
 }
 
-function mostrarSenha(){
+function mostrarSenha() {
     const senha = document.getElementById("senha");
-    if(senha.type === "password"){
+    if (senha.type === "password") {
         senha.type = "text";
     } else {
         senha.type = "password";
