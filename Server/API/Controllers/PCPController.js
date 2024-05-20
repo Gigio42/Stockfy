@@ -94,7 +94,7 @@ class PCPController {
         const chapaItem = chapaItemRepository.create({
             chapa: chapa,
             item: item,
-            quantity: quantity
+            quantidade: quantity
         });
 
         await chapaItemRepository.save(chapaItem);

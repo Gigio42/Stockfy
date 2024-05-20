@@ -116,7 +116,7 @@ export class Card {
 
     createCard(group, keys, index, sortKey) {
         let card = this.createDivWithClass('card mb-3 shadow-sm');
-        let cardBody = this.createDivWithClass('card-body bg-secondary');
+        let cardBody = this.createDivWithClass('card-body bg-secondary rounded');
         card.appendChild(cardBody);
 
         cardBody.appendChild(this.createHeaderRow(keys));

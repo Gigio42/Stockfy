@@ -1,6 +1,6 @@
 import { Card } from './card.js';
 import { filterItem } from './filter.js';
-import { handleShowSelectedButtonClick as handlePopupButtonClick } from './popup.js';
+import { handleShowSelectedButtonClick as handlePopupButtonClick } from './modal.js';
 
 var darkModeToggle = document.getElementById('darkModeToggle');
 var body = document.body;
