@@ -117,7 +117,7 @@ function createPartNumberForm() {
     const input = document.createElement('input');
     input.type = 'text';
     input.id = 'partNumberInput';
-    input.placeholder = 'Part Number';
+    input.placeholder = 'PART NUMBER';
     form.appendChild(input);
     return form;
 }
