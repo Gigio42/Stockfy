@@ -93,11 +93,11 @@ document.querySelectorAll('.checkbox-button').forEach(function(checkboxButton) {
     });
 });
 document.getElementById('sortOrder').addEventListener('click', function() {
-    if (this.getAttribute('data-sort') === 'ascending') {
+    if (this.getAttribute('data-sort') === 'asc') {
         this.setAttribute('data-sort', 'descending');
         this.innerHTML = ' &#8595;';
     } else {
-        this.setAttribute('data-sort', 'ascending');
+        this.setAttribute('data-sort', 'asc');
         this.innerHTML = ' &#8593;';
     }
     populateCards();
