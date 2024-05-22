@@ -34,3 +34,4 @@ node_modules/**/*.node
 
 # banco de dados
 **/estoque.db
+Server/estoque.db
