@@ -24,7 +24,7 @@ function extractText(data) {
 function processText(text) {
     if (text.includes('FERNANDEZ')) {
         var result = fernandez(text);
-        const tablef = document.getElementById('recebimento').getElementsByTagName('tbody')[0];
+        const tablef = document.getElementById('recebimento');
         const uniqueIds = new Set(); // Conjunto para armazenar IDs únicos
 
         // Primeiro acumula todos os IDs de compra únicos
@@ -54,7 +54,7 @@ function processText(text) {
         });
 } else if (text.includes('PENHA')) {
     var result = penha(text); // result é um array de objetos
-    const tablep = document.getElementById('recebimento').getElementsByTagName('tbody')[0];
+    const tablep = document.getElementById('recebimento');
     const processedIds = new Set(); // Set para armazenar ids únicos
 
     result.forEach(obj => {
@@ -67,7 +67,7 @@ function processText(text) {
     result.forEach(obj => criarTable(tablep, obj)); // Criar uma linha para cada objeto
 } else if (text.includes('IRANI')) {
     var result = irani(text); // result é um array de objetos
-    const tablep = document.getElementById('recebimento').getElementsByTagName('tbody')[0];
+    const tablep = document.getElementById('recebimento');
     const processedIds = new Set(); // Set para armazenar ids únicos
 
     result.forEach(obj => {
@@ -343,8 +343,8 @@ function parseXML(xml) {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xml, "application/xml");
     const products = xmlDoc.getElementsByTagName("det");
-    const table = document.getElementById('recebimento').getElementsByTagName('tbody')[0];
-    table.innerHTML = '';  // Limpa a tabela antes de adicionar novos dados
+    const table = document.getElementById('recebimento');
+
 
     const supplier = extractSupplier(xmlDoc);
     const prodFunc = { "Penha": prod_Penha, "Fernandez": prod_Fernandez, "Irani": prod_Irani };
@@ -360,12 +360,9 @@ function parseXML(xml) {
         uniqueIds.add(chapaData.id_compra);
     });
 
-    // Prepara chamadas de fetchChapas e acumula promessas
+
     const fetchPromises = Array.from(uniqueIds).map(id => fetchChapas(id));
 
-    // Espera todas as fetchChapas terminarem
-    Promise.all(fetchPromises).then(() => {
-        // Processar cada produto após a conclusão de todas as fetchChapas
         Array.from(products).forEach(product => {
             const prodDetails = prodFunc[supplier]?.(product);
             if (!prodDetails) return;
@@ -373,9 +370,7 @@ function parseXML(xml) {
             const chapaData = data_Chapa(prodDetails, product, supplier, xmlDoc);
             criarTable(table, chapaData);  // Cria uma linha na tabela para cada chapaData
         });
-    }).catch(error => {
-        console.error('Erro durante a busca de chapas:', error);
-    });
+
 }
 
 

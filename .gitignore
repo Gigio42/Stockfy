@@ -31,3 +31,7 @@ yarn.lock
 # Binários
 node_modules/**/*.node
 /qodana.yaml
+
+# banco de dados
+**/estoque.db
+Server/estoque.db

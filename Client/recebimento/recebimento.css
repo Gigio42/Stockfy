@@ -1,3 +1,16 @@
+
+:root {
+    --background-color: #333;     /* Cor de fundo para o tema escuro */
+    --text-color: #ccc;     /* Cor de texto para o tema claro */
+}
+
+[data-theme="light"] {
+    --background-color: #f5f5f5;  /* Cor de fundo para o tema claro */
+    --text-color: #333;         /* Cor de texto para o tema escuro */
+}
+
+
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -9,13 +22,20 @@ body {
     overflow: hidden; /* Remove a barra de rolagem se não for necessário */
 }
 
+body, table, #button-container, td, th, input[type="text"], input[type="date"], select{
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+
 #button-container {
     width: 100%;
     padding: 10px 0;
-    background-color: #f5f5f5;
     text-align: left;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    position: fixed; /* Fixa o contêiner no topo */
+    position: fixed;
+    display: flex;
+    justify-content: space-between; /* Fixa o contêiner no topo */
     top: 0; /* Posição no topo */
     left: 0; /* Alinha à esquerda */
     z-index: 1000; /* Garante que fique sobre outros elementos */
@@ -29,7 +49,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 50px;
+    margin-top: 10%;
 }
 
 #tables {
@@ -47,6 +67,7 @@ table {
 }
 
 th, td {
+
     text-align: center; /* Centraliza texto em cabeçalhos e células */
     padding: 8px 10px; /* Espaço adequado dentro das células */
 }

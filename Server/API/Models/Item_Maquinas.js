@@ -1,26 +1,30 @@
 import { EntitySchema } from "typeorm";
 
-const Item_Maquinas = new EntitySchema({
+const Item_Maquina = new EntitySchema({
     name: "Item_Maquinas",
     columns: {
-        id: {
+        id_item_maquina: {
             type: "int",
             primary: true,
             generated: true
         },
+        ordem: {
+            type: "int",
+            nullable: true
+        }
     },
     relations: {
-        item: {
+        itemId: {
             target: "Item",
             type: 'many-to-one',
-            inverseSide: 'itemMaquinas',
+            inverseSide: 'Item_Maquinas',
         },
-        maquina: {
+        maquinaId: {
             target: "Maquina",
             type: 'many-to-one',
-            inverseSide: 'itemMaquinas',
+            inverseSide: 'Item_Maquinas',
         }
     }
 });
 
-export default Item_Maquinas;
+export default Item_Maquina;

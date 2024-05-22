@@ -8,8 +8,6 @@ class RecebimentoController {
     if (!Array.isArray(data)) {
       throw new Error('Data must be an array');
     }
-
-    console.log(data);
   
     const chapasRepository = getRepository(Chapas);
   
@@ -23,7 +21,12 @@ class RecebimentoController {
       if (!chapa) {
         throw new Error(`Chapa with id ${item.id_chapa} not found`);
       }
-  
+      
+
+      chapa.vincos = item.vincos;
+      chapa.onda = item.onda;
+      chapa.medida = item.medida;
+      chapa.qualidade = item.qualidade;
       chapa.data_recebimento = item.data_recebimento;
       chapa.quantidade_recebida += item.quantidade_recebida;
       chapa.quantidade_estoque += item.quantidade_recebida; 

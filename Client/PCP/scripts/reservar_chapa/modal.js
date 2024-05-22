@@ -77,9 +77,9 @@ function createTableBody(selectedSubcards) {
         const recycleCheckbox = document.createElement('input');
         recycleCheckbox.type = 'checkbox';
         recycleCheckbox.id = `recycleCheckbox-${chapa.id_chapa}`;
-        recycleCheckbox.style.width = '25px'; 
-        recycleCheckbox.style.height = '25px'; 
-        recycleCheckbox.onchange = () => { 
+        recycleCheckbox.style.width = '25px';
+        recycleCheckbox.style.height = '25px';
+        recycleCheckbox.onchange = () => {
             medidaTd.style.display = recycleCheckbox.checked ? '' : 'none';
         };
         recycleTd.appendChild(recycleCheckbox);

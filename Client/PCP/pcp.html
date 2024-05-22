@@ -27,7 +27,6 @@
                 </div>
 
                 <div class="p-2 navbar">
-                    <button id="showSelectedButton" class="agrupar-button w-75">RESERVAR</button>
                     <ul class="list-unstyled">
                         <li class="icon-li mb-2">
                             <a href="dashboard.html">
@@ -64,7 +63,7 @@
                     </ul>
                 </div>
             </aside>
-
+            
             <!-- Header -->
             <div class="col-md-9 header">
                 <div class="header-custom text-light d-flex justify-content-between align-items-center">
@@ -79,42 +78,59 @@
 
                 <!-- Card -->
                 <div class=" rowstyle ">
-                    <div class="col-md-11">
+                    <div class="whidth">
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body cardfora">
                                 <form id="groupingForm" class="grouping-form">
                                     <div class="row">
-                                        <div class="col-md-6 order-md-2">
-                                            <div class="checkbox-container">
-                                                <div class="checkbox-button" data-value="fornecedor" data-checked="true">Fornecedor</div>
-                                                <div class="checkbox-button" data-value="qualidade" data-checked="true">Qualidade</div>
-                                                <div class="checkbox-button" data-value="medida" data-checked="true">Medida</div>
-                                                <div class="checkbox-button" data-value="unidade">Unidade</div>
-                                                <div class="checkbox-button" data-value="onda">Onda</div>
-                                                <div class="checkbox-button" data-value="coluna">Coluna</div>
-                                                <div class="checkbox-button" data-value="vincos">Vinco</div>
-                                                <div class="checkbox-button" data-value="gramatura">Gramatura</div>
-                                                <div class="checkbox-button" data-value="peso_total">Peso Total</div>
-                                                <div class="checkbox-button" data-value="valor_unitario">Valor unitário</div>
-                                            </div>
-                                        </div>
                                         <div class="col-md-6 order-md-1">
                                             <div class="form-group">
-                                                <input type="text" class="form-control" id="filterCriteria" name="filterCriteria" placeholder="Pesquisar">
+                                                <button type="submit" class="btn btn-primary agrupar-button w-100">ATUALIZAR</button>
+                                                <!-- <input type="text" class="form-control" id="generalFilterInput" name="generalFilter" placeholder="Pesquisar"> -->
                                             </div>
                                             <div class="form-group">
                                                 <div class="d-flex align-items-center">
                                                     <select class="form-control" id="sortKey" style="flex-grow: 1;">
-                                                        <option value="quantidade_comprada">Quantidade Comprada</option>
-                                                        <option value="fornecedor">Fornecedor</option>
-                                                        <option value="qualidade">Qualidade</option>
                                                         <option value="medida">Medida</option>
+                                                        <option value="qualidade">Qualidade</option>
+                                                        <option value="vincos">Vincos</option>
+                                                        <option value="onda">Onda</option>
+                                                        <option value="status">Status</option>
+                                                        <option value="data_prevista">Data</option>
+                                                        <option value="quantidade_comprada">Quantidade Comprada</option>
+                                                        <option value="quantidade_estoque">Quantidade Estoque</option>
                                                     </select>
-                                                    <button type="button" class="btn btn-secondary agrupar-button ml-2" id="sortOrder" data-sort="asc"> &#8593;</button>
+                                                    <button type="button" class="btn btn-secondary agrupar-button ml-2"
+                                                        id="sortOrder" data-sort="asc"> &#8593;</button>
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <button type="submit" class="btn btn-primary agrupar-button w-100">AGRUPAR</button>
+                                                <button id="showSelectedButton" class="btn btn-primary agrupar-button w-100">RESERVAR</button>
+                                            </div>
+                                            <div class="form-group">
+                                                <button id="clearButton" type="submit" class="btn btn-primary agrupar-button w-100">LIMPAR</button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 order-md-2">
+                                            <div class="form-group row">
+                                                <div class="col-12">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" id="filterLength" name="filterLength" placeholder="Comprimento">
+                                                        <input type="text" class="form-control" id="filterWidth" name="filterWidth" placeholder="Largura">
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <input type="text" class="form-control" id="filterVincos"
+                                                        name="filterVincos" placeholder="Vincos">
+                                                </div>
+                                                <div class="col-12">
+                                                    <input type="text" class="form-control" id="filterQualidade"
+                                                        name="filterQualidade" placeholder="Qualidade">
+                                                </div>
+                                                <div class="col-12">
+                                                    <input type="text" class="form-control" id="filterOnda"
+                                                        name="filterOnda" placeholder="Onda">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -145,7 +161,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script type="module" src="./scripts/pcp.js"></script>
+    <script type="module" src="./scripts/reservar_chapa/reservar.js"></script>
+    <script type="module" src="pcp.js"></script>
 
 </body>
 
