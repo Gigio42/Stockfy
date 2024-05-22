@@ -7,12 +7,21 @@
     border-bottom: solid 1px #6a6a6a45;
     background-color: #d4d4d4;
     height: 5rem;
+    width: 100%;
+    padding-left: 1.5rem;
+}
+
+.cardfora {
+    background: #191919;
+    border: none !important;
 }
 
 h1 {
     color: #0f0f0f;
     font-size: 2rem;
 }
+
+
 
 /* ======================================
    Dark Mode Toggle Styles
@@ -165,7 +174,10 @@ body {
 }
 
 .header {
-    padding: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
 }
 
 .col-md-12 {
@@ -180,6 +192,15 @@ body {
 
 .container-fluid {
     height: 100%;
+}
+
+#container {
+    max-height: 39vh;
+    overflow-y: auto; /* Adiciona barra de rolagem vertical se necessário */
+}
+
+#reservarSection {
+    width: 95%;
 }
 
 /* ======================================
@@ -421,6 +442,14 @@ button:hover {
 
 .card-value-div {
     text-align: center;
+}
+
+.card {
+    border: none;
+}
+
+.cardfora {
+    padding: 0 !important;
 }
 
 .card-checkbox {
