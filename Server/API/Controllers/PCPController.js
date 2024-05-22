@@ -6,60 +6,105 @@ import Chapa_Item from '../Models/Chapa_Item.js';
 class PCPController {
     constructor() { }
 
-    async getChapas(query, groupingCriteria, sortOrder, sortBy) {
+    async getChapas(query, filterCriteria, sortOrder, sortBy, generalFilter) {
         const chapasRepository = getRepository(Chapas);
         let data = await chapasRepository.find({ relations: ['conjugacoes'] });
 
-        const grupoChapas = data.reduce((groups, chapa) => {
-            const key = groupingCriteria.map(criterion => chapa[criterion]).join('-');
-            if (!groups[key]) {
-                groups[key] = {
-                    chapas: [],
-                    quantidade_comprada: 0
-                };
-                groupingCriteria.forEach(criterion => {
-                    groups[key][criterion] = chapa[criterion];
-                });
-            }
-            groups[key].quantidade_comprada += chapa.quantidade_comprada;
-            groups[key].chapas.push(chapa);
-            return groups;
-        }, {});
+        data = data.filter(chapa => chapa.status !== 'USADO');
 
-        const sortedChapas = Object.values(grupoChapas).sort((a, b) => {
-            if (sortOrder === 'asc') {
-                return a[sortBy] < b[sortBy] ? -1 : a[sortBy] > b[sortBy] ? 1 : 0;
-            } else {
-                return a[sortBy] > b[sortBy] ? -1 : a[sortBy] < b[sortBy] ? 1 : 0;
+
+        console.log("the data is: ", data)
+
+        if (filterCriteria) {
+            for (let key in filterCriteria) {
+                if (key === 'comprimento' || key === 'largura') {
+                    data = data.filter(chapa => {
+                        const [comprimento, largura] = chapa.medida.split('x');
+                        if (key === 'comprimento') {
+                            return comprimento === filterCriteria[key];
+                        } else {
+                            return largura === filterCriteria[key];
+                        }
+                    });
+                } else {
+                    data = data.filter(chapa => chapa[key].toLowerCase() === filterCriteria[key].toLowerCase());
+                }
             }
+        }
+
+        if (generalFilter) {
+            data = data.filter(chapa => {
+                for (let key in chapa) {
+                    if (typeof chapa[key] === 'string' && chapa[key].toLowerCase().includes(generalFilter.toLowerCase())) {
+                        return true;
+                    }
+                }
+                return false;
+            });
+        }
+
+        data = data.map(chapa => {
+            const date = new Date(chapa.data_prevista);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            chapa.data_prevista = `${day}/${month}`;
+            return chapa;
         });
 
+        const sortedChapas = data.sort((a, b) => {
+            const getValue = (obj, prop) => prop.split('.').reduce((acc, part) => acc && acc[part], obj);
+        
+            if (sortBy === 'data_prevista') {
+                const [dayA, monthA] = getValue(a, sortBy).split('/');
+                const [dayB, monthB] = getValue(b, sortBy).split('/');
+                const dateA = new Date(2000, monthA - 1, dayA); 
+                const dateB = new Date(2000, monthB - 1, dayB);
+        
+                if (sortOrder === 'asc') {
+                    return dateA - dateB;
+                } else {
+                    return dateB - dateA;
+                }
+            } else {
+                if (sortOrder === 'asc') {
+                    return getValue(a, sortBy) < getValue(b, sortBy) ? -1 : getValue(a, sortBy) > getValue(b, sortBy) ? 1 : 0;
+                } else {
+                    return getValue(a, sortBy) > getValue(b, sortBy) ? -1 : getValue(a, sortBy) < getValue(b, sortBy) ? 1 : 0;
+                }
+            }
+        });
         return sortedChapas;
     }
 
     async createItemWithChapa(body) {
         console.log(body)
         const { chapaID, quantity, medida, partNumber, keepRemaining } = body;
-    
+
         const chapasRepository = getRepository(Chapas);
         const itemRepository = getRepository(Item);
         const chapaItemRepository = getRepository(Chapa_Item);
 
         console.log("the chapa id is: ", chapaID)
-    
+
         const chapa = await chapasRepository.findOne({ where: { id_chapa: chapaID } });
 
         console.log(chapa)
-    
+
         if (!chapa) {
             throw new Error('Chapa not found');
         }
-    
+
         if (!quantity) {
             throw new Error('Quantity is required');
         }
-    
+
         chapa.quantidade_estoque -= quantity;
+
+        //precisa melhorar para incluir case de status parcial e <10%
+        if ((chapa.quantidade_comprada + chapa.quantidade_estoque === 0) ||
+         (chapa.status === 'recebido' && chapa.quantidade_estoque === 0)) {
+            chapa.status = 'USADO';
+        }
 
         if (keepRemaining) {
             const [chapaWidth, chapaHeight] = chapa.medida.split('x').map(Number);

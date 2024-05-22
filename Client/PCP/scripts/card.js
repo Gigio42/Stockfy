@@ -1,144 +1,82 @@
 export class Card {
-    constructor(group, keys, index, sortKey, onSubcardSelectionChange) {
-        this.group = group;
+    constructor(chapa, keys, index, sortKey, onSubcardSelectionChange, isChecked = false) {
+        this.chapa = chapa;
         this.keys = keys;
         this.index = index;
         this.sortKey = sortKey;
         this.onSubcardSelectionChange = onSubcardSelectionChange;
+        this.isChecked = isChecked; 
     }
 
     createDivWithClass(className) {
         let div = document.createElement('div');
-        div.className = className;
+        div.className = `card-${className}`;
         return div;
     }
 
-    createHeaderRow(keys) {
-        let headerRow = this.createDivWithClass('rowstyle row flex-nowrap overflow-auto bg-primary text-white w-100');
-        keys.forEach(key => {
-            let headerDiv = this.createDivWithClass('col text-center header');
-            headerDiv.textContent = key.toUpperCase();
-            headerRow.appendChild(headerDiv);
-        });
+    createValueDiv(key, value) {
+        let valueDiv = this.createDivWithClass(`card-value-div col text-center value rounded d-flex align-items-center justify-content-center`);
+        valueDiv.style.width = '120px';
+        valueDiv.style.padding = '10px';
+        valueDiv.textContent = value;
 
-        let headerDiv = this.createDivWithClass('col text-center header');
-        headerDiv.textContent = 'QUANTIDADE COMPRADA';
-        headerRow.appendChild(headerDiv);
+        if (key === 'status') {
+            valueDiv.className += ' card-status';
+            let status = value.toLowerCase();
+            if (status === 'recebido') {
+                valueDiv.className += ' bg-success';
+            } else if (status === 'comprado') {
+                valueDiv.className += ' bg-warning';
+            }
+        }
 
-        return headerRow;
+        if (key === this.keys[this.keys.length - 1]) {
+            valueDiv.className += ' mr-3';
+        }
+
+        return valueDiv;
     }
 
-    createValueRow(group, keys) {
-        let valueRow = this.createDivWithClass('row flex-nowrap overflow-auto');
-        keys.forEach(key => {
-            let valueDiv = this.createDivWithClass('col text-center value');
-            valueDiv.textContent = group[key];
-            valueRow.appendChild(valueDiv);
-        });
-
-        let quantidadeCompradaDiv = document.createElement('div');
-        quantidadeCompradaDiv.className = 'col text-center value';
-        quantidadeCompradaDiv.textContent = this.group.quantidade_comprada;
-        valueRow.appendChild(quantidadeCompradaDiv);
-
+    createValueRow() {
+        let valueRow = this.createDivWithClass('value-row row flex-nowrap overflow-auto d-flex align-items-stretch');
+        this.keys.forEach(key => valueRow.appendChild(this.createValueDiv(key, this.chapa[key])));
         return valueRow;
     }
 
-    createButton(index) {
-        let button = document.createElement('button');
-        button.className = 'btn btn-primary mt-2 w-100';
-        button.type = 'button';
-        button.dataset.toggle = 'collapse';
-        button.dataset.target = `#collapse${index}`;
-        button.textContent = '▼ Expandir';
-        button.addEventListener('click', () => {
-            button.textContent = button.textContent.charAt(0) === '▼' ? '▲ Colapsar' : '▼ Expandir';
-        });
-        return button;
-    }
-
-    createSubcard(chapa) {
-        let subcard = this.createDivWithClass('card card-body mt-2 shadow-sm rounded');
-        subcard.style.display = 'inline-block';
-
-        let flexContainer = document.createElement('div');
-        flexContainer.style.display = 'flex';
-        flexContainer.style.flexDirection = 'row';
-        subcard.appendChild(flexContainer);
-
-        let checkboxContainer = document.createElement('div');
-        checkboxContainer.className = 'bg-primary';
-        checkboxContainer.style.borderTopLeftRadius = '0.25rem';
-        checkboxContainer.style.borderBottomLeftRadius = '0.25rem';
-        checkboxContainer.style.display = 'flex';
-        checkboxContainer.style.justifyContent = 'center';
-        checkboxContainer.style.alignItems = 'center';
-        flexContainer.appendChild(checkboxContainer);
-
+    createCheckbox() {
         let checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
-        checkbox.className = 'subcard-checkbox-input';
-        checkbox.id = 'subcard-checkbox-' + JSON.stringify(chapa);
-        checkbox.style.display = 'none';
-        checkbox.value = JSON.stringify(chapa);
-        checkbox.addEventListener('change', (event) => {
-            this.onSubcardSelectionChange(chapa, event.target.checked);
-        });
-        checkboxContainer.appendChild(checkbox);
-
-        let label = document.createElement('label');
-        label.htmlFor = checkbox.id;
-        label.className = 'subcard-checkbox';
-        label.style.width = '20px';
-        label.style.height = '20px';
-        checkboxContainer.appendChild(label);
-
-        let cardContentContainer = this.createDivWithClass('card-content-container');
-        flexContainer.appendChild(cardContentContainer);
-
-        let cardContent = this.createDivWithClass('card-content');
-        cardContentContainer.appendChild(cardContent);
-
-        let subcardHeaderRow = this.createHeaderRow(Object.keys(chapa));
-        cardContent.appendChild(subcardHeaderRow);
-
-        let subcardRow = this.createValueRow(chapa, Object.keys(chapa));
-        cardContent.appendChild(subcardRow);
-
-        let totalWidth = 0;
-        Object.keys(chapa).forEach(() => {
-            totalWidth += 200;
-        });
-        cardContent.style.minWidth = `${totalWidth}px`;
-
-        return subcard;
+        checkbox.className = 'card-checkbox mr-3';
+        checkbox.checked = this.isChecked;
+        checkbox.addEventListener('change', () => this.onSubcardSelectionChange(this.chapa, checkbox.checked));
+        return checkbox;
     }
 
-    createCard(group, keys, index, sortKey) {
-        let card = this.createDivWithClass('card mb-3 shadow-sm');
-        let cardBody = this.createDivWithClass('card-body bg-secondary rounded');
-        card.appendChild(cardBody);
-
-        cardBody.appendChild(this.createHeaderRow(keys));
-        cardBody.appendChild(this.createValueRow(group, keys));
-        cardBody.appendChild(this.createButton(index));
-
-        let collapseDiv = this.createDivWithClass('collapse overflow-auto mt-2');
-        collapseDiv.id = `collapse${index}`;
-
-        group.chapas.sort((a, b) => a[sortKey] < b[sortKey] ? -1 : a[sortKey] > b[sortKey] ? 1 : 0);
-        group.chapas.forEach(chapa => {
-            let subcard = this.createSubcard(chapa);
-            collapseDiv.appendChild(subcard);
+    createInfoButton() {
+        let infoButton = document.createElement('button');
+        infoButton.className = 'btn btn-info btn-sm ml-2 card-info-button';
+        infoButton.innerHTML = '<i class="fas fa-chevron-down"></i>';
+        infoButton.addEventListener('click', () => {
+            alert(JSON.stringify(this.chapa, null, 2));
         });
+        return infoButton;
+    }
 
-        cardBody.appendChild(collapseDiv);
+    createCardBody() {
+        let cardBody = this.createDivWithClass('body-div card-body bg-secondary rounded d-flex align-items-center');
+        cardBody.appendChild(this.createCheckbox());
+        cardBody.appendChild(this.createValueRow());
+        cardBody.appendChild(this.createInfoButton());
+        return cardBody;
+    }
 
+    createCard() {
+        let card = this.createDivWithClass('div card mb-3 shadow-sm');
+        card.appendChild(this.createCardBody());
         return card;
     }
 
     create() {
-        let { group, keys, index, sortKey } = this;
-        return this.createCard(group, keys, index, sortKey);
+        return this.createCard();
     }
 }

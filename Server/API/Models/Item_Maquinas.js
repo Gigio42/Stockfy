@@ -8,6 +8,10 @@ const Item_Maquinas = new EntitySchema({
             primary: true,
             generated: true
         },
+        ordem: {
+            type: "int",
+            nullable: true
+        }
     },
     relations: {
         item: {
