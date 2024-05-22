@@ -392,63 +392,54 @@ button:hover {
 }
 
 /* ======================================
-   row
-   ====================================== */
-
-   .rowstyle {
-    background: red;
-    align-content: center;
-    margin-left: 0.1rem;
-   }
-
-/* ======================================
    cards
    ====================================== */
 
 .card {
+    margin-bottom: 10px;
+    margin-top: 15px;
+}
+
+.card-div {
     padding: 0px;
     margin-bottom: 10px;
     margin-top: 15px;
     background-color: rgb(34, 34, 34);
+    height: 70px;  /* Adjust the height as needed */
 }
 
-.card-body {
+.card-body-div {
     background-color: #f8f9fa00;
 }
 
-.rowstyle {
+.card-value-row {
     display: flex;
     overflow: auto;
     background-color: #007bff00;
     color: white;
 }
 
-.header {
-    text-align: center;
-    
-}
-
-.value {
+.card-value-div {
     text-align: center;
 }
 
-.custom-checkbox {
+.card-checkbox {
     display: inline-block; 
 }
 
-.subcard-checkbox-input:checked + .subcard-checkbox::after {
+.card-checkbox:checked + .card-checkbox::after {
     display: block;
     width: 30px;
     height: 30px;
     border-radius: 5px;
-    background-color: #3e6e9f;
+    background-color: #4d4d4d;
     position: relative;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
 
-.subcard-checkbox {
+.card-checkbox {
     width: 30px;
     height: 30px;
     border: 20px solid #0000002a;
@@ -459,7 +450,25 @@ button:hover {
     display: inline-block;
 }
 
-.subcard-checkbox::after {
+.card-checkbox::after {
     content: "";
     display: none;
 }
+
+.card-info-button {
+    background: transparent;
+    border: 1px solid #6d6d6d;
+    border-color: #575757;
+    color: #fff;
+    transition: background 0.3s ease;
+    font-size: 1em;
+    grid-column: span 2;
+}
+
+.card-info-button:hover {
+    background: #6d6d6d;
+    border-color: #575757;
+    color: #fff;
+}
+
+
