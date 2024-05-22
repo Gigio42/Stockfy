@@ -1,6 +1,6 @@
 import { EntitySchema } from "typeorm";
 
-const Maquina = new EntitySchema({
+const Maquinas = new EntitySchema({
     name: "Maquina",
     columns: {
         id: {
@@ -15,12 +15,12 @@ const Maquina = new EntitySchema({
         }
     },
     relations: {
-        itemMaquinas: {
+        maquinaId: {
             target: "Item_Maquinas",
             type: 'one-to-many',
-            inverseSide: 'item',
+            inverseSide: 'maquina',
         },
     }
 });
 
-export default Maquina;
+export default Maquinas;

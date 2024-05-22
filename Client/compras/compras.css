@@ -101,6 +101,23 @@ html, body {
     box-shadow: 0px 0px 30px 10px rgb(255, 255, 255); /* Adiciona sombra branca */
 }
 
+#expectedDate {
+    width: 10rem;
+    height:4.2rem;
+    margin-right: 2rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    border: none;
+}
+
+#expectedDate:focus {
+    outline: none;
+    background-color: #dfdfdf;
+    border-left: 7px solid #84e789;
+}
+
+
+
 @media (max-width: 576px) {
     .btninferior {
         justify-content: center;
@@ -128,6 +145,7 @@ html, body {
     height: 60%;
     width: 10rem;
     font-size: 1.5rem;
+    border-radius: 1rem;
 }
 
 

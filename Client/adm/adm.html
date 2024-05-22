@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administração de Chapas</title>
+    <style>
+        table {
+            font-family: Arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        th {
+            text-align: left;
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Administração de Chapas</h1>
+
+    <script>
+        fetch('http://localhost:3000/adm/1')
+        .then(response => response.json())
+        .then(chapas => {
+            console.log(chapas)
+        })
+    </script>
+</body>
+</html>
