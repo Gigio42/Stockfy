@@ -193,34 +193,34 @@ function handleFile(file) {
                                     case 17:
                                         prodComprado['valor_total'] = line; // Alterado de 'valor_lote_chapa' para 'valor_total'
                                         break;
-                                        case 18:
-                                            // Verifica se a linha contém o caractere "-"
-                                            if (line.includes('-')) {
-                                                var parts = line.split('-');
-                                                // Verifica se o array resultante da divisão tem pelo menos dois elementos
-                                                if (parts.length >= 2) {
-                                                    var descricao = parts[0].trim(); // Extrai a descrição antes do "-"
-                                                    var vincos = parts[1].trim().replace('VINCOS:', '').replace('vincos:', '').trim(); // Remove "VINCOS:" ou "vincos:"
-                                        
-                                                    // Verifica se vincos contém o caractere "+"
-                                                    if (!vincos.includes('+')) {
-                                                        vincos = 'não'; // Define vincos como "não" se não contiver "+"
-                                                    }
-                                        
-                                                    prodComprado['medida'] = descricao; // Define a descrição como a medida
-                                                    prodComprado['vincos'] = vincos; // Define o valor após o "-" como vincos
-                                                } else {
-                                                    console.error("Formato de linha inválido para a medida:", line);
-                                                    prodComprado['medida'] = ''; // Definindo medida como vazio
-                                                    prodComprado['vincos'] = ''; // Definindo vincos como vazio
+                                    case 18:
+                                        // Verifica se a linha contém o caractere "-"
+                                        if (line.includes('-')) {
+                                            var parts = line.split('-');
+                                            // Verifica se o array resultante da divisão tem pelo menos dois elementos
+                                            if (parts.length >= 2) {
+                                                var descricao = parts[0].trim(); // Extrai a descrição antes do "-"
+                                                var vincos = parts[1].trim().replace('VINCOS:', '').replace('vincos:', '').trim(); // Remove "VINCOS:" ou "vincos:"
+
+                                                // Verifica se vincos contém o caractere "+"
+                                                if (!vincos.includes('+')) {
+                                                    vincos = 'não'; // Define vincos como "não" se não contiver "+"
                                                 }
+
+                                                prodComprado['medida'] = descricao; // Define a descrição como a medida
+                                                prodComprado['vincos'] = vincos; // Define o valor após o "-" como vincos
                                             } else {
-                                                console.error("Caractere '-' não encontrado na linha:", line);
+                                                console.error("Formato de linha inválido para a medida:", line);
                                                 prodComprado['medida'] = ''; // Definindo medida como vazio
                                                 prodComprado['vincos'] = ''; // Definindo vincos como vazio
                                             }
-                                            break;
-                                        
+                                        } else {
+                                            console.error("Caractere '-' não encontrado na linha:", line);
+                                            prodComprado['medida'] = ''; // Definindo medida como vazio
+                                            prodComprado['vincos'] = ''; // Definindo vincos como vazio
+                                        }
+                                        break;
+
 
 
 
@@ -256,16 +256,51 @@ function handleFile(file) {
                         return parseInt(idCompraStr.replace('.', ''));
                     }
 
-                    // Construímos o objeto JSON final com base nas informações coletadas
+                    // Função para adicionar a data prevista aos objetos em infoPedido e infoProdComprados
+                    function addDateToJSON(dateValue, infoPedido, infoProdComprados) {
+                        if (infoPedido) {
+                            // Adiciona a data prevista ao objeto infoPedido
+                            infoPedido.data_prevista = dateValue;
+                        } else {
+                            console.error("Objeto 'infoPedido' não está definido.");
+                        }
+
+                        if (infoProdComprados && Array.isArray(infoProdComprados)) {
+                            // Adiciona a data prevista a cada objeto em infoProdComprados
+                            infoProdComprados.forEach(function (prod) {
+                                prod.data_prevista = dateValue;
+                            });
+                        } else {
+                            console.error("Array 'infoProdComprados' não está definido ou não é um array.");
+                        }
+                    }
+
+
+                    // Obtém o valor do input de data prevista
+                    var dateValue = document.getElementById('expectedDate').value;
+
+                    // Atribui a data prevista a infoPedido e infoProdComprados
+                    addDateToJSON(dateValue, infoPedido, infoProdComprados);
+
+                    // Constrói o objeto JSON final com base nas informações coletadas
                     jsonData = {
                         "info_prod_comprados": infoProdComprados.map(function (prod) {
                             return {
                                 ...prod,
                                 ...infoPedido,
-                                "id_compra": convertToInteger(hasInclusao ? "INCLUSÃO " + pedidoCompra : pedidoCompra) // Converte o id_compra para inteiro
+                                "id_compra": convertToInteger(hasInclusao ? "INCLUSÃO " + pedidoCompra : pedidoCompra),
+                                "data_prevista": dateValue  // Adiciona a data prevista ao objeto
                             };
                         })
                     };
+
+
+
+
+
+
+
+
 
 
                     // Adiciona o JSON diretamente à tabela no modal
@@ -454,6 +489,17 @@ function abrirModal() {
 }
 // Função para enviar os dados JSON para o backend
 function sendJSONDataToBackend() {
+    // Obtém o valor do input de data prevista
+    var dateInput = document.getElementById('expectedDate');
+    var dateValue = dateInput ? dateInput.value : '';
+
+    // Verifica se o valor da data é válido
+    if (dateValue.trim() === '') {
+        // Exibe uma mensagem de erro e interrompe o processo de envio
+        alert('Por favor, preencha a data prevista antes de enviar.');
+        return;
+    }
+
     let url = 'http://localhost:3000/compras';
     axios.post(url, jsonData, {
         headers: {
