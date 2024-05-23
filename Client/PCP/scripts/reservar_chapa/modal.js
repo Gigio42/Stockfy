@@ -130,7 +130,7 @@ function createReserveButton(selectedSubcards) {
         const partNumberInput = document.querySelector('#partNumberInput');
         const partNumber = partNumberInput.value;
 
-        selectedSubcards.forEach(subcard => {
+        const chapas = selectedSubcards.map(subcard => {
             const chapaID = subcard.id_chapa;
             const quantityInput = document.querySelector(`#quantityInput-${chapaID}`);
             const quantity = quantityInput.value;
@@ -139,22 +139,26 @@ function createReserveButton(selectedSubcards) {
             const recycleCheckbox = document.querySelector(`#recycleCheckbox-${chapaID}`);
             const keepRemaining = recycleCheckbox.checked;
 
-            const data = {
+            return {
                 chapaID,
                 quantity,
                 medida,
-                partNumber,
                 keepRemaining
             };
-
-            axios.post('http://localhost:3000/PCP', data)
-                .then(response => {
-                    console.log(response);
-                })
-                .catch(error => {
-                    console.error(error);
-                });
         });
+
+        const data = {
+            partNumber,
+            chapas
+        };
+
+        axios.post('http://localhost:3000/PCP', data)
+            .then(response => {
+                console.log(response);
+            })
+            .catch(error => {
+                console.error(error);
+            });
     };
 
     return reserveButton;
