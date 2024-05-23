@@ -20,12 +20,18 @@ function createModalContent(modalContent, closeModal, getSelectedSubcards, popup
         modalContent.innerHTML = '';
         modalContent.appendChild(closeModal);
 
+        const contentWrapper = document.createElement('div');
+        contentWrapper.style.maxHeight = '50vh';
+        contentWrapper.style.overflowY = 'auto';
+
         const selectedSubcards = getSelectedSubcards();
         const table = createTable(selectedSubcards);
-        modalContent.appendChild(table);
+        contentWrapper.appendChild(table);
 
         const buttonFormContainer = createButtonFormContainer(selectedSubcards);
-        modalContent.appendChild(buttonFormContainer);
+        contentWrapper.appendChild(buttonFormContainer);
+
+        modalContent.appendChild(contentWrapper);
 
         popupContainer.style.display = 'block';
     };
