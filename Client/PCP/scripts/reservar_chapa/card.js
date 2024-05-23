@@ -15,7 +15,7 @@ export class Card {
     }
 
     createValueDiv(key, value) {
-        let valueDiv = this.createDivWithClass(`card-value-div col text-center value rounded align-items-center justify-content-center`);
+        let valueDiv = this.createDivWithClass(`card-value-div col text-center value align-items-center justify-content-center`);
         valueDiv.style.width = '100px';
         valueDiv.style.padding = '5px';
         valueDiv.textContent = value;
@@ -63,7 +63,7 @@ export class Card {
     }
 
     createCardBody() {
-        let cardBody = this.createDivWithClass('body-div card-body bg-secondary rounded d-flex align-items-center');
+        let cardBody = this.createDivWithClass('body-div card-body bg-secondary d-flex align-items-center');
         cardBody.appendChild(this.createCheckbox());
         cardBody.appendChild(this.createValueRow());
         cardBody.appendChild(this.createInfoButton());
