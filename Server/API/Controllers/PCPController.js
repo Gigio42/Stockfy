@@ -64,6 +64,7 @@ class PCPController {
 
   async getItems() {
     const chapaItemRepository = getRepository(Chapa_Item);
+    const itemRepository = getRepository(Item);
 
     const chapaItems = await chapaItemRepository
       .createQueryBuilder("chapa_item")
@@ -97,12 +98,16 @@ class PCPController {
     const itemRepository = getRepository(Item);
     const chapaItemRepository = getRepository(Chapa_Item);
 
-    const item = itemRepository.create({
-      part_number: partNumber,
-      Status: "RESERVADO",
-    });
+    let item = await itemRepository.findOne({ where: { part_number: partNumber } });
 
-    await itemRepository.save(item);
+    if (!item) {
+      item = itemRepository.create({
+        part_number: partNumber,
+        Status: "RESERVADO",
+      });
+
+      await itemRepository.save(item);
+    }
 
     for (const { chapaID, quantity, medida, keepRemaining } of chapas) {
       const chapa = await chapasRepository.findOne({ where: { id_chapa: chapaID } });
@@ -147,11 +152,18 @@ class PCPController {
 
       await chapasRepository.save(chapa);
 
-      const chapaItem = chapaItemRepository.create({
-        chapa: chapa,
-        item: item,
-        quantidade: quantity,
-      });
+      let chapaItem = await chapaItemRepository.findOne({ where: { chapa: chapa, item: item } });
+
+      if (chapaItem) {
+        // Ensure that quantity is a number before adding it to the existing quantity
+        chapaItem.quantidade += Number(quantity);
+      } else {
+        chapaItem = chapaItemRepository.create({
+          chapa: chapa,
+          item: item,
+          quantidade: Number(quantity), // Ensure that quantity is a number when creating a new Chapa_Item
+        });
+      }
 
       await chapaItemRepository.save(chapaItem);
     }

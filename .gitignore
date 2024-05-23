@@ -36,3 +36,4 @@ node_modules/**/*.node
 **/estoque.db
 Server/estoque.db
 .secrets
+.db
