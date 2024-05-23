@@ -14,11 +14,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Install Prettier
-        run: npm install prettier
+      - name: Install Dependencies
+        run: npm install
       - name: Format Files
         run: npx prettier --config .prettierrc --write Server/**/*.js
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "style: format files"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
