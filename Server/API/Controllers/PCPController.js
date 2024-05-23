@@ -53,13 +53,13 @@ class PCPController {
 
         const sortedChapas = data.sort((a, b) => {
             const getValue = (obj, prop) => prop.split('.').reduce((acc, part) => acc && acc[part], obj);
-        
+
             if (sortBy === 'data_prevista') {
                 const [dayA, monthA] = getValue(a, sortBy).split('/');
                 const [dayB, monthB] = getValue(b, sortBy).split('/');
-                const dateA = new Date(2000, monthA - 1, dayA); 
+                const dateA = new Date(2000, monthA - 1, dayA);
                 const dateB = new Date(2000, monthB - 1, dayB);
-        
+
                 if (sortOrder === 'asc') {
                     return dateA - dateB;
                 } else {
@@ -77,76 +77,71 @@ class PCPController {
     }
 
     async createItemWithChapa(body) {
-        console.log(body)
-        const { chapaID, quantity, medida, partNumber, keepRemaining } = body;
+        const { partNumber, chapas } = body;
 
         const chapasRepository = getRepository(Chapas);
         const itemRepository = getRepository(Item);
         const chapaItemRepository = getRepository(Chapa_Item);
 
-        console.log("the chapa id is: ", chapaID)
-
-        const chapa = await chapasRepository.findOne({ where: { id_chapa: chapaID } });
-
-        console.log(chapa)
-
-        if (!chapa) {
-            throw new Error('Chapa not found');
-        }
-
-        if (!quantity) {
-            throw new Error('Quantity is required');
-        }
-
-        chapa.quantidade_estoque -= quantity;
-
-        //precisa melhorar para incluir case de status parcial e <10%
-        if ((chapa.quantidade_comprada + chapa.quantidade_estoque === 0) ||
-         (chapa.status === 'recebido' && chapa.quantidade_estoque === 0)) {
-            chapa.status = 'USADO';
-        }
-
-        if (keepRemaining) {
-            const [chapaWidth, chapaHeight] = chapa.medida.split('x').map(Number);
-            const [chosenWidth, chosenHeight] = medida.split('x').map(Number);
-
-            if (chapaWidth < chosenWidth || chapaHeight < chosenHeight) {
-                throw new Error('Not enough chapas of the specified dimensions');
-            }
-
-            const originalArea = chapaWidth * chapaHeight;
-            const usedArea = chosenWidth * chosenHeight;
-            const remainingArea = originalArea - usedArea;
-
-            const { id_chapa, medida, ...chapaProps } = chapa;
-
-            const newChapa = chapasRepository.create({
-                ...chapaProps,
-                area: remainingArea,
-                quantidade_estoque: quantity,
-                status: 'RESTO'
-            });
-
-            await chapasRepository.save(newChapa);
-        }
-
-        await chapasRepository.save(chapa);
-
         const item = itemRepository.create({
             part_number: partNumber,
             Status: 'RESERVADO',
-            chapas: [chapa]
         });
 
         await itemRepository.save(item);
 
-        const chapaItem = chapaItemRepository.create({
-            chapa: chapa,
-            item: item,
-            quantidade: quantity
-        });
+        for (const { chapaID, quantity, medida, keepRemaining } of chapas) {
+            const chapa = await chapasRepository.findOne({ where: { id_chapa: chapaID } });
 
-        await chapaItemRepository.save(chapaItem);
+            if (!chapa) {
+                throw new Error('Chapa not found');
+            }
+
+            if (!quantity) {
+                throw new Error('Quantity is required');
+            }
+
+            chapa.quantidade_estoque -= quantity;
+
+            if ((chapa.quantidade_comprada + chapa.quantidade_estoque === 0) ||
+                (chapa.status === 'recebido' && chapa.quantidade_estoque === 0)) {
+                chapa.status = 'USADO';
+            }
+
+            if (keepRemaining) {
+                const [chapaWidth, chapaHeight] = chapa.medida.split('x').map(Number);
+                const [chosenWidth, chosenHeight] = medida.split('x').map(Number);
+
+                if (chapaWidth < chosenWidth || chapaHeight < chosenHeight) {
+                    throw new Error('Not enough chapas of the specified dimensions');
+                }
+
+                const originalArea = chapaWidth * chapaHeight;
+                const usedArea = chosenWidth * chosenHeight;
+                const remainingArea = originalArea - usedArea;
+
+                const { id_chapa, medida, ...chapaProps } = chapa;
+
+                const newChapa = chapasRepository.create({
+                    ...chapaProps,
+                    area: remainingArea,
+                    quantidade_estoque: quantity,
+                    status: 'RESTO'
+                });
+
+                await chapasRepository.save(newChapa);
+            }
+
+            await chapasRepository.save(chapa);
+
+            const chapaItem = chapaItemRepository.create({
+                chapa: chapa,
+                item: item,
+                quantidade: quantity
+            });
+
+            await chapaItemRepository.save(chapaItem);
+        }
 
         return item;
     }
