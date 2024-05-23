@@ -58,6 +58,7 @@
     min-height: 70%;
     overflow-y: auto; /* Adicione isso para permitir rolagem se o conteúdo for maior do que a altura da página */
     padding: 0;
+    
   }
   
   .logo {

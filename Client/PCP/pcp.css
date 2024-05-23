@@ -7,12 +7,21 @@
     border-bottom: solid 1px #6a6a6a45;
     background-color: #d4d4d4;
     height: 5rem;
+    width: 100%;
+    padding-left: 1.5rem;
+}
+
+.cardfora {
+    background: #191919;
+    border: none !important;
 }
 
 h1 {
     color: #0f0f0f;
     font-size: 2rem;
 }
+
+
 
 /* ======================================
    Dark Mode Toggle Styles
@@ -59,7 +68,6 @@ h1 {
    ====================================== */
 #aside {
     display: flex;
-    height: 100%;
     background: #e6e6e6; /* Cor de fundo para o aside no modo escuro */
     min-height: 70%;
     overflow-y: auto; /* Permite rolagem se o conteúdo for maior do que a altura da página */
@@ -161,11 +169,15 @@ html {
 body {
     background: #ffffff;
     height: 100%;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-family:Arial, Helvetica, sans-serif;
+    overflow-y: hidden;
 }
 
 .header {
-    padding: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
 }
 
 .col-md-12 {
@@ -181,6 +193,12 @@ body {
 .container-fluid {
     height: 100%;
 }
+
+#container {
+    max-height: 75vh;
+    overflow-y: auto; /* Adiciona barra de rolagem vertical se necessário */
+}
+
 
 /* ======================================
    Scrollbar Styles
@@ -253,18 +271,18 @@ body {
     display: none;
     position: fixed;
     z-index: 1;
-    padding-top: 50px;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4);
+    overflow: hidden;
+    background-color: #00000066;
+    z-index: 3;
 }
 
 .modal-content {
     background-color: #252525;
-    margin: 15% auto;
+    margin: 10% auto;
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
@@ -292,7 +310,6 @@ button {
     padding: 15px;
     background-color: #111111;
     color: #fff;
-    border-radius: 15px;
 }
 
 button:hover {
@@ -300,17 +317,25 @@ button:hover {
     color: #0e0e0e;
 }
 
+
+/*
+==================
+formulário
+==================
+*/
+
 .grouping-form {
+    position: fixed;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
     justify-content: space-between;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid #6d6d6d;
+    background: #333333;
     padding: 20px;
-    border-radius: 5px;
-    margin: 10px 0;
     color: #fff;
+    margin-bottom: 1rem;
+    width: 40%;
+    z-index: 2;
 }
 
 .grouping-form label {
@@ -318,40 +343,46 @@ button:hover {
     font-size: 1em;
     display: block;
     padding: 10px;
-    border-radius: 5px;
     text-align: center;
 }
 
 .grouping-form input[type="text"],
 .grouping-form select {
-    background: transparent;
-    border: 1px solid #6d6d6d;
+    background: #2f2f2f;
     padding: 10px;
     box-sizing: border-box;
     color: #fff;
-    font-size: 1em;
+    font-size: 1rem;
 }
 
 .grouping-form input[type="text"]:hover,
 .grouping-form select:hover {
     background: #6d6d6d;
-    color: #fff;
+    color: #d3d3d3;
 }
 
 .agrupar-button {
-    background: transparent;
-    border: 1px solid #6d6d6d;
+    background: #262626;
+    border: none;
     color: #fff;
     padding: 10px 10px;
     transition: background 0.3s ease;
     font-size: 1em;
     grid-column: span 2;
+} 
+
+.updade{
+    background: #1d2b3a;
+    color: #96c9ff;
+    border: solid 1px #96c9ff84 ;
 }
 
-.agrupar-button:hover {
-    background: #6d6d6d;
-    color: #fff;
+.updade:hover {
+    background: #26394d;
+    color: #96c9ff;
+    border: solid 1px #96c9ff84 ;
 }
+
 
 #sortOrder {
     width: 50px;
@@ -379,7 +410,6 @@ button:hover {
     background: #56565600;
     border: 1px solid #6d6d6d;
     color: #fff;
-    border-radius: 5px;
     margin: 2px;
     cursor: pointer;
     user-select: none;
@@ -391,75 +421,121 @@ button:hover {
     color: #fff !important;
 }
 
-/* ======================================
-   row
-   ====================================== */
-
-   .rowstyle {
-    background: red;
-    align-content: center;
-    margin-left: 0.1rem;
-   }
+.form-control {
+    height: 3rem;
+}
 
 /* ======================================
    cards
    ====================================== */
 
 .card {
+    margin-bottom: 10px;
+    margin-top: 15px;
+}
+
+.card-div {
     padding: 0px;
     margin-bottom: 10px;
     margin-top: 15px;
     background-color: rgb(34, 34, 34);
+    height: 70px;  /* Adjust the height as needed */
 }
 
-.card-body {
-    background-color: #f8f9fa00;
+.card-body-div {
+    display: flex;
+    background-color: #232323 !important;
+    font-size: 1rem;
 }
 
-.rowstyle {
+input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background-color: #2d2d2d;
+    border: 2px solid #4e4e4e;
+    position: relative;
+    cursor: pointer;
+    align-items: center;
+    align-content: center;
+}
+
+input[type="checkbox"]:checked {
+    background-color: #007BFF;
+    border-color: #007BFF;
+}
+
+input[type="checkbox"]:checked::before {
+    content: '✔';
+    font-size: 14px;
+    color: white;
+    align-content: center;
+}
+
+
+.card-value-row {
     display: flex;
     overflow: auto;
     background-color: #007bff00;
     color: white;
+    font-size: 1rem;
 }
 
-.header {
+.card-value-div {
     text-align: center;
     
 }
 
-.value {
-    text-align: center;
+.card {
+    border: none;
 }
 
-.custom-checkbox {
+.card-checkbox {
     display: inline-block; 
 }
 
-.subcard-checkbox-input:checked + .subcard-checkbox::after {
+.card-checkbox:checked + .card-checkbox::after {
     display: block;
     width: 30px;
     height: 30px;
-    border-radius: 5px;
-    background-color: #3e6e9f;
+    background-color: #4d4d4d;
     position: relative;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
 
-.subcard-checkbox {
+.card-checkbox {
     width: 30px;
     height: 30px;
     border: 20px solid #0000002a;
-    border-radius: 5px;
     background-color: #ffffff00;
     margin: 12px;
     cursor: pointer;
     display: inline-block;
 }
 
-.subcard-checkbox::after {
+.card-checkbox::after {
     content: "";
     display: none;
 }
+
+.card-info-button {
+    background: transparent;
+    border: 1px solid #6d6d6d;
+    border-color: #575757;
+    color: #fff;
+    transition: background 0.3s ease;
+    font-size: 1em;
+    grid-column: span 2;
+}
+
+.card-info-button:hover {
+    background: #6d6d6d;
+    border-color: #575757;
+    color: #fff;
+}
+
+

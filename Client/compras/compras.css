@@ -104,10 +104,13 @@ html, body {
 #expectedDate {
     width: 10rem;
     height:4.2rem;
-    margin-right: 2rem;
+    margin-right: 1.5rem;
     padding: 1rem;
     border-radius: 1rem;
+    background-color: #dfdfdf;
     border: none;
+    color: #131313 !important;
+    padding-left: 1.5rem;
 }
 
 #expectedDate:focus {
@@ -115,6 +118,44 @@ html, body {
     background-color: #dfdfdf;
     border-left: 7px solid #84e789;
 }
+
+
+    .flatpickr-calendar {
+        background: #f8f9fa;
+        border: 1px solid #198cff;
+        border-radius: 1rem !important;
+        color: #495057;
+        font-size: 12px !important;
+        background-color: #a2a2a257 !important;
+        backdrop-filter: blur(5px) !important;
+
+    }
+    .flatpickr-day.today {
+        background: #3999ff;
+        color: white;
+        border: none;
+    }
+    .flatpickr-day.selected {
+        background: #28a745 !important;
+        border: none !important;
+        color: white;
+    }
+
+    .flatpickr-day:hover{
+        background: #a9a9a97e !important;
+    }
+
+    .flatpickr-current-month .flatpickr-monthDropdown-months {
+        border-radius: 0.5rem !important;
+        color: #131313 !important;
+        padding: 0.2rem !important;
+    }
+
+    .flatpickr-current-month .flatpickr-monthDropdown-months .flatpickr-monthDropdown-month {
+        color: #232323 !important;
+        background: #7979793a !important;
+        border: none !important;
+    }
 
 
 

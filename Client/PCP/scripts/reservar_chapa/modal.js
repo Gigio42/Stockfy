@@ -20,12 +20,18 @@ function createModalContent(modalContent, closeModal, getSelectedSubcards, popup
         modalContent.innerHTML = '';
         modalContent.appendChild(closeModal);
 
+        const contentWrapper = document.createElement('div');
+        contentWrapper.style.maxHeight = '50vh';
+        contentWrapper.style.overflowY = 'auto';
+
         const selectedSubcards = getSelectedSubcards();
         const table = createTable(selectedSubcards);
-        modalContent.appendChild(table);
+        contentWrapper.appendChild(table);
 
         const buttonFormContainer = createButtonFormContainer(selectedSubcards);
-        modalContent.appendChild(buttonFormContainer);
+        contentWrapper.appendChild(buttonFormContainer);
+
+        modalContent.appendChild(contentWrapper);
 
         popupContainer.style.display = 'block';
     };
@@ -77,9 +83,9 @@ function createTableBody(selectedSubcards) {
         const recycleCheckbox = document.createElement('input');
         recycleCheckbox.type = 'checkbox';
         recycleCheckbox.id = `recycleCheckbox-${chapa.id_chapa}`;
-        recycleCheckbox.style.width = '25px'; 
-        recycleCheckbox.style.height = '25px'; 
-        recycleCheckbox.onchange = () => { 
+        recycleCheckbox.style.width = '25px';
+        recycleCheckbox.style.height = '25px';
+        recycleCheckbox.onchange = () => {
             medidaTd.style.display = recycleCheckbox.checked ? '' : 'none';
         };
         recycleTd.appendChild(recycleCheckbox);
@@ -130,7 +136,7 @@ function createReserveButton(selectedSubcards) {
         const partNumberInput = document.querySelector('#partNumberInput');
         const partNumber = partNumberInput.value;
 
-        selectedSubcards.forEach(subcard => {
+        const chapas = selectedSubcards.map(subcard => {
             const chapaID = subcard.id_chapa;
             const quantityInput = document.querySelector(`#quantityInput-${chapaID}`);
             const quantity = quantityInput.value;
@@ -139,22 +145,26 @@ function createReserveButton(selectedSubcards) {
             const recycleCheckbox = document.querySelector(`#recycleCheckbox-${chapaID}`);
             const keepRemaining = recycleCheckbox.checked;
 
-            const data = {
+            return {
                 chapaID,
                 quantity,
                 medida,
-                partNumber,
                 keepRemaining
             };
-
-            axios.post('http://localhost:3000/PCP', data)
-                .then(response => {
-                    console.log(response);
-                })
-                .catch(error => {
-                    console.error(error);
-                });
         });
+
+        const data = {
+            partNumber,
+            chapas
+        };
+
+        axios.post('http://localhost:3000/PCP', data)
+            .then(response => {
+                console.log(response);
+            })
+            .catch(error => {
+                console.error(error);
+            });
     };
 
     return reserveButton;

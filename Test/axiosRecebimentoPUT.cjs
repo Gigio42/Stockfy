@@ -6,7 +6,7 @@ async function postData() {
     id_chapa: 44,
     data_recebimento: faker.date.past().toISOString().split('T')[0],
     quantidade_recebida: 500,
-    status: "Recebido"
+    status: "RECEBIDO"
   }));
 
   try {
