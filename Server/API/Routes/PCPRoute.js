@@ -17,6 +17,17 @@ async function pcpRoute(fastify, options) {
         }
     });
 
+    fastify.get('/items', async (request, reply) => {
+        try {
+            const data = await pcpRouteController.getItems();
+            reply.send(data);
+        }
+        catch (err) {
+            console.log(err.message);
+            reply.code(500).send({ message: 'Error retrieving data from SQLite database', error: err.message });
+        }
+    });
+
     fastify.post('/', async (request, reply) => {
         try {
             await pcpRouteController.createItemWithChapa(request.body);
