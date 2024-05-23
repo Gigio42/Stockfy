@@ -5,32 +5,666 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administração de Chapas</title>
     <style>
-        table {
-            font-family: Arial, sans-serif;
-            border-collapse: collapse;
+        :root {
+        --cor-primaria: #1a1a1a;
+        --cor-secundaria: #414141;
+        --cor-terciaria: #2e2e2e;
+        --cor-texto: #d9d9d9;
+        --cor-fundo: #242424;
+        --cor-borda: #444;
+        }
+
+        [data-theme="light"] {
+        --cor-primaria: #fff;
+        --cor-secundaria: #eee;
+        --cor-terciaria: #ddd;
+        --cor-texto: #333;
+        --cor-fundo: #f9f9f9;
+        --cor-borda: #ccc;
+        }
+        
+        div, h1, th {
+            color: var(--cor-texto);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            width: 100vw;
+            height: 100vh;
+            font-size: 0.9rem;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            background-color: var(--cor-fundo);
+        }
+
+        header {
+            display: flex;
+            background-color: var(--cor-primaria);
             width: 100%;
         }
 
-        td, th {
-            border: 1px solid #ddd;
-            padding: 8px;
+        .null {
+            background-color: var(--cor-terciaria);
+            width: 16vw;
+        }
+
+        aside {
+            min-width: 16vw;
+            background-color: var(--cor-terciaria);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+        }
+
+        .btn-aside {
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        main {
+            display: flex;
+            flex-grow: 1;
+            align-items: flex-start;
+            background-color: var(--cor-primaria);
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .tabelas {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            margin: 10px;
+            overflow: hidden;
+        }
+
+        .item-maquina {
+            width: 100%;
+            overflow-x: auto;
+            display: none;
+            flex-direction: column;
+        }
+        .item {
+            width: 100%;
+            overflow-x: auto;
+            display: none;
+            flex-direction: column;
+        }
+        .chapa-item {
+            width: 100%;
+            overflow-x: auto;
+            display: none;
+            flex-direction: column;
+        }
+
+        table {
+            margin-bottom: 20px;
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--cor-secundaria);
         }
 
         th {
+            background-color: rgb(4, 96, 4);
+            color: white;
             text-align: left;
-            background-color: #f0f0f0;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: var(--cor-primaria);
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid var(--cor-borda);
+            width: 80%;
+            max-width: 500px;
+            color: var(--cor-texto);
+        }
+
+        .close {
+            color: var(--cor-texto);
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #f1f1f1;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+                overflow-x: hidden;
+            }
+            aside {
+                width: 100%;
+                order: -1;
+                max-height: 15%;
+            }
+            .null {
+                display: none;
+            }
+            .btn-aside {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            main {
+                width: 100%;
+                flex-direction: column;
+                align-items: center;
+                padding: 10px;
+            }
+            .tabelas {
+                width: 100%;
+                align-items: stretch;
+            }
+            table, th, td {
+                font-size: 0.8rem;
+            }
+            th, td {
+                padding: 4px;
+            }
+            .modal-content {
+                width: 90%;
+            }
+        }
+
+        .input-procurarbypart_number {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .input-procurarbypart_number input {
+            padding: 5px;
+            font-size: 1rem;
+        }
+        .input-procurarByMaquinaId {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .input-procurarByMaquinaId input {
+            padding: 5px;
+            font-size: 1rem;
         }
     </style>
 </head>
 <body>
-    <h1>Administração de Chapas</h1>
+    <header>
+        <div class="null"></div>
+        <h1>Administração de Chapas</h1>
+    </header>
+    <main>
+        <aside>
+            <div class="btn-aside">
+                <div>
+                    <div class="input-procurarbypart_number">
+                        <input type="number" id="procurarInputbypart_number" placeholder="Digite o Part number">
+                        <button onclick="confirmarProcurarPart_number()">Confirmar</button>
+                    </div>
+                    <div class="input-procurarByMaquinaId">
+                        <select id="procurarInputByMaquinaId">
+                            <option value="">Selecione</option>
+                        </select>
+                        <button onclick="confirmarProcurarMaquina()">Confirmar</button>
+                    </div>
+                </div>
+
+                <button onclick="procurar()">procurar</button>
+                <button onclick="showItemMaquinaProduction()">mostrar produção</button>
+                <button onclick="criar()">criar</button>
+                <button onclick="remover()">remover</button>
+            </div>
+        </aside>
+        <div class="tabelas">
+            <div class="item-maquina">
+                part_number maquina
+                <table id="item_maquina">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>part_number</th>
+                            <th>maquina</th>
+                            <th>ordem</th>
+                            <th>prazo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="item">
+                <div>part number</div>
+                <table id="chapa_item">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>quantidade</th>
+                            <th>chapaId</th>
+                            <th>itemId</th>
+                            <th>part_number</th>
+                            <th>status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="chapa-item">
+                chapa part_number
+                <table id="chapa_chapa">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>fornecedor</th>
+                            <th>cliente</th>
+                            <th>medida</th>
+                            <th>onda</th>
+                            <th>qualidade</th>
+                            <th>vincos</th>
+                            <th>quantidade</th>
+                            <th>estoque</th>
+                            <th>quantidade_recebida</th>
+                            <th>data_compra</th>
+                            <th>data_prevista</th>
+                            <th>data_recebimento</th>
+                            <th>status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modals -->
+    <div id="modalItemMaquina" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalItemMaquina')">&times;</span>
+            <div id="modalContentItemMaquina"></div>
+        </div>
+    </div>
+
+    <div id="modalChapaItem" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalChapaItem')">&times;</span>
+            <div id="modalContentChapaItem"></div>
+        </div>
+    </div>
+
+    <div id="modalChapaChapa" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalChapaChapa')">&times;</span>
+            <div id="modalContentChapaChapa"></div>
+        </div>
+    </div>
+
+    <div id="modalCriar" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalCriar')">&times;</span>
+            <div id="modalContentCriar">
+                <h2>criar ordem de produção</h2>
+                <p>Part Number: 
+                    <select id="partNumberInput">
+                        <option value="">Selecione</option>
+                    </select>
+                </p>
+                <p>Máquina: 
+                    <select id="maquinaInput">
+                        <option value="">Selecione</option>
+                    </select>
+                </p>
+                <p>Ordem: <input type="text" id="ordemInput" value=""></p>
+                <p>Prazo: <input type="date" id="prazoInput" value=""></p>
+                <button onclick="confirmarCriar()">Confirmar</button>
+            </div>
+        </div>
+    </div>
 
     <script>
-        fetch('http://localhost:3000/adm/1')
-        .then(response => response.json())
-        .then(chapas => {
-            console.log(chapas)
-        })
+
+        document.addEventListener('DOMContentLoaded', function() {
+            getAll()
+            
+            
+        });
+
+        let itemId = "";
+        let maquinaId = "";
+        let part_number = "";  //input
+        let maquina = "";    //input
+        let ordem = "";   //input
+        let prazo = "";   //input
+        let all = "";
+        let allPart_number = [];
+        let allMaquina = [];
+
+        function procurar() {
+            const inputProcurarItemId = document.querySelector('.input-procurarbypart_number');
+            const inputProcurarMaquinaId = document.querySelector('.input-procurarByMaquinaId');
+            inputProcurarItemId.style.display = inputProcurarItemId.style.display === 'block' ? 'none' : 'block';
+            inputProcurarMaquinaId.style.display = inputProcurarMaquinaId.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function confirmarProcurarPart_number() {
+            part_number = document.getElementById('procurarInputbypart_number').value;
+            const tabelaChapaItem = document.querySelector('#chapa_item tbody');
+            const tabelaChapaChapa = document.querySelector('#chapa_chapa tbody');
+            const tabelaItemMaquina = document.querySelector('#item_maquina tbody');
+            tabelaChapaItem.innerHTML = '';
+            tabelaChapaChapa.innerHTML = '';
+            tabelaItemMaquina.innerHTML = '';
+            idPart_number()
+
+
+            fetchChapaItem();
+            getItemMaquinaByItemId();
+
+            document.querySelector('.item-maquina').style.display = 'flex';
+            document.querySelector('.item').style.display = 'flex';
+            document.querySelector('.chapa-item').style.display = 'flex';
+            document.querySelector('.input-procurarbypart_number').style.display = 'none';
+            document.querySelector('.input-procurarByMaquinaId').style.display = 'none';
+        }
+
+        function confirmarProcurarMaquina() {
+            maquina = document.getElementById('procurarInputByMaquinaId').value;
+            const tabelaChapaItem = document.querySelector('#chapa_item tbody');
+            const tabelaChapaChapa = document.querySelector('#chapa_chapa tbody');
+            const tabelaItemMaquina = document.querySelector('#item_maquina tbody');
+            tabelaChapaItem.innerHTML = '';
+            tabelaChapaChapa.innerHTML = '';
+            tabelaItemMaquina.innerHTML = '';
+            idMaquina()
+
+            itemIdByMaquinaId()
+
+            document.querySelector('.item-maquina').style.display = 'flex';
+            document.querySelector('.item').style.display = 'flex';
+            document.querySelector('.chapa-item').style.display = 'flex';
+            document.querySelector('.input-procurarbypart_number').style.display = 'none';
+            document.querySelector('.input-procurarByMaquinaId').style.display = 'none';
+        }
+
+        function showItemMaquinaProduction(){
+            const itemMaquinaStyle = document.querySelector('.item-maquina')
+            document.querySelector('.item').style.display = 'none';
+            document.querySelector('.chapa-item').style.display = 'none';
+            itemMaquinaStyle.style.display = itemMaquinaStyle.style.display === 'block' ? 'none' : 'block';
+
+            const tabelaItemMaquina = document.querySelector('#item_maquina tbody');
+                    tabelaItemMaquina.innerHTML = '';
+                    all.item_maquinas.forEach(maquina => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${maquina.id_item_maquina}</td>
+                            <td>${maquina.itemId.part_number}</td>
+                            <td>${maquina.maquinaId.name}</td>
+                            <td>${maquina.ordem}</td>
+                            <td>${maquina.prazo}</td>
+                        `;
+                        row.addEventListener('click', () => handleRowClickItemMaquina(maquina));
+                        tabelaItemMaquina.appendChild(row);
+                    });
+        }
+
+        function adicionar() {
+            
+
+            
+        }
+
+        function criar() {
+            document.getElementById('modalCriar').style.display = 'block';
+        }
+
+        function remover() {
+            
+           
+        }
+
+        function getAll(){
+            fetch('http://localhost:3000/adm/getAll')
+                .then(response => response.json())
+                .then(data => {
+                    all = data;
+                    allMaquina = data.maquinas.map(maquina => maquina.name);
+                    allPart_number = data.items.map(item => item.part_number);
+                    
+
+                    populateSelect('partNumberInput', allPart_number);
+                    populateSelect('maquinaInput', allMaquina);
+                    populateSelect('procurarInputByMaquinaId', allMaquina); 
+                });
+        }
+
+        function populateSelect(selectId, options) {
+            const selectElement = document.getElementById(selectId);
+            selectElement.innerHTML = '<option value="">Selecione</option>';
+            options.forEach(option => {
+                const optionElement = document.createElement('option');
+                optionElement.value = option;
+                optionElement.textContent = option;
+                selectElement.appendChild(optionElement);
+            });
+        }
+
+        function confirmarCriar() {
+            part_number = document.getElementById('partNumberInput').value;
+            maquina = document.getElementById('maquinaInput').value;
+            ordem = document.getElementById('ordemInput').value;
+            prazo = document.getElementById('prazoInput').value;
+
+            idPart_number();
+            idMaquina();
+            
+            const data = [{ // Ajuste conforme necessário
+                ordem: ordem,
+                prazo: prazo,
+                maquinaId: maquinaId,
+                itemId: itemId
+            }];
+            console.log(data)
+
+            fetch('http://localhost:3000/adm/add_ordem', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            }).then(response => response.json())
+              .then(data => {
+                  console.log('Success:', data);
+                  closeModal('modalCriar');
+              }).catch((error) => {
+                  console.error('Error:', error);
+              });
+        }
+
+        function idPart_number() {
+            const item = all.items.find(item => item.part_number == part_number);
+            itemId = item.id_item;
+            
+        }
+
+        function idMaquina() {
+            const machine = all.maquinas.find(machine => machine.name == maquina);
+            maquinaId = machine.id;
+        }
+        function itemIdByMaquinaId(){
+            const items_maquina = all.item_maquinas.filter(item_maquina => 
+                item_maquina.maquinaId.id === maquinaId
+            ).map(item_maquina => item_maquina.itemId.id_item);
+            
+            items_maquina.forEach(item_id =>{
+                itemId = item_id
+                console.log(itemId)
+                fetchChapaItem()
+                getItemMaquinaByItemId()
+            })
+            
+            console.log(items_maquina)
+        }
+
+        function fetchChapaItem() {
+            fetch(`http://localhost:3000/adm/chapa_item/${itemId}`)
+                .then(response => response.json())
+                .then(chapas => {
+                    const tabelaChapaItem = document.querySelector('#chapa_item tbody');
+                    const tabelaChapaChapa = document.querySelector('#chapa_chapa tbody');
+                    chapas.forEach(chapa => {
+                        console.log(chapa)
+                        const rowItem = document.createElement('tr');
+                        rowItem.innerHTML = `
+                            <td>${chapa.id}</td>
+                            <td>${chapa.quantidade}</td>
+                            <td>${chapa.chapa.id_chapa}</td>
+                            <td>${chapa.item.id_item}</td>
+                            <td>${chapa.item.part_number}</td>
+                            <td>${chapa.item.Status}</td>
+                        `;
+                        rowItem.addEventListener('click', () => handleRowClickChapaItem(chapa));
+                        tabelaChapaItem.appendChild(rowItem);
+
+                        const rowChapa = document.createElement('tr');
+                        rowChapa.innerHTML = `
+                            <td>${chapa.chapa.id_chapa}</td>
+                            <td>${chapa.chapa.fornecedor}</td>
+                            <td>${chapa.chapa.numero_cliente}</td>
+                            <td>${chapa.chapa.medida}</td>
+                            <td>${chapa.chapa.onda}</td>
+                            <td>${chapa.chapa.qualidade}</td>
+                            <td>${chapa.chapa.vincos}</td>
+                            <td>${chapa.chapa.quantidade_comprada}</td>
+                            <td>${chapa.chapa.quantidade_estoque}</td>
+                            <td>${chapa.chapa.quantidade_recebida}</td>
+                            <td>${chapa.chapa.data_compra}</td>
+                            <td>${chapa.chapa.data_prevista}</td>
+                            <td>${chapa.chapa.data_recebimento || ''}</td>
+                            <td>${chapa.chapa.status}</td>
+                        `;
+                        rowChapa.addEventListener('click', () => handleRowClickChapaChapa(chapa.chapa));
+                        tabelaChapaChapa.appendChild(rowChapa);
+                    });
+                });
+        }
+
+        function getItemMaquinaByItemId() {
+            fetch(`http://localhost:3000/adm/item_maquina/${itemId}`)
+                .then(response => response.json())
+                .then(maquinas => {
+                    const tabelaItemMaquina = document.querySelector('#item_maquina tbody');
+                    maquinas.forEach(maquina => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${maquina.id_item_maquina}</td>
+                            <td>${maquina.itemId.part_number}</td>
+                            <td>${maquina.maquinaId.name}</td>
+                            <td>${maquina.ordem}</td>
+                            <td>${maquina.prazo}</td>
+                        `;
+                        row.addEventListener('click', () => handleRowClickItemMaquina(maquina));
+                        tabelaItemMaquina.appendChild(row);
+                    });
+                });
+        }
+
+        // Funções para abrir e fechar os modais
+        function openModal(modalId, contentId, contentHtml) {
+            const modal = document.getElementById(modalId);
+            const content = document.getElementById(contentId);
+            content.innerHTML = contentHtml;
+            modal.style.display = "block";
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.style.display = "none";
+        }
+
+        // Função para preencher e abrir o modal para item_maquina
+        function handleRowClickItemMaquina(data) {
+            const contentHtml = `
+                <p>ID: ${data.id_item_maquina}</p>
+                <p>Part Number: ${data.itemId.part_number}</p>
+                <p>Maquina: ${data.maquinaId.name}</p>
+                <p>Ordem: ${data.ordem}</p>
+                <p>Data Termino: ${data.prazo}</p>
+            `;
+            openModal('modalItemMaquina', 'modalContentItemMaquina', contentHtml);
+        }
+
+        // Função para preencher e abrir o modal para chapa_item
+        function handleRowClickChapaItem(data) {
+            const contentHtml = `
+                <p>ID: ${data.id}</p>
+                <p>Quantidade: ${data.quantidade}</p>
+                <p>Chapa ID: ${data.chapa.id_chapa}</p>
+                <p>Item ID: ${data.item.id_item}</p>
+                <p>Part Number: ${data.item.part_number}</p>
+                <p>Status: ${data.item.Status}</p>
+            `;
+            openModal('modalChapaItem', 'modalContentChapaItem', contentHtml);
+        }
+
+        // Função para preencher e abrir o modal para chapa_chapa
+        function handleRowClickChapaChapa(data) {
+            const contentHtml = `
+                <p>ID: ${data.id_chapa}</p>
+                <p>Data Compra: ${data.data_compra}</p>
+                <p>Data Prevista: ${data.data_prevista}</p>
+                <p>Data Recebimento: ${data.data_recebimento || ''}</p>
+                <p>Fornecedor: ${data.fornecedor}</p>
+                <p>Gramatura: ${data.gramatura}</p>
+                <p>Medida: ${data.medida}</p>
+                <p>Cliente: ${data.numero_cliente}</p>
+                <p>Onda: ${data.onda}</p>
+                <p>Qualidade: ${data.qualidade}</p>
+                <p>Quantidade Comprada: ${data.quantidade_comprada}</p>
+                <p>Quantidade Estoque: ${data.quantidade_estoque}</p>
+                <p>Quantidade Recebida: ${data.quantidade_recebida}</p>
+                <p>Status: ${data.status}</p>
+                <p>Vincos: ${data.vincos}</p>
+                <p>Gramatura: ${data.gramatura}</p>
+                <p>Peso Total: ${data.peso_total}</p>
+                <p>Unidade: ${data.unidade}</p>
+                <p>Valor total: ${data.valor_total}</p>
+                <p>Valor Unitário: ${data.valor_unitario}</p>
+            `;
+            openModal('modalChapaChapa', 'modalContentChapaChapa', contentHtml);
+        }
     </script>
 </body>
 </html>

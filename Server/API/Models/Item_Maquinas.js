@@ -10,8 +10,12 @@ const Item_Maquina = new EntitySchema({
         },
         ordem: {
             type: "int",
-            nullable: true
-        }
+            nullable: true,
+        },
+        prazo: {
+            type: Date,
+            nullable: true,
+        },
     },
     relations: {
         itemId: {

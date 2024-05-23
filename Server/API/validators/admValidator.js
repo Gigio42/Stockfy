@@ -2,9 +2,19 @@ export const getItemMaquinaSchema = {
     params: {
         type: 'object',
         properties: {
-            id_item_maquina: { type: 'integer' },
+            itemId: { type: 'integer' },
         },
-        required: ['id_item_maquina']
+        required: ['itemId']
+    }
+};
+
+export const getItemSchema = {
+    params: {
+        type: 'object',
+        properties: {
+            itemId: { type: 'integer' },
+        },
+        required: ['itemId']
     }
 };
 
@@ -15,10 +25,12 @@ export const postItemMaquinaSchema = {
             type: 'object',
             properties: {
                 id_item_maquina: { type: 'integer' },
-                id_maquina: { type: 'integer' },
-                id_item: { type: 'integer' },
+                ordem: { type: 'integer' },
+                prazo: { type: 'string' },
+                maquinaId: { type: 'integer' },
+                itemId: { type: 'integer' },
             },
-            required: ['id_item_maquina','id_maquina','id_item']
+            required: ['ordem','prazo','maquinaId','itemId']
         }
     }
 };

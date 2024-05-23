@@ -1,37 +1,66 @@
 import AdmController from '../Controllers/admController.js';
-import { postItemMaquinaSchema, getItemMaquinaSchema } from '../validators/admValidator.js'
+import { postItemMaquinaSchema, getItemMaquinaSchema, getItemSchema } from '../validators/admValidator.js'
 
 async function admRoute(fastify, options) {
     const admController = new AdmController(options.db);
 
-    fastify.get('/:id_item_maquina', {
-        schema: getItemMaquinaSchema, handler: async (request, reply) => {
-            console.log(request.params.id_item_maquina);
-
-            try {
-                const item_maquina = await admController.getItemMaquina(request.params.id_item_maquina);
-                reply.send(item_maquina);
-            }
-            catch (err) {
-                console.log(err.message);
-                reply.code(500).send({ message: 'Error retrieving data from SQLite database', error: err.message });
-            }
+    fastify.get('/getAll', {
+      handler: async (request, reply) => {
+        try {
+          const data = await admController.getAll();
+          reply.send(data);
+        } catch (err) {
+          console.log(err.message);
+          reply.code(500).send({ message: 'Error retrieving data from SQLite database', error: err.message });
         }
+      }
     });
 
 
-    fastify.post('/', { schema: postItemMaquinaSchema, handler: async (request, reply) => {
-      console.log(request.body);
-  
-      try {
-        await admController.createItemMaquina(request.body);
-        reply.send({ message: 'Data received and inserted into SQLite database successfully' });
-      } 
-      catch (err) {
-        console.log(err.message);
-        reply.code(500).send({ message: 'Error inserting data into SQLite database', error: err.message });
+    fastify.get('/item_maquina/:itemId', {
+      schema: getItemMaquinaSchema, handler: async (request, reply) => {
+
+          try {
+              const item_id = await admController.getItemMaquinaByItemId(request.params.itemId);
+              reply.send(item_id);
+          }
+          catch (err) {
+              console.log(err.message);
+              reply.code(500).send({ message: 'Error retrieving data from SQLite database', error: err.message });
+          }
       }
-    }});
+  });
+
+    fastify.get('/chapa_item/:itemId', {
+      schema: getItemSchema, handler: async (request, reply) => {
+
+          try {
+              const item_id = await admController.getChapaItem(request.params.itemId);
+              reply.send(item_id);
+          }
+          catch (err) {
+              console.log(err.message);
+              reply.code(500).send({ message: 'Error retrieving data from SQLite database', error: err.message });
+          }
+      }
+  });
+
+
+    fastify.post('/add_ordem', {
+      schema: postItemMaquinaSchema, handler: async (request, reply) => {
+        console.log(request.body);
+    
+        try {
+          await admController.createItemMaquina(request.body);
+          reply.send({ message: 'Data received and inserted into SQLite database successfully' });
+        } 
+        catch (err) {
+          console.log(err.message);
+          reply.code(500).send({ message: 'Error inserting data into SQLite database', error: err.message });
+        }
+      }
+    }
+  )
 }
 
 export default admRoute;
