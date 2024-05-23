@@ -14,8 +14,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Install Prettier
-        run: npm install prettier
+      - name: Install Dependencies
+        run: npm install
       - name: Format Files
         run: npx prettier --config .prettierrc --write Server/**/*.js
       - name: Commit changes
