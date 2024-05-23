@@ -9,7 +9,7 @@ const Item = new EntitySchema({
             generated: true
         },
         part_number: {
-            type: "int",
+            type: "text",
             default: 0
         },
         Status: {
