@@ -62,33 +62,33 @@ class PCPController {
     return sortedChapas;
   }
 
-async getItems() {
+  async getItems() {
     const chapaItemRepository = getRepository(Chapa_Item);
 
     const chapaItems = await chapaItemRepository
-        .createQueryBuilder("chapa_item")
-        .leftJoinAndSelect("chapa_item.item", "item")
-        .leftJoinAndSelect("chapa_item.chapa", "chapa")
-        .getMany();
+      .createQueryBuilder("chapa_item")
+      .leftJoinAndSelect("chapa_item.item", "item")
+      .leftJoinAndSelect("chapa_item.chapa", "chapa")
+      .getMany();
 
     if (!chapaItems.length) {
-        throw new Error(`No Chapa_Item found`);
+      throw new Error(`No Chapa_Item found`);
     }
 
     const items = chapaItems.reduce((acc, chapaItem) => {
-        const { item } = chapaItem;
-        if (!acc[item.id_item]) {
-            acc[item.id_item] = {
-                ...item,
-                chapas: []
-            };
-        }
-        acc[item.id_item].chapas.push(chapaItem.chapa);
-        return acc;
+      const { item } = chapaItem;
+      if (!acc[item.id_item]) {
+        acc[item.id_item] = {
+          ...item,
+          chapas: [],
+        };
+      }
+      acc[item.id_item].chapas.push(chapaItem.chapa);
+      return acc;
     }, {});
 
     return Object.values(items);
-}
+  }
 
   async createItemWithChapa(body) {
     const { partNumber, chapas } = body;
