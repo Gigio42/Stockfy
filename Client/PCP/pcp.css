@@ -1,9 +1,10 @@
 /* ======================================
    Header Styles
    ====================================== */
-   .header-custom {
+.header-custom {
     display: flex;
-    color: #1a1a1a; /* Cor do texto padrão para o header */
+    color: #1a1a1a;
+    /* Cor do texto padrão para o header */
     border-bottom: solid 1px #6a6a6a45;
     background-color: #d4d4d4;
     height: 5rem;
@@ -54,12 +55,12 @@ h1 {
     transition: transform 0.3s ease-in-out;
 }
 
-.dark-mode-toggle input[type="checkbox"]:checked + label {
+.dark-mode-toggle input[type="checkbox"]:checked+label {
     background-color: #6eec07;
     box-shadow: 0 0 30px 20px #6eec074f;
 }
 
-.dark-mode-toggle input[type="checkbox"]:checked + label:after {
+.dark-mode-toggle input[type="checkbox"]:checked+label:after {
     transform: translateX(100%);
 }
 
@@ -68,9 +69,11 @@ h1 {
    ====================================== */
 #aside {
     display: flex;
-    background: #e6e6e6; /* Cor de fundo para o aside no modo escuro */
+    background: #e6e6e6;
+    /* Cor de fundo para o aside no modo escuro */
     min-height: 70%;
-    overflow-y: auto; /* Permite rolagem se o conteúdo for maior do que a altura da página */
+    overflow-y: auto;
+    /* Permite rolagem se o conteúdo for maior do que a altura da página */
     padding: 0;
 }
 
@@ -100,7 +103,8 @@ h1 {
    Active Link Styles
    ====================================== */
 .active {
-    background-color: #007bff; /* Cor de fundo do link ativo */
+    background-color: #007bff;
+    /* Cor de fundo do link ativo */
 }
 
 .active img.imgicon {
@@ -112,12 +116,15 @@ h1 {
 }
 
 .active:hover {
-    background-color: #007bff; /* Mantém a cor de fundo do link ativo */
-    cursor: default; /* Define o cursor como padrão */
+    background-color: #007bff;
+    /* Mantém a cor de fundo do link ativo */
+    cursor: default;
+    /* Define o cursor como padrão */
 }
 
 .active:hover a {
-    color: #ffffff; /* Mantém a cor do texto do link ativo */
+    color: #ffffff;
+    /* Mantém a cor do texto do link ativo */
 }
 
 /* ======================================
@@ -132,11 +139,13 @@ a {
 
 a:hover {
     color: #535353;
-    text-decoration: none; /* Remove o sublinhado */
+    text-decoration: none;
+    /* Remove o sublinhado */
 }
 
 .icon-home {
-    fill: red; /* Altere "red" para a cor desejada */
+    fill: red;
+    /* Altere "red" para a cor desejada */
 }
 
 li {
@@ -144,7 +153,8 @@ li {
     padding: 1rem;
     font-size: 1.1rem;
     border-radius: 1.2rem;
-    text-decoration: none; /* Remove o sublinhado */
+    text-decoration: none;
+    /* Remove o sublinhado */
 }
 
 li:hover {
@@ -169,15 +179,15 @@ html {
 body {
     background: #ffffff;
     height: 100%;
-    font-family:Arial, Helvetica, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     overflow-y: hidden;
 }
 
 .header {
-        padding: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .col-md-12 {
@@ -186,7 +196,8 @@ body {
 }
 
 .row {
-    display: flex; /* Para fazer os elementos dentro da linha se comportarem como flexíveis */
+    display: flex;
+    /* Para fazer os elementos dentro da linha se comportarem como flexíveis */
     height: 100%;
 }
 
@@ -196,7 +207,8 @@ body {
 
 #container {
     max-height: 75vh;
-    overflow-y: auto; /* Adiciona barra de rolagem vertical se necessário */
+    overflow-y: auto;
+    /* Adiciona barra de rolagem vertical se necessário */
 }
 
 
@@ -204,34 +216,41 @@ body {
    Scrollbar Styles
    ====================================== */
 ::-webkit-scrollbar {
-    width: 10px; /* largura da barra de rolagem */
+    width: 10px;
+    /* largura da barra de rolagem */
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #424242; /* cor do 'thumb' (a parte que você arrasta) */
-    border-radius: 5px; /* borda arredondada */
+    background-color: #424242;
+    /* cor do 'thumb' (a parte que você arrasta) */
+    border-radius: 5px;
+    /* borda arredondada */
 }
 
 ::-webkit-scrollbar-track {
-    background-color: #212121; /* cor do fundo da barra de rolagem */
+    background-color: #212121;
+    /* cor do fundo da barra de rolagem */
 }
 
 /* ======================================
    Dark Mode Styles
    ====================================== */
 .dark-mode #aside {
-    background: #9a9a9a27; /* Altere o fundo do modo escuro para a barra lateral conforme necessário */
+    background: #9a9a9a27;
+    /* Altere o fundo do modo escuro para a barra lateral conforme necessário */
     border: solid 1px #6a6a6a45;
     backdrop-filter: blur(5px);
     border-top: 0;
 }
 
-.dark-mode h1, .dark-mode li {
+.dark-mode h1,
+.dark-mode li {
     color: #cccccc;
 }
 
 .dark-mode .logo {
-    filter: invert(1); /* Exemplo de inversão de cores */
+    filter: invert(1);
+    /* Exemplo de inversão de cores */
 }
 
 .dark-mode.body {
@@ -239,7 +258,8 @@ body {
 }
 
 .dark-mode .dark-mode-aside {
-    background: #1c1c1c; /* Altere o fundo do modo escuro para a barra lateral conforme necessário */
+    background: #1c1c1c;
+    /* Altere o fundo do modo escuro para a barra lateral conforme necessário */
 }
 
 .dark-mode .header-custom {
@@ -253,7 +273,8 @@ body {
 }
 
 .dark-mode .logo {
-    filter: invert(1); /* Exemplo de inversão de cores */
+    filter: invert(1);
+    /* Exemplo de inversão de cores */
 }
 
 .dark-mode li:hover {
@@ -286,7 +307,7 @@ body {
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
-    overflow: auto; 
+    overflow: auto;
 }
 
 .modal-content input {
@@ -330,7 +351,7 @@ formulário
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
     justify-content: space-between;
-    background: #333333;
+    background: #333333ea;
     padding: 20px;
     color: #fff;
     margin-bottom: 1rem;
@@ -369,18 +390,18 @@ formulário
     transition: background 0.3s ease;
     font-size: 1em;
     grid-column: span 2;
-} 
+}
 
-.updade{
+.updade {
     background: #1d2b3a;
     color: #96c9ff;
-    border: solid 1px #96c9ff84 ;
+    border: solid 1px #96c9ff84;
 }
 
 .updade:hover {
     background: #26394d;
     color: #96c9ff;
-    border: solid 1px #96c9ff84 ;
+    border: solid 1px #96c9ff84;
 }
 
 
@@ -388,7 +409,7 @@ formulário
     width: 50px;
     height: 38px;
     padding: 0;
-    font-size: 1.5em; 
+    font-size: 1.5em;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -439,7 +460,8 @@ formulário
     margin-bottom: 10px;
     margin-top: 15px;
     background-color: rgb(34, 34, 34);
-    height: 70px;  /* Adjust the height as needed */
+    height: 70px;
+    /* Adjust the height as needed */
 }
 
 .card-body-div {
@@ -485,7 +507,7 @@ input[type="checkbox"]:checked::before {
 
 .card-value-div {
     text-align: center;
-    
+
 }
 
 .card {
@@ -493,10 +515,10 @@ input[type="checkbox"]:checked::before {
 }
 
 .card-checkbox {
-    display: inline-block; 
+    display: inline-block;
 }
 
-.card-checkbox:checked + .card-checkbox::after {
+.card-checkbox:checked+.card-checkbox::after {
     display: block;
     width: 30px;
     height: 30px;
@@ -537,5 +559,3 @@ input[type="checkbox"]:checked::before {
     border-color: #575757;
     color: #fff;
 }
-
-

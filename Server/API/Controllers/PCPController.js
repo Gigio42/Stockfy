@@ -1,150 +1,163 @@
-import { getRepository } from 'typeorm';
-import Chapas from '../Models/Chapas.js';
-import Item from '../Models/Item.js';
-import Chapa_Item from '../Models/Chapa_Item.js';
+import { getRepository } from "typeorm";
+import Chapas from "../Models/Chapas.js";
+import Item from "../Models/Item.js";
+import Chapa_Item from "../Models/Chapa_Item.js";
 
 class PCPController {
-    constructor() { }
+  constructor() {}
 
-    async getChapas(query, filterCriteria, sortOrder, sortBy, generalFilter) {
-        const chapasRepository = getRepository(Chapas);
-        let data = await chapasRepository.find({ relations: ['conjugacoes'] });
+  async getChapas(query, filterCriteria, sortOrder, sortBy) {
+    const chapasRepository = getRepository(Chapas);
+    let data = await chapasRepository.find({ relations: ["conjugacoes"] });
 
-        data = data.filter(chapa => chapa.status !== 'USADO');
+    data = data.filter((chapa) => chapa.status !== "USADO");
 
-
-        console.log("the data is: ", data)
-
-        if (filterCriteria) {
-            for (let key in filterCriteria) {
-                if (key === 'comprimento' || key === 'largura') {
-                    data = data.filter(chapa => {
-                        const [comprimento, largura] = chapa.medida.split('x');
-                        if (key === 'comprimento') {
-                            return comprimento === filterCriteria[key];
-                        } else {
-                            return largura === filterCriteria[key];
-                        }
-                    });
-                } else {
-                    data = data.filter(chapa => chapa[key].toLowerCase() === filterCriteria[key].toLowerCase());
-                }
-            }
-        }
-
-        if (generalFilter) {
-            data = data.filter(chapa => {
-                for (let key in chapa) {
-                    if (typeof chapa[key] === 'string' && chapa[key].toLowerCase().includes(generalFilter.toLowerCase())) {
-                        return true;
-                    }
-                }
-                return false;
-            });
-        }
-
-        data = data.map(chapa => {
-            const date = new Date(chapa.data_prevista);
-            const day = String(date.getDate()).padStart(2, '0');
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            chapa.data_prevista = `${day}/${month}`;
-            return chapa;
-        });
-
-        const sortedChapas = data.sort((a, b) => {
-            const getValue = (obj, prop) => prop.split('.').reduce((acc, part) => acc && acc[part], obj);
-
-            if (sortBy === 'data_prevista') {
-                const [dayA, monthA] = getValue(a, sortBy).split('/');
-                const [dayB, monthB] = getValue(b, sortBy).split('/');
-                const dateA = new Date(2000, monthA - 1, dayA);
-                const dateB = new Date(2000, monthB - 1, dayB);
-
-                if (sortOrder === 'asc') {
-                    return dateA - dateB;
-                } else {
-                    return dateB - dateA;
-                }
+    if (filterCriteria) {
+      for (let key in filterCriteria) {
+        if (key === "comprimento" || key === "largura") {
+          data = data.filter((chapa) => {
+            const [comprimento, largura] = chapa.medida.split("x");
+            if (key === "comprimento") {
+              return comprimento === filterCriteria[key];
             } else {
-                if (sortOrder === 'asc') {
-                    return getValue(a, sortBy) < getValue(b, sortBy) ? -1 : getValue(a, sortBy) > getValue(b, sortBy) ? 1 : 0;
-                } else {
-                    return getValue(a, sortBy) > getValue(b, sortBy) ? -1 : getValue(a, sortBy) < getValue(b, sortBy) ? 1 : 0;
-                }
+              return largura === filterCriteria[key];
             }
-        });
-        return sortedChapas;
+          });
+        } else {
+          data = data.filter((chapa) => chapa[key].toLowerCase() === filterCriteria[key].toLowerCase());
+        }
+      }
     }
 
-    async createItemWithChapa(body) {
-        const { partNumber, chapas } = body;
+    data = data.map((chapa) => {
+      const date = new Date(chapa.data_prevista);
+      const day = String(date.getDate()).padStart(2, "0");
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      chapa.data_prevista = `${day}/${month}`;
+      return chapa;
+    });
 
-        const chapasRepository = getRepository(Chapas);
-        const itemRepository = getRepository(Item);
-        const chapaItemRepository = getRepository(Chapa_Item);
+    const sortedChapas = data.sort((a, b) => {
+      const getValue = (obj, prop) => prop.split(".").reduce((acc, part) => acc && acc[part], obj);
 
-        const item = itemRepository.create({
-            part_number: partNumber,
-            Status: 'RESERVADO',
-        });
+      if (sortBy === "data_prevista") {
+        const [dayA, monthA] = getValue(a, sortBy).split("/");
+        const [dayB, monthB] = getValue(b, sortBy).split("/");
+        const dateA = new Date(2000, monthA - 1, dayA);
+        const dateB = new Date(2000, monthB - 1, dayB);
 
-        await itemRepository.save(item);
+        if (sortOrder === "asc") {
+          return dateA - dateB;
+        } else {
+          return dateB - dateA;
+        }
+      } else {
+        if (sortOrder === "asc") {
+          return getValue(a, sortBy) < getValue(b, sortBy) ? -1 : getValue(a, sortBy) > getValue(b, sortBy) ? 1 : 0;
+        } else {
+          return getValue(a, sortBy) > getValue(b, sortBy) ? -1 : getValue(a, sortBy) < getValue(b, sortBy) ? 1 : 0;
+        }
+      }
+    });
+    return sortedChapas;
+  }
 
-        for (const { chapaID, quantity, medida, keepRemaining } of chapas) {
-            const chapa = await chapasRepository.findOne({ where: { id_chapa: chapaID } });
+  async getItems() {
+    const chapaItemRepository = getRepository(Chapa_Item);
 
-            if (!chapa) {
-                throw new Error('Chapa not found');
-            }
+    const chapaItems = await chapaItemRepository
+      .createQueryBuilder("chapa_item")
+      .leftJoinAndSelect("chapa_item.item", "item")
+      .leftJoinAndSelect("chapa_item.chapa", "chapa")
+      .getMany();
 
-            if (!quantity) {
-                throw new Error('Quantity is required');
-            }
+    if (!chapaItems.length) {
+      throw new Error(`No Chapa_Item found`);
+    }
 
-            chapa.quantidade_estoque -= quantity;
+    const items = chapaItems.reduce((acc, chapaItem) => {
+      const { item } = chapaItem;
+      if (!acc[item.id_item]) {
+        acc[item.id_item] = {
+          ...item,
+          chapas: [],
+        };
+      }
+      acc[item.id_item].chapas.push(chapaItem.chapa);
+      return acc;
+    }, {});
 
-            if ((chapa.quantidade_comprada + chapa.quantidade_estoque === 0) ||
-                (chapa.status === 'recebido' && chapa.quantidade_estoque === 0)) {
-                chapa.status = 'USADO';
-            }
+    return Object.values(items);
+  }
 
-            if (keepRemaining) {
-                const [chapaWidth, chapaHeight] = chapa.medida.split('x').map(Number);
-                const [chosenWidth, chosenHeight] = medida.split('x').map(Number);
+  async createItemWithChapa(body) {
+    const { partNumber, chapas } = body;
 
-                if (chapaWidth < chosenWidth || chapaHeight < chosenHeight) {
-                    throw new Error('Not enough chapas of the specified dimensions');
-                }
+    const chapasRepository = getRepository(Chapas);
+    const itemRepository = getRepository(Item);
+    const chapaItemRepository = getRepository(Chapa_Item);
 
-                const originalArea = chapaWidth * chapaHeight;
-                const usedArea = chosenWidth * chosenHeight;
-                const remainingArea = originalArea - usedArea;
+    const item = itemRepository.create({
+      part_number: partNumber,
+      Status: "RESERVADO",
+    });
 
-                const { id_chapa, medida, ...chapaProps } = chapa;
+    await itemRepository.save(item);
 
-                const newChapa = chapasRepository.create({
-                    ...chapaProps,
-                    area: remainingArea,
-                    quantidade_estoque: quantity,
-                    status: 'RESTO'
-                });
+    for (const { chapaID, quantity, medida, keepRemaining } of chapas) {
+      const chapa = await chapasRepository.findOne({ where: { id_chapa: chapaID } });
 
-                await chapasRepository.save(newChapa);
-            }
+      if (!chapa) {
+        throw new Error("Chapa not found");
+      }
 
-            await chapasRepository.save(chapa);
+      if (!quantity) {
+        throw new Error("Quantity is required");
+      }
 
-            const chapaItem = chapaItemRepository.create({
-                chapa: chapa,
-                item: item,
-                quantidade: quantity
-            });
+      chapa.quantidade_estoque -= quantity;
 
-            await chapaItemRepository.save(chapaItem);
+      if (chapa.quantidade_comprada + chapa.quantidade_estoque === 0 || (chapa.status === "recebido" && chapa.quantidade_estoque === 0)) {
+        chapa.status = "USADO";
+      }
+
+      if (keepRemaining) {
+        const [chapaWidth, chapaHeight] = chapa.medida.split("x").map(Number);
+        const [chosenWidth, chosenHeight] = medida.split("x").map(Number);
+
+        if (chapaWidth < chosenWidth || chapaHeight < chosenHeight) {
+          throw new Error("Not enough chapas of the specified dimensions");
         }
 
-        return item;
+        const originalArea = chapaWidth * chapaHeight;
+        const usedArea = chosenWidth * chosenHeight;
+        const remainingArea = originalArea - usedArea;
+
+        const { id_chapa, medida, ...chapaProps } = chapa;
+
+        const newChapa = chapasRepository.create({
+          ...chapaProps,
+          area: remainingArea,
+          quantidade_estoque: quantity,
+          status: "RESTO",
+        });
+
+        await chapasRepository.save(newChapa);
+      }
+
+      await chapasRepository.save(chapa);
+
+      const chapaItem = chapaItemRepository.create({
+        chapa: chapa,
+        item: item,
+        quantidade: quantity,
+      });
+
+      await chapaItemRepository.save(chapaItem);
     }
+
+    return item;
+  }
 }
 
 export default PCPController;
