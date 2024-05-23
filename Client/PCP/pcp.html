@@ -63,7 +63,7 @@
                     </ul>
                 </div>
             </aside>
-            
+
             <!-- Header -->
             <div class="col-md-9 header">
                 <div class="header-custom text-light d-flex justify-content-between align-items-center">
@@ -77,92 +77,91 @@
                 </div>
 
                 <!-- Card -->
-                <div class=" rowstyle ">
-                    <div class="whidth">
-                        <div class="card">
-                            <div class="card-body cardfora">
-                                <form id="groupingForm" class="grouping-form">
-                                    <div class="row">
-                                        <div class="col-md-6 order-md-1">
-                                            <div class="form-group">
-                                                <button type="submit" class="btn btn-primary agrupar-button w-100">ATUALIZAR</button>
-                                                <!-- <input type="text" class="form-control" id="generalFilterInput" name="generalFilter" placeholder="Pesquisar"> -->
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="d-flex align-items-center">
-                                                    <select class="form-control" id="sortKey" style="flex-grow: 1;">
-                                                        <option value="medida">Medida</option>
-                                                        <option value="qualidade">Qualidade</option>
-                                                        <option value="vincos">Vincos</option>
-                                                        <option value="onda">Onda</option>
-                                                        <option value="status">Status</option>
-                                                        <option value="data_prevista">Data</option>
-                                                        <option value="quantidade_comprada">Quantidade Comprada</option>
-                                                        <option value="quantidade_estoque">Quantidade Estoque</option>
-                                                    </select>
-                                                    <button type="button" class="btn btn-secondary agrupar-button ml-2"
-                                                        id="sortOrder" data-sort="asc"> &#8593;</button>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <button id="showSelectedButton" class="btn btn-primary agrupar-button w-100">RESERVAR</button>
-                                            </div>
-                                            <div class="form-group">
-                                                <button id="clearButton" type="submit" class="btn btn-primary agrupar-button w-100">LIMPAR</button>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 order-md-2">
-                                            <div class="form-group row">
-                                                <div class="col-12">
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" id="filterLength" name="filterLength" placeholder="Comprimento">
-                                                        <input type="text" class="form-control" id="filterWidth" name="filterWidth" placeholder="Largura">
-                                                    </div>
-                                                </div>
-                                                <div class="col-12">
-                                                    <input type="text" class="form-control" id="filterVincos"
-                                                        name="filterVincos" placeholder="Vincos">
-                                                </div>
-                                                <div class="col-12">
-                                                    <input type="text" class="form-control" id="filterQualidade"
-                                                        name="filterQualidade" placeholder="Qualidade">
-                                                </div>
-                                                <div class="col-12">
-                                                    <input type="text" class="form-control" id="filterOnda"
-                                                        name="filterOnda" placeholder="Onda">
-                                                </div>
-                                            </div>
-                                        </div>
+                <button id="optionsButton" class="btn btn-secondary agrupar-button ml-2">Opções</button>
+                <div class=" w-100 p-3" >
+                <div class="column-rigth w-100">
+                <form id="groupingForm" class="grouping-form d-none">
+                    <div class="row">
+                        <div class="col-md-6 order-md-1">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary agrupar-button w-100 updade">ATUALIZAR</button>
+                                <!-- <input type="text" class="form-control" id="generalFilterInput" name="generalFilter" placeholder="Pesquisar"> -->
+                            </div>
+                            <div class="form-group">
+                                <div class="d-flex align-items-center">
+                                    <select class="form-control" id="sortKey" style="flex-grow: 1;">
+                                        <option value="medida">Medida</option>
+                                        <option value="qualidade">Qualidade</option>
+                                        <option value="vincos">Vincos</option>
+                                        <option value="onda">Onda</option>
+                                        <option value="status">Status</option>
+                                        <option value="data_prevista">Data</option>
+                                        <option value="quantidade_comprada">Quantidade Comprada</option>
+                                        <option value="quantidade_estoque">Quantidade Estoque</option>
+                                    </select>
+                                    <button type="button" class="btn btn-secondary agrupar-button ml-2" id="sortOrder"
+                                        data-sort="asc"> &#8593;</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button id="showSelectedButton"
+                                    class="btn btn-primary agrupar-button w-100">RESERVAR</button>
+                            </div>
+                            <div class="form-group">
+                                <button id="clearButton" type="submit"
+                                    class="btn btn-primary agrupar-button w-100">LIMPAR</button>
+                            </div>
+                        </div>
+                        <div class="col-md-6 order-md-2">
+                            <div class="form-group row">
+                                <div class="col-12">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="filterLength" name="filterLength"
+                                            placeholder="Comprimento">
+                                        <input type="text" class="form-control" id="filterWidth" name="filterWidth"
+                                            placeholder="Largura">
                                     </div>
-                                </form>
-                                <div id="container"></div>
+                                </div>
+                                <div class="col-12">
+                                    <input type="text" class="form-control" id="filterVincos" name="filterVincos"
+                                        placeholder="Vincos">
+                                </div>
+                                <div class="col-12">
+                                    <input type="text" class="form-control" id="filterQualidade" name="filterQualidade"
+                                        placeholder="Qualidade">
+                                </div>
+                                <div class="col-12">
+                                    <input type="text" class="form-control" id="filterOnda" name="filterOnda"
+                                        placeholder="Onda">
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Popup -->
-                <div id="popupContainer" class="modal" style="display: none;">
-                    <div class="modal-content" id="modalContent">
-                        <span class="close" id="closeModal">&times;</span>
-                        <form id="partNumberForm">
-                            <label for="partNumber">Part Number:</label>
-                            <input type="text" id="partNumber" name="partNumber">
-                            <button id="reserveButton">Reserve</button>
-                        </form>
-                    </div>
+                </form>
+                <div id="container"></div>
                 </div>
             </div>
-        </div>
-    </div>
+                
+           
 
-    <!-- Bootstrap JS e JavaScript personalizado -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script type="module" src="./scripts/reservar_chapa/reservar.js"></script>
-    <script type="module" src="pcp.js"></script>
+            <!-- Popup -->
+            <div id="popupContainer" class="modal" style="display: none;">
+                <div class="modal-content" id="modalContent">
+                    <span class="close" id="closeModal">&times;</span>
+                    <form id="partNumberForm">
+                        <label for="partNumber">Part Number:</label>
+                        <input type="text" id="partNumber" name="partNumber">
+                        <button id="reserveButton">Reserve</button>
+                    </form>
+
+
+                    <!-- Bootstrap JS e JavaScript personalizado -->
+                    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+                    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+                    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+                    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+                    <script type="module" src="./scripts/reservar_chapa/reservar.js"></script>
+                    <script type="module" src="pcp.js"></script>
 
 </body>
 

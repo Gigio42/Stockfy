@@ -57,4 +57,10 @@ function mostrarSenha() {
     } else {
         senha.type = "password";
     }
+    
 }
+
+document.getElementById('optionsButton').addEventListener('click', function() {
+    var form = document.getElementById('groupingForm');
+    form.classList.toggle('d-none');
+});

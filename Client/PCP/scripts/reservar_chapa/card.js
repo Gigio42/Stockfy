@@ -15,9 +15,9 @@ export class Card {
     }
 
     createValueDiv(key, value) {
-        let valueDiv = this.createDivWithClass(`card-value-div col text-center value rounded d-flex align-items-center justify-content-center`);
-        valueDiv.style.width = '120px';
-        valueDiv.style.padding = '10px';
+        let valueDiv = this.createDivWithClass(`card-value-div col text-center value rounded align-items-center justify-content-center`);
+        valueDiv.style.width = '100px';
+        valueDiv.style.padding = '5px';
         valueDiv.textContent = value;
 
         if (key === 'status') {
@@ -38,7 +38,7 @@ export class Card {
     }
 
     createValueRow() {
-        let valueRow = this.createDivWithClass('value-row row flex-nowrap overflow-auto d-flex align-items-stretch');
+        let valueRow = this.createDivWithClass('value-row row flex-nowrap overflow-auto w-100 align-items-stretch');
         this.keys.forEach(key => valueRow.appendChild(this.createValueDiv(key, this.chapa[key])));
         return valueRow;
     }

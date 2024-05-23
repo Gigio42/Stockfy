@@ -68,7 +68,6 @@ h1 {
    ====================================== */
 #aside {
     display: flex;
-    height: 100%;
     background: #e6e6e6; /* Cor de fundo para o aside no modo escuro */
     min-height: 70%;
     overflow-y: auto; /* Permite rolagem se o conteúdo for maior do que a altura da página */
@@ -170,7 +169,8 @@ html {
 body {
     background: #ffffff;
     height: 100%;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-family:Arial, Helvetica, sans-serif;
+    overflow-y: hidden;
 }
 
 .header {
@@ -195,13 +195,10 @@ body {
 }
 
 #container {
-    max-height: 39vh;
+    max-height: 50vh;
     overflow-y: auto; /* Adiciona barra de rolagem vertical se necessário */
 }
 
-#reservarSection {
-    width: 95%;
-}
 
 /* ======================================
    Scrollbar Styles
@@ -321,17 +318,26 @@ button:hover {
     color: #0e0e0e;
 }
 
+
+/*
+==================
+formulário
+==================
+*/
+
 .grouping-form {
+    position: fixed;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
     justify-content: space-between;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid #6d6d6d;
+    background: #333333;
     padding: 20px;
-    border-radius: 5px;
-    margin: 10px 0;
+    border-radius: 1.5rem;
     color: #fff;
+    margin-bottom: 1rem;
+    width: 40%;
+    z-index: 9999;
 }
 
 .grouping-form label {
@@ -345,34 +351,43 @@ button:hover {
 
 .grouping-form input[type="text"],
 .grouping-form select {
-    background: transparent;
-    border: 1px solid #6d6d6d;
+    background: #2f2f2f;
     padding: 10px;
     box-sizing: border-box;
     color: #fff;
-    font-size: 1em;
+    font-size: 1rem;
+    border-radius: 1rem;
 }
 
 .grouping-form input[type="text"]:hover,
 .grouping-form select:hover {
     background: #6d6d6d;
-    color: #fff;
+    color: #d3d3d3;
 }
 
 .agrupar-button {
-    background: transparent;
-    border: 1px solid #6d6d6d;
+    background: #262626;
+    border: none;
+    border-radius: 1rem;
     color: #fff;
     padding: 10px 10px;
     transition: background 0.3s ease;
     font-size: 1em;
     grid-column: span 2;
+} 
+
+.updade{
+    background: #1d2b3a;
+    color: #96c9ff;
+    border: solid 1px #96c9ff84 ;
 }
 
-.agrupar-button:hover {
-    background: #6d6d6d;
-    color: #fff;
+.updade:hover {
+    background: #26394d;
+    color: #96c9ff;
+    border: solid 1px #96c9ff84 ;
 }
+
 
 #sortOrder {
     width: 50px;
@@ -412,6 +427,10 @@ button:hover {
     color: #fff !important;
 }
 
+.form-control {
+    height: 3rem;
+}
+
 /* ======================================
    cards
    ====================================== */
@@ -422,6 +441,7 @@ button:hover {
 }
 
 .card-div {
+    border-radius: 1.5rem !important;
     padding: 0px;
     margin-bottom: 10px;
     margin-top: 15px;
@@ -430,26 +450,55 @@ button:hover {
 }
 
 .card-body-div {
-    background-color: #f8f9fa00;
+    display: flex;
+    border-radius: 1.5rem !important;
+    background-color: #232323 !important;
+    font-size: 1rem;
 }
+
+input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background-color: #2d2d2d;
+    border: 2px solid #4e4e4e;
+    border-radius: 4px;
+    position: relative;
+    cursor: pointer;
+    align-items: center;
+    align-content: center;
+}
+
+input[type="checkbox"]:checked {
+    background-color: #007BFF;
+    border-color: #007BFF;
+}
+
+input[type="checkbox"]:checked::before {
+    content: '✔';
+    font-size: 14px;
+    color: white;
+    align-content: center;
+}
+
 
 .card-value-row {
     display: flex;
     overflow: auto;
     background-color: #007bff00;
     color: white;
+    font-size: 1.2rem;
 }
 
 .card-value-div {
     text-align: center;
+    
 }
 
 .card {
     border: none;
-}
-
-.cardfora {
-    padding: 0 !important;
 }
 
 .card-checkbox {
