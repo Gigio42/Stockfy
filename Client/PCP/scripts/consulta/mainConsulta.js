@@ -1,5 +1,5 @@
 import { ItemCard } from './ItemCard.js';
-import { fetchItems, deleteEntity } from '../utils/api.js';
+import { fetchItems, deleteEntity } from '../utils/connection.js';
 
 export class ItemModal {
   constructor() {

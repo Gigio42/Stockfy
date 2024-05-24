@@ -1,3 +1,14 @@
+export async function fetchChapas(sortKey, sortOrder, filterCriteria) {
+  const response = await axios.get(`http://localhost:3000/PCP/chapas`, {
+    params: {
+      sortBy: sortKey,
+      sortOrder: sortOrder,
+      filterCriteria: JSON.stringify(filterCriteria),
+    },
+  });
+  return response.data;
+}
+
 export async function fetchItems() {
   try {
     const response = await axios.get("http://localhost:3000/PCP/items");

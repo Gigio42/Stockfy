@@ -1,5 +1,5 @@
 import { createElementWithClass } from '../utils/dom.js';
-import { deleteEntity } from '../utils/api.js';
+import { deleteEntity } from '../utils/connection.js';
 import { ChapaCard } from './ChapaCard.js';
 
 export class ItemCard {
