@@ -17,19 +17,19 @@ const Chapas = new EntitySchema({
             default: () => Math.floor(Math.random() * 1000000),
         },
         fornecedor: {
-            type: String,
+            type: 'text',
             nullable: true,
         },
         unidade: {
-            type: String,
+            type: 'text',
             nullable: true,
         },
         qualidade: {
-            type: String,
+            type: 'text',
             length: 200,
         },
         medida: {
-            type: String,
+            type: 'text',
             nullable: true,
         },
         quantidade_comprada: {
@@ -48,7 +48,7 @@ const Chapas = new EntitySchema({
             nullable: true,
         },
         onda: {
-            type: String,
+            type: 'text',
             length: 2,
             nullable: true,
         },
@@ -57,7 +57,7 @@ const Chapas = new EntitySchema({
             nullable: true,
         },
         vincos: {
-            type: String,
+            type: 'text',
             length: 200,
             nullable: true,
         },
@@ -78,20 +78,20 @@ const Chapas = new EntitySchema({
             nullable: true,
         },
         status: {
-            type: String,
+            type: 'text',
             length: 10,
             nullable: true,
         },
         data_compra: {
-            type: Date,
+            type: 'text',
             nullable: true,
         },
         data_prevista: {
-            type: Date,
+            type: 'text',
             nullable: true,
         },
         data_recebimento: {
-            type: Date,
+            type: 'text',
             nullable: true,
         },
     },

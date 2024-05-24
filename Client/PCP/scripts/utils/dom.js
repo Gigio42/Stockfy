@@ -3,4 +3,3 @@ export function createElementWithClass(elementType, className) {
     element.className = className;
     return element;
   }
-  
