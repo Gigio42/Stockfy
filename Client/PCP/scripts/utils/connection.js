@@ -1,5 +1,7 @@
+const PCP_URL = "http://localhost:3000/PCP";
+
 export async function fetchChapas(sortKey, sortOrder, filterCriteria) {
-  const response = await axios.get(`http://localhost:3000/PCP/chapas`, {
+  const response = await axios.get(`${PCP_URL}/chapas`, {
     params: {
       sortBy: sortKey,
       sortOrder: sortOrder,
@@ -11,7 +13,7 @@ export async function fetchChapas(sortKey, sortOrder, filterCriteria) {
 
 export async function fetchItems() {
   try {
-    const response = await axios.get("http://localhost:3000/PCP/items");
+    const response = await axios.get(`${PCP_URL}/items`);
     return response.data;
   } catch (error) {
     console.error("Error fetching items:", error);
@@ -21,7 +23,7 @@ export async function fetchItems() {
 
 export async function deleteEntity(id, type) {
   try {
-    await axios.delete(`http://localhost:3000/PCP/${type}s/${id}`);
+    await axios.delete(`${PCP_URL}/${type}s/${id}`);
     const openModalLink = document.getElementById("openModalLink");
     openModalLink.click();
   } catch (error) {
