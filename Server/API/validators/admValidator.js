@@ -29,8 +29,9 @@ export const postItemMaquinaSchema = {
                 prazo: { type: 'string' },
                 maquinaId: { type: 'integer' },
                 itemId: { type: 'integer' },
+                status: {type: 'string'}
             },
-            required: ['ordem','prazo','maquinaId','itemId']
+            required: ['ordem','prazo','maquinaId','itemId','status']
         }
     }
 };

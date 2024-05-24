@@ -4,219 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administração de Chapas</title>
-    <style>
-        :root {
-        --cor-primaria: #1a1a1a;
-        --cor-secundaria: #414141;
-        --cor-terciaria: #2e2e2e;
-        --cor-texto: #d9d9d9;
-        --cor-fundo: #242424;
-        --cor-borda: #444;
-        }
-
-        [data-theme="light"] {
-        --cor-primaria: #fff;
-        --cor-secundaria: #eee;
-        --cor-terciaria: #ddd;
-        --cor-texto: #333;
-        --cor-fundo: #f9f9f9;
-        --cor-borda: #ccc;
-        }
-        
-        div, h1, th {
-            color: var(--cor-texto);
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            width: 100vw;
-            height: 100vh;
-            font-size: 0.9rem;
-            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-            background-color: var(--cor-fundo);
-        }
-
-        header {
-            display: flex;
-            background-color: var(--cor-primaria);
-            width: 100%;
-        }
-
-        .null {
-            background-color: var(--cor-terciaria);
-            width: 16vw;
-        }
-
-        aside {
-            min-width: 16vw;
-            background-color: var(--cor-terciaria);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            height: 100%;
-        }
-
-        .btn-aside {
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        main {
-            display: flex;
-            flex-grow: 1;
-            align-items: flex-start;
-            background-color: var(--cor-primaria);
-            width: 100%;
-            overflow: hidden;
-        }
-
-        .tabelas {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            margin: 10px;
-            overflow: hidden;
-        }
-
-        .item-maquina {
-            width: 100%;
-            overflow-x: auto;
-            display: none;
-            flex-direction: column;
-        }
-        .item {
-            width: 100%;
-            overflow-x: auto;
-            display: none;
-            flex-direction: column;
-        }
-        .chapa-item {
-            width: 100%;
-            overflow-x: auto;
-            display: none;
-            flex-direction: column;
-        }
-
-        table {
-            margin-bottom: 20px;
-            width: 100%;
-            border-collapse: collapse;
-            background-color: var(--cor-secundaria);
-        }
-
-        th {
-            background-color: rgb(4, 96, 4);
-            color: white;
-            text-align: left;
-        }
-
-        th, td {
-            padding: 8px;
-            text-align: center;
-        }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
-        }
-
-        .modal-content {
-            background-color: var(--cor-primaria);
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid var(--cor-borda);
-            width: 80%;
-            max-width: 500px;
-            color: var(--cor-texto);
-        }
-
-        .close {
-            color: var(--cor-texto);
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: #f1f1f1;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        /* Responsive Styles */
-        @media (max-width: 768px) {
-            body {
-                flex-direction: column;
-                overflow-x: hidden;
-            }
-            aside {
-                width: 100%;
-                order: -1;
-                max-height: 15%;
-            }
-            .null {
-                display: none;
-            }
-            .btn-aside {
-                flex-direction: row;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            main {
-                width: 100%;
-                flex-direction: column;
-                align-items: center;
-                padding: 10px;
-            }
-            .tabelas {
-                width: 100%;
-                align-items: stretch;
-            }
-            table, th, td {
-                font-size: 0.8rem;
-            }
-            th, td {
-                padding: 4px;
-            }
-            .modal-content {
-                width: 90%;
-            }
-        }
-
-        .input-procurarbypart_number {
-            display: none;
-            margin-top: 10px;
-        }
-
-        .input-procurarbypart_number input {
-            padding: 5px;
-            font-size: 1rem;
-        }
-        .input-procurarByMaquinaId {
-            display: none;
-            margin-top: 10px;
-        }
-
-        .input-procurarByMaquinaId input {
-            padding: 5px;
-            font-size: 1rem;
-        }
-    </style>
+    <link rel="stylesheet" href="adm.css">
 </head>
 <body>
     <header>
@@ -228,13 +16,11 @@
             <div class="btn-aside">
                 <div>
                     <div class="input-procurarbypart_number">
-                        <input type="number" id="procurarInputbypart_number" placeholder="Digite o Part number">
+                        <select id="procurarInputbypart_number"></select>
                         <button onclick="confirmarProcurarPart_number()">Confirmar</button>
                     </div>
                     <div class="input-procurarByMaquinaId">
-                        <select id="procurarInputByMaquinaId">
-                            <option value="">Selecione</option>
-                        </select>
+                        <select id="procurarInputByMaquinaId"></select>
                         <button onclick="confirmarProcurarMaquina()">Confirmar</button>
                     </div>
                 </div>
@@ -253,9 +39,12 @@
                         <tr>
                             <th>ID</th>
                             <th>part_number</th>
-                            <th>maquina</th>
+                            <th>maquina</th>                            
+                            <th>chapas</th>
+                            <th>quantidade</th>
                             <th>ordem</th>
                             <th>prazo</th>
+                            <th>status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -271,7 +60,6 @@
                             <th>ID</th>
                             <th>quantidade</th>
                             <th>chapaId</th>
-                            <th>itemId</th>
                             <th>part_number</th>
                             <th>status</th>
                         </tr>
@@ -370,8 +158,11 @@
         let all = "";
         let allPart_number = [];
         let allMaquina = [];
+        let quantidadeChapa = '';
+        let chapa = '';
 
         function procurar() {
+            getAll()
             const inputProcurarItemId = document.querySelector('.input-procurarbypart_number');
             const inputProcurarMaquinaId = document.querySelector('.input-procurarByMaquinaId');
             inputProcurarItemId.style.display = inputProcurarItemId.style.display === 'block' ? 'none' : 'block';
@@ -380,20 +171,17 @@
 
         function confirmarProcurarPart_number() {
             part_number = document.getElementById('procurarInputbypart_number').value;
-            const tabelaChapaItem = document.querySelector('#chapa_item tbody');
             const tabelaChapaChapa = document.querySelector('#chapa_chapa tbody');
             const tabelaItemMaquina = document.querySelector('#item_maquina tbody');
-            tabelaChapaItem.innerHTML = '';
             tabelaChapaChapa.innerHTML = '';
             tabelaItemMaquina.innerHTML = '';
             idPart_number()
 
 
-            fetchChapaItem();
+            getChapaItem();
             getItemMaquinaByItemId();
 
             document.querySelector('.item-maquina').style.display = 'flex';
-            document.querySelector('.item').style.display = 'flex';
             document.querySelector('.chapa-item').style.display = 'flex';
             document.querySelector('.input-procurarbypart_number').style.display = 'none';
             document.querySelector('.input-procurarByMaquinaId').style.display = 'none';
@@ -419,6 +207,8 @@
         }
 
         function showItemMaquinaProduction(){
+            getAll()
+            console.log(chapa)
             const itemMaquinaStyle = document.querySelector('.item-maquina')
             document.querySelector('.item').style.display = 'none';
             document.querySelector('.chapa-item').style.display = 'none';
@@ -432,8 +222,11 @@
                             <td>${maquina.id_item_maquina}</td>
                             <td>${maquina.itemId.part_number}</td>
                             <td>${maquina.maquinaId.name}</td>
+                            <td>${chapa}</td>
+                            <td>${quantidadeChapa}</td>
                             <td>${maquina.ordem}</td>
                             <td>${maquina.prazo}</td>
+                            <td>${maquina.status}</td>
                         `;
                         row.addEventListener('click', () => handleRowClickItemMaquina(maquina));
                         tabelaItemMaquina.appendChild(row);
@@ -441,17 +234,18 @@
         }
 
         function adicionar() {
-            
+            getAll()
 
             
         }
 
         function criar() {
+            getAll()
             document.getElementById('modalCriar').style.display = 'block';
         }
 
         function remover() {
-            
+            getAll()
            
         }
 
@@ -464,15 +258,16 @@
                     allPart_number = data.items.map(item => item.part_number);
                     
 
-                    populateSelect('partNumberInput', allPart_number);
-                    populateSelect('maquinaInput', allMaquina);
-                    populateSelect('procurarInputByMaquinaId', allMaquina); 
+                    populateSelect('partNumberInput', allPart_number, "part_numbers");
+                    populateSelect('maquinaInput', allMaquina, "maquinas");
+                    populateSelect('procurarInputbypart_number', allPart_number, "part_number"); 
+                    populateSelect('procurarInputByMaquinaId', allMaquina, "maquinas"); 
                 });
         }
 
-        function populateSelect(selectId, options) {
+        function populateSelect(selectId, options, name) {
             const selectElement = document.getElementById(selectId);
-            selectElement.innerHTML = '<option value="">Selecione</option>';
+            selectElement.innerHTML = `<option value="">${name}</option>`;
             options.forEach(option => {
                 const optionElement = document.createElement('option');
                 optionElement.value = option;
@@ -486,7 +281,7 @@
             maquina = document.getElementById('maquinaInput').value;
             ordem = document.getElementById('ordemInput').value;
             prazo = document.getElementById('prazoInput').value;
-
+            status = 'Produção'
             idPart_number();
             idMaquina();
             
@@ -494,7 +289,8 @@
                 ordem: ordem,
                 prazo: prazo,
                 maquinaId: maquinaId,
-                itemId: itemId
+                itemId: itemId,
+                status: status
             }];
             console.log(data)
 
@@ -516,13 +312,13 @@
         function idPart_number() {
             const item = all.items.find(item => item.part_number == part_number);
             itemId = item.id_item;
-            
         }
 
         function idMaquina() {
             const machine = all.maquinas.find(machine => machine.name == maquina);
             maquinaId = machine.id;
         }
+
         function itemIdByMaquinaId(){
             const items_maquina = all.item_maquinas.filter(item_maquina => 
                 item_maquina.maquinaId.id === maquinaId
@@ -531,32 +327,34 @@
             items_maquina.forEach(item_id =>{
                 itemId = item_id
                 console.log(itemId)
-                fetchChapaItem()
+                getChapaItem()
                 getItemMaquinaByItemId()
             })
-            
-            console.log(items_maquina)
         }
 
-        function fetchChapaItem() {
+        function getChapaItem() {
             fetch(`http://localhost:3000/adm/chapa_item/${itemId}`)
                 .then(response => response.json())
                 .then(chapas => {
-                    const tabelaChapaItem = document.querySelector('#chapa_item tbody');
+
+                    chapa = chapas.map(item => item.chapa.id_chapa);
+                    quantidadeChapa = chapas.map(item => item.quantidade);
+
+                    console.log(chapa)
+
                     const tabelaChapaChapa = document.querySelector('#chapa_chapa tbody');
                     chapas.forEach(chapa => {
-                        console.log(chapa)
-                        const rowItem = document.createElement('tr');
-                        rowItem.innerHTML = `
-                            <td>${chapa.id}</td>
-                            <td>${chapa.quantidade}</td>
-                            <td>${chapa.chapa.id_chapa}</td>
-                            <td>${chapa.item.id_item}</td>
-                            <td>${chapa.item.part_number}</td>
-                            <td>${chapa.item.Status}</td>
-                        `;
-                        rowItem.addEventListener('click', () => handleRowClickChapaItem(chapa));
-                        tabelaChapaItem.appendChild(rowItem);
+
+                        
+                        quantidadeChapa = chapa.quantidade
+                        //chapa = chapa.chapa.id_chapa
+
+                            // <td>${chapa.id}</td>
+                            // <td>${chapa.quantidade}</td>
+                            // <td>${chapa.chapa.id_chapa}</td>
+                            // <td>${chapa.item.id_item}</td>
+                            // <td>${chapa.item.part_number}</td>
+                            // <td>${chapa.item.Status}</td>
 
                         const rowChapa = document.createElement('tr');
                         rowChapa.innerHTML = `
@@ -592,8 +390,11 @@
                             <td>${maquina.id_item_maquina}</td>
                             <td>${maquina.itemId.part_number}</td>
                             <td>${maquina.maquinaId.name}</td>
+                            <td>${chapa}</td>
+                            <td>${quantidadeChapa}</td>
                             <td>${maquina.ordem}</td>
                             <td>${maquina.prazo}</td>
+                            <td>${maquina.status}</td>
                         `;
                         row.addEventListener('click', () => handleRowClickItemMaquina(maquina));
                         tabelaItemMaquina.appendChild(row);
