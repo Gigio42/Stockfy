@@ -2,14 +2,15 @@
    Header Styles
    ====================================== */
 .header-custom {
-  display: flex;
-  color: #1a1a1a;
-  /* Cor do texto padrão para o header */
-  border-bottom: solid 1px #6a6a6a45;
-  background-color: #d4d4d4;
-  height: 5rem;
-  width: 100%;
-  padding-left: 1.5rem;
+    display: flex;
+    color: #1a1a1a;
+    /* Cor do texto padrão para o header */
+    border-bottom: solid 1px #6a6a6a45;
+    background-color: #d4d4d4;
+    height: 5rem;
+    width: 100%;
+    padding-left: 1.5rem;
+    border-radius: 0 !important;
 }
 
 .cardfora {
@@ -66,29 +67,34 @@ h1 {
    Navbar Styles
    ====================================== */
 #aside {
-  display: flex;
-  background: #e6e6e6;
-  /* Cor de fundo para o aside no modo escuro */
-  min-height: 70%;
-  overflow-y: auto;
-  /* Permite rolagem se o conteúdo for maior do que a altura da página */
-  padding: 0;
+
+    display: flex;
+    background: #e6e6e6;
+    /* Cor de fundo para o aside no modo escuro */
+    min-height: 70%;
+    overflow-y: auto;
+    /* Permite rolagem se o conteúdo for maior do que a altura da página */
+    padding: 0;
+    border-radius: 0 !important;
 }
 
 .logo {
   width: 7rem;
 }
 
+
 .logo-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  background: #e6e6e6;
-  height: 5rem;
-  border: solid 1px #6a6a6a45;
-  align-items: center;
-  width: 100%;
-  border-left: none;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    background: #e6e6e6;
+    height: 5rem;
+    border: solid 1px #6a6a6a45;
+    align-items: center;
+    width: 100%;
+    border-left: none;
+    border-radius: 0 !important;
 }
 
 .navbar {
@@ -167,7 +173,8 @@ li:hover {
 }
 
 .imgicon {
-  width: 1.5rem;
+    width: 1.5rem;
+    border-radius: 0 !important;
 }
 
 html {
@@ -204,9 +211,13 @@ body {
 }
 
 #container {
-  max-height: 100vh;
-  overflow-y: auto;
-  /* Adiciona barra de rolagem vertical se necessário */
+    max-height: 75vh;
+    overflow-y: auto;
+    /* Adiciona barra de rolagem vertical se necessário */
+}
+
+.itemContainer {
+    padding-bottom: 0 !important;
 }
 
 /* ======================================
@@ -297,12 +308,12 @@ body {
 }
 
 .modal-content {
-  background-color: #252525;
-  margin: 7% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-  overflow: auto;
+    background-color: #252525;
+    margin: 10% auto;
+    padding: 20px;
+    border: none !important;
+    width: 80%;
+    overflow: auto;
 }
 
 .modal-content input {
@@ -340,18 +351,19 @@ formulário
 */
 
 .grouping-form {
-  position: fixed;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-  justify-content: space-between;
-  background: #333333ea;
-  padding: 20px;
-  border-radius: 1.5rem;
-  color: #fff;
-  margin-bottom: 1rem;
-  width: 40%;
-  z-index: 2;
+    position: fixed;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    justify-content: space-between;
+    background: #333333;
+    padding: 20px;
+    border-radius: 1.5rem;
+    color: #fff;
+    margin-bottom: 1rem;
+    width: 40%;
+    z-index: 2;
+
 }
 
 .grouping-form label {
@@ -445,6 +457,10 @@ formulário
   height: 3rem;
 }
 
+.text-left {
+    padding-bottom: 0 !important;
+}
+
 /* ======================================
      cards
      ====================================== */
@@ -474,6 +490,22 @@ formulário
   background-color: #007bff00;
   color: white;
   font-size: 1rem;
+}
+
+
+input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background-color: #2d2d2d;
+    border: 2px solid #4e4e4e;
+    border-radius: 4px;
+    position: relative;
+    cursor: pointer;
+    align-items: center;
+    align-content: center;
 }
 
 .value-row {
@@ -526,20 +558,20 @@ formulário
 /* CHECKBOX o checkbox do card de chapas principal, pelo problema de checkbox do navegador
 talvez tenha algumas coisas nesses primeiros 3 estilos que mudam nada e podem ser excluidos */
 .card-checkbox {
-  width: 30px;
-  height: 30px;
-  border: 20px solid #0000002a;
-  border-radius: 5px;
-  background-color: #ffffff00;
-  margin: 12px;
-  cursor: pointer;
-  display: inline-block;
+    display: inline-block;
+    border-radius: 0.5rem !important;
 }
 
-.card-checkbox::after {
-  content: "";
-  display: none;
-}
+.card-checkbox:checked+.card-checkbox::after {
+    display: block;
+    width: 30px;
+    height: 30px;
+
+    background-color: #4d4d4d;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 
 .card-checkbox:checked + .card-checkbox::after {
   display: block;
@@ -582,33 +614,52 @@ input[type="checkbox"]:checked::before {
 
 /* INFO botão de dropdown pra mostrar mais informações, usado em item e no chapa principal */
 .card-info-button {
-  background: #4d4d4d;
-  color: #fff;
-  transition: background 0.3s ease;
-  font-size: 1em;
-  grid-column: span 2;
-  border: none;
+    background: transparent;
+    border: none !important;
+    color: #fff;
+    transition: background 0.3s ease;
+    font-size: 1em;
+    grid-column: span 2;
 }
 
 .card-info-button:hover {
-  background: #6d6d6d;
-  color: #fff;
+    background: #3b3b3b;
+    color: #fff;
 }
 
-/* DELETAR, botões de deletar em consulta diferenciado por item e chapa se precisar, mas até agr n diferenciei */
-.card-item-delete-button {
+.card-info-button:focus {
+    background:transparent;
+    box-shadow: none !important;
+
 }
 
-.card-chapa-delete-button {
-  margin-left: auto;
+.card-info-button:active {
+    background: #3b3b3b !important;
+    box-shadow: none !important;
+
 }
 
-/* PREVIEW brief-view é a mesma coisa que preview, é a amostra que o pcp vai ver no card dos itens reservados */
-.card-brief-view {
-  flex-wrap: wrap;
+
+.bg-warning {
+    background: #ff262656 !important;
+    border: 1px solid #ff000098;
+    color: #ffa4a4;
+    border-radius: 0.7rem  !important;
+    padding: 10px;
 }
 
-.card-brief-view span {
-  margin-right: 1em;
-  color: #b3b3b3;
+.bg-primary {
+    background: #6cff5823 !important;
+    color: #d0ffca;
+    border: solid 1px #c2ffba3d;
+    padding: 10px;
+}
+
+.bg-primary:hover{
+    color: #d0ffca !important;
+}
+
+
+* {
+    border-radius: 0.7rem !important; /* Ou qualquer outro valor que você preferir */
 }
