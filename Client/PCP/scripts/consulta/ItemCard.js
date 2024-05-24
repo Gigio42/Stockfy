@@ -63,7 +63,7 @@ export class ItemCard {
       const span = document.createElement("span");
       if (key.startsWith("data")) {
         let [day, month] = lastChapa[key].split("/");
-        span.textContent = `${day}/${month}`; // Display only day and month
+        span.textContent = `${day}/${month}`;
       } else {
         span.textContent = lastChapa[key];
       }
@@ -78,11 +78,12 @@ export class ItemCard {
   }
 
   createChapasContainer() {
-    const chapasContainer = createElementWithClass("div", "card-body");
-    chapasContainer.style.display = "none";
+    const chapasContainer = createElementWithClass("div", "card-body chapas-container");
     this.item.chapas.forEach((chapa) => {
       const chapaCard = new ChapaCard(chapa);
-      chapasContainer.appendChild(chapaCard.render());
+      const chapaCardElement = chapaCard.render();
+      chapaCardElement.classList.add("chapa-card-element");
+      chapasContainer.appendChild(chapaCardElement);
     });
     return chapasContainer;
   }

@@ -457,6 +457,9 @@ formulário
   border: none;
 }
 
+.card-body {
+}
+
 .card-div {
   border-radius: 1.5rem !important;
   padding: 0px;
@@ -464,13 +467,6 @@ formulário
   margin-top: 15px;
   background-color: rgb(34, 34, 34);
   height: 70px;
-}
-
-.card-body-div {
-  display: flex;
-  border-radius: 1.5rem !important;
-  background-color: #232323 !important;
-  font-size: 1rem;
 }
 
 .card-value-row {
@@ -490,6 +486,15 @@ formulário
   background-color: #252525;
 }
 
+.chapas-container {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.chapa-card-element {
+  padding: 0px;
+}
+
 /* STATUS div que muda de cor baseado no status da chapa E do item (na consulta) */
 .card-status {
   padding: 10px;
@@ -499,7 +504,7 @@ formulário
 }
 
 .card-status-reservado {
-  background-color: #007bff;;
+  background-color: #007bff;
 }
 
 .card-status-recebido {
@@ -592,12 +597,11 @@ input[type="checkbox"]:checked::before {
 }
 
 /* DELETAR, botões de deletar em consulta diferenciado por item e chapa se precisar, mas até agr n diferenciei */
-.card-item-delete-button{
-
+.card-item-delete-button {
 }
 
 .card-chapa-delete-button {
-    margin-left: auto;
+  margin-left: auto;
 }
 
 /* PREVIEW brief-view é a mesma coisa que preview, é a amostra que o pcp vai ver no card dos itens reservados */

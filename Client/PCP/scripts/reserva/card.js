@@ -61,7 +61,7 @@ export class Card {
   }
 
   createCardBody() {
-    let cardBody = createElementWithClass("div", "body-div card-body bg-red rounded d-flex align-items-center");
+    let cardBody = createElementWithClass("div", "body-div card-body rounded d-flex align-items-center");
     cardBody.appendChild(this.createCheckbox());
     cardBody.appendChild(this.createValueRow());
     cardBody.appendChild(this.createInfoButton());
