@@ -12,7 +12,7 @@ const Item = new EntitySchema({
             type: "text",
             default: 0
         },
-        Status: {
+        status: {
             type: "text",
             default: ""
         },

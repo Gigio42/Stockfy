@@ -6,6 +6,9 @@ import Chapa_Item from "../Models/Chapa_Item.js";
 class PCPController {
   constructor() {}
 
+  // ------------------------------
+  // GetChapasComment Function
+  // ------------------------------
   async getChapas(query, filterCriteria, sortOrder, sortBy) {
     const chapasRepository = getRepository(Chapas);
     let data = await chapasRepository.find({ relations: ["conjugacoes"] });
@@ -62,6 +65,9 @@ class PCPController {
     return sortedChapas;
   }
 
+  // ------------------------------
+  // GetItemsComment Function
+  // ------------------------------
   async getItems() {
     const chapaItemRepository = getRepository(Chapa_Item);
     const itemRepository = getRepository(Item);
@@ -91,6 +97,9 @@ class PCPController {
     return Object.values(items);
   }
 
+  // ------------------------------
+  // PostItemsComment Function
+  // ------------------------------
   async createItemWithChapa(body) {
     const { partNumber, chapas } = body;
 
@@ -98,26 +107,28 @@ class PCPController {
     const itemRepository = getRepository(Item);
     const chapaItemRepository = getRepository(Chapa_Item);
 
-    let item = await itemRepository.findOne({ where: { part_number: partNumber } });
-
-    if (!item) {
-      item = itemRepository.create({
-        part_number: partNumber,
-        Status: "RESERVADO",
-      });
-
-      await itemRepository.save(item);
-    }
+    let item;
+    let chapasToSave = [];
+    let chapaItemsToSave = [];
 
     for (const { chapaID, quantity, medida, keepRemaining } of chapas) {
       const chapa = await chapasRepository.findOne({ where: { id_chapa: chapaID } });
 
-      if (!chapa) {
-        throw new Error("Chapa not found");
-      }
+      if (!chapa) throw new Error("Chapa not found");
+      if (!quantity) throw new Error("Quantity is required");
+      if (quantity > chapa.quantidade_comprada) throw new Error("Insufficient chapas");
 
-      if (!quantity) {
-        throw new Error("Quantity is required");
+      if (!item) {
+        item = await itemRepository.findOne({ where: { part_number: partNumber } });
+
+        if (!item) {
+          item = itemRepository.create({
+            part_number: partNumber,
+            status: "RESERVADO",
+          });
+
+          await itemRepository.save(item);
+        }
       }
 
       chapa.quantidade_estoque -= quantity;
@@ -150,23 +161,25 @@ class PCPController {
         await chapasRepository.save(newChapa);
       }
 
-      await chapasRepository.save(chapa);
+      chapasToSave.push(chapa);
 
       let chapaItem = await chapaItemRepository.findOne({ where: { chapa: chapa, item: item } });
 
       if (chapaItem) {
-        // Ensure that quantity is a number before adding it to the existing quantity
         chapaItem.quantidade += Number(quantity);
       } else {
         chapaItem = chapaItemRepository.create({
           chapa: chapa,
           item: item,
-          quantidade: Number(quantity), // Ensure that quantity is a number when creating a new Chapa_Item
+          quantidade: Number(quantity),
         });
       }
 
-      await chapaItemRepository.save(chapaItem);
+      chapaItemsToSave.push(chapaItem);
     }
+
+    await chapasRepository.save(chapasToSave);
+    await chapaItemRepository.save(chapaItemsToSave);
 
     return item;
   }
