@@ -530,7 +530,6 @@ input[type="checkbox"]:checked::before {
 
 .card-value-div {
     text-align: center;
-
 }
 
 .card-checkbox {
@@ -566,9 +565,7 @@ input[type="checkbox"]:checked::before {
 }
 
 .card-info-button {
-    background: transparent;
-    border: 1px solid #6d6d6d;
-    border-color: #575757;
+    background: #4d4d4d;
     color: #fff;
     transition: background 0.3s ease;
     font-size: 1em;

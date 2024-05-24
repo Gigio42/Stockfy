@@ -15,12 +15,12 @@ export class ItemCard {
     const titleContainer = createElementWithClass("div", "d-flex justify-content-between align-items-center");
     cardBody.appendChild(titleContainer);
 
+    const statusDiv = this.createStatusDiv();
+    titleContainer.appendChild(statusDiv);
+
     const itemInfo = createElementWithClass("h5", "card-title mb-0");
     itemInfo.textContent = this.item.part_number;
     titleContainer.appendChild(itemInfo);
-
-    const statusDiv = this.createStatusDiv();
-    titleContainer.appendChild(statusDiv);
 
     if (this.item.chapas.length > 0) {
       const briefView = this.createBriefView();

@@ -14,6 +14,8 @@ export class Card {
     let valueDiv = createElementWithClass("div", `card-value-div col text-center value align-items-center justify-content-center rounded`);
     valueDiv.style.width = "100px";
     valueDiv.style.padding = "5px";
+    valueDiv.style.marginRight = "10px"; // Add margin to the right of each value div
+    valueDiv.style.marginLeft = "10px";
 
     if (key.startsWith("data")) {
       let [day, month] = value.split("/");
@@ -23,7 +25,7 @@ export class Card {
     }
 
     if (key === "status") {
-      valueDiv.className += "card-status";
+      valueDiv.className += " card-status ";
       let status = value.toLowerCase();
       if (status === "recebido") {
         valueDiv.className += " card-status-recebido";
@@ -42,8 +44,10 @@ export class Card {
   createValueRow() {
     let valueRow = createElementWithClass("div", "value-row row flex-nowrap overflow-auto w-100 align-items-stretch");
     this.keys.forEach((key) => valueRow.appendChild(this.createValueDiv(key, this.chapa[key])));
+    valueRow.style.marginRight = "0px";
+    valueRow.style.marginLeft = "0px"; // Add margin to the right of the value-row element
     return valueRow;
-  }
+}
 
   createCheckbox() {
     let checkbox = createElementWithClass("input", "card-checkbox  mr-3");
