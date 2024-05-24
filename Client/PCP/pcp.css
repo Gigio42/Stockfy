@@ -450,7 +450,7 @@ formulário
      cards
      ====================================== */
 
-/* card geral, compartilha com todos os sistemas de cards do sistema do PCP */
+/* MAIN CARD, compartilha com todos os sistemas de cards do sistema do PCP */
 .card {
   margin-bottom: 10px;
   margin-top: 15px;
@@ -490,12 +490,16 @@ formulário
   background-color: #252525;
 }
 
-/* div que muda de cor baseado no status da chapa */
+/* STATUS div que muda de cor baseado no status da chapa E do item (na consulta) */
 .card-status {
   padding: 10px;
   border-radius: 5px;
   color: white;
   font-weight: bold;
+}
+
+.card-status-reservado {
+  background-color: #007bff;;
 }
 
 .card-status-recebido {
@@ -515,7 +519,7 @@ formulário
   margin-left: 10px;
 }
 
-/* o checkbox do card de chapas principal, pelo problema de checkbox do navegador
+/* CHECKBOX o checkbox do card de chapas principal, pelo problema de checkbox do navegador
 talvez tenha algumas coisas nesses primeiros 3 estilos que mudam nada e podem ser excluidos */
 .card-checkbox {
   width: 30px;
@@ -572,22 +576,22 @@ input[type="checkbox"]:checked::before {
   align-content: center;
 }
 
-/* botão de dropdown pra mostrar mais informações, usado em item e no chapa principal */
+/* INFO botão de dropdown pra mostrar mais informações, usado em item e no chapa principal */
 .card-info-button {
   background: #4d4d4d;
   color: #fff;
   transition: background 0.3s ease;
   font-size: 1em;
   grid-column: span 2;
+  border: none;
 }
 
 .card-info-button:hover {
   background: #6d6d6d;
-  border-color: #575757;
   color: #fff;
 }
 
-/* botões de deletar em consulta diferenciado por item e chapa se precisar, mas até agr n diferenciei */
+/* DELETAR, botões de deletar em consulta diferenciado por item e chapa se precisar, mas até agr n diferenciei */
 .card-item-delete-button{
 
 }
@@ -596,7 +600,7 @@ input[type="checkbox"]:checked::before {
     margin-left: auto;
 }
 
-/* brief-view é a mesma coisa que preview, é a amostra que o pcp vai ver no card dos itens reservados */
+/* PREVIEW brief-view é a mesma coisa que preview, é a amostra que o pcp vai ver no card dos itens reservados */
 .card-brief-view {
   flex-wrap: wrap;
 }

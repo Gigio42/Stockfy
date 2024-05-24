@@ -19,9 +19,9 @@ export class ChapaCard {
       valueDiv.className += " card-status d-flex align-items-center justify-content-center";
       let status = value.toLowerCase();
       if (status === "recebido") {
-        valueDiv.className += " card-status-recebido";
+        valueDiv.className += " card-status-recebido ";
       } else if (status === "comprado") {
-        valueDiv.className += " card-status-comprado";
+        valueDiv.className += " card-status-comprado ";
       }
     }
 

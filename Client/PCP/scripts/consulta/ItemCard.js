@@ -48,9 +48,7 @@ export class ItemCard {
     statusDiv.className += " card-status";
     const status = this.item.status.toLowerCase();
     if (status === "reservado") {
-      statusDiv.className += " bg-primary";
-    } else if (status === "comprado") {
-      statusDiv.className += " bg-warning";
+      statusDiv.className += " card-status-reservado";
     } else {
       statusDiv.className += " bg-secondary";
     }
@@ -91,7 +89,7 @@ export class ItemCard {
 
   createDropdownButton(chapasContainer) {
     const dropdownButton = document.createElement("button");
-    dropdownButton.className = "btn btn-primary btn-sm ml-2 card-info-button";
+    dropdownButton.className = "btn btn-sm ml-2 card-info-button";
     dropdownButton.innerHTML = 'Chapas <i class="fas fa-chevron-down"></i>';
     dropdownButton.addEventListener("click", function () {
       chapasContainer.style.display = chapasContainer.style.display === "none" ? "block" : "none";
