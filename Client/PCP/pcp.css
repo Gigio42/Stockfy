@@ -10,6 +10,7 @@
     height: 5rem;
     width: 100%;
     padding-left: 1.5rem;
+    border-radius: 0 !important;
 }
 
 .cardfora {
@@ -75,11 +76,13 @@ h1 {
     overflow-y: auto;
     /* Permite rolagem se o conteúdo for maior do que a altura da página */
     padding: 0;
+    border-radius: 0 !important;
 }
 
 .logo {
     width: 7rem;
 }
+
 
 .logo-container {
     display: flex;
@@ -91,6 +94,7 @@ h1 {
     align-items: center;
     width: 100%;
     border-left: none;
+    border-radius: 0 !important;
 }
 
 .navbar {
@@ -170,6 +174,7 @@ li:hover {
 
 .imgicon {
     width: 1.5rem;
+    border-radius: 0 !important;
 }
 
 html {
@@ -206,9 +211,13 @@ body {
 }
 
 #container {
-    max-height: 100vh;
+    max-height: 75vh;
     overflow-y: auto;
     /* Adiciona barra de rolagem vertical se necessário */
+}
+
+.itemContainer {
+    padding-bottom: 0 !important;
 }
 
 
@@ -303,7 +312,7 @@ body {
     background-color: #252525;
     margin: 10% auto;
     padding: 20px;
-    border: 1px solid #888;
+    border: none !important;
     width: 80%;
     overflow: auto;
 }
@@ -350,7 +359,7 @@ formulário
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
     justify-content: space-between;
-    background: #333333ea;
+    background: #333333;
     padding: 20px;
     border-radius: 1.5rem;
     color: #fff;
@@ -451,6 +460,10 @@ formulário
     height: 3rem;
 }
 
+.text-left {
+    padding-bottom: 0 !important;
+}
+
 /* ======================================
    cards
    ====================================== */
@@ -476,6 +489,8 @@ formulário
     background-color: #232323 !important;
     font-size: 1rem;
 }
+
+
 
 input[type="checkbox"] {
     -webkit-appearance: none;
@@ -524,13 +539,14 @@ input[type="checkbox"]:checked::before {
 
 .card-checkbox {
     display: inline-block;
+    border-radius: 0.5rem !important;
 }
 
 .card-checkbox:checked+.card-checkbox::after {
     display: block;
     width: 30px;
     height: 30px;
-    border-radius: 5px;
+
     background-color: #4d4d4d;
     position: relative;
     top: 50%;
@@ -556,8 +572,7 @@ input[type="checkbox"]:checked::before {
 
 .card-info-button {
     background: transparent;
-    border: 1px solid #6d6d6d;
-    border-color: #575757;
+    border: none !important;
     color: #fff;
     transition: background 0.3s ease;
     font-size: 1em;
@@ -565,7 +580,44 @@ input[type="checkbox"]:checked::before {
 }
 
 .card-info-button:hover {
-    background: #6d6d6d;
-    border-color: #575757;
+    background: #3b3b3b;
     color: #fff;
 }
+
+.card-info-button:focus {
+    background:transparent;
+    box-shadow: none !important;
+
+}
+
+.card-info-button:active {
+    background: #3b3b3b !important;
+    box-shadow: none !important;
+
+}
+
+
+.bg-warning {
+    background: #ff262656 !important;
+    border: 1px solid #ff000098;
+    color: #ffa4a4;
+    border-radius: 0.7rem  !important;
+    padding: 10px;
+}
+
+.bg-primary {
+    background: #6cff5823 !important;
+    color: #d0ffca;
+    border: solid 1px #c2ffba3d;
+    padding: 10px;
+}
+
+.bg-primary:hover{
+    color: #d0ffca !important;
+}
+
+
+* {
+    border-radius: 0.7rem !important; /* Ou qualquer outro valor que você preferir */
+}
+
