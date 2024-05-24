@@ -32,34 +32,13 @@ class PCPController {
       }
     }
 
-    data = data.map((chapa) => {
-      const date = new Date(chapa.data_prevista);
-      const day = String(date.getDate()).padStart(2, "0");
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      chapa.data_prevista = `${day}/${month}`;
-      return chapa;
-    });
-
     const sortedChapas = data.sort((a, b) => {
       const getValue = (obj, prop) => prop.split(".").reduce((acc, part) => acc && acc[part], obj);
 
-      if (sortBy === "data_prevista") {
-        const [dayA, monthA] = getValue(a, sortBy).split("/");
-        const [dayB, monthB] = getValue(b, sortBy).split("/");
-        const dateA = new Date(2000, monthA - 1, dayA);
-        const dateB = new Date(2000, monthB - 1, dayB);
-
-        if (sortOrder === "asc") {
-          return dateA - dateB;
-        } else {
-          return dateB - dateA;
-        }
+      if (sortOrder === "asc") {
+        return getValue(a, sortBy) < getValue(b, sortBy) ? -1 : getValue(a, sortBy) > getValue(b, sortBy) ? 1 : 0;
       } else {
-        if (sortOrder === "asc") {
-          return getValue(a, sortBy) < getValue(b, sortBy) ? -1 : getValue(a, sortBy) > getValue(b, sortBy) ? 1 : 0;
-        } else {
-          return getValue(a, sortBy) > getValue(b, sortBy) ? -1 : getValue(a, sortBy) < getValue(b, sortBy) ? 1 : 0;
-        }
+        return getValue(a, sortBy) > getValue(b, sortBy) ? -1 : getValue(a, sortBy) < getValue(b, sortBy) ? 1 : 0;
       }
     });
     return sortedChapas;
@@ -68,14 +47,14 @@ class PCPController {
   // ------------------------------
   // GetItemsComment Function
   // ------------------------------
-  async getItems() {
+  async getItems(searchQuery = "") {
     const chapaItemRepository = getRepository(Chapa_Item);
-    const itemRepository = getRepository(Item);
 
     const chapaItems = await chapaItemRepository
       .createQueryBuilder("chapa_item")
       .leftJoinAndSelect("chapa_item.item", "item")
       .leftJoinAndSelect("chapa_item.chapa", "chapa")
+      .where("item.part_number LIKE :search", { search: `%${searchQuery}%` })
       .getMany();
 
     if (!chapaItems.length) {

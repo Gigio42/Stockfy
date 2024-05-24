@@ -1,9 +1,10 @@
+const axios = require('axios');
+const faker = require('faker');
+
 // Gerador de dados para encher a tabela de chapas para testes, escolha 
 // a quantidade de chapas que vc quiser em 'pedidos' e go crazy, mas
 // detalhe, atualmente o id_compra precisa mudar manualmente
 
-const axios = require('axios');
-const faker = require('faker');
 
 const pedidos = 10;
 
@@ -32,8 +33,8 @@ async function postData() {
         unidade: faker.random.arrayElement(['CH', 'AA']),
         id_compra: 28543,
         numero_cliente: faker.datatype.number(),
-        data_compra: faker.date.past().toISOString().split('T')[0],
-        data_prevista: faker.date.future().toISOString().split('T')[0],
+        data_compra: faker.date.past().toLocaleDateString('pt-BR'),
+        data_prevista: faker.date.future().toLocaleDateString('pt-BR'),
         quantidade_comprada: faker.datatype.number({ min: 1, max: 4 }) * 500,
         valor_unitario: faker.commerce.price(),
         valor_total: faker.commerce.price(),
