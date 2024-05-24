@@ -18,13 +18,13 @@ const Maquinas = new EntitySchema({
         maquinaId: {
             target: "Item_Maquinas",
             type: 'one-to-many',
-            inverseSide: 'maquina',
+            inverseSide: 'Maquina',
         },
         // Criado por joão Luccas para a Pagina de Login
-        usuario: {
+        usuarios: {
             target: "Usuarios",
             type: "many-to-many",
-            inverseSide: 'Maquina'
+            inverseSide: 'maquinas'
         }
 
     }

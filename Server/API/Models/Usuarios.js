@@ -18,10 +18,10 @@ const Usuarios = new EntitySchema({
         },
     },
     relations: {
-        maquina: {
+        maquinas: { // Corrigido para 'maquinas'
             target: "Maquina",
             type: "many-to-many",
-            inverseSide: 'Usuarios'
+            inverseSide: 'usuarios' // Corrigido para 'usuarios'
         }
     }
 });
