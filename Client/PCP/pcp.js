@@ -1,3 +1,11 @@
+import { ItemModal } from './scripts/consulta/components/ItemModal.js';
+
+document.addEventListener("DOMContentLoaded", function () {
+  const itemModal = new ItemModal();
+  itemModal.initialize();
+});
+
+
 var darkModeToggle = document.getElementById('darkModeToggle');
 var body = document.body;
 

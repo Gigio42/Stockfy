@@ -46,7 +46,7 @@ export class Card {
   createCheckbox() {
     let checkbox = document.createElement("input");
     checkbox.type = "checkbox";
-    checkbox.className = "card-checkbox mr-3";
+    checkbox.className = "card-checkbox  mr-3";
     checkbox.checked = this.isChecked;
     checkbox.addEventListener("change", () => this.onSubcardSelectionChange(this.chapa, checkbox.checked));
     return checkbox;
@@ -54,7 +54,7 @@ export class Card {
 
   createInfoButton() {
     let infoButton = document.createElement("button");
-    infoButton.className = "btn btn-info btn-sm ml-2 card-info-button";
+    infoButton.className = "btn btn-sm ml-2 card-info-button";
     infoButton.innerHTML = '<i class="fas fa-chevron-down"></i>';
     infoButton.addEventListener("click", () => {
       alert(JSON.stringify(this.chapa, null, 2));

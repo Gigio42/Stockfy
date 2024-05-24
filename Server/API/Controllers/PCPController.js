@@ -103,7 +103,7 @@ class PCPController {
     if (!item) {
       item = itemRepository.create({
         part_number: partNumber,
-        Status: "RESERVADO",
+        status: "RESERVADO",
       });
 
       await itemRepository.save(item);
