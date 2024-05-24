@@ -20,6 +20,13 @@ const Maquinas = new EntitySchema({
             type: 'one-to-many',
             inverseSide: 'maquina',
         },
+        // Criado por joão Luccas para a Pagina de Login
+        usuario: {
+            target: "Usuarios",
+            type: "many-to-many",
+            inverseSide: 'Maquina'
+        }
+
     }
 });
 
