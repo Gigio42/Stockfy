@@ -79,6 +79,7 @@ export class ItemCard {
 
   createChapasContainer() {
     const chapasContainer = createElementWithClass("div", "card-body chapas-container");
+    chapasContainer.style.display = "none"; // Set initial display to "none"
     this.item.chapas.forEach((chapa) => {
       const chapaCard = new ChapaCard(chapa);
       const chapaCardElement = chapaCard.render();
