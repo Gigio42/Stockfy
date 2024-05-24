@@ -6,6 +6,9 @@ import Chapa_Item from "../Models/Chapa_Item.js";
 class PCPController {
   constructor() {}
 
+  // ------------------------------
+  // GetChapasComment Function
+  // ------------------------------
   async getChapas(query, filterCriteria, sortOrder, sortBy) {
     const chapasRepository = getRepository(Chapas);
     let data = await chapasRepository.find({ relations: ["conjugacoes"] });
@@ -62,6 +65,9 @@ class PCPController {
     return sortedChapas;
   }
 
+  // ------------------------------
+  // GetItemsComment Function
+  // ------------------------------
   async getItems() {
     const chapaItemRepository = getRepository(Chapa_Item);
     const itemRepository = getRepository(Item);
@@ -91,6 +97,9 @@ class PCPController {
     return Object.values(items);
   }
 
+  // ------------------------------
+  // PostItemsComment Function
+  // ------------------------------
   async createItemWithChapa(body) {
     const { partNumber, chapas } = body;
 
