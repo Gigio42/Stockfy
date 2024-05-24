@@ -221,10 +221,8 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #424242;
-    /* cor do 'thumb' (a parte que você arrasta) */
-    border-radius: 5px;
-    /* borda arredondada */
+    background-color: #424242; /* cor do 'thumb' (a parte que você arrasta) */
+    border-radius: 5px; /* borda arredondada */
 }
 
 ::-webkit-scrollbar-track {
@@ -331,6 +329,7 @@ button {
     padding: 15px;
     background-color: #111111;
     color: #fff;
+    border-radius: 15px;
 }
 
 button:hover {
@@ -353,6 +352,7 @@ formulário
     justify-content: space-between;
     background: #333333ea;
     padding: 20px;
+    border-radius: 1.5rem;
     color: #fff;
     margin-bottom: 1rem;
     width: 40%;
@@ -364,6 +364,7 @@ formulário
     font-size: 1em;
     display: block;
     padding: 10px;
+    border-radius: 5px;
     text-align: center;
 }
 
@@ -374,6 +375,7 @@ formulário
     box-sizing: border-box;
     color: #fff;
     font-size: 1rem;
+    border-radius: 1rem;
 }
 
 .grouping-form input[type="text"]:hover,
@@ -385,6 +387,7 @@ formulário
 .agrupar-button {
     background: #262626;
     border: none;
+    border-radius: 1rem;
     color: #fff;
     padding: 10px 10px;
     transition: background 0.3s ease;
@@ -431,6 +434,7 @@ formulário
     background: #56565600;
     border: 1px solid #6d6d6d;
     color: #fff;
+    border-radius: 5px;
     margin: 2px;
     cursor: pointer;
     user-select: none;
@@ -456,6 +460,7 @@ formulário
 }
 
 .card-div {
+    border-radius: 1.5rem !important;
     padding: 0px;
     margin-bottom: 10px;
     margin-top: 15px;
@@ -466,6 +471,7 @@ formulário
 
 .card-body-div {
     display: flex;
+    border-radius: 1.5rem !important;
     background-color: #232323 !important;
     font-size: 1rem;
 }
@@ -478,6 +484,7 @@ input[type="checkbox"] {
     height: 25px;
     background-color: #2d2d2d;
     border: 2px solid #4e4e4e;
+    border-radius: 4px;
     position: relative;
     cursor: pointer;
     align-items: center;
@@ -522,6 +529,7 @@ input[type="checkbox"]:checked::before {
     display: block;
     width: 30px;
     height: 30px;
+    border-radius: 5px;
     background-color: #4d4d4d;
     position: relative;
     top: 50%;
@@ -533,6 +541,7 @@ input[type="checkbox"]:checked::before {
     width: 30px;
     height: 30px;
     border: 20px solid #0000002a;
+    border-radius: 5px;
     background-color: #ffffff00;
     margin: 12px;
     cursor: pointer;

@@ -1,8 +1,6 @@
 import { Card } from "./card.js";
 import { handleShowSelectedButtonClick as handlePopupButtonClick } from "./modal.js";
 
-let selectedChapas = new Map();
-
 const sortKeyElement = document.getElementById("sortKey");
 const sortOrderElement = document.getElementById("sortOrder");
 const filterElements = {
@@ -40,6 +38,8 @@ const onClearButtonClick = () => {
     checkbox.checked = false;
   });
 };
+
+let selectedChapas = new Map();
 
 async function populateCards() {
   const sortKey = sortKeyElement.value;
