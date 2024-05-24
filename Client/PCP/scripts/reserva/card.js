@@ -1,3 +1,5 @@
+import { createElementWithClass } from '../utils/dom.js';
+
 export class Card {
   constructor(chapa, keys, index, sortKey, onSubcardSelectionChange, isChecked = false) {
     this.chapa = chapa;
@@ -8,14 +10,8 @@ export class Card {
     this.isChecked = isChecked;
   }
 
-  createDivWithClass(className) {
-    let div = document.createElement("div");
-    div.className = `card-${className}`;
-    return div;
-  }
-
   createValueDiv(key, value) {
-    let valueDiv = this.createDivWithClass(`card-value-div col text-center value align-items-center justify-content-center`);
+    let valueDiv = createElementWithClass("div", `card-value-div col text-center value align-items-center justify-content-center rounded`);
     valueDiv.style.width = "100px";
     valueDiv.style.padding = "5px";
     valueDiv.textContent = value;
@@ -38,23 +34,21 @@ export class Card {
   }
 
   createValueRow() {
-    let valueRow = this.createDivWithClass("value-row row flex-nowrap overflow-auto w-100 align-items-stretch");
+    let valueRow = createElementWithClass("div", "value-row row flex-nowrap overflow-auto w-100 align-items-stretch");
     this.keys.forEach((key) => valueRow.appendChild(this.createValueDiv(key, this.chapa[key])));
     return valueRow;
   }
 
   createCheckbox() {
-    let checkbox = document.createElement("input");
+    let checkbox = createElementWithClass("input", "card-checkbox  mr-3");
     checkbox.type = "checkbox";
-    checkbox.className = "card-checkbox mr-3";
     checkbox.checked = this.isChecked;
     checkbox.addEventListener("change", () => this.onSubcardSelectionChange(this.chapa, checkbox.checked));
     return checkbox;
   }
 
   createInfoButton() {
-    let infoButton = document.createElement("button");
-    infoButton.className = "btn btn-info btn-sm ml-2 card-info-button";
+    let infoButton = createElementWithClass("button", "btn btn-sm ml-2 card-info-button");
     infoButton.innerHTML = '<i class="fas fa-chevron-down"></i>';
     infoButton.addEventListener("click", () => {
       alert(JSON.stringify(this.chapa, null, 2));
@@ -63,7 +57,7 @@ export class Card {
   }
 
   createCardBody() {
-    let cardBody = this.createDivWithClass("body-div card-body bg-secondary d-flex align-items-center");
+    let cardBody = createElementWithClass("div", "body-div card-body bg-red rounded d-flex align-items-center");
     cardBody.appendChild(this.createCheckbox());
     cardBody.appendChild(this.createValueRow());
     cardBody.appendChild(this.createInfoButton());
@@ -71,12 +65,8 @@ export class Card {
   }
 
   createCard() {
-    let card = this.createDivWithClass("div card mb-3 shadow-sm");
+    let card = createElementWithClass("div", "card mb-3 shadow-sm");
     card.appendChild(this.createCardBody());
     return card;
-  }
-
-  create() {
-    return this.createCard();
   }
 }

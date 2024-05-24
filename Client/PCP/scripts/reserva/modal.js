@@ -158,6 +158,8 @@ function createReserveButton(selectedSubcards) {
       chapas,
     };
 
+    /* alert(JSON.stringify(data, null, 2)); */
+
     axios
       .post("http://localhost:3000/PCP", data)
       .then((response) => {

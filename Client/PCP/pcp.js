@@ -1,3 +1,17 @@
+import { ItemModal } from './scripts/consulta/mainConsulta.js';
+import { Reservar } from './scripts/reserva/mainReserva.js';
+
+document.addEventListener("DOMContentLoaded", function () {
+  const reservar = new Reservar();
+  reservar.initialize();
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const itemModal = new ItemModal();
+  itemModal.initialize();
+});
+
+
 var darkModeToggle = document.getElementById('darkModeToggle');
 var body = document.body;
 
