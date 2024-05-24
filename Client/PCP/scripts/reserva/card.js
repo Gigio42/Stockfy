@@ -14,7 +14,13 @@ export class Card {
     let valueDiv = createElementWithClass("div", `card-value-div col text-center value align-items-center justify-content-center rounded`);
     valueDiv.style.width = "100px";
     valueDiv.style.padding = "5px";
-    valueDiv.textContent = value;
+
+    if (key.startsWith("data")) {
+      let [day, month] = value.split("/");
+      valueDiv.textContent = `${day}/${month}`;
+    } else {
+      valueDiv.textContent = value;
+    }
 
     if (key === "status") {
       valueDiv.className += "card-status";

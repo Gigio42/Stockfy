@@ -1,5 +1,5 @@
-import { createElementWithClass } from '../utils/dom.js';
-import { deleteEntity } from '../utils/connection.js';
+import { createElementWithClass } from "../utils/dom.js";
+import { deleteEntity } from "../utils/connection.js";
 
 export class ChapaCard {
   constructor(chapa) {
@@ -8,15 +8,21 @@ export class ChapaCard {
   }
 
   createValueDiv(key, value) {
-    let valueDiv = createElementWithClass("div", `card-value-div col text-center value align-items-center justify-content-center rounded`);
+    let valueDiv = createElementWithClass("div", `card-value-div col-12 col-sm text-center value align-items-center justify-content-center rounded`);
     valueDiv.style.width = "100px";
     valueDiv.style.padding = "5px";
+
+    if (key.startsWith("data")) {
+      let [day, month] = value.split("/");
+      value = `${day}/${month}`;
+    }
+
     valueDiv.textContent = value;
     return valueDiv;
   }
 
   createValueRow() {
-    let valueRow = createElementWithClass("div", "value-row row flex-nowrap overflow-auto w-100 align-items-stretch");
+    let valueRow = createElementWithClass("div", "value-row row flex-nowrap flex-sm-wrap overflow-auto w-100 align-items-stretch");
     this.keys.forEach((key) => valueRow.appendChild(this.createValueDiv(key, this.chapa[key])));
     return valueRow;
   }

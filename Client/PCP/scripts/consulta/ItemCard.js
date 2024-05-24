@@ -1,6 +1,6 @@
-import { createElementWithClass } from '../utils/dom.js';
-import { deleteEntity } from '../utils/connection.js';
-import { ChapaCard } from './ChapaCard.js';
+import { createElementWithClass } from "../utils/dom.js";
+import { deleteEntity } from "../utils/connection.js";
+import { ChapaCard } from "./ChapaCard.js";
 
 export class ItemCard {
   constructor(item) {
@@ -62,9 +62,14 @@ export class ItemCard {
     const briefView = createElementWithClass("div", "brief-view d-flex");
     briefView.style.flexWrap = "wrap";
     const keys = ["medida", "vincos", "qualidade", "onda", "quantidade_comprada", "quantidade_estoque", "data_prevista"];
-    keys.forEach(key => {
+    keys.forEach((key) => {
       const span = document.createElement("span");
-      span.textContent = lastChapa[key];
+      if (key.startsWith("data")) {
+        let [day, month] = lastChapa[key].split("/");
+        span.textContent = `${day}/${month}`; // Display only day and month
+      } else {
+        span.textContent = lastChapa[key];
+      }
       span.style.marginRight = "1em";
       span.style.color = "#b3b3b3";
       briefView.appendChild(span);
@@ -80,7 +85,7 @@ export class ItemCard {
   createChapasContainer() {
     const chapasContainer = createElementWithClass("div", "card-body");
     chapasContainer.style.display = "none";
-    this.item.chapas.forEach(chapa => {
+    this.item.chapas.forEach((chapa) => {
       const chapaCard = new ChapaCard(chapa);
       chapasContainer.appendChild(chapaCard.render());
     });
