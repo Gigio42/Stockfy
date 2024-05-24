@@ -11,9 +11,13 @@ export async function fetchChapas(sortKey, sortOrder, filterCriteria) {
   return response.data;
 }
 
-export async function fetchItems() {
+export async function fetchItems(searchQuery = '') {
   try {
-    const response = await axios.get(`${PCP_URL}/items`);
+    const response = await axios.get(`${PCP_URL}/items`, {
+      params: {
+        search: searchQuery
+      }
+    });
     return response.data;
   } catch (error) {
     console.error("Error fetching items:", error);

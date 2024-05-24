@@ -47,14 +47,14 @@ class PCPController {
   // ------------------------------
   // GetItemsComment Function
   // ------------------------------
-  async getItems() {
+  async getItems(searchQuery = "") {
     const chapaItemRepository = getRepository(Chapa_Item);
-    const itemRepository = getRepository(Item);
 
     const chapaItems = await chapaItemRepository
       .createQueryBuilder("chapa_item")
       .leftJoinAndSelect("chapa_item.item", "item")
       .leftJoinAndSelect("chapa_item.chapa", "chapa")
+      .where("item.part_number LIKE :search", { search: `%${searchQuery}%` })
       .getMany();
 
     if (!chapaItems.length) {

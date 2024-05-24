@@ -5,7 +5,7 @@ export function createModalContent(modalContent, closeModal, contentGenerator) {
     modalContent.appendChild(closeModal);
 
     const contentWrapper = document.createElement("div");
-    contentWrapper.style.maxHeight = "50vh";
+    contentWrapper.style.maxHeight = "60vh";
     contentWrapper.style.overflowY = "auto";
 
     const content = contentGenerator();
