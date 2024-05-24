@@ -471,6 +471,7 @@ formulário
 .card {
     margin-bottom: 10px;
     margin-top: 15px;
+    border: none;
 }
 
 .card-div {
@@ -519,7 +520,6 @@ input[type="checkbox"]:checked::before {
     align-content: center;
 }
 
-
 .card-value-row {
     display: flex;
     overflow: auto;
@@ -528,13 +528,24 @@ input[type="checkbox"]:checked::before {
     font-size: 1rem;
 }
 
+.card-status {
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+}
+
+.card-status-recebido {
+    background-color: #28a745;
+}
+
+.card-status-comprado {
+    background-color: #007bff;
+}
+
 .card-value-div {
     text-align: center;
 
-}
-
-.card {
-    border: none;
 }
 
 .card-checkbox {

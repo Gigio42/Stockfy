@@ -1,4 +1,4 @@
-import { createElementWithClass } from '../utils/dom.js';
+import { createElementWithClass } from "../utils/dom.js";
 
 export class Card {
   constructor(chapa, keys, index, sortKey, onSubcardSelectionChange, isChecked = false) {
@@ -17,12 +17,12 @@ export class Card {
     valueDiv.textContent = value;
 
     if (key === "status") {
-      valueDiv.className += " card-status";
+      valueDiv.className += "card-status";
       let status = value.toLowerCase();
       if (status === "recebido") {
-        valueDiv.className += " bg-success";
+        valueDiv.className += " card-status-recebido";
       } else if (status === "comprado") {
-        valueDiv.className += " bg-warning";
+        valueDiv.className += " card-status-comprado";
       }
     }
 
