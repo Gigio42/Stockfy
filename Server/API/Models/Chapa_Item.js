@@ -20,11 +20,17 @@ const Chapa_Item = new EntitySchema({
             type: 'many-to-one',
             inverseSide: 'chapaItems',
         },
+        
         item: {
             target: "Item",
             type: 'many-to-one',
             inverseSide: 'chapaItems',
-        }
+        },
+        // chapa_item_maquina: {
+        //     target: "Chapa_item_maquina",
+        //     type: 'one-to-many',
+        //     inverseSide: 'chapaItems',
+        // }
     }
 });
 

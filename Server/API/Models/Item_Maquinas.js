@@ -16,6 +16,10 @@ const Item_Maquina = new EntitySchema({
             type: Date,
             nullable: true,
         },
+        status: {
+            type: "text",
+            nullable: true,
+        },
     },
     relations: {
         itemId: {
@@ -27,7 +31,13 @@ const Item_Maquina = new EntitySchema({
             target: "Maquina",
             type: 'many-to-one',
             inverseSide: 'Item_Maquinas',
-        }
+        },
+        // chapa_item: {
+        //     target: "Chapa_item",
+        //     type: 'one-to-many',
+        //     inverseSide: 'Item_Maquinas',
+        // }
+
     }
 });
 
