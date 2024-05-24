@@ -40,7 +40,7 @@ export class ChapaCard {
   }
 
   createDeleteButton() {
-    const deleteButton = createElementWithClass("button", "btn btn-danger ml-auto delete-button");
+    const deleteButton = createElementWithClass("button", "btn btn-danger ml-auto card-chapa-delete-button");
     deleteButton.textContent = "Deletar";
     deleteButton.addEventListener("click", () => {
       deleteEntity(this.chapa.id_chapa, "chapa");

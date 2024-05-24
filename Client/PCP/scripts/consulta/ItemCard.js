@@ -59,8 +59,7 @@ export class ItemCard {
 
   createBriefView() {
     const lastChapa = this.item.chapas[this.item.chapas.length - 1];
-    const briefView = createElementWithClass("div", "brief-view d-flex");
-    briefView.style.flexWrap = "wrap";
+    const briefView = createElementWithClass("div", "card-brief-view d-flex");
     const keys = ["medida", "vincos", "qualidade", "onda", "quantidade_comprada", "quantidade_estoque", "data_prevista"];
     keys.forEach((key) => {
       const span = document.createElement("span");
@@ -70,8 +69,6 @@ export class ItemCard {
       } else {
         span.textContent = lastChapa[key];
       }
-      span.style.marginRight = "1em";
-      span.style.color = "#b3b3b3";
       briefView.appendChild(span);
     });
 
@@ -103,7 +100,7 @@ export class ItemCard {
   }
 
   createDeleteButton() {
-    const deleteButton = createElementWithClass("button", "btn btn-danger ml-2");
+    const deleteButton = createElementWithClass("button", "btn btn-danger ml-2 card-item-delete-button");
     deleteButton.textContent = "Deletar";
     deleteButton.addEventListener("click", () => {
       deleteEntity(this.item.id_item, "item");
