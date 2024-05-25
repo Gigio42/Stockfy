@@ -15,8 +15,8 @@ const Maquinas = new EntitySchema({
         }
     },
     relations: {
-        maquinaId: {
-            target: "Item_Maquinas",
+        chapa_item_maquina: {
+            target: "Chapa_Item_Maquina",
             type: 'one-to-many',
             inverseSide: 'maquina',
         },
@@ -26,7 +26,6 @@ const Maquinas = new EntitySchema({
             type: "many-to-many",
             inverseSide: 'Maquina'
         }
-
     }
 });
 

@@ -1,9 +1,9 @@
 import { EntitySchema } from "typeorm";
 
-const Item_Maquina = new EntitySchema({
-    name: "Item_Maquinas",
+const Chapa_Item_Maquina = new EntitySchema({
+    name: "Chapa_Item_Maquina",
     columns: {
-        id_item_maquina: {
+        id_chapa_item_maquina: {
             type: "int",
             primary: true,
             generated: true
@@ -22,23 +22,25 @@ const Item_Maquina = new EntitySchema({
         },
     },
     relations: {
-        itemId: {
+
+        item: {
             target: "Item",
             type: 'many-to-one',
-            inverseSide: 'Item_Maquinas',
+            inverseSide: 'Chapa_Item_Maquina',
         },
-        maquinaId: {
+
+        maquina: {
             target: "Maquina",
             type: 'many-to-one',
-            inverseSide: 'Item_Maquinas',
+            inverseSide: 'Chapa_Item_Maquina',
         },
-        // chapa_item: {
-        //     target: "Chapa_item",
-        //     type: 'one-to-many',
-        //     inverseSide: 'Item_Maquinas',
-        // }
+        chapa_item: {
+            target: "Chapa_Item",
+            type: 'many-to-one',
+            inverseSide: 'Chapa_Item_Maquina',
+        }
 
     }
 });
 
-export default Item_Maquina;
+export default Chapa_Item_Maquina;

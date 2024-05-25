@@ -23,8 +23,8 @@ const Item = new EntitySchema({
             type: 'one-to-many',
             inverseSide: 'item',
         },
-        item: {
-            target: "Item_Maquinas",
+        chapa_item_maquinas: {
+            target: "Chapa_Item_Maquina",
             type: 'one-to-many',
             inverseSide: 'item',
         },

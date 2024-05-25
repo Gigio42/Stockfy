@@ -1,5 +1,5 @@
 import AdmController from '../Controllers/admController.js';
-import { postItemMaquinaSchema, getItemMaquinaSchema, getItemSchema } from '../validators/admValidator.js'
+import { postChapaItemMaquinaSchema, getChapaItemMaquinaSchema, getItemSchema } from '../validators/admValidator.js'
 
 async function admRoute(fastify, options) {
     const admController = new AdmController(options.db);
@@ -17,11 +17,11 @@ async function admRoute(fastify, options) {
     });
 
 
-    fastify.get('/item_maquina/:itemId', {
-      schema: getItemMaquinaSchema, handler: async (request, reply) => {
+    fastify.get('/item_maquina/:item', {
+      schema: getChapaItemMaquinaSchema, handler: async (request, reply) => {
 
           try {
-              const item_id = await admController.getItemMaquinaByItemId(request.params.itemId);
+              const item_id = await admController.getItemMaquinaByItemId(request.params.item);
               reply.send(item_id);
           }
           catch (err) {
@@ -31,11 +31,11 @@ async function admRoute(fastify, options) {
       }
   });
 
-    fastify.get('/chapa_item/:itemId', {
+    fastify.get('/chapa_item/:item', {
       schema: getItemSchema, handler: async (request, reply) => {
 
           try {
-              const item_id = await admController.getChapaItem(request.params.itemId);
+              const item_id = await admController.getChapaItem(request.params.item);
               reply.send(item_id);
           }
           catch (err) {
@@ -47,11 +47,11 @@ async function admRoute(fastify, options) {
 
 
     fastify.post('/add_ordem', {
-      schema: postItemMaquinaSchema, handler: async (request, reply) => {
+      schema: postChapaItemMaquinaSchema, handler: async (request, reply) => {
         console.log(request.body);
     
         try {
-          await admController.createItemMaquina(request.body);
+          await admController.createChapaItemMaquina(request.body);
           reply.send({ message: 'Data received and inserted into SQLite database successfully' });
         } 
         catch (err) {

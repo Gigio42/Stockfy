@@ -7,7 +7,7 @@ import Item from './API/Models/Item.js'
 import Chapa_Item from './API/Models/Chapa_Item.js'
 import Conjugacoes from './API/Models/Conjugacoes.js'
 import Maquinas from './API/Models/Maquinas.js' 
-import Item_Maquina from './API/Models/Item_Maquinas.js'
+import Chapa_Item_Maquina from './API/Models/Chapa_Item_Maquinas.js'
 import Usuarios from './API/Models/Usuarios.js'
 
 
@@ -15,7 +15,7 @@ const connection = async () => {
   await createConnection({
     type: 'sqlite',
     database: './estoque.db',
-    entities: [Chapas, Item, Chapa_Item, Conjugacoes, Maquinas, Item_Maquina, Usuarios],
+    entities: [Chapas, Item, Chapa_Item, Conjugacoes, Maquinas, Chapa_Item_Maquina, Usuarios],
     synchronize: true,
   })
 }
