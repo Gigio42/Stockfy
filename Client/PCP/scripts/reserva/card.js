@@ -41,7 +41,7 @@ export class Card {
     let valueRow = createElementWithClass("div", "value-row row flex-nowrap overflow-auto w-100 align-items-stretch");
     this.keys.forEach((key) => valueRow.appendChild(this.createValueDiv(key, this.chapa[key])));
     return valueRow;
-}
+  }
 
   createCheckbox() {
     let checkbox = createElementWithClass("input", "card-checkbox  mr-3");
