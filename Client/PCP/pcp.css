@@ -553,6 +553,16 @@ input[type="checkbox"] {
   padding: 5px;
   margin-right: 10px;
   margin-left: 10px;
+  overflow: auto;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  scrollbar-width: none; /* firefox */
+  -ms-overflow-style: none; /* edge */
+}
+
+/* chrome, safari e opera */
+.card-value-div::-webkit-scrollbar {
+  display: none;
 }
 
 /* CHECKBOX o checkbox do card de chapas principal, pelo problema de checkbox do navegador
@@ -657,9 +667,4 @@ input[type="checkbox"]:checked::before {
 
 .bg-primary:hover{
     color: #d0ffca !important;
-}
-
-
-* {
-    border-radius: 0.7rem !important; /* Ou qualquer outro valor que você preferir */
 }
