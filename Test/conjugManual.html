@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<canvas id="myCanvas" width="1000" height="1000" style="border:1px solid #d3d3d3;">
+Your browser does not support the HTML5 canvas tag.
+</canvas>
+
+<script>
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+
+// Dimensões da chapa e do corte
+var chapaWidth = 1000;
+var chapaHeight = 1000;
+var cutWidth = 600;
+var cutHeight = 450;
+
+ctx.beginPath();
+ctx.moveTo(0, 0);
+ctx.lineTo(chapaWidth, 0);
+ctx.lineTo(chapaWidth, cutHeight);
+ctx.lineTo(cutWidth, cutHeight);
+ctx.lineTo(cutWidth, chapaHeight);
+ctx.lineTo(0, chapaHeight);
+ctx.closePath();
+
+ctx.fillStyle = "green";
+ctx.fill();
+
+ctx.stroke();
+
+
+ctx.font = "20px Arial";
+ctx.fillStyle = "black";
+// Top side
+ctx.fillText(chapaWidth, chapaWidth / 2, 15); 
+// Right vertical side
+ctx.fillText(chapaHeight - cutHeight, cutWidth + 10, cutHeight + ((chapaHeight - cutHeight) / 2)); 
+// Right horizontal side
+ctx.fillText(cutHeight, chapaWidth - 50, cutHeight / 2); 
+// Bottom side
+ctx.fillText(cutWidth, cutWidth / 2, chapaHeight - 10); 
+// Left side
+ctx.fillText(chapaHeight, 10, chapaHeight / 2); 
+// Middle vertical side
+ctx.fillText(chapaWidth - cutWidth, (chapaWidth + cutWidth) / 2, cutHeight - 10); 
+</script>
+
+</body>
+</html>

@@ -1,143 +1,395 @@
-html {
+html, body {
     background-color: #131313;
-}
-
-#jsonOutput {
-    color: rgb(226, 226, 226);
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: #131313;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    flex-direction: column;  
-}
-
-h1 {
-    margin-top: 2rem;
-    display: flex;
-    background: #131313;
     color: #ffffff;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-}
-
-h2 {
-    margin-top: 2rem;
-}
-
-
-#myModal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4);
-}
-
-#myModal .modal-content {
-    background-color: #fefefe;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: center; /* Centraliza verticalmente */
+    height: 100vh;
 }
 
-
-.dropzone{
+.container {
+    margin-top: 4rem;
+    width: 100%;
+    height: 100vh;
     display: flex;
-    background: #131313;
-    height: 10rem;
-    color: #3b3b3b;
-    align-items: center;
-    align-content: center;
-    justify-content: center;
-    font-size: 2rem;
-    margin: 2rem;
-    border-radius: 2rem;
+    flex-direction: column;
+}
+
+.dropzone {
+    height: 75%;
+    line-height: 10rem;
     border: dashed 2px #2c2c2c;
-    padding: 2rem;
-}
-
-.btn-primary {
-    width: 20%;
-}
-
-.table {
-    margin-top: 2rem;
-    width: 70%;
-    align-items: center;
-    align-content: center;
-}
-
-.table td {
-    align-items: center;
-    align-content: center;
-    justify-content: center;
-    text-align: center;
-}
-
-.btn-success {
-    width: 20%;
-}
-
-/* Estilo para linhas pares da tabela */
-tr.even-row {
-    background-color: #979797;
     border-radius: 2rem;
-}
-
-/* Estilo para linhas ímpares da tabela */
-.odd-row {
-    background-color: #ffffff;
-}
-
-/* Adicione esta classe CSS ao seu arquivo compras.css */
-.rounded-rows td:first-child {
-    border-top-left-radius: 1rem; /* Borda arredondada superior esquerda */
-    border-bottom-left-radius: 1rem; /* Borda arredondada inferior esquerda */
-}
-
-.rounded-rows td:last-child {
-    border-top-right-radius: 1rem; /* Borda arredondada superior direita */
-    border-bottom-right-radius: 1rem; /* Borda arredondada inferior direita */
-}
-
-tr {
+    margin: 2rem;
     font-size: 2rem;
-    height: 5rem;
+    align-content: center;
+    color: #363636;
+}
+
+.dropzone:hover {
+    border: dashed 2px #84e789;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    border: 1px solid #888;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
 .fecharbtn {
+    padding: 1rem 2rem;
+    background: #d9d9d9;
+    color: #555555;
+    height: 20%;
+}
+
+.btn-primary {
+    background: #d9d9d9;
+    border: none;
+    font-size: 1.5rem;
+    color: #797979;
+    border-radius: 1rem;
+}
+
+.btn-primary:hover {
+    background: rgb(198, 198, 198);
+    color: #797979;
+}
+
+.mt-4{
+    margin-top: 0 !important;
+}
+
+.table-container {
+    max-height: calc(100vh - 10rem); /* Altura máxima - altura dos botões inferiores e do fecharbtn */
+    overflow-y: auto; /* Adiciona rolagem vertical quando necessário */
+}
+
+
+.jsonshow {
+    max-height: 20vh;
+    overflow-y: auto; /* Adiciona rolagem vertical quando necessário */
+}
+
+.precontainer {
+    max-height: 80vh;
+    overflow-y: auto; /* Adiciona rolagem vertical quando necessário */
+}
+
+
+.table td {
+    align-content: center;
+    text-align: center;
+    font-size: 1.5rem;
+    justify-content: center;
+    height: 5rem;
+}
+
+
+.btninferior {
+    position: fixed;
+    bottom: 0;
+    left: 0; /* ou right: 0; para alinhamento à direita */
+    width: 100%;
+    padding-right: 2rem;
+    background-color: #ffffff;
+    height: 15%;
+    align-items: center;
+    box-shadow: 0px 0px 30px 10px rgb(255, 255, 255); /* Adiciona sombra branca */
+}
+
+#expectedDate {
+    width: 10rem;
+    height:4.2rem;
+    margin-right: 1.5rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    background-color: #dfdfdf;
+    border: none;
+    color: #131313 !important;
+    padding-left: 1.5rem;
+}
+
+#expectedDate:focus {
+    outline: none;
+    background-color: #dfdfdf;
+    border-left: 7px solid #84e789;
+}
+
+
+    .flatpickr-calendar {
+        background: #f8f9fa;
+        border: 1px solid #198cff;
+        border-radius: 1rem !important;
+        color: #495057;
+        font-size: 12px !important;
+        background-color: #a2a2a257 !important;
+        backdrop-filter: blur(5px) !important;
+
+    }
+    .flatpickr-day.today {
+        background: #3999ff;
+        color: white;
+        border: none;
+    }
+    .flatpickr-day.selected {
+        background: #28a745 !important;
+        border: none !important;
+        color: white;
+    }
+
+    .flatpickr-day:hover{
+        background: #a9a9a97e !important;
+    }
+
+    .flatpickr-current-month .flatpickr-monthDropdown-months {
+        border-radius: 0.5rem !important;
+        color: #131313 !important;
+        padding: 0.2rem !important;
+    }
+
+    .flatpickr-current-month .flatpickr-monthDropdown-months .flatpickr-monthDropdown-month {
+        color: #232323 !important;
+        background: #7979793a !important;
+        border: none !important;
+    }
+
+
+
+@media (max-width: 576px) {
+    .btninferior {
+        justify-content: center;
+    }
+}
+
+.button-container {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
 }
 
-.btn-primary {
- background-color: rgb(255, 255, 255);
- border: none;
- height: 3rem;
- font-size: 1.3rem;
- color: #797979;
- border-radius: 1rem;
+.edit {
+    background-color: #fdb6b6; /* Cor de fundo geral */
+    border:none; /* Cor da borda geral */
+    border-radius: 0.5rem;
+    width: 2.5rem;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
 }
 
-.btn-primary:hover {
-    background: #e8e8e8;
-    color: #797979;
+#sendButton {
+    height: 60%;
+    width: 10rem;
+    font-size: 1.5rem;
+    border-radius: 1rem;
 }
 
+
+/* Aumentando ainda mais a especificidade e usando !important */
+body button.edit:active,
+body button.edit:focus,
+body button.edit:hover {
+    background-color: #f8a0a0 !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+}
+
+
+.confirm {
+    background: #9dffa2;
+    border:none; /* Cor da borda geral */
+    border-radius: 0.5rem;
+    width: 2.5rem;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    height: 2.2rem;
+}
+
+
+/* Aumentando ainda mais a especificidade e usando !important */
+body button.confirm:active,
+body button.confirm:focus,
+body button.confirm:hover {
+    background: #84e789 !important;
+    box-shadow: none !important;
+}
+
+.form-control {
+    width: 60%;
+    height: 80%;
+    font-size: 1.5rem;
+}
+
+.header-principal {
+    padding: 1rem;
+    background-color: #232323;
+
+}
+
+#fornecedor {
+    font-size: 2rem;
+    margin-top: 0.5rem;
+    border-radius: 1rem;
+    border: none;
+    background-color: #232323;
+    height: 4rem;
+    margin-left: 0.8rem;
+    color: #878787;
+    -moz-appearance: none;
+    appearance: none;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    width: 200px; /* largura personalizada */
+    cursor: pointer; /* cursor personalizado */
+    outline: none; /* remova a borda de foco padrão */
+    margin:0 ;
+
+}
+
+#fornecedor:hover {
+    background-color: #2a2a2a; /* Mudar a cor de fundo ao passar o mouse */
+}
+
+#fornecedor:focus {
+    border:none; /* borda personalizada quando focado */
+}
+
+option {
+    background-color: #131313;
+    color: #cccccc;
+
+}
+
+h1 {
+    margin: 0 auto;
+    color:#84e789;
+
+}
+
+body button.edit.disabled {
+    background-color: #ccc !important; /* Cor de fundo cinza */
+    cursor: default; /* Cursor padrão */
+}
+
+.notification {
+    display: flex;
+    background-color: #ff3f3f;
+    color: #410f0f;
+    position: absolute;
+    border-radius: 1rem;
+    height: 4rem;
+    align-content: center;
+    width: 30rem;
+    padding-left: 1rem;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.5rem;
+}
+
+#closeNotification {
+    border: NONE;   
+    background: #ff3f3f;
+    color: #3b0c0c;
+    border-radius: 50%;
+    width: 1.7rem;
+    text-align:center ;
+    padding-bottom: 0.2rem;
+    margin-right: 1rem;
+    font-size: 2rem;
+}
+
+#closeNotification:hover {
+    background-color: #a02525;
+    
+    
+}
+
+.errormodal {
+    background-color: #1212126e;
+    z-index: 9999999;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    backdrop-filter: blur(7px);
+}
+
+.header-button {
+    display: flex;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    height: 5rem;
+    padding: 1rem;
+}
+
+.closeButton {
+    border-radius:.7rem ;
+    border: none;
+    width: 5rem;
+}
+
+.alert {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.alertimg {
+    margin-top: 2REM;
+    margin-bottom: 2REM;
+}
+
+#errorMessage {
+    padding: 2rem;
+    font-size: 2rem;
+}
+
+.table-header {
+    width: 100vw;
+    text-align: center;
+    align-content: center;
+    font-size: 1.2rem;
+}
+
+/* Centraliza o conteúdo das células da tabela */
+td, th {
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Define o estilo do input para ocupar 100% da altura da célula e estar centralizado */
+td input {
+    width: 90%; /* Pode ajustar conforme necessário */
+    height: 100%; /* Define a altura do input igual à altura da célula */
+    box-sizing: border-box; /* Garante que o padding não adicione largura extra */
+    text-align: center; /* Centraliza o texto dentro do input */
+}
+
+/* Classe para bordas arredondadas nas linhas da tabela */
+.rounded-rows {
+    border-radius: 5px;
+}
+
+/* CSS para centralizar o input dentro do td */
+td, th {
+    position: relative;
+    text-align: center;
+    vertical-align: middle;
+}
+
+td .centered-input {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+}

@@ -1,44 +1,247 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF to JSON Converter</title>
+    <title>Compras</title>
     <!-- Adicionando o Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="compras.css">
+    <!-- Inclua o CSS do Flatpickr -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
-<body>
-    <h1>Bem vindo à página de compras</h1>
-    <div id="dropzone" class="dropzone">Arraste e solte o arquivo PDF aqui</div>
-    <pre id="jsonOutput"></pre>
 
-    <!-- Modal -->
-    <div id="myModal" class="modal">
-        <div class="modal-content">
-            <div class="fecharbtn">
-                <h2>Confirme todas as informações dos itens que chegaram</h2>
-                <button id="backButton" class="btn voltar btn-primary">Voltar</button>
+<body>
+    <!-- Adicione uma div para a notificação -->
+    <div id="notification" class="notification" style="display:none;">
+        <span id="notificationMessage"></span>
+        <button id="closeNotification">x</button>
+    </div>
+    <div class="header-principal d-flex flex-row align-items-center">
+        <select id="fornecedor" name="fornecedor" class="form-control mb-2">
+            <option value="" disabled selected>fornecedor</option>
+            <option value="penha">Penha</option>
+            <option value="fernandez">Fernandez</option>
+            <option value="irani">Irani</option>
+        </select>
+        <h1 class="text-center mt-4">Bem-vindo à página de compras</h1>
+    </div>
+
+    <div class="container">
+        <div id="dropzone" class="dropzone text-center mt-4">Arraste e solte o arquivo PDF aqui</div>
+        <pre id="jsonOutput" class="mt-4"></pre>
+
+
+
+        <!-- Modal -->
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <div class="fecharbtn d-flex justify-content-between align-items-center">
+                    <h2>Confirme as informações dos itens que chegaram</h2>
+                    <!-- Adicione a mesma classe ao botão de fechar -->
+                    <button id="backButton" class="btn voltar btn-primary closeButton">Voltar</button>
+                </div>
+                <!-- Tabela para mostrar os dados -->
+                <div class="table-container">
+                    <table id="dataTable" class="table mt-4"></table>
+                </div>
+                <div class="btninferior mt-4 d-flex justify-content-end">
+                    <div class="date-input-container">
+                        <input type="text" id="expectedDate" placeholder="Data Prevista">
+                    </div>
+                    <button id="sendButton" class="btn btn-success mr-2">Enviar</button>
+                    <button id="editButton" class="btn btn-warning">Editar</button>
+                    <div class="jsonshow">
+                        <pre id="jsonContent"></pre>
+                    </div>
+                </div>
+                                
+                
             </div>
-            
-            <table id="dataTable" class="table"></table> <!-- Tabela para mostrar os dados -->
-            <pre id="jsonContent" style="display: none;"></pre>
-            <button id="sendButton" class="btn btn-success">Enviar</button> <!-- Botão para enviar os dados -->
-            <button id="editButton" class="btn btn-warning">Editar</button> <!-- Botão para editar e mostrar o JSON -->
+        </div>
+
+
+
+    </div>
+
+    <!-- Modal para exibir a mensagem de erro -->
+    <div id="errorModal" class="errormodal">
+        <div class="modal-content-error">
+            <div class="header-button">
+                <!-- Adicione uma classe diferente para estilização -->
+                <button id="closeErrorModal" class="closeButton .btn-primary">Fechar</button>
+            </div>
+            <div class="alert">
+                <img class="alertimg" width="150" height="150" src="media/danger-sign_8376179.png" alt="siren" />
+                <span id="errorMessage"></span>
+            </div>
+
         </div>
     </div>
-    
-
-    <!-- Adicionando o jQuery (necessário para o Bootstrap) -->
+    <!-- Inclua o JS do Flatpickr -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <!-- Adicionando o Popper.js (necessário para o Bootstrap) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
-    <!-- Adicionando o Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <!-- Adicionando a biblioteca pdf.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
-    <!-- Adicionando o seu script JavaScript -->
-    <script src="compras.js"></script>
+    <script>
+            document.addEventListener('DOMContentLoaded', function() {
+            flatpickr("#expectedDate", {
+                dateFormat: "Y-m-d"
+            });
+        });
+
+        $(document).ready(function () {
+
+            $('#errorModal').hide();
+            // Função para exibir a notificação
+            function showNotification(message) {
+                $('#notificationMessage').text(message);
+                $('#notification').show();
+
+                // Fechar a notificação após 5 segundos
+                setTimeout(function () {
+                    $('#notification').hide();
+                }, 5000);
+            }
+
+
+            function lerTextoPdf(arquivoUrl, fornecedor) {
+                // Carrega o arquivo PDF
+                pdfjsLib.getDocument(arquivoUrl).promise.then(function (pdf) {
+                    // Lê o texto de todas as páginas do PDF
+                    var textoCompleto = '';
+                    for (var i = 1; i <= pdf.numPages; i++) {
+                        pdf.getPage(i).then(function (page) {
+                            page.getTextContent().then(function (textContent) {
+                                // Concatena o texto da página ao texto completo
+                                textoCompleto += textContent.items.map(function (s) { return s.str; }).join(' ');
+                            });
+                        });
+                    }
+
+                    // Espera um curto período de tempo para garantir que todo o texto seja lido
+                    setTimeout(function () {
+                        // Define a palavra-chave com base no fornecedor selecionado
+                        var palavraChave;
+                        if (fornecedor === 'fernandez') {
+                            palavraChave = 'FERNANDEZ';
+                        } else if (fornecedor === 'penha') {
+                            palavraChave = 'PENHA';
+                        } else if (fornecedor === 'irani') {
+                            palavraChave = 'IRANI';
+                        }
+
+                        // Verifica se o texto do PDF contém a palavra-chave correspondente ao fornecedor selecionado
+                        var fornecedorEncontrado = textoCompleto.toUpperCase().includes(palavraChave);
+
+                        if (fornecedorEncontrado) {
+                            // Continua com o processamento do PDF...
+                            console.log("Fornecedor encontrado no PDF.");
+                        } else {
+                            // Exibe um modal com a mensagem de erro se o fornecedor não for encontrado no PDF
+                            console.log("Esse pedido de compra não corresponde ao fornecedor selecionado.");
+                            $('#errorMessage').text("Esse pedido de compra não corresponde ao fornecedor selecionado.");
+                            $('#errorModal').show();
+                        }
+                    }, 1000); // Tempo de espera em milissegundos
+                });
+            }
+
+
+            // Função para limpar o conteúdo carregado e estar pronto para carregar outro PDF
+            function limparConteudo() {
+                $('#dataTable').html('');
+                $('#jsonContent').text('');
+                $('#myModal').modal('hide');
+            }
+
+            $('#backButton').on('click', function () {
+                limparConteudo();
+                window.location.reload(); // Recarrega a página
+            });
+
+            // Evento de clique para fechar o modal de erro e o modal principal
+            $('.closeButton').on('click', function () {
+                $('#errorModal').hide();
+                $('#myModal').hide();
+            });
+
+
+
+            // Função para carregar o script correspondente ao fornecedor selecionado
+            function carregarScriptParaFornecedor(fornecedor) {
+                const scriptUrl = obterScriptUrlFornecedor(fornecedor);
+                if (scriptUrl) {
+                    carregarScript(scriptUrl);
+                }
+            }
+
+            $('#fornecedor').on('change', function (event) {
+                const fornecedorSelecionado = $(this).val();
+                if (!fornecedorSelecionado) {
+                    showNotification('Por favor, selecione um fornecedor.', 'error');
+                    return;
+                }
+                carregarScriptParaFornecedor(fornecedorSelecionado);
+            });
+
+
+            // Evento de clique para fechar a notificação
+            $('#closeNotification').on('click', function () {
+                $('#notification').hide();
+            });
+
+            $('#dropzone').on('drop', function (event) {
+                event.preventDefault();
+                const arquivo = event.originalEvent.dataTransfer.files[0];
+                const fornecedor = $('#fornecedor').val();
+
+                if (arquivo && arquivo.type == 'application/pdf' && fornecedor) {
+                    lerTextoPdf(URL.createObjectURL(arquivo), fornecedor);
+                } else if (!fornecedor) {
+                    showNotification('Por favor, selecione um fornecedor.', 'error');
+                } else {
+                    showNotification('Por favor, carregue um arquivo PDF.', 'error');
+                }
+            });
+
+            function carregarScript(url) {
+                const existingScript = document.querySelector('script[data-fornecedor]');
+                if (existingScript) {
+                    existingScript.parentNode.removeChild(existingScript);
+                }
+
+                const script = document.createElement('script');
+                script.src = url;
+                script.setAttribute('data-fornecedor', '');
+                document.head.appendChild(script);
+            }
+
+            function obterScriptUrlFornecedor(fornecedor) {
+                const scripts = {
+                    'penha': 'penha-irani.js',
+                    'fernandez': 'fernandez.js',
+                    'irani': 'penha-irani.js'
+                };
+                return scripts[fornecedor];
+            }
+
+            $('#dropzone').on('dragover', function (event) {
+                event.preventDefault();
+            });
+
+            window.onclick = function (event) {
+                const modal = document.getElementById('myModal');
+                if (event.target == modal) {
+                    limparConteudo();
+                }
+            };
+        });
+    </script>
+
 </body>
+
 </html>

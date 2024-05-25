@@ -1,0 +1,29 @@
+name: Format the code
+
+# on:
+#   push:
+#     branches:
+#       - main
+#   pull_request:
+#     branches:
+#       - main
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN }}
+      - name: Install Dependencies
+        run: npm install
+      - name: Format Files
+        run: npx prettier --config .prettierrc --write Server/**/*.js
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "style: format files"
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "41898282+github-actions[bot]@users.noreply.github.com"

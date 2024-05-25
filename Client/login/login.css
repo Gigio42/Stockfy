@@ -1,3 +1,117 @@
+/* Definindo o border radius para todos os elementos */
+* {
+    border-radius: 1rem; /* Ou qualquer outro valor que você preferir */
+}
+
+/* Estilo personalizado para a página de login */
+.container-fluid, .card {
+    border-radius: 1rem; /* Aplicando border radius para o container fluido e os cards */
+}
+
+.form-control, .btn {
+    border-radius: 1rem; /* Aplicando border radius para os inputs e botões */
+}
+
+/* Oculta a seta padrão e adiciona uma imagem de seta customizada */
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: #222222 !important;
+    border:  solid 1px #343434 !important;
+    /* Adiciona uma imagem de seta customizada */
+    background: url('./media/icons8-à-esquerda-dentro-de-um-círculo-24.png') no-repeat right;
+    /* Ajusta o padding para acomodar a seta customizada */
+    padding-right: 30px; /* Ajuste conforme necessário */
+    /* Ajusta o tamanho da imagem */
+    background-size: 24px; /* Ajuste conforme necessário */
+    color: #6e6e6e !important;
+    padding-right: 1rem !important;
+    font-size: 2REM !important;
+     /* Outros estilos aqui */
+     background-position: right 10px center;
+}
+
+
+/* Estilo quando o cursor está sobre o select */
+select:hover {
+    background-color: #292929 !important;
+    background: url('./media/icons8-à-esquerda-dentro-de-um-círculo-24.png') no-repeat right center ;
+    background-position: right 10px center;
+    color: #b9b9b9 !important;
+
+}
+
+select:hover option {
+    background-color: #1e1e1e !important;
+    border: none !important;
+}
+
+/* Estilo quando o select está focado */
+select:focus {
+    box-shadow: none !important;
+    border-left: solid 5px #298dff !important;
+    color: #acacac !important;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    /* largura da barra de rolagem */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #424242;
+    /* cor do 'thumb' (a parte que você arrasta) */
+    border-radius: 5px;
+    /* borda arredondada */
+}
+
+::-webkit-scrollbar-track {
+    background-color: #212121;
+    /* cor do fundo da barra de rolagem */
+}
+
+
+
+
+input.form-control {
+    background-color: #222222 !important;
+    color: #6e6e6e !important;
+    border:  solid 1px #343434 !important;
+    height: 3rem !important;
+}
+
+#username::placeholder {
+    color: #6e6e6e !important;
+    font-size: 1.5rem;
+    
+}
+
+#password::placeholder {
+    color: #6e6e6e !important;
+    font-size: 1.5rem;
+}
+
+
+.form-control:hover {
+    background-color: #292929 !important;
+    color: #b9b9b9 !important;
+}
+
+
+
+/* Estilo quando o input está focado */
+input:focus {
+    box-shadow: none !important;
+    border-left: solid 5px #298dff !important;
+    color: #acacac !important;
+
+}
+
+label {
+    color: #114f96 !important;
+    margin-left: 1rem;
+}
 
 
 nav {
@@ -5,7 +119,7 @@ nav {
     background-color: #161616;
 }
 
-.nav-item{
+.nav-item {
     display: flex;
     justify-content: center;
 }
@@ -19,38 +133,40 @@ body {
     color: #343434;
 }
 
-li:hover{
+li:hover {
     background-color: #0004ff;
     border-radius: 10px;
     color: #ffffff;
     cursor: pointer;
 }
 
-.login {
-    display: flex;
-    flex-direction: column;
-    align-items: center
+#login {
+    background: #2c2c2c;
+    border: #c4c4c4;
+    font-size: 2rem;
+    color: #686868;
 }
 
 h1.p-5 {
     color: rgb(139, 139, 139);
     display: flex;
+    justify-content: center;
 }
 
- /* Ajustes personalizados de estilo */
- .full-height {
+/* Ajustes personalizados de estilo */
+.full-height {
     height: 100vh;
 }
 
 .card-body {
     background-color: #1e1e1e;
-    
+border-radius:0 !important ;
 }
 
 .card {
     border: none;
 }
- 
+
 .text-center {
     color: rgb(255, 255, 255);
 }
@@ -59,17 +175,49 @@ label {
     color: rgb(255, 255, 255);
 }
 
-.form-control {
-    background-color: #2d2d2d;
-    border: none;
-    color: blueviolet;
-}
 
 
 @media (min-width: 992px) {
     .col-lg-4 {
         -ms-flex: 0 0 33.333333%;
-        flex: 0 0 33.333333%; 
-        max-width: 100%; 
+        flex: 0 0 33.333333%;
+        max-width: 100%;
     }
+}
+
+.dark-mode-toggle input[type="checkbox"] {
+    display: none;
+}
+
+.dark-mode-toggle label {
+    margin-right: 1rem;
+    display: block;
+    width: 2.7em;
+    height: 1.5em;
+    background-color: #ddd;
+    border-radius: 2rem;
+    position: relative;
+    cursor: pointer;
+}
+
+.dark-mode-toggle label:after {
+    content: "";
+    display: block;
+    width: 1.2em;
+    height: 1.2em;
+    background-color: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.dark-mode-toggle input[type="checkbox"]:checked+label {
+    background-color: #298dff;
+    
+}
+
+.dark-mode-toggle input[type="checkbox"]:checked+label:after {
+    transform: translateX(100%);
 }

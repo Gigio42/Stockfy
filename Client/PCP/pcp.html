@@ -1,86 +1,159 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="Seu Nome">
-    <title>Estoque</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="Seu Nome" />
+    <title>Controle de Produção</title>
     <!-- Bootstrap CSS -->
-    <link id="theme" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css" rel="stylesheet">
+    <link id="theme" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css" rel="stylesheet" />
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
     <!-- CSS Personalizado -->
-    <link rel="stylesheet" href="pcp.css">
+    <link rel="stylesheet" href="pcp.css" />
+  </head>
 
-</head>
-
-<body class="body">
-
-<div class="container-fluid">
-    <div class="row">
+  <body class="body">
+    <div class="container-fluid">
+      <div class="row">
         <!-- Aside -->
         <aside id="aside" class="aside col-md-3 navbar-lateral d-none d-md-block">
-            <div class="logo-container">
-            
-            </div>
-          
-    <div class="p-2 navbar">
-        
-        <ul class="list-unstyled">
-            <li class="icon-li mb-2">
-                <a href="dashboard.html">
-                    <img class="imgicon" src="media/bandeira (1).png" alt="Dashboard Icon">
-                    Reservar Chapa
+          <div class="logo-container"></div>
+          <div class="p-2 navbar">
+            <ul class="list-unstyled">
+              <li class="icon-li mb-2">
+                <a id="optionsButton">
+                  <img class="imgicon" src="media/bandeira (1).png" alt="Dashboard Icon" />
+                  Reservar Chapa
                 </a>
-            </li>
-            <li class="mb-2 active">
-                <a href="pedidos.html">
-                    <img class="imgicon" src="media/relatorio.png" alt="Pedidos Icon">
-                Relatório
+              </li>
+              <li class="mb-2 active">
+                <a href="#" id="openModalLink">
+                  <img class="imgicon" src="media/relatorio.png" alt="Pedidos Icon" />
+                  Consulta
                 </a>
-            </li>
-            <li class="mb-2 active">
-                <a href="pedidos.html">
-                    <img class="imgicon" src="media/relatorio.png" alt="Pedidos Icon">
-                Criar usuário
+              </li>
+              <li class="mb-2 active">
+                <a href="#" onclick="criarUsuario()">
+                  <img class="imgicon" src="media/relatorio.png" alt="Pedidos Icon" />
+                  Criar usuário
                 </a>
-            </li>           
-        </ul>
-    </div>
-</aside>
+                <div id="modal" class="modal">
+                  <div class="modal-content">
+                    <span class="close" onclick="fecharModal()">&times;</span>
+                    <h2>Cadastrar usuário</h2>
+                    <form id="formCriarUsuario">
+                      <label for="nomeUsuario">Nome de Usuário:</label>
+                      <input type="text" id="nomeUsuario" name="nomeUsuario" />
+                      <label for="senha">Senha:</label>
+                      <input type="password" id="senha" name="senha" />
+                      <input type="checkbox" onclick="mostrarSenha()" />
+                      Mostrar senha
+                      <button type="submit">Cadastrar</button>
+                    </form>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </aside>
 
         <!-- Header -->
         <div class="col-md-9 header">
-            <div class="header-custom text-light d-flex justify-content-between align-items-center">
-                <div class="d-flex align-items-center">
-                    <h1 class="m-0">Gerenciamento PCP</h1>
-                </div>
-                <div class="dark-mode-toggle">
-                    <input type="checkbox" id="darkModeToggle" />
-                    <label for="darkModeToggle"></label>
-                </div>
+          <div class="header-custom text-light d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+              <h1 class="m-0">Gerenciamento PCP</h1>
             </div>
+            <div class="dark-mode-toggle">
+              <input type="checkbox" id="darkModeToggle" />
+              <label for="darkModeToggle"></label>
+            </div>
+          </div>
 
-            <!-- Card -->
-            <div class="row mt-3">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Título do Card</h5>
-                            <p class="card-text">Conteúdo do Card</p>
-                        </div>
+          <!-- Card -->
+          <div class="w-100 p-3">
+            <div class="column-rigth w-100">
+              <form id="groupingForm" class="grouping-form d-none">
+                <div class="row">
+                  <div class="col-md-6 order-md-1">
+                    <div class="form-group">
+                      <button type="submit" class="btn agrupar-button w-100 update">ATUALIZAR</button>
                     </div>
+                    <div class="form-group">
+                      <div class="d-flex align-items-center">
+                        <select class="form-control" id="sortKey" style="flex-grow: 1">
+                          <option value="medida">Medida</option>
+                          <option value="qualidade">Qualidade</option>
+                          <option value="vincos">Vincos</option>
+                          <option value="onda">Onda</option>
+                          <option value="status">Status</option>
+                          <option value="data_prevista">Data</option>
+                          <option value="quantidade_comprada">Quantidade Comprada</option>
+                          <option value="quantidade_estoque">Quantidade Estoque</option>
+                        </select>
+                        <button type="button" class="btn btn-secondary agrupar-button ml-2" id="sortOrder" data-sort="asc">&#8593;</button>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <button id="showSelectedButton" class="btn agrupar-button w-100">RESERVAR</button>
+                    </div>
+                    <div class="form-group">
+                      <button id="clearButton" type="submit" class="btn agrupar-button w-100">LIMPAR</button>
+                    </div>
+                  </div>
+                  <div class="col-md-6 order-md-2">
+                    <div class="form-group row">
+                      <div class="col-12">
+                        <div class="input-group">
+                          <input type="text" class="form-control" id="filterLength" name="filterLength" placeholder="Comprimento" />
+                          <input type="text" class="form-control" id="filterWidth" name="filterWidth" placeholder="Largura" />
+                        </div>
+                      </div>
+                      <div class="col-12">
+                        <input type="text" class="form-control" id="filterVincos" name="filterVincos" placeholder="Vincos" />
+                      </div>
+                      <div class="col-12">
+                        <input type="text" class="form-control" id="filterQualidade" name="filterQualidade" placeholder="Qualidade" />
+                      </div>
+                      <div class="col-12">
+                        <input type="text" class="form-control" id="filterOnda" name="filterOnda" placeholder="Onda" />
+                      </div>
+                    </div>
+                  </div>
                 </div>
+              </form>
+              <div id="container"></div>
             </div>
+          </div>
+
+          <!-- reservar chapas modal -->
+          <div id="popupContainer" class="modal" style="display: none">
+            <div class="modal-content" id="modalContent">
+              <span class="close" id="closeModal">&times;</span>
+              <form id="partNumberForm">
+                <label for="partNumber">Part Number:</label>
+                <input type="text" id="partNumber" name="partNumber" />
+                <button id="reserveButton">Reserve</button>
+              </form>
+            </div>
+          </div>
         </div>
+
+        <div id="itemModal" class="modal" style="display: none">
+          <div id="itemContainer" class="modal-content">
+            <span class="close" id="closeItemModal">&times;</span>
+            <input type="search" id="searchBar" placeholder="Procurar PART NUMBER">
+          </div>
+        </div>
+      </div>
     </div>
-</div>
 
-<!-- Bootstrap JS e JavaScript personalizado -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="pcp.js"></script> <!-- Seu script personalizado -->
+    <!-- Bootstrap JS e JavaScript personalizado -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-</body>
+    <script type="module" src="pcp.js"></script>
+  </body>
 </html>

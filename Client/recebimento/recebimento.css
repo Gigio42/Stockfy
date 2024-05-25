@@ -1,76 +1,101 @@
 
+:root {
+    --background-color: #333;     /* Cor de fundo para o tema escuro */
+    --text-color: #ccc;     /* Cor de texto para o tema claro */
+}
+
+[data-theme="light"] {
+    --background-color: #f5f5f5;  /* Cor de fundo para o tema claro */
+    --text-color: #333;         /* Cor de texto para o tema escuro */
+}
+
+
+
 body {
-    color: #000; /* Text color */
-    background-color: #333; /* Background color */
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100vh;
+    height: 100vh; /* Faz o corpo da página ocupar toda a altura da tela */
+    overflow: hidden; /* Remove a barra de rolagem se não for necessário */
 }
-header {
+
+body, table, #button-container, td, th, input[type="text"], input[type="date"], select{
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+
+#button-container {
     width: 100%;
     padding: 10px 0;
-    background-color: #444;
+    text-align: left;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: fixed;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Fixa o contêiner no topo */
+    top: 0; /* Posição no topo */
+    left: 0; /* Alinha à esquerda */
+    z-index: 1000; /* Garante que fique sobre outros elementos */
+}
+
+#drop-zone {
+    width: 80%;
+    height: 300px;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
     align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
+    margin-top: 10%;
 }
-#drop_zone {
-    border: 2px dashed #0087F7;
-    border-radius: 10px;
-    width: 200px;
-    height: 100px;
-    color: #0087F7;
-    text-align: center;
-    padding: 20px;
-    position: fixed;
-    left: 10%;
-    top: 50%;
-    transform: translateY(-50%);
+
+#tables {
+    width: 100%;
+    height: calc(100% - 50px); /* Ajusta a altura considerando o espaço para o botão */
+    overflow: auto; /* Permite a rolagem dentro das tabelas se necessário */
+    margin-top: 40px; /* Espaço para o contêiner do botão */
 }
-#output {
-    display: none;
-    width: 90%;
-    border-collapse: collapse;
-    margin: 80px auto 0; /* Adjusted margin top to clear fixed header */
-    border: 3px solid #4caf50;
-    border-radius: 10px;
-    overflow: hidden;
+
+table {
+    width: 100%;
+    border-collapse: collapse; /* Colapsa as bordas das células para uma borda única */
+    background-color: #f5f5f5; /* Fundo claro para a tabela */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Sombra leve ao redor da tabela para melhor definição */
 }
+
 th, td {
-    padding: 8px;
-    text-align: center; /* Centralizing text */
-    vertical-align: middle; /* Aligning text vertically for aesthetic consistency */
+
+    text-align: center; /* Centraliza texto em cabeçalhos e células */
+    padding: 8px 10px; /* Espaço adequado dentro das células */
 }
-th {
+
+input[type="text"], input[type="date"], select {
+    width: 100%; /* Faz os inputs ocuparem toda a célula */
+    border: none; /* Remove as bordas dos inputs */
+    text-align: center; /* Centraliza o texto dentro dos inputs */
+    background-color: transparent; /* Remove o fundo para igualar ao fundo da célula */
+    padding: 5px; /* Espaçamento interno para conforto visual */
+    box-sizing: border-box; /* Inclui padding no cálculo de width */
+}
+
+button {
+    padding: 10px 20px;
     background-color: #335c30;
-    color: #fff;
-}
-td {
-    color: #000;
-}
-tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-tr:nth-child(odd) {
-    background-color: #fff;
-}
-.button, .update-button {
-    padding: 5px 10px;
-    cursor: pointer;
-    color: #fff;
-    background-color: #335c30; /* Matching category header color */
+    color: white;
     border: none;
     border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
-select, input[type="date"] {
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+
+button:hover {
+    background-color: #2b4d28;
+}
+
+.update-button {
+    display: block;
+    margin: auto;
 }
