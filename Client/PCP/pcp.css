@@ -96,7 +96,7 @@ h1 {
 
 .navbar {
   display: flex;
-  margin-top: 3rem;
+  margin-top: 4rem;
   justify-content: center;
 }
 
@@ -208,7 +208,7 @@ body {
 }
 
 #container {
-  max-height: 75vh;
+  max-height: 100vh;
   overflow-y: auto;
   /* Adiciona barra de rolagem vertical se necessário */
 }
