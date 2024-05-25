@@ -65,7 +65,7 @@ model Chapa_Item {
 
 model Item {
   id_item             Int                  @id @default(autoincrement())
-  part_number         String               @default("0")
+  part_number         String               @unique @default("0")
   status              String               @default("")
   chapas              Chapa_Item[]
   chapa_item_maquinas Chapa_Item_Maquina[]
