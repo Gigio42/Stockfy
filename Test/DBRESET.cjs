@@ -6,7 +6,7 @@
 
 const sqlite3 = require('sqlite3').verbose();
 
-let db = new sqlite3.Database('../Server/estoque.db', (err) => {
+let db = new sqlite3.Database('../Server/estoque.sqlite', (err) => {
   if (err) {
     console.error(err.message);
   }
@@ -14,12 +14,11 @@ let db = new sqlite3.Database('../Server/estoque.db', (err) => {
 });
 
 db.serialize(() => {
-  db.run('DELETE FROM conjugacoes');
-  db.run('DELETE FROM maquina');
-  db.run('DELETE FROM item_maquinas');
-  db.run('DELETE FROM item');
-  db.run('DELETE FROM chapa_item');
-  db.run('DELETE FROM chapas');
+  db.run('DELETE FROM Conjugacoes');
+  db.run('DELETE FROM Maquina');
+  db.run('DELETE FROM Item');
+  db.run('DELETE FROM Chapa_item');
+  db.run('DELETE FROM Chapas');
 });
 
 db.close((err) => {

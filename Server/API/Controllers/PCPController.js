@@ -1,7 +1,6 @@
-import { getRepository } from "typeorm";
-import Chapas from "../Models/Chapas.js";
-import Item from "../Models/Item.js";
-import Chapa_Item from "../Models/Chapa_Item.js";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 class PCPController {
   constructor() {}
@@ -10,8 +9,7 @@ class PCPController {
   // GetChapasComment Function
   // ------------------------------
   async getChapas(query, filterCriteria, sortOrder, sortBy) {
-    const chapasRepository = getRepository(Chapas);
-    let data = await chapasRepository.find({ relations: ["conjugacoes"] });
+    let data = await prisma.chapas.findMany({ include: { conjugacoes: true } });
 
     data = data.filter((chapa) => chapa.status !== "USADO");
 
@@ -48,14 +46,19 @@ class PCPController {
   // GetItemsComment Function
   // ------------------------------
   async getItems(searchQuery = "") {
-    const chapaItemRepository = getRepository(Chapa_Item);
-
-    const chapaItems = await chapaItemRepository
-      .createQueryBuilder("chapa_item")
-      .leftJoinAndSelect("chapa_item.item", "item")
-      .leftJoinAndSelect("chapa_item.chapa", "chapa")
-      .where("item.part_number LIKE :search", { search: `%${searchQuery}%` })
-      .getMany();
+    const chapaItems = await prisma.chapa_Item.findMany({
+      where: {
+        item: {
+          part_number: {
+            contains: searchQuery,
+          },
+        },
+      },
+      include: {
+        item: true,
+        chapa: true,
+      },
+    });
 
     if (!chapaItems.length) {
       throw new Error(`No Chapa_Item found`);
@@ -82,35 +85,34 @@ class PCPController {
   async createItemWithChapa(body) {
     const { partNumber, chapas } = body;
 
-    const chapasRepository = getRepository(Chapas);
-    const itemRepository = getRepository(Item);
-    const chapaItemRepository = getRepository(Chapa_Item);
-
     let item;
     let chapasToSave = [];
     let chapaItemsToSave = [];
 
     for (const { chapaID, quantity, medida, keepRemaining } of chapas) {
-      const chapa = await chapasRepository.findOne({ where: { id_chapa: chapaID } });
+      const chapa = await prisma.chapas.findUnique({ where: { id_chapa: chapaID } });
 
       if (!chapa) throw new Error("Chapa not found");
       if (!quantity) throw new Error("Quantity is required");
       if (quantity > chapa.quantidade_comprada) throw new Error("Insufficient chapas");
 
       if (!item) {
-        item = await itemRepository.findOne({ where: { part_number: partNumber } });
+        item = await prisma.item.findUnique({ where: { part_number: partNumber } });
 
         if (!item) {
-          item = itemRepository.create({
-            part_number: partNumber,
-            status: "RESERVADO",
+          item = await prisma.item.create({
+            data: {
+              part_number: partNumber,
+              status: "RESERVADO",
+            },
           });
-
-          await itemRepository.save(item);
         }
       }
 
-      chapa.quantidade_estoque -= quantity;
+      await prisma.chapas.update({
+        where: { id_chapa: chapa.id_chapa },
+        data: { quantidade_estoque: { decrement: parseInt(quantity) } },
+      });
 
       if (chapa.quantidade_comprada + chapa.quantidade_estoque === 0 || (chapa.status === "recebido" && chapa.quantidade_estoque === 0)) {
         chapa.status = "USADO";
@@ -130,35 +132,64 @@ class PCPController {
 
         const { id_chapa, medida, ...chapaProps } = chapa;
 
-        const newChapa = chapasRepository.create({
-          ...chapaProps,
-          area: remainingArea,
-          quantidade_estoque: quantity,
-          status: "RESTO",
+        const newChapa = await prisma.chapas.create({
+          data: {
+            ...chapaProps,
+            area: remainingArea,
+            quantidade_estoque: quantity,
+            status: "RESTO",
+          },
         });
 
-        await chapasRepository.save(newChapa);
+        chapasToSave.push(newChapa);
       }
 
       chapasToSave.push(chapa);
 
-      let chapaItem = await chapaItemRepository.findOne({ where: { chapa: chapa, item: item } });
+      let chapaItem = await prisma.chapa_Item.findFirst({
+        where: {
+          AND: [{ chapa: { id_chapa: chapaID } }, { item: { id_item: item.id_item } }],
+        },
+      });
 
       if (chapaItem) {
         chapaItem.quantidade += Number(quantity);
       } else {
-        chapaItem = chapaItemRepository.create({
-          chapa: chapa,
-          item: item,
-          quantidade: Number(quantity),
+        chapaItem = await prisma.chapa_Item.create({
+          data: {
+            quantidade: Number(quantity),
+            chapa: { connect: { id_chapa: chapaID } },
+            item: { connect: { id_item: item.id_item } },
+          },
         });
       }
 
       chapaItemsToSave.push(chapaItem);
     }
 
-    await chapasRepository.save(chapasToSave);
-    await chapaItemRepository.save(chapaItemsToSave);
+    for (const chapa of chapasToSave) {
+      await prisma.chapas.update({
+        where: { id_chapa: chapa.id_chapa },
+        data: { quantidade_estoque: { decrement: chapa.quantidade_estoque } },
+      });
+    }
+
+    for (const chapaItem of chapaItemsToSave) {
+      const existingChapaItem = await prisma.chapa_Item.findUnique({
+        where: { id_chapa_item: chapaItem.id_chapa_item },
+      });
+
+      if (existingChapaItem) {
+        await prisma.chapa_Item.update({
+          where: { id_chapa_item: chapaItem.id_chapa_item },
+          data: { quantidade: { increment: chapaItem.quantidade } },
+        });
+      } else {
+        await prisma.chapa_Item.create({
+          data: chapaItem,
+        });
+      }
+    }
 
     return item;
   }
