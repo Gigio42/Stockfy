@@ -6,7 +6,7 @@ class ComprasController {
   constructor() {}
 
   async createCompra(orderData) {
-    const promises = orderData.info_prod_comprados.map(async item => {
+    const promises = orderData.info_prod_comprados.map(async (item) => {
       return prisma.chapas.create({ data: item });
     });
 

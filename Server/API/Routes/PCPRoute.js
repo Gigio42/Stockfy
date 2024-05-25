@@ -18,7 +18,7 @@ async function pcpRoute(fastify, options) {
 
   fastify.get("/items", async (request, reply) => {
     try {
-      const searchQuery = request.query.search || '';
+      const searchQuery = request.query.search || "";
       const data = await pcpRouteController.getItems(searchQuery);
       reply.send(data);
     } catch (err) {

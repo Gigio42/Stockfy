@@ -16,7 +16,6 @@
 //       }
 //     });
 
-
 //     fastify.get('/item_maquina/:item', {
 //       schema: getChapaItemMaquinaSchema, handler: async (request, reply) => {
 
@@ -45,15 +44,14 @@
 //       }
 //   });
 
-
 //     fastify.post('/add_ordem', {
 //       schema: postChapaItemMaquinaSchema, handler: async (request, reply) => {
 //         console.log(request.body);
-    
+
 //         try {
 //           await admController.createChapaItemMaquina(request.body);
 //           reply.send({ message: 'Data received and inserted into SQLite database successfully' });
-//         } 
+//         }
 //         catch (err) {
 //           console.log(err.message);
 //           reply.code(500).send({ message: 'Error inserting data into SQLite database', error: err.message });

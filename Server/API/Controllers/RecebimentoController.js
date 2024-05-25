@@ -15,7 +15,6 @@ class RecebimentoController {
         throw new Error("id_chapa is undefined");
       }
 
-      // Convert id_chapa to integer
       const id_chapa_int = parseInt(item.id_chapa, 10);
       if (isNaN(id_chapa_int)) throw new Error("id_chapa must be a number");
 
