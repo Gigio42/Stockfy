@@ -1,6 +1,6 @@
-import { createElementWithClass } from '../utils/dom.js';
-import { deleteEntity } from '../utils/connection.js';
-import { ChapaCard } from './ChapaCard.js';
+import { createElementWithClass } from "../utils/dom.js";
+import { deleteEntity } from "../utils/connection.js";
+import { ChapaCard } from "./ChapaCard.js";
 
 export class ItemCard {
   constructor(item) {
@@ -15,12 +15,12 @@ export class ItemCard {
     const titleContainer = createElementWithClass("div", "d-flex justify-content-between align-items-center");
     cardBody.appendChild(titleContainer);
 
+    const statusDiv = this.createStatusDiv();
+    titleContainer.appendChild(statusDiv);
+
     const itemInfo = createElementWithClass("h5", "card-title mb-0");
     itemInfo.textContent = this.item.part_number;
     titleContainer.appendChild(itemInfo);
-
-    const statusDiv = this.createStatusDiv();
-    titleContainer.appendChild(statusDiv);
 
     if (this.item.chapas.length > 0) {
       const briefView = this.createBriefView();
@@ -48,9 +48,7 @@ export class ItemCard {
     statusDiv.className += " card-status";
     const status = this.item.status.toLowerCase();
     if (status === "reservado") {
-      statusDiv.className += " bg-primary";
-    } else if (status === "comprado") {
-      statusDiv.className += " bg-warning";
+      statusDiv.className += " card-status-reservado";
     } else {
       statusDiv.className += " bg-secondary";
     }
@@ -59,14 +57,16 @@ export class ItemCard {
 
   createBriefView() {
     const lastChapa = this.item.chapas[this.item.chapas.length - 1];
-    const briefView = createElementWithClass("div", "brief-view d-flex");
-    briefView.style.flexWrap = "wrap";
+    const briefView = createElementWithClass("div", "card-brief-view d-flex");
     const keys = ["medida", "vincos", "qualidade", "onda", "quantidade_comprada", "quantidade_estoque", "data_prevista"];
-    keys.forEach(key => {
+    keys.forEach((key) => {
       const span = document.createElement("span");
-      span.textContent = lastChapa[key];
-      span.style.marginRight = "1em";
-      span.style.color = "#b3b3b3";
+      if (key.startsWith("data")) {
+        let [day, month] = lastChapa[key].split("/");
+        span.textContent = `${day}/${month}`;
+      } else {
+        span.textContent = lastChapa[key];
+      }
       briefView.appendChild(span);
     });
 
@@ -78,18 +78,20 @@ export class ItemCard {
   }
 
   createChapasContainer() {
-    const chapasContainer = createElementWithClass("div", "card-body");
-    chapasContainer.style.display = "none";
-    this.item.chapas.forEach(chapa => {
+    const chapasContainer = createElementWithClass("div", "card-body chapas-container");
+    chapasContainer.style.display = "none"; // Set initial display to "none"
+    this.item.chapas.forEach((chapa) => {
       const chapaCard = new ChapaCard(chapa);
-      chapasContainer.appendChild(chapaCard.render());
+      const chapaCardElement = chapaCard.render();
+      chapaCardElement.classList.add("chapa-card-element");
+      chapasContainer.appendChild(chapaCardElement);
     });
     return chapasContainer;
   }
 
   createDropdownButton(chapasContainer) {
     const dropdownButton = document.createElement("button");
-    dropdownButton.className = "btn btn-primary btn-sm ml-2 card-info-button";
+    dropdownButton.className = "btn btn-sm ml-2 card-info-button";
     dropdownButton.innerHTML = 'Chapas <i class="fas fa-chevron-down"></i>';
     dropdownButton.addEventListener("click", function () {
       chapasContainer.style.display = chapasContainer.style.display === "none" ? "block" : "none";
@@ -98,7 +100,7 @@ export class ItemCard {
   }
 
   createDeleteButton() {
-    const deleteButton = createElementWithClass("button", "btn btn-danger ml-2");
+    const deleteButton = createElementWithClass("button", "btn btn-danger ml-2 card-item-delete-button");
     deleteButton.textContent = "Deletar";
     deleteButton.addEventListener("click", () => {
       deleteEntity(this.item.id_item, "item");

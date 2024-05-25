@@ -1,4 +1,4 @@
-import { createElementWithClass } from '../utils/dom.js';
+import { createElementWithClass } from "../utils/dom.js";
 
 export class Card {
   constructor(chapa, keys, index, sortKey, onSubcardSelectionChange, isChecked = false) {
@@ -12,17 +12,21 @@ export class Card {
 
   createValueDiv(key, value) {
     let valueDiv = createElementWithClass("div", `card-value-div col text-center value align-items-center justify-content-center rounded`);
-    valueDiv.style.width = "100px";
-    valueDiv.style.padding = "5px";
-    valueDiv.textContent = value;
+
+    if (key.startsWith("data")) {
+      let [day, month] = value.split("/");
+      valueDiv.textContent = `${day}/${month}`;
+    } else {
+      valueDiv.textContent = value;
+    }
 
     if (key === "status") {
-      valueDiv.className += " card-status";
+      valueDiv.className += " card-status ";
       let status = value.toLowerCase();
       if (status === "recebido") {
-        valueDiv.className += " bg-success";
+        valueDiv.className += " card-status-recebido";
       } else if (status === "comprado") {
-        valueDiv.className += " bg-warning";
+        valueDiv.className += " card-status-comprado";
       }
     }
 
@@ -37,7 +41,7 @@ export class Card {
     let valueRow = createElementWithClass("div", "value-row row flex-nowrap overflow-auto w-100 align-items-stretch");
     this.keys.forEach((key) => valueRow.appendChild(this.createValueDiv(key, this.chapa[key])));
     return valueRow;
-  }
+}
 
   createCheckbox() {
     let checkbox = createElementWithClass("input", "card-checkbox  mr-3");
@@ -57,7 +61,7 @@ export class Card {
   }
 
   createCardBody() {
-    let cardBody = createElementWithClass("div", "body-div card-body bg-red rounded d-flex align-items-center");
+    let cardBody = createElementWithClass("div", "body-div card-body rounded d-flex align-items-center");
     cardBody.appendChild(this.createCheckbox());
     cardBody.appendChild(this.createValueRow());
     cardBody.appendChild(this.createInfoButton());
