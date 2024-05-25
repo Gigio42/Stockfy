@@ -204,7 +204,7 @@ body {
 }
 
 #container {
-  max-height: 100vh;
+  max-height: 82vh;
   overflow-y: auto;
   /* Adiciona barra de rolagem vertical se necessário */
 }

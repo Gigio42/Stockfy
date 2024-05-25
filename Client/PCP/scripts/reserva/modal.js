@@ -103,6 +103,7 @@ function createTableCellWithInput(type, placeholder, id) {
   input.type = type;
   input.placeholder = placeholder;
   input.id = id;
+  input.min = 0;
   td.appendChild(input);
   return td;
 }
