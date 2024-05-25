@@ -26,7 +26,7 @@
                 </div>
 
                 <button onclick="procurar()">procurar</button>
-                <button onclick="showItemMaquinaProduction()">mostrar produção</button>
+                <button onclick="showProduction()">mostrar produção</button>
                 <button onclick="criar()">criar</button>
                 <button onclick="remover()">remover</button>
             </div>
@@ -40,7 +40,7 @@
                             <th>ID</th>
                             <th>part_number</th>
                             <th>maquina</th>                            
-                            <th>chapas</th>
+                            <th>chapa</th>
                             <th>quantidade</th>
                             <th>ordem</th>
                             <th>prazo</th>
@@ -165,7 +165,8 @@
         let allMaquina = [];
         let quantidade_Chapa = '';
         let allChapa = "";
-        let chapa = '';
+        let itemIdChapas = [];
+        let chapaId = '';
 
         function procurar() {
             getAll()
@@ -212,9 +213,8 @@
             document.querySelector('.input-procurarByMaquinaId').style.display = 'none';
         }
 
-        function showItemMaquinaProduction(){
+        function showProduction(){
             getAll()
-            console.log(chapa)
             const itemMaquinaStyle = document.querySelector('.chapa-item-maquina')
             document.querySelector('.item').style.display = 'none';
             document.querySelector('.chapa-item').style.display = 'none';
@@ -222,19 +222,25 @@
 
             const tabelaChapaItemMaquina = document.querySelector('#chapa_item_maquina tbody');
                     tabelaChapaItemMaquina.innerHTML = '';
-                    all.chapa_item_maquinas.forEach(maquina => {
+                    all.chapa_item_maquinas.forEach(ordem => {
                         const row = document.createElement('tr');
+                        console.log(ordem)
+
+                        itemId = ordem.item.id_item
+                        chapaByItemId()
+
+
                         row.innerHTML = `
-                            <td>${maquina.id_chapa_item_maquina}</td>
-                            <td>${maquina.item.part_number}</td>
-                            <td>${maquina.maquina.name}</td>
-                            <td>${chapa}</td>
-                            <td>${quantidadeChapa}</td>
-                            <td>${maquina.ordem}</td>
-                            <td>${maquina.prazo}</td>
-                            <td>${maquina.status}</td>
+                            <td>${ordem.id_chapa_item_maquina}</td>
+                            <td>${ordem.item.part_number}</td>
+                            <td>${ordem.maquina.name}</td>
+                            <td>${itemIdChapas}</td>
+                            <td>${ordem.chapa_item.quantidade}</td>
+                            <td>${ordem.ordem}</td>
+                            <td>${ordem.prazo}</td>
+                            <td>${ordem.status}</td>
                         `;
-                        row.addEventListener('click', () => handleRowClickItemMaquina(maquina));
+                        row.addEventListener('click', () => handleRowClickItemMaquina(ordem));
                         tabelaChapaItemMaquina.appendChild(row);
                     });
         }
@@ -252,6 +258,7 @@
 
         function remover() {
             getAll()
+            console.log(all)
            
         }
 
@@ -260,7 +267,6 @@
                 .then(response => response.json())
                 .then(data => {
                     all = data;
-                    console.log(all)
                     allMaquina = data.maquinas.map(maquina => maquina.name);
                     allPart_number = data.items.map(item => item.part_number);
                     allchapa = data.chapa_item.map(chapa => chapa.id)
@@ -301,8 +307,8 @@
                 ordem: ordem,
                 prazo: prazo,
                 maquina: maquinaId,
-                item: itemId,
-                chapa: chapa,
+                item: itemId,   
+                chapa: chapaId,
                 quantidade: quantidade,
                 status: status
             }];
@@ -353,22 +359,16 @@
             quantidade_Chapa = quantidade;
         }
 
-        function getChapaItem() {
+        function chapaByItemId() {
+
             fetch(`http://localhost:3000/adm/chapa_item/${itemId}`)
                 .then(response => response.json())
-                .then(chapas => {
-
-                    chapa = chapas.map(item => item.chapa.id_chapa);
-                    quantidadeChapa = chapas.map(item => item.quantidade);
-
-                    console.log(chapa)
+                .then(data => {
+                    
+                    itemIdChapas = data.map(item => item.chapa.id_chapa);
 
                     const tabelaChapaChapa = document.querySelector('#chapa_chapa tbody');
-                    chapas.forEach(chapa => {
-
-                        
-                        quantidadeChapa = chapa.quantidade
-                        chapa = chapa.chapa.id_chapa
+                    data.forEach(chapa => {
 
                             // <td>${chapa.id}</td>
                             // <td>${chapa.quantidade}</td>
@@ -412,7 +412,7 @@
                             <td>${maquina.item.part_number}</td>
                             <td>${maquina.maquina.name}</td>
                             <td>${chapa}</td>
-                            <td>${quantidadeChapa}</td>
+                            <td>${quantidade_Chapa}</td>
                             <td>${maquina.ordem}</td>
                             <td>${maquina.prazo}</td>
                             <td>${maquina.status}</td>

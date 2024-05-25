@@ -25,7 +25,6 @@ class AdmController {
 
     
     const [items, maquinas, chapa_item_maquinas, chapa_item] = await Promise.all([itemsPromise, maquinasPromise, chapa_item_maquinaPromisse, chapaItemPromise]);
-    console.log(chapa_item_maquinas)
     return { items, maquinas, chapa_item_maquinas, chapa_item};
   }
 
