@@ -31,7 +31,7 @@ async function postData() {
       return {
         fornecedor: fornecedor,
         unidade: faker.random.arrayElement(['CH', 'AA']),
-        id_compra: 28543,
+        id_compra: 596508,
         numero_cliente: faker.datatype.number(),
         data_compra: faker.date.past().toLocaleDateString('pt-BR'),
         data_prevista: faker.date.future().toLocaleDateString('pt-BR'),
