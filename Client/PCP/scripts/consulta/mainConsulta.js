@@ -1,6 +1,6 @@
 import { createModalContent } from "../utils/modalUtil.js";
 import { ItemCard } from "./ItemCard.js";
-import { fetchItems, deleteEntity } from "../utils/connection.js";
+import { fetchItems } from "../utils/connection.js";
 
 export class ItemModal {
   constructor() {

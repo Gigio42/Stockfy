@@ -1,10 +1,11 @@
 import { createElementWithClass } from "../utils/dom.js";
-import { deleteEntity } from "../utils/connection.js";
+import { deleteChapaFromItem } from "../utils/connection.js";
 
 export class ChapaCard {
-  constructor(chapa, itemStatus) {
+  constructor(chapa, itemStatus, itemId) {
     this.chapa = chapa;
     this.itemStatus = itemStatus;
+    this.itemId = itemId;
     this.keys = ["status", "medida", "vincos", "qualidade", "onda", "quantidade_comprada", "quantidade_estoque", "data_prevista"];
   }
 
@@ -46,7 +47,7 @@ export class ChapaCard {
     const deleteButton = createElementWithClass("button", "btn btn-danger ml-auto card-chapa-delete-button");
     deleteButton.textContent = "Deletar";
     deleteButton.addEventListener("click", () => {
-      deleteEntity(this.chapa.id_chapa, "chapa");
+      deleteChapaFromItem(this.itemId, this.chapa.id_chapa);
     });
     return deleteButton;
   }

@@ -60,11 +60,10 @@ export async function deleteItem(id) {
   }
 }
 
-export async function deleteEntity(id, type) {
+//TODO
+export async function deleteChapaFromItem(itemId, chapaId) {
   try {
-    await axios.delete(`${PCP_URL}/${type}s/${id}`);
-    const openModalLink = document.getElementById("openModalLink");
-    openModalLink.click();
+    await axios.delete(`${PCP_URL}/items/${itemId}/chapas/${chapaId}`);
   } catch (error) {
     handleError(error);
   }

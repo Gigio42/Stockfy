@@ -1,3 +1,6 @@
+//Detalhes: As funções de deletar eu usei o prisma.$transaction por achar que seria mais seguro, pois
+//se uma das operações falhar, ele vai dar rollback
+
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -151,7 +154,7 @@ class PCPController {
   }
 
   // ------------------------------
-  // PostItemsComment Function
+  // deleteItemComment Function
   // ------------------------------
   async deleteItem(itemId) {
     const item = await prisma.item.findUnique({
@@ -173,6 +176,35 @@ class PCPController {
     }
 
     operations.push(prisma.item.delete({ where: { id_item: itemId } }));
+
+    await prisma.$transaction(operations);
+  }
+
+  // ------------------------------
+  // deleteItemComment Function
+  // ------------------------------
+  async deleteChapaFromItem(itemId, chapaId) {
+    const chapaItem = await prisma.chapa_Item.findFirst({
+      where: {
+        itemId: itemId,
+        chapaId: chapaId,
+      },
+    });
+
+    if (!chapaItem) {
+      throw new Error("Chapa não encontrada no item");
+    }
+
+    const operations = [];
+
+    operations.push(
+      prisma.chapas.update({
+        where: { id_chapa: chapaId },
+        data: { quantidade_estoque: { increment: chapaItem.quantidade } },
+      }),
+    );
+
+    operations.push(prisma.chapa_Item.delete({ where: { id_chapa_item: chapaItem.id_chapa_item } }));
 
     await prisma.$transaction(operations);
   }

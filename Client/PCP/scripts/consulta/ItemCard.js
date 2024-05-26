@@ -81,9 +81,9 @@ export class ItemCard {
 
   createChapasContainer() {
     const chapasContainer = createElementWithClass("div", "card-body chapas-container");
-    chapasContainer.style.display = "none"; // Set initial display to "none"
+    chapasContainer.style.display = "none"; 
     this.item.chapas.forEach((chapa) => {
-      const chapaCard = new ChapaCard(chapa, this.item.status);
+      const chapaCard = new ChapaCard(chapa, this.item.status, this.item.id_item);
       const chapaCardElement = chapaCard.render();
       chapaCardElement.classList.add("chapa-card-element");
       chapasContainer.appendChild(chapaCardElement);
