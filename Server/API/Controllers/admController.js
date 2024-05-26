@@ -76,13 +76,38 @@
 
 import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 class AdmController {
   constructor() {}
+
   async getMaquina() {
-    const maquinas = await prisma.maquina.findMany()
-    return maquinas
+    const maquinas = await prisma.maquina.findMany();
+    return maquinas;
+  }
+
+  async getChapasInItemsInMaquinas() {
+    const maquinas = await prisma.maquina.findMany({
+      include: {
+        Item_Maquina: {
+          include: {
+            Item: {
+              include: {
+                chapas: {
+                  include: {
+                    chapa: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    console.log(maquinas);
+
+    return maquinas;
   }
 }
 
