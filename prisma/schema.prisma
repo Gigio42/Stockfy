@@ -51,39 +51,38 @@ model Chapas {
 }
 
 model Chapa_Item {
-  id_chapa_item Int    @id @default(autoincrement())
-  quantidade    Int    @default(0)
+  id_chapa_item Int     @id @default(autoincrement())
+  quantidade    Int     @default(0)
+  terminado     Boolean @default(false)
   chapaId       Int
   itemId        Int
-  chapa         Chapas @relation(fields: [chapaId], references: [id_chapa])
-  item          Item   @relation(fields: [itemId], references: [id_item])
-  // chapa_item_maquina Chapa_Item_Maquina[]
+  chapa         Chapas  @relation(fields: [chapaId], references: [id_chapa])
+  item          Item    @relation(fields: [itemId], references: [id_item])
 }
 
 model Item {
-  id_item            Int                @id @default(autoincrement())
-  chapaItemMaquinaId Int                @default(0)
-  part_number        String             @unique @default("0")
-  status             String             @default("")
+  id_item            Int            @id @default(autoincrement())
+  part_number        String         @unique @default("0")
+  status             String         @default("")
   chapas             Chapa_Item[]
   chapa_item_maquina Item_Maquina[]
 }
 
 model Item_Maquina {
-  id_item_maquina Int       @id @default(autoincrement())
+  id_item_maquina Int     @id @default(autoincrement())
   ordem           Int?
   prazo           String?
   maquinaId       Int
   itemId          Int
-  maquina         Maquina   @relation(fields: [maquinaId], references: [id_maquina])
-  Item            Item      @relation(fields: [itemId], references: [id_item])
+  maquina         Maquina @relation(fields: [maquinaId], references: [id_maquina])
+  Item            Item    @relation(fields: [itemId], references: [id_item])
 }
 
 model Maquina {
-  id_maquina         Int                  @id @default(autoincrement())
-  name               String
-  Item_Maquina       Item_Maquina[]
-  usuarios           Usuarios[]
+  id_maquina   Int            @id @default(autoincrement())
+  name         String
+  Item_Maquina Item_Maquina[]
+  usuarios     Usuarios[]
 }
 
 model Usuarios {
