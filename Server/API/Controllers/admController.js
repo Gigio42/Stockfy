@@ -74,4 +74,16 @@
 
 // }
 
-// export default AdmController;
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient()
+
+class AdmController {
+  constructor() {}
+  async getMaquina() {
+    const maquinas = await prisma.maquina.findMany()
+    return maquinas
+  }
+}
+
+export default AdmController;
