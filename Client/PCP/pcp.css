@@ -626,6 +626,7 @@ input[type="checkbox"]:checked::before {
   transition: background 0.3s ease;
   font-size: 1em;
   grid-column: span 2;
+  padding: 1rem;
 }
 
 .card-info-button:hover {
@@ -643,7 +644,7 @@ input[type="checkbox"]:checked::before {
   box-shadow: none !important;
 }
 
-.bg-warning {
+.card-status-comprado{
   background: #ff262656 !important;
   border: 1px solid #ff000098;
   color: #ffa4a4;
@@ -651,13 +652,13 @@ input[type="checkbox"]:checked::before {
   padding: 10px;
 }
 
-.bg-primary {
+.card-status-reservado {
   background: #6cff5823 !important;
   color: #d0ffca;
   border: solid 1px #c2ffba3d;
   padding: 10px;
 }
-
-.bg-primary:hover {
+.card-status-reservado:hover {
   color: #d0ffca !important;
 }
+
