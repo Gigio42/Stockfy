@@ -340,11 +340,10 @@
     background-color: #141414;
     margin: 7% auto;
     padding: 20px;
-    width: 80%;
-    max-width: 600px;
-    height: 65%;
+    width: 80vw;
     border: none;
     border-radius: 1.5rem;
+    height: 60vh;
   }
 
   /* Estilos para o ícone */
@@ -360,3 +359,50 @@
     border-radius: 1rem;
     width:fit-content;
   }
+
+  .card {
+    border: none;
+    padding: 10px;
+    margin: 10px 0;
+    cursor: pointer;
+    background-color: #0f0f0f;
+    border-radius: 1rem;
+  }
+  
+  .subcard {
+    border: none;
+    padding: 8px;
+    margin: 5px 0 5px 20px;
+    background-color: #191919;
+    display: none; /* Initially hidden */
+    border-radius: 0.7rem;
+  }
+  
+  .card.expanded .subcard {
+    display: block; /* Show when the card is expanded */
+    margin: 0;
+    margin-top: 0.7rem;
+  }
+  
+#reservados {
+  width: 30%;
+  overflow-y:auto;
+  max-height: 48vh;
+  border-radius: 1rem;
+  
+}
+
+.conteudoInterno {
+  display: flex;
+  justify-content: flex-end;
+}
+
+h3 {
+  background-color: #4f27ffd4;
+  padding: 0.5rem;
+  border-radius: 0.7rem;
+  border: solid 1px #9178ff;
+  color: #9178ff ;
+  width: fit-content;
+  margin: 0;
+}
