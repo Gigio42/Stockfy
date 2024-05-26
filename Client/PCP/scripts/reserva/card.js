@@ -30,6 +30,17 @@ export class Card {
       }
     }
 
+    if (key === "quantidade_estoque") {
+      if (value < 0) {
+        valueDiv.style.color = "red";
+        valueDiv.textContent = Math.abs(value);
+      } else if (value === 0) {
+        valueDiv.style.color = "white";
+      } else {
+        valueDiv.style.color = "green";
+      }
+    }
+
     if (key === this.keys[this.keys.length - 1]) {
       valueDiv.className += " mr-3";
     }

@@ -32,6 +32,7 @@ model Chapas {
   quantidade_comprada Int?    @default(0)
   quantidade_recebida Int?    @default(0)
   quantidade_estoque  Int?    @default(0)
+  quantidade_usada    Int?    @default(0)
   onda                String?
   coluna              Float?
   vincos              String?
@@ -61,11 +62,11 @@ model Chapa_Item {
 }
 
 model Item {
-  id_item            Int            @id @default(autoincrement())
-  part_number        String         @unique @default("0")
-  status             String         @default("")
-  chapas             Chapa_Item[]
-  chapa_item_maquina Item_Maquina[]
+  id_item     Int            @id @default(autoincrement())
+  part_number String         @unique @default("0")
+  status      String         @default("")
+  chapas      Chapa_Item[]
+  maquinas    Item_Maquina[]
 }
 
 model Item_Maquina {
@@ -79,10 +80,10 @@ model Item_Maquina {
 }
 
 model Maquina {
-  id_maquina   Int            @id @default(autoincrement())
-  name         String
-  Item_Maquina Item_Maquina[]
-  usuarios     Usuarios[]
+  id_maquina Int            @id @default(autoincrement())
+  name       String
+  items      Item_Maquina[]
+  usuarios   Usuarios[]
 }
 
 model Usuarios {
