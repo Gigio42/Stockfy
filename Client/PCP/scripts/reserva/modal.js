@@ -1,3 +1,5 @@
+import { reserveChapas } from "../utils/connection.js";
+
 export function handleShowSelectedButtonClick(getSelectedSubcards) {
   const showSelectedButton = document.getElementById("showSelectedButton");
   const modalContent = document.getElementById("modalContent");
@@ -138,7 +140,7 @@ function createReserveButton(selectedSubcards) {
   const reserveButton = document.createElement("button");
   reserveButton.textContent = "RESERVAR";
   reserveButton.classList.add("agrupar-button");
-  reserveButton.onclick = () => {
+  reserveButton.onclick = async () => {
     const partNumberInput = document.querySelector("#partNumberInput");
     const partNumber = partNumberInput.value;
 
@@ -164,25 +166,12 @@ function createReserveButton(selectedSubcards) {
       chapas,
     };
 
-    axios
-      .post("http://localhost:3000/PCP", data)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        if (error.response) {
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-          alert(`Error: ${error.response.data.error}`);
-        } else if (error.request) {
-          console.log(error.request);
-          alert("Error: No response from server");
-        } else {
-          console.log("Error", error.message);
-          alert(`Error: ${error.message}`);
-        }
-      });
+    try {
+      const response = await reserveChapas(data);
+      console.log(response);
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   return reserveButton;

@@ -34,3 +34,23 @@ export async function deleteEntity(id, type) {
     console.error(`Error deleting ${type}:`, error);
   }
 }
+
+export async function reserveChapas(data) {
+  try {
+    const response = await axios.post(`${PCP_URL}`, data);
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      console.error(error.response.data);
+      console.error(error.response.status);
+      console.error(error.response.headers);
+      throw new Error(`Error: ${error.response.data.error}`);
+    } else if (error.request) {
+      console.error(error.request);
+      throw new Error("Error: No response from server");
+    } else {
+      console.error("Error", error.message);
+      throw new Error(`Error: ${error.message}`);
+    }
+  }
+}
