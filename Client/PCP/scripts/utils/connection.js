@@ -30,6 +30,15 @@ export async function fetchChapas(sortKey, sortOrder, filterCriteria) {
   }
 }
 
+export async function reserveChapas(data) {
+  try {
+    const response = await axios.post(`${PCP_URL}`, data);
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+}
+
 export async function fetchItems(searchQuery = '') {
   try {
     const response = await axios.get(`${PCP_URL}/items`, {
@@ -43,20 +52,19 @@ export async function fetchItems(searchQuery = '') {
   }
 }
 
-export async function deleteEntity(id, type) {
+export async function deleteItem(id) {
   try {
-    await axios.delete(`${PCP_URL}/${type}s/${id}`);
-    const openModalLink = document.getElementById("openModalLink");
-    openModalLink.click();
+    await axios.delete(`${PCP_URL}/items/${id}`);
   } catch (error) {
     handleError(error);
   }
 }
 
-export async function reserveChapas(data) {
+export async function deleteEntity(id, type) {
   try {
-    const response = await axios.post(`${PCP_URL}`, data);
-    return response.data;
+    await axios.delete(`${PCP_URL}/${type}s/${id}`);
+    const openModalLink = document.getElementById("openModalLink");
+    openModalLink.click();
   } catch (error) {
     handleError(error);
   }

@@ -156,20 +156,20 @@ class PCPController {
   async deleteItem(itemId) {
     const item = await prisma.item.findUnique({
       where: { id_item: itemId },
-      include: { chapas: { include: { chapa_item: true } } },
+      include: { chapas: true },
     });
 
     const operations = [];
 
-    for (const chapa of item.chapas) {
+    for (const chapaItem of item.chapas) {
       operations.push(
         prisma.chapas.update({
-          where: { id_chapa: chapa.id_chapa },
-          data: { quantidade_estoque: { increment: chapa.quantidade_estoque } },
+          where: { id_chapa: chapaItem.chapaId },
+          data: { quantidade_estoque: { increment: chapaItem.quantidade } },
         }),
       );
 
-      operations.push(prisma.chapas.delete({ where: { id_chapa: chapa.id_chapa } }));
+      operations.push(prisma.chapa_Item.delete({ where: { id_chapa_item: chapaItem.id_chapa_item } }));
     }
 
     operations.push(prisma.item.delete({ where: { id_item: itemId } }));

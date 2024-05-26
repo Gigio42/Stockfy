@@ -1,5 +1,5 @@
 import { createElementWithClass } from "../utils/dom.js";
-import { deleteEntity } from "../utils/connection.js";
+import { deleteItem } from "../utils/connection.js";
 import { ChapaCard } from "./ChapaCard.js";
 
 export class ItemCard {
@@ -105,7 +105,7 @@ export class ItemCard {
     const deleteButton = createElementWithClass("button", "btn btn-danger ml-2 card-item-delete-button");
     deleteButton.textContent = "Deletar";
     deleteButton.addEventListener("click", () => {
-      deleteEntity(this.item.id_item, "item");
+      deleteItem(this.item.id_item, "item");
     });
     return deleteButton;
   }
