@@ -21,17 +21,17 @@ model Conjugacoes {
 }
 
 model Chapas {
-  id_chapa            Int      @id @default(autoincrement())
-  id_compra           Int @default(0)
-  numero_cliente      Int @default(0)
+  id_chapa            Int     @id @default(autoincrement())
+  id_compra           Int     @default(0)
+  numero_cliente      Int     @default(0)
   fornecedor          String?
   comprador           String?
   unidade             String?
   qualidade           String
   medida              String?
-  quantidade_comprada Int?     @default(0)
-  quantidade_recebida Int?     @default(0)
-  quantidade_estoque  Int?     @default(0)
+  quantidade_comprada Int?    @default(0)
+  quantidade_recebida Int?    @default(0)
+  quantidade_estoque  Int?    @default(0)
   onda                String?
   coluna              Float?
   vincos              String?

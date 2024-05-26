@@ -1,12 +1,12 @@
 name: Format the code
 
-# on:
-#   push:
-#     branches:
-#       - main
-#   pull_request:
-#     branches:
-#       - main
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   format:
@@ -20,7 +20,7 @@ jobs:
       - name: Install Dependencies
         run: npm install
       - name: Format Files
-        run: npx prettier --config .prettierrc --write Server/**/*.js
+        run: npx prettier --config .prettierrc --write 'Server/**/*.js' 'Client/**/*.html'
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
