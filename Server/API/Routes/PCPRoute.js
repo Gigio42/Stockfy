@@ -36,9 +36,32 @@ async function pcpRoute(fastify, options) {
         reply.send({ message: "Data received and inserted into SQLite database successfully" });
       } catch (err) {
         console.log(err.message);
-        reply.code(400).send({ message: "Error processing data", error: err.message });
+        reply.code(500).send({ message: "Error processing data", error: err.message });
       }
     },
+  });
+
+  fastify.delete("/items/:id", async (request, reply) => {
+    try {
+      const itemId = request.params.id;
+      await pcpRouteController.deleteItem(itemId);
+      reply.send({ message: `Item with id ${itemId} deleted successfully` });
+    } catch (err) {
+      console.log(err.message);
+      reply.code(500).send({ message: "Error deleting item from SQLite database", error: err.message });
+    }
+  });
+
+  fastify.delete("/items/:itemId/chapas/:chapaId", async (request, reply) => {
+    try {
+      const itemId = request.params.itemId;
+      const chapaId = request.params.chapaId;
+      await pcpRouteController.deleteChapaFromItem(itemId, chapaId);
+      reply.send({ message: `Chapa with id ${chapaId} deleted from item with id ${itemId} successfully` });
+    } catch (err) {
+      console.log(err.message);
+      reply.code(500).send({ message: "Error deleting chapa from item in SQLite database", error: err.message });
+    }
   });
 }
 

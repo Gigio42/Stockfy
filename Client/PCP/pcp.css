@@ -661,3 +661,9 @@ input[type="checkbox"]:checked::before {
 .bg-primary:hover {
   color: #d0ffca !important;
 }
+
+/* botão de fade pro card item pra n clicar em deletar */
+.card-disabled-button {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

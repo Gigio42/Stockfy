@@ -61,7 +61,7 @@ class PCPController {
     });
 
     if (!chapaItems.length) {
-      throw new Error(`No Chapa_Item found`);
+      throw new Error(`Chapas não encontradas para o item ${searchQuery}`);
     }
 
     const items = chapaItems.reduce((acc, chapaItem) => {
@@ -86,7 +86,7 @@ class PCPController {
     const { partNumber, chapas } = body;
 
     for (const { quantity } of chapas) {
-      if (!quantity) throw new Error("Quantity is required for all chapas");
+      if (!quantity) throw new Error("Todas as chapas devem ter uma quantidade");
     }
 
     let item;
@@ -94,9 +94,9 @@ class PCPController {
     for (const { chapaID, quantity } of chapas) {
       const chapa = await prisma.chapas.findUnique({ where: { id_chapa: chapaID } });
 
-      if (!chapa) throw new Error("Chapa not found");
-      if (!quantity) throw new Error("Quantity is required");
-      if (quantity > chapa.quantidade_comprada) throw new Error("Insufficient chapas");
+      if (!chapa) throw new Error("Chapa não encontrada");
+      if (!quantity) throw new Error("Informe a quantidade de chapas a serem reservadas");
+      if (quantity > chapa.quantidade_comprada) throw new Error("Chapas insuficientes");
 
       if (!item) {
         item = await prisma.item.findUnique({ where: { part_number: partNumber } });
@@ -109,7 +109,7 @@ class PCPController {
             },
           });
         } else if (item.status !== "RESERVADO") {
-          throw new Error("Item is in process");
+          throw new Error("Item em processo");
         }
       }
 
@@ -148,6 +148,33 @@ class PCPController {
     }
 
     return item;
+  }
+
+  // ------------------------------
+  // PostItemsComment Function
+  // ------------------------------
+  async deleteItem(itemId) {
+    const item = await prisma.item.findUnique({
+      where: { id_item: itemId },
+      include: { chapas: { include: { chapa_item: true } } },
+    });
+
+    const operations = [];
+
+    for (const chapa of item.chapas) {
+      operations.push(
+        prisma.chapas.update({
+          where: { id_chapa: chapa.id_chapa },
+          data: { quantidade_estoque: { increment: chapa.quantidade_estoque } },
+        }),
+      );
+
+      operations.push(prisma.chapas.delete({ where: { id_chapa: chapa.id_chapa } }));
+    }
+
+    operations.push(prisma.item.delete({ where: { id_item: itemId } }));
+
+    await prisma.$transaction(operations);
   }
 }
 

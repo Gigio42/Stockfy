@@ -37,7 +37,9 @@ export class ItemCard {
     buttonContainer.appendChild(dropdownButton);
 
     const deleteButton = this.createDeleteButton();
-    buttonContainer.appendChild(deleteButton);
+    if (this.item.status.toLowerCase() == "reservado") {
+      buttonContainer.appendChild(deleteButton);
+    }
 
     return itemCard;
   }
@@ -81,7 +83,7 @@ export class ItemCard {
     const chapasContainer = createElementWithClass("div", "card-body chapas-container");
     chapasContainer.style.display = "none"; // Set initial display to "none"
     this.item.chapas.forEach((chapa) => {
-      const chapaCard = new ChapaCard(chapa);
+      const chapaCard = new ChapaCard(chapa, this.item.status);
       const chapaCardElement = chapaCard.render();
       chapaCardElement.classList.add("chapa-card-element");
       chapasContainer.appendChild(chapaCardElement);

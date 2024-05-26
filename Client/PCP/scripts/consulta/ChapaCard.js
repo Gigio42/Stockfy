@@ -2,8 +2,9 @@ import { createElementWithClass } from "../utils/dom.js";
 import { deleteEntity } from "../utils/connection.js";
 
 export class ChapaCard {
-  constructor(chapa) {
+  constructor(chapa, itemStatus) {
     this.chapa = chapa;
+    this.itemStatus = itemStatus;
     this.keys = ["status", "medida", "vincos", "qualidade", "onda", "quantidade_comprada", "quantidade_estoque", "data_prevista"];
   }
 
@@ -33,8 +34,10 @@ export class ChapaCard {
     let valueRow = createElementWithClass("div", "value-row row flex-nowrap flex-sm-wrap overflow-auto w-100 align-items-stretch");
     this.keys.forEach((key) => valueRow.appendChild(this.createValueDiv(key, this.chapa[key])));
 
-    const deleteButton = this.createDeleteButton();
-    valueRow.appendChild(deleteButton);
+    if (this.itemStatus.toLowerCase() == "reservado") {
+      const deleteButton = this.createDeleteButton();
+      valueRow.appendChild(deleteButton);
+    }
 
     return valueRow;
   }
