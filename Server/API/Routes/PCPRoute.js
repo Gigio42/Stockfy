@@ -1,4 +1,5 @@
 import PCPController from "../Controllers/PCPController.js";
+import { createItemWithChapaSchema } from "../validators/pcpValidator.js";
 
 async function pcpRoute(fastify, options) {
   const pcpRouteController = new PCPController(options.db);
@@ -27,14 +28,17 @@ async function pcpRoute(fastify, options) {
     }
   });
 
-  fastify.post("/", async (request, reply) => {
-    try {
-      await pcpRouteController.createItemWithChapa(request.body);
-      reply.send({ message: "Data received and inserted into SQLite database successfully" });
-    } catch (err) {
-      console.log(err.message);
-      reply.code(400).send({ message: "Error processing data", error: err.message });
-    }
+  fastify.post("/", {
+    schema: createItemWithChapaSchema,
+    handler: async (request, reply) => {
+      try {
+        await pcpRouteController.createItemWithChapa(request.body);
+        reply.send({ message: "Data received and inserted into SQLite database successfully" });
+      } catch (err) {
+        console.log(err.message);
+        reply.code(400).send({ message: "Error processing data", error: err.message });
+      }
+    },
   });
 }
 

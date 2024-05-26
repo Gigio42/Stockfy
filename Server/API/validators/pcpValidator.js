@@ -21,24 +21,24 @@ export const getItemsSchema = {
 
 export const createItemWithChapaSchema = {
   body: {
-    type: "object",
+    required: ['partNumber', 'chapas'],
     properties: {
-      partNumber: { type: "string" },
-      chapas: {
-        type: "array",
-        not: { type: "null" },
-        items: {
-          type: "object",
-          properties: {
-            chapaID: { type: "integer" },
-            quantity: { type: "integer" },
-            medida: { type: "string" },
-            keepRemaining: { type: "boolean" },
-          },
-          required: ["chapaID", "quantity", "medida", "keepRemaining"],
-        },
+      partNumber: {
+        pattern: '^\\d{4}\\.\\d{4}$'
       },
-    },
-    required: ["partNumber", "chapas"],
-  },
+      chapas: {
+        items: {
+          required: ['chapaID', 'quantity'],
+          properties: {
+            chapaID: {
+              minimum: 1 
+            },
+            quantity: {
+              minimum: 1 
+            }
+          }
+        }
+      }
+    }
+  }
 };

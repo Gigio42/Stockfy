@@ -104,6 +104,11 @@ function createTableCellWithInput(type, placeholder, id) {
   input.placeholder = placeholder;
   input.id = id;
   input.min = 0;
+  input.oninput = function () {
+    if (this.value < 0) {
+      this.value = 0;
+    }
+  };
   td.appendChild(input);
   return td;
 }
@@ -159,15 +164,24 @@ function createReserveButton(selectedSubcards) {
       chapas,
     };
 
-    /* alert(JSON.stringify(data, null, 2)); */
-
     axios
       .post("http://localhost:3000/PCP", data)
       .then((response) => {
         console.log(response);
       })
       .catch((error) => {
-        console.error(error);
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+          alert(`Error: ${error.response.data.error}`);
+        } else if (error.request) {
+          console.log(error.request);
+          alert("Error: No response from server");
+        } else {
+          console.log("Error", error.message);
+          alert(`Error: ${error.message}`);
+        }
       });
   };
 

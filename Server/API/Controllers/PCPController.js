@@ -85,6 +85,10 @@ class PCPController {
   async createItemWithChapa(body) {
     const { partNumber, chapas } = body;
 
+    for (const { quantity } of chapas) {
+      if (!quantity) throw new Error("Quantity is required for all chapas");
+    }
+
     let item;
 
     for (const { chapaID, quantity } of chapas) {
