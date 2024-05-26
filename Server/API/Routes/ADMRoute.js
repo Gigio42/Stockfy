@@ -55,6 +55,18 @@ async function admRoute(fastify, options) {
             reply.code(500).send({ message: 'Error retrieving data from SQLite database', error: err.message });
         }
     })
+
+    fastify.get('/maquinas/items/chapas', async (request, reply) => {
+
+        try {
+            const maquina_id = await admController.getChapasInItemsInMaquinas();
+            reply.send(maquina_id);
+        }
+        catch (err) {
+            console.log(err.message);
+            reply.code(500).send({ message: 'Error retrieving data from SQLite database', error: err.message });
+        }
+    })
 }
 
 
