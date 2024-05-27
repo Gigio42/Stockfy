@@ -101,7 +101,7 @@ class PCPController {
 
       if (!chapa) throw new Error("Chapa não encontrada");
       if (!quantity) throw new Error("Informe a quantidade de chapas a serem reservadas");
-      if (quantity > chapa.quantidade_disponivel) throw new Error("Chapas insuficientes");
+      if (quantity > chapa.quantidade_disponivel) throw new Error(`Chapa ${chapaID} não possui quantidade suficiente`);
 
       if (!item) {
         item = await prisma.item.findUnique({ where: { part_number: partNumber } });
