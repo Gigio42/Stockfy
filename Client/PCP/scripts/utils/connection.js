@@ -60,7 +60,6 @@ export async function deleteItem(id) {
   }
 }
 
-//TODO
 export async function deleteChapaFromItem(itemId, chapaId) {
   try {
     await axios.delete(`${PCP_URL}/items/${itemId}/chapas/${chapaId}`);

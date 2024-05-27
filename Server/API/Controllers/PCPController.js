@@ -90,7 +90,7 @@ class PCPController {
     const { partNumber, chapas } = body;
 
     for (const { quantity, keepRemaining } of chapas) {
-      if (keepRemaining) throw new Error("Reciclagem ainda está sendo desenvolvida"); //TODO
+      if (keepRemaining) throw new Error("Reciclagem ainda está sendo desenvolvida"); //TODO Desenvolver reciclagem de chapas
       if (!quantity) throw new Error("Todas as chapas devem ter uma quantidade");
     }
 
