@@ -60,7 +60,6 @@ export class ItemModal {
     const fragment = document.createDocumentFragment();
 
     const searchContainer = document.createElement("div");
-    searchContainer.classList.add("agrupar-button");
     searchContainer.style.display = "flex";
     searchContainer.style.justifyContent = "space-between";
     searchContainer.style.marginBottom = "10px";

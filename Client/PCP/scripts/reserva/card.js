@@ -35,7 +35,7 @@ export class Card {
         valueDiv.style.color = "red";
         valueDiv.textContent = Math.abs(value);
       } else if (value === 0) {
-        valueDiv.style.color = "white";
+        valueDiv.style.color = "";
       } else {
         valueDiv.style.color = "green";
       }
