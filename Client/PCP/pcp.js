@@ -1,5 +1,5 @@
 import { ItemModal } from './scripts/consulta/mainConsulta.js';
-import { Reservar } from './scripts/reserva/mainReserva.js';
+import { Reservar } from './scripts/reserva/mainForm.js';
 
 document.addEventListener("DOMContentLoaded", function () {
   const reservar = new Reservar();

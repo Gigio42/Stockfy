@@ -7,8 +7,8 @@ async function pcpRoute(fastify, options) {
   fastify.get("/chapas", async (request, reply) => {
     try {
       const filterCriteria = request.query.filterCriteria ? JSON.parse(request.query.filterCriteria) : {};
-      const sortBy = request.query.sortBy || "medida";
-      const sortOrder = request.query.sortOrder || "asc";
+      const sortBy = request.query.sortBy || "status";
+      const sortOrder = request.query.sortOrder || "descending";
       const data = await pcpRouteController.getChapas(request.query, filterCriteria, sortOrder, sortBy);
       reply.send(data);
     } catch (err) {
