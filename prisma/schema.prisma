@@ -11,8 +11,9 @@ datasource db {
 }
 
 model Conjugacoes {
-  id_conjugacoes Int    @id @default(autoincrement())
+  id_conjugacoes Int     @id @default(autoincrement())
   medida         String
+  usado          Boolean @default(false)
 
   chapaId Int
   chapa   Chapas @relation(fields: [chapaId], references: [id_chapa])
@@ -21,29 +22,31 @@ model Conjugacoes {
 }
 
 model Chapas {
-  id_chapa            Int     @id @default(autoincrement())
-  id_compra           Int     @default(0)
-  numero_cliente      Int     @default(0)
-  fornecedor          String?
-  comprador           String?
-  unidade             String?
-  qualidade           String
-  medida              String?
-  quantidade_comprada Int?    @default(0)
-  quantidade_recebida Int?    @default(0)
-  quantidade_estoque  Int?    @default(0)
-  quantidade_usada    Int?    @default(0)
-  onda                String?
-  coluna              Float?
-  vincos              String?
-  gramatura           Float?
-  peso_total          Float?
-  valor_unitario      String?
-  valor_total         String?
-  status              String?
-  data_compra         String?
-  data_prevista       String?
-  data_recebimento    String?
+  id_chapa              Int     @id @default(autoincrement())
+  id_compra             Int     @default(0)
+  numero_cliente        Int     @default(0)
+  fornecedor            String?
+  comprador             String?
+  unidade               String?
+  qualidade             String
+  medida                String?
+  largura               Int?
+  comprimento           Int?
+  quantidade_comprada   Int?    @default(0)
+  quantidade_recebida   Int?    @default(0)
+  quantidade_estoque    Int?    @default(0)
+  quantidade_disponivel Int?    @default(0)
+  onda                  String?
+  coluna                Float?
+  vincos                String?
+  gramatura             Float?
+  peso_total            Float?
+  valor_unitario        String?
+  valor_total           String?
+  status                String?
+  data_compra           String?
+  data_prevista         String?
+  data_recebimento      String?
 
   items       Chapa_Item[]
   conjugacoes Conjugacoes[]
