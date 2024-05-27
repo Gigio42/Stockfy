@@ -306,8 +306,8 @@
 
   .svgIcon {
     margin-left: 10px; /* Espaçamento entre o nome da máquina e o ícone */
-    width: 24px; /* Tamanho do ícone */
-    height: 24px; /* Tamanho do ícone */
+    width: 48px; /* Tamanho do ícone */
+    height: 48px; /* Tamanho do ícone */
   }
 
   h3 {
@@ -350,6 +350,9 @@
   /* Estilos para o ícone */
   .svgIcon {
     cursor: pointer; /* Muda o cursor para parecer um botão */
+    padding: 0.3rem;
+    border-radius: 1rem;
+ 
   }
 
   .nomemaquina {
@@ -359,4 +362,9 @@
     padding: 1rem;
     border-radius: 1rem;
     width:fit-content;
+  }
+
+  .abrirModal:hover {
+    background: #353535;
+
   }

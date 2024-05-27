@@ -118,7 +118,25 @@ html, body {
     background-color: #dfdfdf;
     border-left: 7px solid #84e789;
 }
+#expectedDate.invalid-date {
+    border-left: 7px solid rgb(255, 64, 64);
+}
 
+@keyframes blink {
+    0% {
+        border-color: transparent;
+    }
+    50% {
+        border-color: red;
+    }
+    100% {
+        border-color: transparent;
+    }
+}
+
+#expectedDate.invalid-date {
+    animation: blink 1s infinite;
+}
 
     .flatpickr-calendar {
         background: #f8f9fa;
