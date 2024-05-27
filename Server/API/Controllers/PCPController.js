@@ -1,3 +1,6 @@
+//Detalhes: As funções de deletar eu usei o prisma.$transaction por achar que seria mais seguro, pois
+//se uma das operações falhar, ele vai dar rollback
+
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -33,7 +36,7 @@ class PCPController {
     const sortedChapas = data.sort((a, b) => {
       const getValue = (obj, prop) => prop.split(".").reduce((acc, part) => acc && acc[part], obj);
 
-      if (sortOrder === "asc") {
+      if (sortOrder === "descending") {
         return getValue(a, sortBy) < getValue(b, sortBy) ? -1 : getValue(a, sortBy) > getValue(b, sortBy) ? 1 : 0;
       } else {
         return getValue(a, sortBy) > getValue(b, sortBy) ? -1 : getValue(a, sortBy) < getValue(b, sortBy) ? 1 : 0;
@@ -61,7 +64,7 @@ class PCPController {
     });
 
     if (!chapaItems.length) {
-      throw new Error(`No Chapa_Item found`);
+      throw new Error(`Chapas não encontradas para o item ${searchQuery}`);
     }
 
     const items = chapaItems.reduce((acc, chapaItem) => {
@@ -83,18 +86,22 @@ class PCPController {
   // PostItemsComment Function
   // ------------------------------
   async createItemWithChapa(body) {
+    console.log(body);
     const { partNumber, chapas } = body;
 
-    let item;
-    let chapasToSave = [];
-    let chapaItemsToSave = [];
+    for (const { quantity, keepRemaining } of chapas) {
+      if (keepRemaining) throw new Error("Reciclagem ainda está sendo desenvolvida"); //TODO Desenvolver reciclagem de chapas
+      if (!quantity) throw new Error("Todas as chapas devem ter uma quantidade");
+    }
 
-    for (const { chapaID, quantity, medida, keepRemaining } of chapas) {
+    let item;
+
+    for (const { chapaID, quantity } of chapas) {
       const chapa = await prisma.chapas.findUnique({ where: { id_chapa: chapaID } });
 
-      if (!chapa) throw new Error("Chapa not found");
-      if (!quantity) throw new Error("Quantity is required");
-      if (quantity > chapa.quantidade_comprada) throw new Error("Insufficient chapas");
+      if (!chapa) throw new Error("Chapa não encontrada");
+      if (!quantity) throw new Error("Informe a quantidade de chapas a serem reservadas");
+      if (quantity > chapa.quantidade_disponivel) throw new Error("Chapas insuficientes");
 
       if (!item) {
         item = await prisma.item.findUnique({ where: { part_number: partNumber } });
@@ -106,45 +113,25 @@ class PCPController {
               status: "RESERVADO",
             },
           });
+        } else if (item.status !== "RESERVADO") {
+          throw new Error("Item em processo");
         }
       }
 
-      await prisma.chapas.update({
+      const updatedChapa = await prisma.chapas.update({
         where: { id_chapa: chapa.id_chapa },
-        data: { quantidade_estoque: { decrement: parseInt(quantity) } },
+        data: {
+          quantidade_disponivel: { decrement: parseInt(quantity) },
+          quantidade_estoque: { decrement: parseInt(quantity) },
+        },
       });
 
-      if (chapa.quantidade_comprada + chapa.quantidade_estoque === 0 || (chapa.status === "recebido" && chapa.quantidade_estoque === 0)) {
-        chapa.status = "USADO";
-      }
-
-      if (keepRemaining) {
-        const [chapaWidth, chapaHeight] = chapa.medida.split("x").map(Number);
-        const [chosenWidth, chosenHeight] = medida.split("x").map(Number);
-
-        if (chapaWidth < chosenWidth || chapaHeight < chosenHeight) {
-          throw new Error("Not enough chapas of the specified dimensions");
-        }
-
-        const originalArea = chapaWidth * chapaHeight;
-        const usedArea = chosenWidth * chosenHeight;
-        const remainingArea = originalArea - usedArea;
-
-        const { id_chapa, medida, ...chapaProps } = chapa;
-
-        const newChapa = await prisma.chapas.create({
-          data: {
-            ...chapaProps,
-            area: remainingArea,
-            quantidade_estoque: quantity,
-            status: "RESTO",
-          },
+      if (updatedChapa.quantidade_disponivel === 0) {
+        await prisma.chapas.update({
+          where: { id_chapa: chapa.id_chapa },
+          data: { status: "USADO" },
         });
-
-        chapasToSave.push(newChapa);
       }
-
-      chapasToSave.push(chapa);
 
       let chapaItem = await prisma.chapa_Item.findFirst({
         where: {
@@ -153,9 +140,12 @@ class PCPController {
       });
 
       if (chapaItem) {
-        chapaItem.quantidade += Number(quantity);
+        await prisma.chapa_Item.update({
+          where: { id_chapa_item: chapaItem.id_chapa_item },
+          data: { quantidade: { increment: Number(quantity) } },
+        });
       } else {
-        chapaItem = await prisma.chapa_Item.create({
+        await prisma.chapa_Item.create({
           data: {
             quantidade: Number(quantity),
             chapa: { connect: { id_chapa: chapaID } },
@@ -163,35 +153,65 @@ class PCPController {
           },
         });
       }
-
-      chapaItemsToSave.push(chapaItem);
-    }
-
-    for (const chapa of chapasToSave) {
-      await prisma.chapas.update({
-        where: { id_chapa: chapa.id_chapa },
-        data: { quantidade_estoque: { decrement: chapa.quantidade_estoque } },
-      });
-    }
-
-    for (const chapaItem of chapaItemsToSave) {
-      const existingChapaItem = await prisma.chapa_Item.findUnique({
-        where: { id_chapa_item: chapaItem.id_chapa_item },
-      });
-
-      if (existingChapaItem) {
-        await prisma.chapa_Item.update({
-          where: { id_chapa_item: chapaItem.id_chapa_item },
-          data: { quantidade: { increment: chapaItem.quantidade } },
-        });
-      } else {
-        await prisma.chapa_Item.create({
-          data: chapaItem,
-        });
-      }
     }
 
     return item;
+  }
+
+  // ------------------------------
+  // deleteItemComment Function
+  // ------------------------------
+  async deleteItem(itemId) {
+    const item = await prisma.item.findUnique({
+      where: { id_item: itemId },
+      include: { chapas: true },
+    });
+
+    const operations = [];
+
+    for (const chapaItem of item.chapas) {
+      operations.push(
+        prisma.chapas.update({
+          where: { id_chapa: chapaItem.chapaId },
+          data: { quantidade_estoque: { increment: chapaItem.quantidade } },
+        }),
+      );
+
+      operations.push(prisma.chapa_Item.delete({ where: { id_chapa_item: chapaItem.id_chapa_item } }));
+    }
+
+    operations.push(prisma.item.delete({ where: { id_item: itemId } }));
+
+    await prisma.$transaction(operations);
+  }
+
+  // ------------------------------
+  // deleteItemComment Function
+  // ------------------------------
+  async deleteChapaFromItem(itemId, chapaId) {
+    const chapaItem = await prisma.chapa_Item.findFirst({
+      where: {
+        itemId: itemId,
+        chapaId: chapaId,
+      },
+    });
+
+    if (!chapaItem) {
+      throw new Error("Chapa não encontrada no item");
+    }
+
+    const operations = [];
+
+    operations.push(
+      prisma.chapas.update({
+        where: { id_chapa: chapaId },
+        data: { quantidade_estoque: { increment: chapaItem.quantidade } },
+      }),
+    );
+
+    operations.push(prisma.chapa_Item.delete({ where: { id_chapa_item: chapaItem.id_chapa_item } }));
+
+    await prisma.$transaction(operations);
   }
 }
 
