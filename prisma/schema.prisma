@@ -84,7 +84,7 @@ model Item_Maquina {
 
 model Maquina {
   id_maquina Int            @id @default(autoincrement())
-  name       String
+  nome       String         @default("")
   items      Item_Maquina[]
   usuarios   Usuarios[]
 }

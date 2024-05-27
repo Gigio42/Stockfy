@@ -1,13 +1,13 @@
-import AdmController from "../Controllers/admController.js";
+import ProducaoController from "../Controllers/producaoController.js";
 
 async function producaoRoute(fastify, options) {
-  const admController = new AdmController(options.db);
+  const producaoController = new ProducaoController(options.db);
 
-  fastify.get("/maquina/:id/itens/chapas", {
+  fastify.get("/maquina/:name/itens/chapas", {
     handler: async (request, reply) => {
       try {
-        const id = request.params.id;
-        const data = await admController.getChapasInItemsInMaquinas(id);
+        const name = request.params.name;
+        const data = await producaoController.getChapasInItemsInMaquinas(name);
         reply.send(data);
       } catch (err) {
         console.log(err.message);

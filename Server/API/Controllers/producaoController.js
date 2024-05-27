@@ -5,19 +5,33 @@ const prisma = new PrismaClient();
 class ProducaoController {
   constructor() {}
 
-  async getChapasInItemsInMaquinas(id) {
-    const maquina = await prisma.maquina.findUnique({
+  async getChapasInItemsInMaquinas(name) {
+    const maquina = await prisma.maquina.findFirst({
       where: {
-        id: id,
+        name: name,
       },
-      include: {
-        Item_Maquina: {
-          include: {
+      select: {
+        name: true,
+        items: {
+          select: {
+            ordem: true,
+            prazo: true,
             Item: {
-              include: {
+              select: {
+                part_number: true,
+                status: true,
                 chapas: {
-                  include: {
-                    chapa: true,
+                  select: {
+                    quantidade: true,
+                    terminado: true,
+                    chapa: {
+                      select: {
+                        qualidade: true,
+                        medida: true,
+                        largura: true,
+                        comprimento: true,
+                      },
+                    },
                   },
                 },
               },
@@ -27,7 +41,7 @@ class ProducaoController {
       },
     });
 
-    console.log(maquina);
+    console.log(JSON.stringify(maquina, null, 2));
 
     return maquina;
   }
