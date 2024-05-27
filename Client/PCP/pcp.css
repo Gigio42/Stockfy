@@ -540,18 +540,14 @@ input[type="checkbox"] {
   background-color: #007bff;
 }
 
-/* valores dentro dos cards relacionados a chapas */
-.card-value-div {
-  text-align: center;
-  width: 100px;
-  padding: 5px;
-  margin-right: 10px;
-  margin-left: 10px;
-  overflow: auto;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  scrollbar-width: none; /* firefox */
-  -ms-overflow-style: none; /* edge */
+@media (max-width: 600px) {
+  .card-value-div {
+    overflow: visible; /* Replaces 'auto' */
+    text-overflow: initial; /* Replaces 'ellipsis' */
+    white-space: normal; /* Replaces 'nowrap' */
+    scrollbar-width: auto; /* Replaces 'none' for Firefox */
+    -ms-overflow-style: auto; /* Replaces 'none' for Edge */
+  }
 }
 
 /* chrome, safari e opera */

@@ -144,7 +144,6 @@ function createReserveButton(selectedSubcards) {
       medida: document.getElementById(`medidaInput-${subcard.id_chapa}`).value,
       keepRemaining: document.getElementById(`recycleCheckbox-${subcard.id_chapa}`).checked,
     }));
-    a;
 
     try {
       const response = await reserveChapas({ partNumber, chapas });
