@@ -1,5 +1,5 @@
 import { createElementWithClass } from "../utils/dom.js";
-import { deleteEntity } from "../utils/connection.js";
+import { deleteItem } from "../utils/connection.js";
 import { ChapaCard } from "./ChapaCard.js";
 
 export class ItemCard {
@@ -37,7 +37,9 @@ export class ItemCard {
     buttonContainer.appendChild(dropdownButton);
 
     const deleteButton = this.createDeleteButton();
-    buttonContainer.appendChild(deleteButton);
+    if (this.item.status.toLowerCase() == "reservado") {
+      buttonContainer.appendChild(deleteButton);
+    }
 
     return itemCard;
   }
@@ -79,9 +81,9 @@ export class ItemCard {
 
   createChapasContainer() {
     const chapasContainer = createElementWithClass("div", "card-body chapas-container");
-    chapasContainer.style.display = "none"; // Set initial display to "none"
+    chapasContainer.style.display = "none"; 
     this.item.chapas.forEach((chapa) => {
-      const chapaCard = new ChapaCard(chapa);
+      const chapaCard = new ChapaCard(chapa, this.item.status, this.item.id_item);
       const chapaCardElement = chapaCard.render();
       chapaCardElement.classList.add("chapa-card-element");
       chapasContainer.appendChild(chapaCardElement);
@@ -103,7 +105,7 @@ export class ItemCard {
     const deleteButton = createElementWithClass("button", "btn btn-danger ml-2 card-item-delete-button");
     deleteButton.textContent = "Deletar";
     deleteButton.addEventListener("click", () => {
-      deleteEntity(this.item.id_item, "item");
+      deleteItem(this.item.id_item, "item");
     });
     return deleteButton;
   }

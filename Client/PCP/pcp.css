@@ -468,8 +468,7 @@ formulário
   border: none;
 }
 
-.card-body {
-}
+
 
 .card-div {
   border-radius: 1.5rem !important;
@@ -541,18 +540,14 @@ input[type="checkbox"] {
   background-color: #007bff;
 }
 
-/* valores dentro dos cards relacionados a chapas */
-.card-value-div {
-  text-align: center;
-  width: 100px;
-  padding: 5px;
-  margin-right: 10px;
-  margin-left: 10px;
-  overflow: auto;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  scrollbar-width: none; /* firefox */
-  -ms-overflow-style: none; /* edge */
+@media (max-width: 600px) {
+  .card-value-div {
+    overflow: visible; /* Replaces 'auto' */
+    text-overflow: initial; /* Replaces 'ellipsis' */
+    white-space: normal; /* Replaces 'nowrap' */
+    scrollbar-width: auto; /* Replaces 'none' for Firefox */
+    -ms-overflow-style: auto; /* Replaces 'none' for Edge */
+  }
 }
 
 /* chrome, safari e opera */
@@ -662,3 +657,142 @@ input[type="checkbox"]:checked::before {
   color: #d0ffca !important;
 }
 
+<<<<<<< HEAD
+=======
+/* botão de fade pro card item pra n clicar em deletar */
+.card-disabled-button {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* LUGHTMODE CARD Montei por graça pode tirar se quiser */
+.light-mode .card-div {
+  background-color: #ffffff;
+}
+
+.light-mode .card-value-row {
+  color: #bdb8b8;
+}
+
+.light-mode .card-body {
+  background-color: #efefef;
+}
+.light-mode .card-body.d-flex {
+  background-color: #f0f0f0;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+/* o treco principal do card */
+.light-mode .body-div {
+  background-color: #efefef;
+}
+/* fundo do modal */
+.light-mode .modal-content {
+  background-color: #f8f8f8;
+}
+/* xizin de fechar modal */
+.light-mode .close {
+  color: #333;
+}.light-mode .card-title {
+  color: #333;
+}
+
+.light-mode .chapa-card {
+  background-color: #e0e0e0;
+}
+
+.light-mode .card-status {
+  color: #333;
+}
+
+.light-mode .card-value-div {
+  color: #333;
+}
+
+.light-mode .card-info-button,
+.light-mode .card-info-button:hover,
+.light-mode .card-info-button:focus,
+.light-mode .card-info-button:active {
+  color: #333;
+  background: #e0e0e0;
+}
+
+.light-mode .bg-warning {
+  background: #fff3cd !important;
+  border: 1px solid #ffcc00;
+  color: #333;
+}
+
+.light-mode .bg-primary {
+  background: #d4edda !important;
+  color: #333;
+  border: solid 1px #c3e6cb;
+}
+
+.light-mode .bg-primary:hover {
+  color: #333 !important;
+}
+
+.light-mode input[type="checkbox"] {
+  background-color: #e0e0e0;
+  border: 2px solid #ccc;
+}
+
+.light-mode input[type="checkbox"]:checked {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.light-mode input[type="checkbox"]:checked::before {
+  color: #fff;
+}
+
+/* LIGHT MODE FORM pode tirar tb, fiz por graça */
+.light-mode .grouping-form {
+  background: #fafafa;
+  color: #333;
+}
+
+.light-mode .grouping-form label {
+  color: #333;
+}
+
+.light-mode .grouping-form input[type="text"],
+.light-mode .grouping-form select {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.light-mode .grouping-form input[type="text"]:hover,
+.light-mode .grouping-form select:hover {
+  background: #d0d0d0;
+  color: #333;
+}
+
+.light-mode .agrupar-button {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.light-mode .updade {
+  background: #d4edda;
+  color: #333;
+  border: solid 1px #c3e6cb;
+}
+
+.light-mode .updade:hover {
+  background: #c3e6cb;
+  color: #333;
+}
+
+.light-mode .checkbox-button {
+  background: #e0e0e0;
+  border: 1px solid #ccc;
+  color: #333;
+}
+
+.light-mode .checkbox-button[data-checked="true"] {
+  background-color: #007bff !important;
+  border: #007bff;
+  color: #fff !important;
+}
+>>>>>>> e36b2e82fee2bd79008baff98fefc5c027b89760

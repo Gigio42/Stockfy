@@ -306,8 +306,8 @@
 
   .svgIcon {
     margin-left: 10px; /* Espaçamento entre o nome da máquina e o ícone */
-    width: 24px; /* Tamanho do ícone */
-    height: 24px; /* Tamanho do ícone */
+    width: 48px; /* Tamanho do ícone */
+    height: 48px; /* Tamanho do ícone */
   }
 
   h3 {
@@ -349,6 +349,9 @@
   /* Estilos para o ícone */
   .svgIcon {
     cursor: pointer; /* Muda o cursor para parecer um botão */
+    padding: 0.3rem;
+    border-radius: 1rem;
+ 
   }
 
   .nomemaquina {
@@ -360,6 +363,7 @@
     width:fit-content;
   }
 
+<<<<<<< HEAD
   .card {
     border: none;
     padding: 10px;
@@ -406,3 +410,9 @@ h3 {
   width: fit-content;
   margin: 0;
 }
+=======
+  .abrirModal:hover {
+    background: #353535;
+
+  }
+>>>>>>> e36b2e82fee2bd79008baff98fefc5c027b89760

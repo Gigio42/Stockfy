@@ -1,6 +1,19 @@
 <!doctype html>
 <html lang="pt-br">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="author" content="Seu Nome" />
+        <title>Controle de Produção</title>
+        <!-- Bootstrap CSS -->
+        <link id="theme" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css" rel="stylesheet" />
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+        <!-- CSS Personalizado -->
+        <link rel="stylesheet" href="admnew.css" />
+    </head>
 
+<<<<<<< HEAD
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -50,15 +63,61 @@
                 <div class="header-custom text-light d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center">
                         <h1 class="m-0">Gerenciamento ADM</h1>
+=======
+    <body class="body">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Aside -->
+                <aside id="aside" class="aside col-md-2 navbar-lateral d-none d-md-block">
+                    <div class="logo-container"></div>
+                    <div class="p-2 navbar">
+                        <ul class="list-unstyled">
+                            <li class="icon-li mb-2">
+                                <a id="optionsButton">
+                                    <img class="imgicon" src="media/bandeira (1).png" alt="Dashboard Icon" />
+                                    Reservar Chapa
+                                </a>
+                            </li>
+                            <li class="mb-2 active">
+                                <a href="#" id="openModalLink">
+                                    <img class="imgicon" src="media/relatorio.png" alt="Pedidos Icon" />
+                                    Consulta
+                                </a>
+                            </li>
+                            <li class="mb-2 active">
+                                <a href="#" onclick="criarUsuario()">
+                                    <img class="imgicon" src="media/relatorio.png" alt="Pedidos Icon" />
+                                    Criar usuário
+                                </a>
+                            </li>
+                        </ul>
+>>>>>>> e36b2e82fee2bd79008baff98fefc5c027b89760
                     </div>
-                    <div class="dark-mode-toggle">
-                        <input type="checkbox" id="darkModeToggle" />
-                        <label for="darkModeToggle"></label>
-                    </div>
-                </div>
-                <div id="allMaquina" class="cards w-100 ">
-                </div>
+                </aside>
 
+                <!-- Header -->
+                <div class="col-md-10 header">
+                    <div class="header-custom text-light d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <h1 class="m-0">Gerenciamento PCP</h1>
+                        </div>
+                        <div class="dark-mode-toggle">
+                            <input type="checkbox" id="darkModeToggle" />
+                            <label for="darkModeToggle"></label>
+                        </div>
+                    </div>
+                    <div id="allMaquina" class="cards w-100"></div>
+
+                    <div id="myModal" class="modal">
+                        <div class="modal-content">
+                            <span class="nomemaquina"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<<<<<<< HEAD
                 <div id="myModal" class="modal">
                     <div class="modal-content">
                         <span class="nomemaquina"></span>
@@ -83,3 +142,13 @@
 </body>
 
 </html>
+=======
+        <!-- Bootstrap JS e JavaScript personalizado -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script type="module" src="admnew.js"></script>
+    </body>
+</html>
+>>>>>>> e36b2e82fee2bd79008baff98fefc5c027b89760

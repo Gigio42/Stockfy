@@ -48,7 +48,6 @@ function openFilePicker() {
 }
 
 function handleFile(file) {
-    dropEnabled = false; // Desativa o evento de solta (drop) no documento
     console.log("Lendo arquivo:", file.name);
     var reader = new FileReader();
 
@@ -58,80 +57,33 @@ function handleFile(file) {
         pdfjsLib.getDocument({ data: pdfData }).promise.then(function (pdf) {
             console.log("PDF processado com sucesso:", file.name);
             var infoPedido = {};
-            var pedidoCompra = '';
             var infoProdComprados = [];
             var prodComprado = {};
             var lineNumber = 1;
             var isInfoPedido = false;
-            var isPedidoCompra = false;
             var isInfoProdComprados = false;
             var isValoresExpressos = false;
-            var hasInclusao = false;
 
-
-            // Dentro da função handleFile(file), após todas as operações de processamento do arquivo, chame a função para abrir o modal
             pdf.getPage(1).then(function (page) {
                 page.getTextContent().then(function (textContent) {
                     var items = textContent.items;
                     var fullText = items.map(function (item) {
                         return item.str.trim().toLowerCase();
-                    }).join(' '); // Concatenar todo o texto em uma única string
-
-                    // Verificar se a palavra "INCLUSÃO" está presente no texto
-                    var hasInclusao = fullText.includes('inclusão');
-
-                    // Extrair o número do cliente
-                    var numeroClienteMatch = fullText.match(/\b\d+(?:\.\d+)?\b/);
-                    var numeroCliente = numeroClienteMatch ? numeroClienteMatch[0] : '';
+                    }).join(' ');
 
                     // Encontre a linha que contém o pedido de compra
                     var pedidoCompraLine = 0;
-                    items.forEach(function (item, index) {
-                        if (item.str.includes("INCLUSÃO")) {
-                            pedidoCompraLine = index + 1; // Adicionamos 1 porque o índice começa em 0, mas as linhas começam em 1
-                        }
-                    });
-                    var shouldSkipNextLine = false;
 
                     // Loop sobre cada item do texto
-                    var skipNextValue = false; // Variável para controlar se devemos ignorar o próximo valor
                     items.forEach(function (item, index) {
                         var line = item.str.trim();
-
-                        // Verifica se a linha contém o caractere "E" seguido por um número
-                        if (line.startsWith('E ') && !isNaN(parseFloat(line.split(' ')[1]))) {
-                            // Ignora a linha que contém o "E" e pula para a próxima
-                            skipNextValue = true;
-                            return;
-                        }
-
-                        // Verifica se a linha contém o número do cliente
-                        if (line.includes('/ENCAIX')) {
-                            // Captura o número do cliente usando uma expressão regular
-                            var numeroClienteMatch = line.match(/\b\d+\/ENCAIX\b/);
-                            if (numeroClienteMatch) {
-                                numeroCliente = numeroClienteMatch[0];
-                            } else {
-                                console.error("Não foi possível capturar o número do cliente.");
-                            }
-                            skipNextValue = false; // Reinicia a variável para não ignorar o próximo valor
-                        }
-
-                        // Verifica se devemos adicionar o valor atual ao JSON
-                        if (!skipNextValue) {
-                            // Restante do código permanece o mesmo para adicionar os valores ao JSON
-                            // ...
-                        } else {
-                            // Reinicia a variável para não ignorar o próximo valor
-                            skipNextValue = false;
-                        }
 
                         if (isValoresExpressos) {
                             return; // Saímos do loop se chegarmos aos valores expressos
                         }
+
                         if (lineNumber === 1 || lineNumber === 15 || lineNumber === 23) {
                             isInfoPedido = true;
-                            isPedidoCompra = false;
                             isInfoProdComprados = false;
                             if (line !== '') {
                                 switch (lineNumber) {
@@ -146,15 +98,12 @@ function handleFile(file) {
                                         break;
                                 }
                             }
-                        } else if (lineNumber > pedidoCompraLine && !isValoresExpressos) {
+                        } else if (!isValoresExpressos) {
                             if ((lineNumber - 56) % 19 === 0) {
                                 isInfoPedido = false;
-                                isPedidoCompra = false;
                                 isInfoProdComprados = true;
                                 if (Object.keys(prodComprado).length !== 0) {
                                     // Adiciona o número do cliente ao objeto prodComprado
-                                    prodComprado.numero_cliente = numeroCliente;
-                                    prodComprado.pedido_compra = hasInclusao ? "INCLUSÃO " + pedidoCompra : pedidoCompra;
                                     infoProdComprados.push(renameProperties(removeEmptyProperties(prodComprado)));
                                     prodComprado = {};
                                 }
@@ -164,19 +113,18 @@ function handleFile(file) {
                                 return;
                             }
                             if (isInfoProdComprados) {
-
                                 switch ((lineNumber - 56) % 19) {
                                     case 1:
                                         prodComprado.cliente = line;
                                         break;
                                     case 3:
-                                        prodComprado['quantidade_comprada'] = line; // Alterado de 'quant.' para 'quantidade'
+                                        prodComprado['quantidade_comprada'] = line;
                                         break;
                                     case 5:
                                         prodComprado.unidade = line;
                                         break;
                                     case 7:
-                                        prodComprado['qualidade'] = line; // Alterado de 'qual.' para 'qualidade'
+                                        prodComprado['qualidade'] = line;
                                         break;
                                     case 9:
                                         prodComprado.onda = line;
@@ -185,121 +133,95 @@ function handleFile(file) {
                                         prodComprado['gramatura'] = line;
                                         break;
                                     case 13:
-                                        prodComprado['peso_total'] = line; // Alterado de 'peso_lote_chapa' para 'peso_total'
+                                        prodComprado['peso_total'] = line;
                                         break;
                                     case 15:
-                                        prodComprado['valor_kilo'] = line; // Renomeado de 'coluna' para 'valor_kilo'
+                                        prodComprado['valor_kilo'] = line;
                                         break;
                                     case 17:
-                                        prodComprado['valor_total'] = line; // Alterado de 'valor_lote_chapa' para 'valor_total'
+                                        prodComprado['valor_total'] = line;
                                         break;
                                     case 18:
-                                        // Verifica se a linha contém o caractere "-"
                                         if (line.includes('-')) {
                                             var parts = line.split('-');
-                                            // Verifica se o array resultante da divisão tem pelo menos dois elementos
                                             if (parts.length >= 2) {
-                                                var descricao = parts[0].trim(); // Extrai a descrição antes do "-"
-                                                var vincos = parts[1].trim().replace('VINCOS:', '').replace('vincos:', '').trim(); // Remove "VINCOS:" ou "vincos:"
-
-                                                // Verifica se vincos contém o caractere "+"
-                                                if (!vincos.includes('+')) {
-                                                    vincos = 'não'; // Define vincos como "não" se não contiver "+"
+                                                var medidas = parts[0].match(/\d+(\.\d+)?/g); // Extrair apenas os números
+                                                if (medidas && medidas.length == 2) {
+                                                    var largura = medidas[0].trim().replace('.', ''); // Remover pontos da largura
+                                                    var comprimento = medidas[1].trim().replace('.', ''); // Remover pontos do comprimento
+                                                    var vincos = parts[1].trim().replace('VINCOS:', '').replace('vincos:', '').trim();
+                                                    if (!vincos.includes('+')) {
+                                                        vincos = 'não';
+                                                    }
+                                                    prodComprado['largura'] = largura; // Armazenar largura
+                                                    prodComprado['comprimento'] = comprimento; // Armazenar comprimento
+                                                    prodComprado['vincos'] = vincos;
+                                                } else {
+                                                    console.error("Formato de linha inválido para a medida:", line);
+                                                    prodComprado['largura'] = '';
+                                                    prodComprado['comprimento'] = '';
+                                                    prodComprado['vincos'] = '';
                                                 }
-
-                                                prodComprado['medida'] = descricao; // Define a descrição como a medida
-                                                prodComprado['vincos'] = vincos; // Define o valor após o "-" como vincos
                                             } else {
                                                 console.error("Formato de linha inválido para a medida:", line);
-                                                prodComprado['medida'] = ''; // Definindo medida como vazio
-                                                prodComprado['vincos'] = ''; // Definindo vincos como vazio
+                                                prodComprado['largura'] = '';
+                                                prodComprado['comprimento'] = '';
+                                                prodComprado['vincos'] = '';
                                             }
                                         } else {
                                             console.error("Caractere '-' não encontrado na linha:", line);
-                                            prodComprado['medida'] = ''; // Definindo medida como vazio
-                                            prodComprado['vincos'] = ''; // Definindo vincos como vazio
+                                            prodComprado['largura'] = '';
+                                            prodComprado['comprimento'] = '';
+                                            prodComprado['vincos'] = '';
                                         }
                                         break;
-
-
-
-
                                 }
                             }
                         }
                         lineNumber++;
                     });
-                    // Se encontramos "INCLUSÃO", procuramos um número no formato "XX.XXX" no texto completo
-                    if (hasInclusao) {
-                        var regex = /\b\d{2}\.\d{3}\b/;
-                        var match = fullText.match(regex);
-                        if (match) {
-                            pedidoCompra = match[0];
-                        }
+
+                    // Extrair o número do pedido de compra do texto completo do PDF
+                    var pedidoCompra = '';
+                    var pedidoCompraMatch = fullText.match(/\b\d{2}\.\d{3}\b/);
+                    if (pedidoCompraMatch) {
+                        pedidoCompra = pedidoCompraMatch[0];
+                        console.log("Número do pedido de compra:", pedidoCompra); // Adicionado para depuração
                     } else {
-                        // Se não houver "INCLUSÃO", tentamos extrair o número do pedido de compra da linha 53
-                        var pedidoCompraLine = items[54].str.trim(); // Linha 53 é indexada como 52
-                        var pedidoCompraMatch = pedidoCompraLine.match(/\b\d{2}\.\d{3}\b/);
-                        if (pedidoCompraMatch) {
-                            pedidoCompra = pedidoCompraMatch[0];
-                        } else {
-                            console.error("Número do pedido de compra não encontrado na linha 55.");
-                            // Lidar com a situação em que o número do pedido de compra não é encontrado na linha 53
-                            // Por exemplo, definir um valor padrão para o pedido de compra ou lançar um erro
-                            pedidoCompra = ''; // Definindo pedidoCompra como vazio
-                        }
+                        console.error("Número do pedido de compra não encontrado no PDF.");
+                        pedidoCompra = '';
                     }
+
 
                     // Função para converter o id_compra no formato "xx.xxx" em um inteiro
                     function convertToInteger(idCompraStr) {
-                        // Remove o ponto da string
-                        return parseInt(idCompraStr.replace('.', ''));
+                        return parseInt(idCompraStr.replace(/\./g, ''));
                     }
-
-                    // Função para adicionar a data prevista aos objetos em infoPedido e infoProdComprados
-                    function addDateToJSON(dateValue, infoPedido, infoProdComprados) {
-                        if (infoPedido) {
-                            // Adiciona a data prevista ao objeto infoPedido
-                            infoPedido.data_prevista = dateValue;
-                        } else {
-                            console.error("Objeto 'infoPedido' não está definido.");
-                        }
-
-                        if (infoProdComprados && Array.isArray(infoProdComprados)) {
-                            // Adiciona a data prevista a cada objeto em infoProdComprados
-                            infoProdComprados.forEach(function (prod) {
-                                prod.data_prevista = dateValue;
-                            });
-                        } else {
-                            console.error("Array 'infoProdComprados' não está definido ou não é um array.");
-                        }
-                    }
-
 
                     // Obtém o valor do input de data prevista
-                    var dateValue = document.getElementById('expectedDate').value;
+                    var expectedDateInput = document.getElementById('expectedDate');
 
-                    // Atribui a data prevista a infoPedido e infoProdComprados
-                    addDateToJSON(dateValue, infoPedido, infoProdComprados);
+                    // Adiciona um evento de mudança para detectar quando a data for selecionada
+                    expectedDateInput.addEventListener('change', function () {
+                        // Obtém o valor da data selecionada
+                        var dateValue = expectedDateInput.value;
 
-                    // Constrói o objeto JSON final com base nas informações coletadas
-                    jsonData = {
-                        "info_prod_comprados": infoProdComprados.map(function (prod) {
-                            return {
-                                ...prod,
-                                ...infoPedido,
-                                "id_compra": convertToInteger(hasInclusao ? "INCLUSÃO " + pedidoCompra : pedidoCompra),
-                                "data_prevista": dateValue  // Adiciona a data prevista ao objeto
-                            };
-                        })
-                    };
+                        // Atualiza o JSON com a data selecionada
+                        jsonData = {
+                            "info_prod_comprados": infoProdComprados.map(function (prod) {
+                                return {
+                                    ...prod,
+                                    ...infoPedido,
+                                    "id_compra": convertToInteger(pedidoCompra), // Incluído o ID de compra
+                                    "data_prevista": dateValue
+                                };
+                            })
+                        };
 
-
-
-
-
-
-
+                        // Exibe o JSON atualizado no console
+                        console.log("JSON atualizado com a data prevista:");
+                        console.log(jsonData);
+                    });
 
 
 
@@ -311,7 +233,7 @@ function handleFile(file) {
 
                         // Adiciona o cabeçalho da tabela
                         var headerRow = dataTable.insertRow();
-                        ['Quant. Comprada', 'Qualidade', 'Onda', 'Medida', 'Vincos'].forEach(function (header) {
+                        ['Quant. Comprada', 'Qualidade', 'Onda', 'Largura', 'Comprimento', 'Vincos'].forEach(function (header) {
                             var th = document.createElement('th');
                             th.textContent = header;
                             th.classList.add('table-header'); // Adiciona a classe 'table-header'
@@ -325,8 +247,8 @@ function handleFile(file) {
                             // Definir o atributo 'data-id' com o índice do item em infoProdComprados
                             row.setAttribute('data-id', index);
 
-                            // Exibir as informações desejadas na tabela, incluindo 'vincos'
-                            var infoToShow = ['quantidade_comprada', 'qualidade', 'onda', 'medida', 'vincos'];
+                            // Exibir as informações desejadas na tabela, incluindo 'largura', 'comprimento' e 'vincos'
+                            var infoToShow = ['quantidade_comprada', 'qualidade', 'onda', 'largura', 'comprimento', 'vincos'];
 
                             infoToShow.forEach(function (info) {
                                 var cell = row.insertCell(); // Insere uma nova célula na linha
@@ -367,8 +289,8 @@ function handleFile(file) {
 
                             // Adicionar o conteúdo do SVG
                             confirmIcon.innerHTML = `
-        <path fill="#0c9113" d="M505.942,29.589c-8.077-8.077-21.172-8.077-29.249,0L232.468,273.813l-55.971-55.971c-8.077-8.076-21.172-8.076-29.249,0    c-8.077,8.077-8.077,21.172,0,29.249l70.595,70.596c3.879,3.879,9.14,6.058,14.625,6.058c5.485,0,10.746-2.179,14.625-6.058    l258.85-258.85C514.019,50.761,514.019,37.666,505.942,29.589z"/>
-        <path fill="#0c9113" d="M444.254,235.318c-11.423,0-20.682,9.26-20.682,20.682v164.722c0,14.547-11.835,26.381-26.381,26.381H67.746    c-14.547,0-26.381-11.835-26.381-26.381V91.277c0-14.547,11.835-26.381,26.381-26.381h258.85c11.423,0,20.682-9.26,20.682-20.682    c0-11.422-9.259-20.682-20.682-20.682H67.746C30.391,23.532,0,53.923,0,91.277v329.445c0,37.356,30.391,67.746,67.746,67.746    h329.445c37.355,0,67.746-30.39,67.746-67.746V256C464.936,244.578,455.677,235.318,444.254,235.318z"/>
+            <path fill="#0c9113" d="M505.942,29.589c-8.077-8.077-21.172-8.077-29.249,0L232.468,273.813l-55.971-55.971c-8.077-8.076-21.172-8.076-29.249,0    c-8.077,8.077-8.077,21.172,0,29.249l70.595,70.596c3.879,3.879,9.14,6.058,14.625,6.058c5.485,0,10.746-2.179,14.625-6.058    l258.85-258.85C514.019,50.761,514.019,37.666,505.942,29.589z"/>
+            <path fill="#0c9113" d="M444.254,235.318c-11.423,0-20.682,9.26-20.682,20.682v164.722c0,14.547-11.835,26.381-26.381,26.381H67.746    c-14.547,0-26.381-11.835-26.381-26.381V91.277c0-14.547,11.835-26.381,26.381-26.381h258.85c11.423,0,20.682-9.26,20.682-20.682    c0-11.422-9.259-20.682-20.682-20.682H67.746C30.391,23.532,0,53.923,0,91.277v329.445c0,37.356,30.391,67.746,67.746,67.746    h329.445c37.355,0,67.746-30.39,67.746-67.746V256C464.936,244.578,455.677,235.318,444.254,235.318z"/>
         `;
 
                             // Adicionar o ícone ao botão
@@ -396,7 +318,7 @@ function handleFile(file) {
                                 var cell = row.cells[i];
                                 var text = cell.textContent.trim();
                                 // Substitui o texto pela entrada de texto para edição
-                                cell.innerHTML = '<input type="text" class="form-control centered-input" value="' + text + '">';
+                                cell.innerHTML = '<input type="text" class="form-control" value="' + text + '">';
                             }
                             // Desativa o botão "Editar" da linha
                             var editButton = row.querySelector('.edit');
@@ -421,8 +343,9 @@ function handleFile(file) {
                                     rowData.quantidade_comprada = row.cells[0].querySelector('input').value;
                                     rowData.qualidade = row.cells[1].querySelector('input').value;
                                     rowData.onda = row.cells[2].querySelector('input').value;
-                                    rowData.medida = row.cells[3].querySelector('input').value;
-                                    rowData.vincos = row.cells[4].querySelector('input').value; // Adiciona vincos
+                                    rowData.largura = row.cells[3].querySelector('input').value;
+                                    rowData.comprimento = row.cells[4].querySelector('input').value;
+                                    rowData.vincos = row.cells[5].querySelector('input').value; // Adiciona vincos
 
                                     // Percorre todas as células da linha, exceto a última que contém os botões
                                     for (var i = 0; i < row.cells.length - 1; i++) {
@@ -449,14 +372,8 @@ function handleFile(file) {
                                 console.error("Objeto jsonData ou sua propriedade info_prod_comprados não estão definidos.");
                             }
                         }
-
-
-
-                        // Adiciona bordas arredondadas às linhas da tabela
-                        addRoundedBordersToTableRows();
-                    } else {
-                        console.error("Elemento da tabela não encontrado.");
                     }
+
 
                     // Exibe o modal com os dados
                     var modal = document.getElementById('myModal');
@@ -487,21 +404,24 @@ function abrirModal() {
         console.error("Modal não encontrado.");
     }
 }
-// Função para enviar os dados JSON para o backend
+
+
 function sendJSONDataToBackend() {
-    // Obtém o valor do input de data prevista
-    var dateInput = document.getElementById('expectedDate');
-    var dateValue = dateInput ? dateInput.value : '';
-
-    // Verifica se o valor da data é válido
-    if (dateValue.trim() === '') {
-        // Exibe uma mensagem de erro e interrompe o processo de envio
-        alert('Por favor, preencha a data prevista antes de enviar.');
-        return;
-    }
-
     let url = 'http://localhost:3000/compras';
-    axios.post(url, jsonData, {
+
+    // Validar e converter tipos de dados
+    var jsonDataToSend = JSON.parse(JSON.stringify(jsonData), function (key, value) {
+        // Se o valor for uma string e contiver um número com ponto decimal, converter para inteiro
+        if (typeof value === 'string' && !isNaN(value) && value !== '') {
+            // Remover pontos decimais e converter para inteiro
+            var intValue = parseInt(value.replace(/\./g, ''));
+            return intValue;
+        }
+        // Caso contrário, manter o valor como está
+        return value;
+    });
+
+    axios.post(url, jsonDataToSend, {
         headers: {
             'Content-Type': 'application/json'
         }
@@ -514,6 +434,7 @@ function sendJSONDataToBackend() {
         });
 }
 
+
 // Função para remover propriedades vazias de um objeto
 function removeEmptyProperties(obj) {
     for (var prop in obj) {
@@ -524,23 +445,26 @@ function removeEmptyProperties(obj) {
     return obj;
 }
 
-// Função para renomear as propriedades do objeto quantidade qualidade onda e medida
+// Dentro da função renameProperties
 function renameProperties(obj) {
     var newObj = {};
     newObj['numero_cliente'] = obj.cliente;
-    newObj['quantidade_comprada'] = obj['quantidade_comprada']; // Renomeado de 'quant.' para 'quantidade'
+    newObj['quantidade_comprada'] = obj['quantidade_comprada'];
     newObj['unidade'] = obj['unidade'];
-    newObj['qualidade'] = obj['qualidade']; // Renomeado de 'qual.' para 'qualidade'
+    newObj['qualidade'] = obj['qualidade'];
     newObj['onda'] = obj['onda'];
     newObj['gramatura'] = obj['gramatura'];
-    newObj['peso_total'] = obj['peso_total']; // Renomeado de 'peso_lote_chapa' para 'peso_total'
-    newObj['valor_unitario'] = obj['valor_kilo']; // Renomeado de 'coluna' para 'valor_kilo'
-    newObj['valor_total'] = obj['valor_total']; // Renomeado de 'valor_lote_chapa' para 'valor_total'
-    newObj['medida'] = obj['medida'];
-    newObj['vincos'] = obj['vincos']; // Adiciona o campo 'vincos'
+    newObj['peso_total'] = obj['peso_total'];
+    newObj['valor_unitario'] = obj['valor_kilo'];
+    newObj['valor_total'] = obj['valor_total'];
+    newObj['largura'] = obj['largura']; // Adiciona largura
+    newObj['comprimento'] = obj['comprimento']; // Adiciona comprimento
+    newObj['vincos'] = obj['vincos'];
     newObj['status'] = "COMPRADO";
     return newObj;
 }
+
+
 
 function addRoundedBordersToTableRows() {
     var tableRows = document.querySelectorAll('#dataTable tbody tr');
@@ -549,13 +473,29 @@ function addRoundedBordersToTableRows() {
     });
 }
 
+// Obtém o valor do input de data prevista
+var expectedDateInput = document.getElementById('expectedDate');
+
 // Adiciona um evento de clique ao botão "Enviar"
 var sendButton = document.getElementById('sendButton');
 if (sendButton) {
-    sendButton.addEventListener('click', sendJSONDataToBackend);
+    sendButton.addEventListener('click', function () {
+        // Verifica se o valor do input de data está vazio
+        if (expectedDateInput.value === '') {
+            // Adiciona uma classe ao input de data para destacá-lo como inválido
+            expectedDateInput.classList.add('invalid-date');
+            console.error("A data prevista não foi selecionada.");
+            return; // Impede o envio do JSON se a data prevista não estiver selecionada
+        }
+
+        // Se a data prevista estiver selecionada, envie o JSON para o backend
+        sendJSONDataToBackend();
+    });
 } else {
     console.error("Botão 'Enviar' não encontrado.");
 }
+
+
 
 // Adiciona um evento de clique ao botão "Editar"
 var editButton = document.getElementById('editButton');
@@ -572,4 +512,33 @@ if (editButton) {
     });
 } else {
     console.error("Botão 'Editar' não encontrado.");
+}
+
+// Adiciona um ouvinte de evento de clique ao botão "Adicionar chapa manualmente"
+var addChapaButton = document.getElementById('addChapa');
+if (addChapaButton) {
+    addChapaButton.addEventListener('click', function () {
+        // Verifica se a tabela existe
+        var dataTable = document.getElementById('dataTable');
+        if (dataTable) {
+            // Cria uma nova linha na tabela
+            var newRow = dataTable.insertRow();
+
+            // Adiciona células vazias à nova linha, cada uma contendo um input para inserção de dados
+            for (var i = 0; i < 6; i++) { // Defina o número de células conforme necessário
+                var cell = newRow.insertCell();
+                var input = document.createElement('input');
+                input.type = 'text'; // Define o tipo de input como texto
+                input.classList.add('form-control'); // Adiciona classes para estilização (se necessário)
+                cell.appendChild(input); // Adiciona o input à célula
+            }
+
+            // Adiciona classes e outros atributos à nova linha, se necessário
+            newRow.classList.add('new-row'); // Adiciona uma classe para identificar as novas linhas, se necessário
+        } else {
+            console.error("Tabela não encontrada.");
+        }
+    });
+} else {
+    console.error("Botão 'Adicionar chapa manualmente' não encontrado.");
 }
