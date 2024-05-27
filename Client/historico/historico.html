@@ -1,69 +1,62 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="Seu Nome">
-    <title>Estoque</title>
-    <!-- Bootstrap CSS -->
-    <link id="theme" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
-    <!-- CSS Personalizado -->
-    <link rel="stylesheet" href="pcp.css">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="author" content="Seu Nome" />
+        <title>Estoque</title>
+        <!-- Bootstrap CSS -->
+        <link id="theme" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css" rel="stylesheet" />
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+        <!-- CSS Personalizado -->
+        <link rel="stylesheet" href="pcp.css" />
+    </head>
 
-</head>
+    <body class="body">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Header -->
+                <aside id="aside" class="aside col-md-3 navbar-lateral d-none d-md-block">
+                    <div class="logo-container"></div>
+                    <div class="p-2 navbar">
+                        <ul class="list-unstyled">
+                            <li class="icon-li mb-2">
+                                <a href="dashboard.html">
+                                    <img class="imgicon" src="media/bandeira (1).png" alt="Dashboard Icon" />
+                                    Reservar Chapa
+                                </a>
+                            </li>
+                            <li class="mb-2 active">
+                                <a href="pedidos.html">
+                                    <img class="imgicon" src="media/relatorio.png" alt="Pedidos Icon" />
+                                    Relatório
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </aside>
 
-<body class="body">
+                <div class="col-md-9 header-custom text-light d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <h1 class="m-0">Gerenciamento PCP</h1>
+                    </div>
+                    <div class="dark-mode-toggle">
+                        <input type="checkbox" id="darkModeToggle" />
+                        <label for="darkModeToggle"></label>
+                    </div>
+                </div>
 
-<div class="container-fluid ">
-    <div class="row ">
-        <!-- Header -->
-        <aside id="aside" class="aside col-md-3 navbar-lateral d-none d-md-block">
-            <div class="logo-container">
-            
+                <!-- Conteúdo principal -->
+                <div class="col-md-19 content-wrapper"><!-- Adicione a classe content-wrapper e remova o padding --></div>
             </div>
-    <div class="p-2 navbar">
-        
-        <ul class="list-unstyled">
-            <li class="icon-li mb-2">
-                <a href="dashboard.html">
-                    <img class="imgicon" src="media/bandeira (1).png" alt="Dashboard Icon">
-                    Reservar Chapa
-                </a>
-            </li>
-            <li class="mb-2 active">
-                <a href="pedidos.html">
-                    <img class="imgicon" src="media/relatorio.png" alt="Pedidos Icon">
-                Relatório
-                </a>
-            </li>      
-        </ul>
-    </div>
-</aside>
-
-<div class="col-md-9 header-custom text-light d-flex justify-content-between align-items-center ">
-    <div class="d-flex align-items-center">
-        <h1 class="m-0">Gerenciamento PCP</h1>
-    </div>
-    <div class="dark-mode-toggle">
-        <input type="checkbox" id="darkModeToggle" />
-        <label for="darkModeToggle"></label>
-    </div>
-</div>
-
-        <!-- Conteúdo principal -->
-        <div class="col-md-19 content-wrapper"> <!-- Adicione a classe content-wrapper e remova o padding -->
-            
         </div>
-    </div>
-</div>
 
-<!-- Bootstrap JS e JavaScript personalizado -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="pcp.js"></script> <!-- Seu script personalizado -->
-
-</body>
+        <!-- Bootstrap JS e JavaScript personalizado -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="pcp.js"></script>
+        <!-- Seu script personalizado -->
+    </body>
 </html>

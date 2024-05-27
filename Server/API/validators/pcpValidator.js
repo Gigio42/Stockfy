@@ -1,8 +1,7 @@
 export const getChapasSchema = {
   query: {
     type: "object",
-    properties: {
-    },
+    properties: {},
   },
   filterCriteria: {
     type: "object",
@@ -21,24 +20,24 @@ export const getItemsSchema = {
 
 export const createItemWithChapaSchema = {
   body: {
-    required: ['partNumber', 'chapas'],
+    required: ["partNumber", "chapas"],
     properties: {
       partNumber: {
-        pattern: '^\\d{4}\\.\\d{4}$'
+        pattern: "^\\d{4}\\.\\d{4}$",
       },
       chapas: {
         items: {
-          required: ['chapaID', 'quantity'],
+          required: ["chapaID", "quantity"],
           properties: {
             chapaID: {
-              minimum: 1 
+              minimum: 1,
             },
             quantity: {
-              minimum: 1 
-            }
-          }
-        }
-      }
-    }
-  }
+              minimum: 1,
+            },
+          },
+        },
+      },
+    },
+  },
 };
