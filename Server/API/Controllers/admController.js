@@ -79,7 +79,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 class AdmController {
-  constructor() {}
+  constructor() { }
 
   async getMaquina() {
     const maquinas = await prisma.maquina.findMany();
@@ -109,6 +109,41 @@ class AdmController {
 
     return maquinas;
   }
+
+  async getChapasInItems() {
+    const chapaItems = await prisma.chapa_Item.findMany({
+      where: {
+        item: {
+          status: {
+            contains: 'RESERVADO',
+          },
+        },
+      },
+      include: {
+        item: true,
+        chapa: true,
+      },
+    });
+
+    if (!chapaItems.length) {
+      throw new Error(`No Chapa_Item found`);
+    }
+
+    const items = chapaItems.reduce((acc, chapaItem) => {
+      const { item } = chapaItem;
+      if (!acc[item.id_item]) {
+        acc[item.id_item] = {
+          ...item,
+          chapas: [],
+        };
+      }
+      acc[item.id_item].chapas.push(chapaItem.chapa);
+      return acc;
+    }, {});
+
+    return Object.values(items);
+  }
+  
 }
 
 export default AdmController;
