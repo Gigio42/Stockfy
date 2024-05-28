@@ -52,6 +52,54 @@ async function admRoute(fastify, options) {
     }
   });
 
+<<<<<<< HEAD
+            try {
+                const item_id = await admController.getChapaItem(request.params.item);
+                reply.send(item_id);
+            }
+            catch (err) {
+                console.log(err.message);
+                reply.code(500).send({ message: 'Error retrieving data from SQLite database', error: err.message });
+            }
+        }
+    });
+
+    fastify.get('/maquina', async (request, reply) => {
+
+        try {
+            const maquina_id = await admController.getMaquina(request.params.item);
+            reply.send(maquina_id);
+        }
+        catch (err) {
+            console.log(err.message);
+            reply.code(500).send({ message: 'Error retrieving data from SQLite database', error: err.message });
+        }
+    })
+
+    fastify.get('/maquinas/items/chapas', async (request, reply) => {
+
+        try {
+            const maquina_id = await admController.getChapasInItemsInMaquinas();
+            reply.send(maquina_id);
+        }
+        catch (err) {
+            console.log(err.message);
+            reply.code(500).send({ message: 'Error retrieving data from SQLite database', error: err.message });
+        }
+    })
+
+    fastify.get('/items/chapas', async (request, reply) => {
+
+        try {
+            const itens_id = await admController.getChapasInItems();
+            reply.send(itens_id);
+        }
+        catch (err) {
+            console.log(err.message);
+            reply.code(500).send({ message: 'Error retrieving data from SQLite database', error: err.message });
+        }
+    })
+=======
   fastify.get("/maquinas/items/chapas", async (request, reply) => {
     try {
       const maquina_id = await admController.getChapasInItemsInMaquinas();
@@ -61,6 +109,7 @@ async function admRoute(fastify, options) {
       reply.code(500).send({ message: "Error retrieving data from SQLite database", error: err.message });
     }
   });
+>>>>>>> e36b2e82fee2bd79008baff98fefc5c027b89760
 }
 
 export default admRoute;

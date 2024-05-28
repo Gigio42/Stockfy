@@ -20,12 +20,14 @@ let db = new sqlite3.Database("../Server/estoque.sqlite", (err) => {
 
       db.serialize(() => {
         db.run("DELETE FROM Conjugacoes");
-        db.run("DELETE FROM Maquina");
-        db.run("DELETE FROM Item");
-        db.run("DELETE FROM Chapa_item");
         db.run("DELETE FROM Chapas");
+        db.run("DELETE FROM Chapa_Item");
+        db.run("DELETE FROM Item");
+        db.run("DELETE FROM Item_Maquina");
+        db.run("DELETE FROM Maquina");
+        db.run("DELETE FROM Usuarios");
 
-        const maquinas = [
+        /* const maquinas = [
           "Corte e vinco",
           "Riscador",
           "Grampeador",
@@ -39,13 +41,7 @@ let db = new sqlite3.Database("../Server/estoque.sqlite", (err) => {
           "Corte e vinco 4",
           "Corte e vinco 5",
           "Corte e vinco 7",
-        ];
-
-        const inserirMaquinas = db.prepare("INSERT INTO Maquina (name) VALUES (?)");
-        for (let i = 0; i < maquinas.length; i++) {
-          inserirMaquinas.run(maquinas[i]);
-        }
-        inserirMaquinas.finalize();
+        ]; */
       });
 
       db.close((err) => {
