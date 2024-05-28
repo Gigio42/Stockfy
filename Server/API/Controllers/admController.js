@@ -79,7 +79,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 class AdmController {
-  constructor() { }
+  constructor() {}
 
   async getMaquina() {
     const maquinas = await prisma.maquina.findMany();
@@ -115,7 +115,7 @@ class AdmController {
       where: {
         item: {
           status: {
-            contains: 'RESERVADO',
+            contains: "RESERVADO",
           },
         },
       },
@@ -143,7 +143,6 @@ class AdmController {
 
     return Object.values(items);
   }
-  
 }
 
 export default AdmController;
