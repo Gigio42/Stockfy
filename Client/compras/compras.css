@@ -40,10 +40,13 @@ html, body {
 }
 
 .fecharbtn {
+    position: fixed;
     padding: 1rem 2rem;
     background: #d9d9d9;
     color: #555555;
-    height: 20%;
+    height: 10%;
+    width: 100%;
+    z-index: 5;
 }
 
 .btn-primary {
@@ -66,6 +69,7 @@ html, body {
 .table-container {
     max-height: calc(100vh - 10rem); /* Altura máxima - altura dos botões inferiores e do fecharbtn */
     overflow-y: auto; /* Adiciona rolagem vertical quando necessário */
+    background: white;
 }
 
 
@@ -190,14 +194,12 @@ html, body {
 }
 
 .edit {
+    display: flex;
     background-color: #fdb6b6; /* Cor de fundo geral */
     border:none; /* Cor da borda geral */
     border-radius: 0.5rem;
-    width: 2.5rem;
-    align-content: center;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
+  
+    padding: 0.2;
 }
 
 #sendButton {
@@ -222,12 +224,7 @@ body button.edit:hover {
     background: #9dffa2;
     border:none; /* Cor da borda geral */
     border-radius: 0.5rem;
-    width: 2.5rem;
-    align-content: center;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    height: 2.2rem;
+
 }
 
 
@@ -410,4 +407,116 @@ td .centered-input {
     left: 50%;
     transform: translate(-50%, -50%);
     margin: 0;
+}
+
+#purchaseForm {
+    display: flex  !important;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-content: center;padding: 6rem;
+    padding-top: 1.5rem ;
+    padding-left: 1.5rem;
+    padding-bottom: 1rem;
+    background-color: #e4e4e4;
+    border-radius: 2rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+}
+
+.inputform {
+    width: fit-content;
+    border-radius: 1rem;
+    border: none;
+    background-color: #f3f3f3;;
+    padding-left: 1rem;
+    border: solid 1px #a7a7a7;
+    height: 3rem;
+    font-size: 1rem;
+}
+
+.inputform:focus {
+    background-color: #f3f3f3;
+    border-left: solid 7px #198cff;
+    box-shadow: none !important;
+}
+
+.inputform::placeholder {
+   color: #717171;
+
+}
+
+#mModal {
+    background-color: white;
+}
+
+.card-body {
+    color: #131313;
+    background: #e4e4e4;
+    border-radius: 2rem;
+    padding: 2rem;
+}
+
+.card {
+    border-radius: 2rem;
+    margin-top: 1.5rem;
+
+
+}
+
+.modal-content-m {
+    max-height: 85vh; /* Define a altura máxima do conteúdo do modal */
+    overflow-y: auto; /* Adiciona o scroll vertical */
+}
+
+.formAndcard {
+    display: flex;
+    margin-top: 7rem;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
+.card-details {
+    display: none; /* Esconde os detalhes adicionais inicialmente */
+    background: #bebebe;
+padding: 2rem;
+border-radius: 2rem;
+
+}
+
+.cardsContainer {
+    display: flex;
+    gap: 3rem;
+    flex-wrap: wrap;
+    margin-left: 2rem;
+    margin-bottom: 5rem;
+}
+
+#purchaseID {
+    background-color: #ffc9c9;
+    border-color: #ff3a3a;
+    color:  #ff3a3a;
+}
+
+#purchaseID::placeholder {
+  color:  #ff3a3a;
+}
+
+#supplier {
+    background-color: #ffe7d3;
+    border-color: #ff8f32;
+    color:  #ff8f32;
+}
+
+#supplier::placeholder {
+  color:  #ff8f32;
+}
+
+.input-error {
+    border: 1px solid rgb(255, 50, 50);
+}
+
+.expand-icon {
+    width: 34px; /* Defina a largura desejada */
+    height: 34px; /* Defina a altura desejada */
 }

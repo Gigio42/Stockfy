@@ -656,9 +656,6 @@ input[type="checkbox"]:checked::before {
 .card-status-reservado:hover {
   color: #d0ffca !important;
 }
-
-<<<<<<< HEAD
-=======
 /* botão de fade pro card item pra n clicar em deletar */
 .card-disabled-button {
   opacity: 0.5;
@@ -795,4 +792,3 @@ input[type="checkbox"]:checked::before {
   border: #007bff;
   color: #fff !important;
 }
->>>>>>> e36b2e82fee2bd79008baff98fefc5c027b89760
