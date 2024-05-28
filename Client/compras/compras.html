@@ -65,93 +65,88 @@
         </div>
     </div>
 
-    <!-- Modal -->
+ <!-- Modal -->
 <div id="mModal" class="modal">
-    <div class="modal-content">
+    <div class="modal-content-m">
         <div class="fecharbtn d-flex justify-content-between align-items-center">
             <h2>Adcione as informações dos itens que chegaram</h2>
-            <!-- Adicione a mesma classe ao botão de fechar -->
             <button id="backButton" class="btn voltar btn-primary closeButton">Voltar</button>
         </div>
-        <!-- Tabela para mostrar os dados -->
-        <div class="table-container">
-            <table id="dataTable"  sclass="table mt-4"></table>
+        <div class="formAndcard">
             <div id="form-container">
                 <form id="purchaseForm">
                     <div class="form-group">
-                        <label for="customerNumber">Número Cliente</label>
-                        <input type="text" id="customerNumber" name="customerNumber" class="form-control inputform" placeholder="Número Cliente" />
+                        <input type="text" id="customerNumber" name="customerNumber" class="form-control inputform"
+                            placeholder="Número Cliente" />
                     </div>
                     <div class="form-group">
-                        <label for="quantity">Quantidade Comprada</label>
-                        <input type="text" id="quantity" name="quantity" class="form-control inputform " placeholder="Quantidade Comprada" />
+                        <input type="text" id="quantity" name="quantity" class="form-control inputform"
+                            placeholder="Quantidade Comprada" />
                     </div>
                     <div class="form-group">
-                        <label for="quality">Qualidade</label>
-                        <input type="text" id="quality" name="quality" class="form-control inputform" placeholder="Qualidade" />
+                        <input type="text" id="quality" name="quality" class="form-control inputform"
+                            placeholder="Qualidade" />
                     </div>
                     <div class="form-group">
-                        <label for="wave">Onda</label>
-                        <input type="text" id="wave" name="wave" class="form-control inputform" placeholder="Onda" />
+                        <input type="text" id="wave" name="wave" class="form-control inputform"
+                            placeholder="Onda" />
                     </div>
                     <div class="form-group">
-                        <label for="weight">Gramatura</label>
-                        <input type="text" id="weight" name="weight" class="form-control inputform" placeholder="Gramatura" />
+                        <input type="text" id="weight" name="weight" class="form-control inputform"
+                            placeholder="Gramatura" />
                     </div>
                     <div class="form-group">
-                        <label for="totalWeight">Peso Total</label>
-                        <input type="text" id="totalWeight" name="totalWeight" class="form-control inputform" placeholder="Peso Total" />
+                        <input type="text" id="totalWeight" name="totalWeight" class="form-control inputform"
+                            placeholder="Peso Total" />
                     </div>
                     <div class="form-group">
-                        <label for="unitPrice">Valor Unitário</label>
-                        <input type="text" id="unitPrice" name="unitPrice" class="form-control inputform" placeholder="Valor Unitário" />
+                        <input type="text" id="unitPrice" name="unitPrice" class="form-control inputform"
+                            placeholder="Valor Unitário" />
                     </div>
                     <div class="form-group">
-                        <label for="totalPrice">Valor Total</label>
-                        <input type="text" id="totalPrice" name="totalPrice" class="form-control inputform" placeholder="Valor Total" />
+                        <input type="text" id="totalPrice" name="totalPrice" class="form-control inputform"
+                            placeholder="Valor Total" />
                     </div>
                     <div class="form-group">
-                        <label for="width">Largura</label>
-                        <input type="text" id="width" name="width" class="form-control inputform" placeholder="Largura" />
+                        <input type="text" id="width" name="width" class="form-control inputform"
+                            placeholder="Largura" />
                     </div>
                     <div class="form-group">
-                        <label for="length">Comprimento</label>
-                        <input type="text" id="length" name="length" class="form-control inputform" placeholder="Comprimento" />
+                        <input type="text" id="length" name="length" class="form-control inputform"
+                            placeholder="Comprimento" />
                     </div>
                     <div class="form-group">
-                        <label for="creases">Vincos</label>
-                        <input type="text" id="creases" name="creases" class="form-control inputform" placeholder="Vincos" />
+                        <input type="text" id="creases" name="creases" class="form-control inputform"
+                            placeholder="Vincos" />
                     </div>
                     <div class="form-group">
-                        <label for="buyer">Comprador</label>
-                        <input type="text" id="buyer" name="buyer" class="form-control inputform" placeholder="Comprador" />
+                        <input type="text" id="buyer" name="buyer" class="form-control inputform"
+                            placeholder="Comprador" />
                     </div>
                     <div class="form-group">
-                        <label for="purchaseDate">Data Compra</label>
-                        <input type="text" id="purchaseDate" name="purchaseDate" class="form-control inputform" placeholder="Data Compra" />
+                        <input type="date" id="purchaseDate" name="purchaseDate" class="form-control inputform"
+                            placeholder="Data Compra" />
                     </div>
                     <div class="form-group">
-                        <label for="supplier">Fornecedor</label>
-                        <input type="text" id="supplier" name="supplier" class="form-control inputform" placeholder="Fornecedor" />
+                        <input type="text" id="supplier" name="supplier" class="form-control inputform"
+                            placeholder="Fornecedor" />
                     </div>
                     <div class="form-group">
-                        <label for="purchaseID">ID Compra</label>
-                        <input type="text" id="purchaseID" name="purchaseID" class="form-control inputform" placeholder="ID Compra" />
+                        <input type="text" id="purchaseID" name="purchaseID" class="form-control inputform"
+                            placeholder="ID Compra" />
                     </div>
-                    <!-- Botão para adicionar chapa -->
                     <div class="form-group">
                         <button id="addPlateButton" type="button" class="btn btn-primary">Adicionar Chapa</button>
                     </div>
-
                 </form>
             </div>
-            
+            <div id="cardsContainer" class="cardsContainer"></div>
         </div>
         <div class="btninferior mt-4 d-flex justify-content-end">
             <div class="date-input-container">
                 <input type="text" id="expectedDate" placeholder="Data Prevista" />
             </div>
-            <button id="sendButton" class="btn btn-success mr-2">Enviar</button>
+            <button id="sendbutton" class="btn btn-success mr-2">Enviar</button>
             <button id="editButton" class="btn btn-warning">Editar</button>
             <div class="jsonshow">
                 <pre id="jsonContent"></pre>
@@ -160,7 +155,6 @@
     </div>
 </div>
 
-    </div>
 
 
     <!-- Modal para exibir a mensagem de erro -->
@@ -261,12 +255,14 @@
                 window.location.reload(); // Recarrega a página
             });
 
-            // Evento de clique para fechar o modal de erro e o modal principal
+            // Evento de clique para fechar o modal mModal e recarregar a página
             $(".closeButton").on("click", function () {
                 $("#errorModal").hide();
                 $("#myModal").hide();
                 $("#mModal").hide();
+                window.location.reload(); // Recarrega a página
             });
+
 
             // Função para carregar o script correspondente ao fornecedor selecionado
             function carregarScriptParaFornecedor(fornecedor) {

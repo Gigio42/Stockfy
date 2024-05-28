@@ -384,7 +384,7 @@ function handleFile(file) {
                     }
                 });
             });
-            abrirModal();
+
         }).finally(function () {
             dropEnabled = true; // Reativa o evento de solta (drop) no documento
             console.log("Evento de solta reativado.");
