@@ -30,14 +30,12 @@ function tableObj() {
             fornecedor: row.cells[1].querySelector('input').value,
             id_compra: row.cells[2].querySelector('input').value,
             quantidade_recebida: parseFloat(row.cells[3].querySelector('input').value) || 0,
-            valor_unitario: parseFloat(row.cells[4].querySelector('.currency').value.replace(/[^0-9.,-]+/g, '').replace(',', '.')) || 0,
-            valor_total: parseFloat(row.cells[5].querySelector('.total').textContent.replace(/[^0-9.,-]+/g, '').replace(',', '.')) || 0,
-            qualidade: row.cells[6].querySelector('input').value,
-            medida: row.cells[7].querySelector('input').value,
-            onda: row.cells[8].querySelector('select').value,
-            vincos: row.cells[9].querySelector('select').value,
-            status: row.cells[10].querySelector('select').value,
-            data_recebimento: row.cells[11].querySelector('input').value
+            qualidade: row.cells[4].querySelector('input').value,
+            medida: row.cells[5].querySelector('input').value,
+            onda: row.cells[6].querySelector('select').value,
+            vincos: row.cells[7].querySelector('select').value,
+            status: row.cells[8].querySelector('select').value,
+            data_recebimento: row.cells[9].querySelector('input').value
         };
         data.push(rowData);
     }

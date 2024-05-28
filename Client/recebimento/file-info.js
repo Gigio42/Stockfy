@@ -11,7 +11,7 @@ function extractText(data) {
                 });
             }));
         }
-
+        
         Promise.all(promises).then(function(pageTexts) {
             var fullText = pageTexts.join('\n').toUpperCase();
             processText(fullText);
@@ -26,7 +26,7 @@ function processText(text) {
         var result = fernandez(text);
         const tablef = document.getElementById('recebimento');
         const uniqueIds = new Set(); // Conjunto para armazenar IDs únicos
-
+        
         // Primeiro acumula todos os IDs de compra únicos
         result.forEach(obj => {
             if (Array.isArray(obj.id_compra)) {
@@ -35,14 +35,14 @@ function processText(text) {
                 uniqueIds.add(obj.id_compra); // Adiciona o ID ao conjunto
             }
         });
-
+        
         // Prepara chamadas de fetchChapas e acumula promessas
         const fetchPromises = [];
         uniqueIds.forEach(id => {
             const fetchPromise = fetchChapas(id);
             fetchPromises.push(fetchPromise);
         });
-
+        
         // Espera todas as fetchChapas terminarem
         Promise.all(fetchPromises).then(() => {
             // Depois que todas as chamadas forem concluídas, processa cada objeto para criar a tabela
@@ -52,35 +52,35 @@ function processText(text) {
         }).catch(error => {
             console.error('Erro durante a busca de chapas:', error);
         });
-} else if (text.includes('PENHA')) {
-    var result = penha(text); // result é um array de objetos
-    const tablep = document.getElementById('recebimento');
-    const processedIds = new Set(); // Set para armazenar ids únicos
-
-    result.forEach(obj => {
-        if (!processedIds.has(obj.id_compra)) {
-            fetchChapas(obj.id_compra); // Executa se o id_compra ainda não foi processado
-            processedIds.add(obj.id_compra); // Adiciona o id_compra ao Set
-        }
-    });
-
-    result.forEach(obj => criarTable(tablep, obj)); // Criar uma linha para cada objeto
-} else if (text.includes('IRANI')) {
-    var result = irani(text); // result é um array de objetos
-    const tablep = document.getElementById('recebimento');
-    const processedIds = new Set(); // Set para armazenar ids únicos
-
-    result.forEach(obj => {
-        if (!processedIds.has(obj.id_compra)) {
-            fetchChapas(obj.id_compra); // Executa se o id_compra ainda não foi processado
-            processedIds.add(obj.id_compra); // Adiciona o id_compra ao Set
-        }
-    });
-
-    result.forEach(obj => criarTable(tablep, obj)); // Criar uma linha para cada objeto
-} else {
-console.log('Não encontrou o fornecedor');
-}
+    } else if (text.includes('PENHA')) {
+        var result = penha(text); // result é um array de objetos
+        const tablep = document.getElementById('recebimento');
+        const processedIds = new Set(); // Set para armazenar ids únicos
+        
+        result.forEach(obj => {
+            if (!processedIds.has(obj.id_compra)) {
+                fetchChapas(obj.id_compra); // Executa se o id_compra ainda não foi processado
+                processedIds.add(obj.id_compra); // Adiciona o id_compra ao Set
+            }
+        });
+        
+        result.forEach(obj => criarTable(tablep, obj)); // Criar uma linha para cada objeto
+    } else if (text.includes('IRANI')) {
+        var result = irani(text); // result é um array de objetos
+        const tablep = document.getElementById('recebimento');
+        const processedIds = new Set(); // Set para armazenar ids únicos
+        
+        result.forEach(obj => {
+            if (!processedIds.has(obj.id_compra)) {
+                fetchChapas(obj.id_compra); // Executa se o id_compra ainda não foi processado
+                processedIds.add(obj.id_compra); // Adiciona o id_compra ao Set
+            }
+        });
+        
+        result.forEach(obj => criarTable(tablep, obj)); // Criar uma linha para cada objeto
+    } else {
+        console.log('Não encontrou o fornecedor');
+    }
 }
 
 
@@ -98,7 +98,6 @@ function penha(fullText) {
     }
     var relevantText = fullText.substring(descricaoIndex + 40, dadosIndex);
     var resultArray = filtroPenha(relevantText);
-    
     return resultArray.map(criaObjPenha); // Assegura que cada elemento de resultArray é processado por criaObjPenha
 }
 
@@ -106,7 +105,7 @@ function filtroPenha(text) {
     function replaceMed(match) {
         return match.replace('-MED.', ' ');
     }
-
+    
     var result = text.replace(/\bUN\b|\bCHAPA DE PAP\. ONDUL\.-QUAL\.\b|\b--REF\.: CHAPA\b|\bONDA\b|\b-SEU PEDI DO\b|\b-N\/PEDIDO:\b|\b000\b|\b-N\/PEDIDO\b|\b-SEU PEDI DO\b|\b:\b/g, '');
     result = result.replace(/VINCADA.*?\d.*?:/g, function(match) {
         return match.replace(/\d.*?:/, ':');
@@ -116,32 +115,36 @@ function filtroPenha(text) {
     result = result.replace(/-SEU/g, '');
     result = result.replace(/PEDIDO/g, ''); 
     result = result.replace(/(.*?)-MED\.(.*?)/g, replaceMed);
-
     var resultArray = result.split(/\s+/).filter(Boolean);
     return organizarpenha(resultArray);
 }
 
 function organizarpenha(array) {
     var indexesToRemove = [0, 1, 2, 5, 6, 8, 9, 12, 17];
+    var indexesToRemoveVincos = [0, 1, 2, 5, 6, 8, 9, 17]
     var newArray = [];
     for (var i = 0; i < array.length; i += 18) {
         var subArray = array.slice(i, i + 18);
-
-
+        
         if (subArray.length > 0) {
             for (var j = 0; j < indexesToRemove.length; j++) {
-                var index = indexesToRemove[j];
+                if(subArray[14]=="VINCADA"){
+                    var index = indexesToRemoveVincos[j];
+                }
+                else{
+                    var index = indexesToRemove[j];
+                }
                 if (subArray[index]) {
                     delete subArray[index];
                 }
             }
             subArray = subArray.filter(item => item !== undefined);
-
+            
             if (subArray.length >= 5) {
                 subArray[4] = subArray[4] + subArray[5];
                 subArray.splice(5, 1);
             }
-
+            
             newArray.push(subArray);
         }
     }
@@ -149,17 +152,17 @@ function organizarpenha(array) {
 }
 
 function criaObjPenha(array) {
+    
     let id_compra = array[7] || '';
     const slashIndex = id_compra.indexOf('/');
     if (slashIndex !== -1) {
         id_compra = id_compra.substring(0, slashIndex);
     }
     id_compra = id_compra.replace(/\./g, '');
-
     var qRec = parseFloat(array[2].replace(/[,.]/g, ''));
     var valorUnitario = parseFloat(array[1].replace(',', '.')); // Correção para formato de número
     var valor_total = parseFloat(array[0].replace('.', '').replace(',', '.'));
-
+    
     return {
         id_compra: (id_compra || '').trim(),
         fornecedor: 'Penha',
@@ -187,44 +190,28 @@ function irani(fullText) {
     }
     var relevantText = fullText.substring(descricaoIndex + 10, dadosIndex);
     var resultArray = relevantText.split(/\s+/).filter(Boolean);
-    var idCompra = id_compraI(fullText)
-    return organizarirani(resultArray, idCompra);
-}
-
-function id_compraI(fullText) {
-    var aiIndex = fullText.indexOf('PEDIDO(S):');
-    if (aiIndex === -1) {
-        console.warn('Palavra-chave "PEDIDO(S):" não encontrada.');
-        return [];
-    }
-    var dadosIndex = fullText.indexOf('LOTE(S):', aiIndex);
-    if (dadosIndex === -1) {
-        console.warn('Palavra-chave "LOTE(S):" não encontrada.');
-        return [];
-    }
-    var relevantText = fullText.substring(aiIndex + 10, dadosIndex);
-    relevantText = relevantText.replace(/\./g, '').replace(/\//g, '').replace('INCLUSAO', '');
-    var resultArray = relevantText.split(/\s+/).filter(Boolean);
-    return resultArray;
+    return organizarirani(resultArray);
 }
 
 
 
 
-function organizarirani(array, idCompra) {
-    var indexesToRemove = [1, 2, 3, 6, 8, 9, 10, 11, 12, 13, 19, 20, 21, 22];
+
+
+function organizarirani(array) {
+    var indexesToRemove = [0, 1, 2, 3, 6, 8, 10, 11, 12, 13, 14, 15, 16, 20, 21, 22, 23, 24, 25];
     var newArray = [];
-    for (var i = 0; i < array.length; i += 23) {
-        var subArray = array.slice(i, i + 23);
+    for (var i = 0; i < array.length; i += 26) {
+        var subArray = array.slice(i, i + 26);
         if (subArray.length > 0) {
             var filteredSubArray = subArray.filter((item, index) => !indexesToRemove.includes(index));
             var filteredAndProcessed = filtroIrani(filteredSubArray);
-            var objeto = criaObjIrani(filteredAndProcessed, idCompra);
+            var objeto = criaObjIrani(filteredAndProcessed);
             newArray.push(objeto);
         }
     }
-
-
+    
+    
     return newArray;
 }
 
@@ -235,22 +222,28 @@ function filtroIrani(array) {
         array.push(parts[0].trim());  // Adiciona a primeira parte no final do array
         array.push(parts[1].trim());  // Adiciona a segunda parte no final do array
         array.splice(splitIndex, 1);  // Remove o elemento original que continha a barra
-    }
-    array = array.map(item => item.replace(/\bMIL\b/gi, "1000"));
+    }  
+    array[3] = array[3].replace(',', '.')
+    array[3] = parseFloat(array[3]*1000).toFixed(0);
+    array[4] = array[4].replace(',', '')
+    array[5] = array[5].replace('.', '').replace(',','.')
+
+
     return array;
 }
 
-function criaObjIrani(array, idCompra) {
+function criaObjIrani(array) {
+    console.log(array)
     return {
-        id_compra: idCompra,
+        id_compra: array[2],
         fornecedor: 'Irani',
-        qualidade: array[8],
-        medida: array[1] + 'X' + array[2],
-        onda: array[9],
+        qualidade: array[6],
+        medida: array[0] + ' X ' + array[1],
+        onda: array[7],
         vincos: '', // Vazio como solicitado
-        quantidade_recebida: array[4],
-        valor_unitario: array[6].replace('.', '') || '0',
-        valor_total: array[7].replace(',', '.') || '0',
+        quantidade_recebida: array[3],
+        valor_unitario: array[4],
+        valor_total: array[5]
     };
 }
 
@@ -277,12 +270,12 @@ function organizarFernandez(array, idCompra) {
             var filteredAndProcessed = filtroFernandez(filteredSubArray[1]);
             filteredSubArray.splice(1, 1);
             var objeto = criaObjFernandez([...filteredSubArray, ...filteredAndProcessed]);
-
+            
             if (objeto.quantidade_recebida) {
                 let quantidadeModificada = objeto.quantidade_recebida.replace(/\.|\,/g, (match) => (match === ',' ? '.' : ''));
                 objeto.quantidade_recebida = parseFloat(quantidadeModificada).toString();
             }
-
+            
             
             objeto.valor_unitario = objeto.valor_unitario.replace(/\./g, '').replace(/,/g, '.');
             objeto.valor_total = objeto.valor_total.replace(/\./g, '').replace(/,/g, '.');
@@ -344,33 +337,33 @@ function parseXML(xml) {
     const xmlDoc = parser.parseFromString(xml, "application/xml");
     const products = xmlDoc.getElementsByTagName("det");
     const table = document.getElementById('recebimento');
-
-
+    
+    
     const supplier = extractSupplier(xmlDoc);
     const prodFunc = { "Penha": prod_Penha, "Fernandez": prod_Fernandez, "Irani": prod_Irani };
-
+    
     const uniqueIds = new Set();
     
     // Coletar todos os IDs de compra primeiro
     Array.from(products).forEach(product => {
         const prodDetails = prodFunc[supplier]?.(product);
         if (!prodDetails) return;
-
+        
         const chapaData = data_Chapa(prodDetails, product, supplier, xmlDoc);
         uniqueIds.add(chapaData.id_compra);
     });
-
-
+    
+    
     const fetchPromises = Array.from(uniqueIds).map(id => fetchChapas(id));
-
-        Array.from(products).forEach(product => {
-            const prodDetails = prodFunc[supplier]?.(product);
-            if (!prodDetails) return;
-
-            const chapaData = data_Chapa(prodDetails, product, supplier, xmlDoc);
-            criarTable(table, chapaData);  // Cria uma linha na tabela para cada chapaData
-        });
-
+    
+    Array.from(products).forEach(product => {
+        const prodDetails = prodFunc[supplier]?.(product);
+        if (!prodDetails) return;
+        
+        const chapaData = data_Chapa(prodDetails, product, supplier, xmlDoc);
+        criarTable(table, chapaData);  // Cria uma linha na tabela para cada chapaData
+    });
+    
 }
 
 
@@ -381,22 +374,27 @@ function extractSupplier(xmlDoc) {
         "FERNANDEZ": "Fernandez",
         "Irani": "Irani"
     };
-
+    
     return Object.keys(supplierMap).find(key => xNome.includes(key)) ? supplierMap[Object.keys(supplierMap).find(key => xNome.includes(key))] : "";
 }
 
-    
+
 function data_Chapa(prodDetails, product, supplier, xmlDoc) {
     const xPedContent = product.getElementsByTagName("xPed")[0].textContent;
     const slashIndex = xPedContent.indexOf('/');
     const cleanedText = slashIndex !== -1 ? xPedContent.substring(0, slashIndex) : xPedContent;
     const xPed = cleanedText.replace(/\D/g, '');
-    const qCom = parseFloat(product.getElementsByTagName("qCom")[0].textContent) || 0;
+    let qCom = '';
+    if(supplier=="Irani"){
+        qCom = parseFloat(product.getElementsByTagName("qCom")[0].textContent*1000).toFixed(0)
+    } else {
+        qCom = parseFloat(product.getElementsByTagName("qCom")[0].textContent) || 0;
+    }
     const vUnCom = parseFloat(product.getElementsByTagName("vUnCom")[0].textContent) || 0;
     const vProd = parseFloat(product.getElementsByTagName("vProd")[0].textContent) || 0;
-
+    
     const { qualidade, medida, tipoOnda, vincada } = prodDetails;
-
+    
     return {
         id_compra: xPed,
         fornecedor: supplier,
@@ -418,7 +416,7 @@ function prod_Fernandez(product) {
     var tipoOnda = parts.length > 1 ? parts[1].match(/[A-Za-z]+/)[0] : "";
     var startOfMeasure = parts[1].indexOf(tipoOnda) + tipoOnda.length;
     var medida = parts.length > 1 ? parts[1].substring(startOfMeasure).trim() : "";
-
+    
     return {
         qualidade: parts[0] ? parts[0].trim() : "",
         medida: medida,
@@ -434,7 +432,7 @@ function prod_Irani(product) {
     var ondaEmedida = xProd.split('/')[1];
     var tipoOnda = ondaEmedida.match(/([A-Za-z]+) /)[1];
     var medida = ondaEmedida.match(/\d+ X \d+/)[0];
-
+    
     return {
         qualidade: qualidade,
         medida: medida,
