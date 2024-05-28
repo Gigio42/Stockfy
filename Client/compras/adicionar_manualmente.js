@@ -1,7 +1,3 @@
-// Variável global para armazenar o ID do cartão sendo editado
-let cardIDBeingEdited = null;
-
-
 // Função para abrir o modal
 function abrirModal() {
     var modal = document.getElementById('mModal');
@@ -13,6 +9,7 @@ function abrirModal() {
 }
 abrirModal();
 
+// Evento para adicionar um novo cartão
 document.getElementById("addPlateButton").addEventListener("click", function () {
     const form = document.getElementById("purchaseForm");
 
@@ -59,13 +56,11 @@ document.getElementById("addPlateButton").addEventListener("click", function () 
             <p class="card-text">Quantidade Comprada: ${data.quantidade_comprada}</p>
             <p class="card-text">Vincos: ${data.vincos}</p>
             <p class="toggle-button" onclick="toggleDetails(this)">
-    <img src="media/seta-para-a-direita.png" class="toggle-arrow" />
-    <a href="#"><img src="media/icons8-editar-64.png" class="expand-icon" onclick="editCard(event)" /></a>
-    <a href="#"><img src="media/icons8-apagar-para-sempre-96.png" class="expand-icon" onclick="deleteCard(event)" /></a>
-
-</p>
-
-            <div class="card-details" style="display: none;">
+                <img src="media/seta-para-a-direita.png" class=" toggle-arrow" />
+                <a href="#"><img src="media/icons8-editar-64.png" class="expand-icon" onclick="editCard(this)" /></a>
+                <a href="#"><img src="media/icons8-apagar-para-sempre-96.png" class="expand-icon" onclick="deleteCard(this)" /></a>
+            </p>
+            <div class="card-details">
                 <p class="card-text">Onda: ${data.onda}</p>
                 <p class="card-text">Gramatura: ${data.gramatura}</p>
                 <p class="card-text">Peso Total: ${data.peso_total}</p>
@@ -85,7 +80,6 @@ document.getElementById("addPlateButton").addEventListener("click", function () 
     console.log("JSON criado ao adicionar um novo card:", jsonData);
 });
 
-
 // Função para alternar a exibição dos detalhes do cartão
 function toggleDetails(button) {
     const details = button.nextElementSibling;
@@ -101,116 +95,34 @@ function toggleDetails(button) {
 }
 
 // Função para editar um cartão
-function editCard(event) {
-    event.stopPropagation(); // Impede que o evento de clique se propague
-
-    const button = event.target;
+function editCard(button) {
     const card = button.closest('.card');
-    const cardID = card.dataset.cardId; // Obtém o ID do cartão
     const cardTitle = card.querySelector('.card-title').textContent.split(': ')[1];
     const cardTexts = card.querySelectorAll('.card-text');
     const form = document.getElementById("purchaseForm");
 
-    // Armazena o ID do cartão sendo editado globalmente
-    cardIDBeingEdited = cardID;
-
-    // Preenche o formulário com os dados do cartão selecionado
     form.customerNumber.value = cardTitle;
-    form.width.value = cardTexts[1].textContent.split(': ')[1]; // Largura
-    form.length.value = cardTexts[2].textContent.split(': ')[1]; // Comprimento
-    form.quality.value = cardTexts[3].textContent.split(': ')[1]; // Qualidade
-    form.quantity.value = cardTexts[4].textContent.split(': ')[1]; // Quantidade Comprada
-    form.creases.value = cardTexts[5].textContent.split(': ')[1]; // Vincos
+    form.width.value = cardTexts[0].textContent.split(': ')[1];
+    form.length.value = cardTexts[1].textContent.split(': ')[1];
+    form.quality.value = cardTexts[2].textContent.split(': ')[1];
+    form.quantity.value = cardTexts[3].textContent.split(': ')[1];
+    form.creases.value = cardTexts[4].textContent.split(': ')[1];
 
     const details = card.querySelector('.card-details').children;
-    form.wave.value = details[0].textContent.split(': ')[1]; // Onda
-    form.weight.value = details[1].textContent.split(': ')[1]; // Gramatura
-    form.totalWeight.value = details[2].textContent.split(': ')[1]; // Peso Total
-    form.unitPrice.value = details[3].textContent.split(': ')[1]; // Valor Unitário
-    form.totalPrice.value = details[4].textContent.split(': ')[1]; // Valor Total
-    form.buyer.value = details[6].textContent.split(': ')[1]; // Comprador
-    form.purchaseDate.value = details[7].textContent.split(': ')[1]; // Data Compra
-    form.supplier.value = details[8].textContent.split(': ')[1]; // Fornecedor
-    form.purchaseID.value = details[9].textContent.split(': ')[1]; // ID Compra
-    document.getElementById("expectedDate").value = details[10].textContent.split(': ')[1]; // Data Prevista
-
-    // Exibe o botão de confirmação de edição
-    const confirmButton = document.getElementById("confirmEditButton");
-    confirmButton.style.display = "block";
+    form.wave.value = details[0].textContent.split(': ')[1];
+    form.weight.value = details[1].textContent.split(': ')[1];
+    form.totalWeight.value = details[2].textContent.split(': ')[1];
+    form.unitPrice.value = details[3].textContent.split(': ')[1];
+    form.totalPrice.value = details[4].textContent.split(': ')[1];
+    form.buyer.value = details[7].textContent.split(': ')[1];
+    form.purchaseDate.value = details[8].textContent.split(': ')[1];
+    form.supplier.value = details[9].textContent.split(': ')[1];
+    form.purchaseID.value = details[10].textContent.split(': ')[1];
+    document.getElementById("expectedDate").value = details[11].textContent.split(': ')[1];
 }
 
-// Função para confirmar a edição do cartão
-function confirmEdit() {
-    // Verifica se há um cartão em edição
-    if (cardIDBeingEdited) {
-        const form = document.getElementById("purchaseForm");
-
-        // Atualiza os dados do JSON com base nos novos valores inseridos no formulário
-        const updatedData = {
-            numero_cliente: form.customerNumber.value,
-            quantidade_comprada: form.quantity.value,
-            unidade: 'CH',
-            qualidade: form.quality.value,
-            onda: form.wave.value,
-            gramatura: form.weight.value,
-            peso_total: form.totalWeight.value,
-            valor_unitario: form.unitPrice.value,
-            valor_total: form.totalPrice.value,
-            largura: form.width.value,
-            comprimento: form.length.value,
-            vincos: form.creases.value,
-            status: 'COMPRADO',
-            comprador: form.buyer.value,
-            data_compra: form.purchaseDate.value,
-            fornecedor: form.supplier.value,
-            id_compra: form.purchaseID.value,
-            data_prevista: document.getElementById("expectedDate").value
-        };
-
-        // Encontra o cartão sendo editado pelo ID e atualiza seus dados
-        const card = document.querySelector(`.card[data-card-id="${cardIDBeingEdited}"]`);
-        const cardTitle = card.querySelector('.card-title');
-        const cardDetails = card.querySelector('.card-details');
-        
-        cardTitle.textContent = `Cliente: ${updatedData.numero_cliente}`;
-        cardDetails.innerHTML = `
-            <p class="card-text">Onda: ${updatedData.onda}</p>
-            <p class="card-text">Gramatura: ${updatedData.gramatura}</p>
-            <p class="card-text">Peso Total: ${updatedData.peso_total}</p>
-            <p class="card-text">Valor Unitário: ${updatedData.valor_unitario}</p>
-            <p class="card-text">Valor Total: ${updatedData.valor_total}</p>
-            <p class="card-text">Status: ${updatedData.status}</p>
-            <p class="card-text">Comprador: ${updatedData.comprador}</p>
-            <p class="card-text">Data Compra: ${updatedData.data_compra}</p>
-            <p class="card-text">Fornecedor: ${updatedData.fornecedor}</p>
-            <p class="card-text">ID Compra: ${updatedData.id_compra}</p>
-            <p class="card-text">Data Prevista: ${updatedData.data_prevista}</p>
-        `;
-
-        // Esconde o botão de confirmação de edição
-        const confirmButton = document.getElementById("confirmEditButton");
-        confirmButton.style.display = "none";
-
-        // Limpa o ID do cartão em edição
-        cardIDBeingEdited = null;
-
-        console.log("Dados do card atualizados:", updatedData);
-    }
-}
-
-// Evento de clique para confirmar a edição do cartão
-document.getElementById("confirmEditButton").addEventListener("click", function (event) {
-    event.preventDefault(); // Previne o comportamento padrão do botão (recarregar a página)
-    console.log("Botão de confirmação de edição clicado!");
-    confirmEdit();
-});
-
-
-
-function deleteCard(event) {
-    event.stopPropagation(); // Impede que o evento de clique se propague
-
-    const button = event.target;
+// Função para excluir um cartão
+function deleteCard(button) {
     const card = button.closest('.card');
     card.remove();
     console.log("Card excluído.");
@@ -248,13 +160,13 @@ function sendJSONDataToBackend() {
             valor_total: parseFloat(getTextContent(".card-details .card-text:nth-of-type(5)", card)),
             largura: parseInt(getTextContent(".card-text:nth-of-type(2)", card)),
             comprimento: parseInt(getTextContent(".card-text:nth-of-type(3)", card)),
-            vincos: getTextContent(".card-text:nth-of-type(5)", card),
+            vincos: getTextContent(".card-text:nth-of-type(6)", card),
             status: 'COMPRADO',
-            comprador: getTextContent(".card-details .card-text:nth-of-type(7)", card),
-            data_compra: getTextContent(".card-details .card-text:nth-of-type(8)", card),
-            fornecedor: getTextContent(".card-details .card-text:nth-of-type(9)", card),
-            id_compra: parseInt(getTextContent(".card-details .card-text:nth-of-type(10)", card)),
-            data_prevista: getTextContent(".card-details .card-text:nth-of-type(11)", card)
+            comprador: getTextContent(".card-details .card-text:nth-of-type(8)", card),
+            data_compra: getTextContent(".card-details .card-text:nth-of-type(9)", card),
+            fornecedor: getTextContent(".card-details .card-text:nth-of-type(10)", card),
+            id_compra: parseInt(getTextContent(".card-details .card-text:nth-of-type(11)", card)),
+            data_prevista: getTextContent(".card-details .card-text:nth-of-type(12)", card)
         };
 
         jsonData.info_prod_comprados.push(data);
@@ -279,13 +191,13 @@ function sendData(jsonData) {
             'Content-Type': 'application/json'
         }
     })
-        .then(() => {
-            console.log('Dados enviados com sucesso!');
-        })
-        .catch(error => {
-            console.error('Erro ao enviar dados:', error);
-            alert('Erro ao enviar dados para o servidor. Por favor, tente novamente mais tarde.');
-        });
+    .then(() => {
+        console.log('Dados enviados com sucesso!');
+    })
+    .catch(error => {
+        console.error('Erro ao enviar dados:', error);
+        alert('Erro ao enviar dados para o servidor. Por favor, tente novamente mais tarde.');
+    });
 }
 
 // Evento de clique para enviar os dados para o backend
