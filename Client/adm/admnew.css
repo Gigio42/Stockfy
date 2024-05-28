@@ -1,0 +1,418 @@
+/* ======================================
+   Header Styles
+   ====================================== */
+   .header-custom {
+    display: flex;
+    color: #1a1a1a;
+    /* Cor do texto padrão para o header */
+    border-bottom: solid 1px #6a6a6a45;
+    background-color: #d4d4d4;
+    height: 5rem;
+    width: 100%;
+    padding-left: 1.5rem;
+    border-radius: 0 !important;
+  }
+  
+  .cardfora {
+    background: #191919;
+    border: none !important;
+  }
+  
+  h1 {
+    color: #0f0f0f;
+    font-size: 2rem;
+  }
+  
+  /* ======================================
+     Dark Mode Toggle Styles
+     ====================================== */
+  .dark-mode-toggle input[type="checkbox"] {
+    display: none;
+  }
+  
+  .dark-mode-toggle label {
+    margin-right: 1rem;
+    display: block;
+    width: 2.7em;
+    height: 1.5em;
+    background-color: #ddd;
+    border-radius: 2rem;
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .dark-mode-toggle label:after {
+    content: "";
+    display: block;
+    width: 1.2em;
+    height: 1.2em;
+    background-color: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .dark-mode-toggle input[type="checkbox"]:checked + label {
+    background-color: #6eec07;
+    box-shadow: 0 0 30px 20px #6eec074f;
+  }
+  
+  .dark-mode-toggle input[type="checkbox"]:checked + label:after {
+    transform: translateX(100%);
+  }
+  
+  /* ======================================
+     Navbar Styles
+     ====================================== */
+  #aside {
+    display: flex;
+    background: #e6e6e6;
+    /* Cor de fundo para o aside no modo escuro */
+    min-height: 70%;
+    overflow-y: auto;
+    /* Permite rolagem se o conteúdo for maior do que a altura da página */
+    padding: 0;
+    border-radius: 0 !important;
+  }
+  
+  .logo {
+    width: 7rem;
+  }
+  
+  .logo-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    background: #e6e6e6;
+    height: 5rem;
+    border: solid 1px #6a6a6a45;
+    align-items: center;
+    width: 100%;
+    border-left: none;
+    border-radius: 0 !important;
+  }
+  
+  .navbar {
+    display: flex;
+    margin-top: 4rem;
+    justify-content: center;
+  }
+  
+  /* ======================================
+     Active Link Styles
+     ====================================== */
+
+  
+  .active img.imgicon {
+    filter: brightness(0) invert(1);
+  }
+  
+  .active a {
+    color: #ffffff;
+  }
+  
+  .active:hover {
+    background-color: #007bff;
+    /* Mantém a cor de fundo do link ativo */
+    cursor: default;
+    /* Define o cursor como padrão */
+  }
+  
+  .active:hover a {
+    color: #ffffff;
+    /* Mantém a cor do texto do link ativo */
+  }
+  
+  /* ======================================
+     General Link Styles
+     ====================================== */
+  a {
+    color: #535353;
+    padding: 1rem;
+    border-radius: 1.2rem;
+    font-size: 1.5rem;
+  }
+  
+  a:hover {
+    color: #535353;
+    text-decoration: none;
+    /* Remove o sublinhado */
+  }
+  
+  .icon-home {
+    fill: red;
+    /* Altere "red" para a cor desejada */
+  }
+  
+  li {
+    color: #ffffff;
+    padding: 1rem;
+    font-size: 1.1rem;
+    border-radius: 1.2rem;
+    text-decoration: none;
+    /* Remove o sublinhado */
+  }
+  
+  li:hover {
+    background-color: #cacaca;
+  }
+  
+  /* ======================================
+     Grid and Layout Styles
+     ====================================== */
+  .col-md-2 {
+    padding: 0%;
+  }
+  
+  .imgicon {
+    width: 1.5rem;
+    border-radius: 0 !important;
+  }
+  
+  html {
+    height: 100%;
+  }
+  
+  body {
+    background: #ffffff;
+    height: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow-y: hidden;
+  }
+  
+  .header {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .col-md-12 {
+    padding: 0;
+    margin-right: 2rem;
+  }
+  
+  .row {
+    display: flex;
+    /* Para fazer os elementos dentro da linha se comportarem como flexíveis */
+    height: 100%;
+  }
+  
+  .container-fluid {
+    height: 100%;
+  }
+  
+  #container {
+    max-height: 100vh;
+    overflow-y: auto;
+    /* Adiciona barra de rolagem vertical se necessário */
+  }
+  
+  .itemContainer {
+    padding-bottom: 0 !important;
+  }
+  
+  /* ======================================
+     Scrollbar Styles
+     ====================================== */
+  ::-webkit-scrollbar {
+    width: 10px;
+    /* largura da barra de rolagem */
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #424242; /* cor do 'thumb' (a parte que você arrasta) */
+    border-radius: 5px; /* borda arredondada */
+  }
+  
+  ::-webkit-scrollbar-track {
+    background-color: #212121;
+    /* cor do fundo da barra de rolagem */
+  }
+  
+  /* ======================================
+     Dark Mode Styles
+     ====================================== */
+  .dark-mode #aside {
+    background: #9a9a9a27;
+    /* Altere o fundo do modo escuro para a barra lateral conforme necessário */
+    border: solid 1px #6a6a6a45;
+    backdrop-filter: blur(5px);
+    border-top: 0;
+  }
+  
+  .dark-mode h1,
+  .dark-mode li {
+    color: #cccccc;
+  }
+  
+  .dark-mode .logo {
+    filter: invert(1);
+    /* Exemplo de inversão de cores */
+  }
+  
+  .dark-mode.body {
+    background: #191919;
+  }
+  
+  .dark-mode .dark-mode-aside {
+    background: #1c1c1c;
+    /* Altere o fundo do modo escuro para a barra lateral conforme necessário */
+  }
+  
+  .dark-mode .header-custom {
+    display: flex;
+    background: #0f0f0f;
+  }
+  
+  .dark-mode .logo-container {
+    background: #2f2f2f;
+    border: solid 1px #6a6a6a45;
+  }
+  
+  .dark-mode .logo {
+    filter: invert(1);
+    /* Exemplo de inversão de cores */
+  }
+  
+  .dark-mode li:hover {
+    background-color: #333333;
+  }
+  
+  .dark-mode a {
+    color: #b3b3b3;
+  }
+  
+  .cards {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 2rem;
+    justify-content: flex-start;
+    gap: 1rem;
+  }
+  
+  .cardMaquina {
+    padding: 2rem;
+    width: 32%;
+    border-radius: 2rem;
+    background-color: #2d2d2d;
+    font-size: 1.2rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+  .svgIcon {
+    margin-left: 10px; /* Espaçamento entre o nome da máquina e o ícone */
+    width: 48px; /* Tamanho do ícone */
+    height: 48px; /* Tamanho do ícone */
+  }
+
+  h3 {
+    color: #858585;
+  }
+
+  /*
+  ================
+  modal
+  ================
+  */
+
+  .modal {
+    position: fixed;
+    display: none;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(52, 52, 52, 0.324);
+    backdrop-filter: blur(5px);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: #141414;
+    margin: 7% auto;
+    padding: 20px;
+    width: 80vw;
+    border: none;
+    border-radius: 1.5rem;
+    height: 60vh;
+  }
+
+  /* Estilos para o ícone */
+  .svgIcon {
+    cursor: pointer; /* Muda o cursor para parecer um botão */
+    padding: 0.3rem;
+    border-radius: 1rem;
+ 
+  }
+
+  .nomemaquina {
+    background: #1eff053e;
+    border: solid 1px #6eec0790;
+    color: #81ff1a;
+    padding: 1rem;
+    border-radius: 1rem;
+    width:fit-content;
+  }
+
+
+  .card {
+    border: none;
+    padding: 10px;
+    margin: 10px 0;
+    cursor: pointer;
+    background-color: #0f0f0f;
+    border-radius: 1rem;
+  }
+  
+  .subcard {
+    border: none;
+    padding: 8px;
+    margin: 5px 0 5px 20px;
+    background-color: #191919;
+    display: none; /* Initially hidden */
+    border-radius: 0.7rem;
+  }
+  
+  .card.expanded .subcard {
+    display: block; /* Show when the card is expanded */
+    margin: 0;
+    margin-top: 0.7rem;
+  }
+  
+#reservados {
+  width: 30%;
+  overflow-y:auto;
+  max-height: 48vh;
+  border-radius: 1rem;
+  
+}
+
+.conteudoInterno {
+  display: flex;
+  justify-content: flex-end;
+}
+
+h3 {
+  background-color: #4f27ffd4;
+  padding: 0.5rem;
+  border-radius: 0.7rem;
+  border: solid 1px #9178ff;
+  color: #9178ff ;
+  width: fit-content;
+  margin: 0;
+}
+
+  .abrirModal:hover {
+    background: #353535;
+
+  }
+

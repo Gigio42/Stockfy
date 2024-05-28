@@ -1,14 +1,18 @@
-import { getRepository } from "typeorm";
-import Chapas from "../Models/Chapas.js";
-import Item from "../Models/Item.js";
-import Chapa_Item from "../Models/Chapa_Item.js";
+//Detalhes: As funções de deletar eu usei o prisma.$transaction por achar que seria mais seguro, pois
+//se uma das operações falhar, ele vai dar rollback
+
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 class PCPController {
   constructor() {}
 
+  // ------------------------------
+  // GetChapasComment Function
+  // ------------------------------
   async getChapas(query, filterCriteria, sortOrder, sortBy) {
-    const chapasRepository = getRepository(Chapas);
-    let data = await chapasRepository.find({ relations: ["conjugacoes"] });
+    let data = await prisma.chapas.findMany({ include: { conjugacoes: true } });
 
     data = data.filter((chapa) => chapa.status !== "USADO");
 
@@ -29,51 +33,38 @@ class PCPController {
       }
     }
 
-    data = data.map((chapa) => {
-      const date = new Date(chapa.data_prevista);
-      const day = String(date.getDate()).padStart(2, "0");
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      chapa.data_prevista = `${day}/${month}`;
-      return chapa;
-    });
-
     const sortedChapas = data.sort((a, b) => {
       const getValue = (obj, prop) => prop.split(".").reduce((acc, part) => acc && acc[part], obj);
 
-      if (sortBy === "data_prevista") {
-        const [dayA, monthA] = getValue(a, sortBy).split("/");
-        const [dayB, monthB] = getValue(b, sortBy).split("/");
-        const dateA = new Date(2000, monthA - 1, dayA);
-        const dateB = new Date(2000, monthB - 1, dayB);
-
-        if (sortOrder === "asc") {
-          return dateA - dateB;
-        } else {
-          return dateB - dateA;
-        }
+      if (sortOrder === "descending") {
+        return getValue(a, sortBy) < getValue(b, sortBy) ? -1 : getValue(a, sortBy) > getValue(b, sortBy) ? 1 : 0;
       } else {
-        if (sortOrder === "asc") {
-          return getValue(a, sortBy) < getValue(b, sortBy) ? -1 : getValue(a, sortBy) > getValue(b, sortBy) ? 1 : 0;
-        } else {
-          return getValue(a, sortBy) > getValue(b, sortBy) ? -1 : getValue(a, sortBy) < getValue(b, sortBy) ? 1 : 0;
-        }
+        return getValue(a, sortBy) > getValue(b, sortBy) ? -1 : getValue(a, sortBy) < getValue(b, sortBy) ? 1 : 0;
       }
     });
     return sortedChapas;
   }
 
-  async getItems() {
-    const chapaItemRepository = getRepository(Chapa_Item);
-    const itemRepository = getRepository(Item);
-
-    const chapaItems = await chapaItemRepository
-      .createQueryBuilder("chapa_item")
-      .leftJoinAndSelect("chapa_item.item", "item")
-      .leftJoinAndSelect("chapa_item.chapa", "chapa")
-      .getMany();
+  // ------------------------------
+  // GetItemsComment Function
+  // ------------------------------
+  async getItems(searchQuery = "") {
+    const chapaItems = await prisma.chapa_Item.findMany({
+      where: {
+        item: {
+          part_number: {
+            contains: searchQuery,
+          },
+        },
+      },
+      include: {
+        item: true,
+        chapa: true,
+      },
+    });
 
     if (!chapaItems.length) {
-      throw new Error(`No Chapa_Item found`);
+      throw new Error(`Chapas não encontradas para o item ${searchQuery}`);
     }
 
     const items = chapaItems.reduce((acc, chapaItem) => {
@@ -91,84 +82,136 @@ class PCPController {
     return Object.values(items);
   }
 
+  // ------------------------------
+  // PostItemsComment Function
+  // ------------------------------
   async createItemWithChapa(body) {
+    console.log(body);
     const { partNumber, chapas } = body;
 
-    const chapasRepository = getRepository(Chapas);
-    const itemRepository = getRepository(Item);
-    const chapaItemRepository = getRepository(Chapa_Item);
-
-    let item = await itemRepository.findOne({ where: { part_number: partNumber } });
-
-    if (!item) {
-      item = itemRepository.create({
-        part_number: partNumber,
-        Status: "RESERVADO",
-      });
-
-      await itemRepository.save(item);
+    for (const { quantity, keepRemaining } of chapas) {
+      if (keepRemaining) throw new Error("Reciclagem ainda está sendo desenvolvida"); //TODO Desenvolver reciclagem de chapas
+      if (!quantity) throw new Error("Todas as chapas devem ter uma quantidade");
     }
 
-    for (const { chapaID, quantity, medida, keepRemaining } of chapas) {
-      const chapa = await chapasRepository.findOne({ where: { id_chapa: chapaID } });
+    let item;
 
-      if (!chapa) {
-        throw new Error("Chapa not found");
-      }
+    for (const { chapaID, quantity } of chapas) {
+      const chapa = await prisma.chapas.findUnique({ where: { id_chapa: chapaID } });
 
-      if (!quantity) {
-        throw new Error("Quantity is required");
-      }
+      if (!chapa) throw new Error("Chapa não encontrada");
+      if (!quantity) throw new Error("Informe a quantidade de chapas a serem reservadas");
+      if (quantity > chapa.quantidade_disponivel) throw new Error(`Chapa ${chapaID} não possui quantidade suficiente`);
 
-      chapa.quantidade_estoque -= quantity;
+      if (!item) {
+        item = await prisma.item.findUnique({ where: { part_number: partNumber } });
 
-      if (chapa.quantidade_comprada + chapa.quantidade_estoque === 0 || (chapa.status === "recebido" && chapa.quantidade_estoque === 0)) {
-        chapa.status = "USADO";
-      }
-
-      if (keepRemaining) {
-        const [chapaWidth, chapaHeight] = chapa.medida.split("x").map(Number);
-        const [chosenWidth, chosenHeight] = medida.split("x").map(Number);
-
-        if (chapaWidth < chosenWidth || chapaHeight < chosenHeight) {
-          throw new Error("Not enough chapas of the specified dimensions");
+        if (!item) {
+          item = await prisma.item.create({
+            data: {
+              part_number: partNumber,
+              status: "RESERVADO",
+            },
+          });
+        } else if (item.status !== "RESERVADO") {
+          throw new Error("Item em processo");
         }
-
-        const originalArea = chapaWidth * chapaHeight;
-        const usedArea = chosenWidth * chosenHeight;
-        const remainingArea = originalArea - usedArea;
-
-        const { id_chapa, medida, ...chapaProps } = chapa;
-
-        const newChapa = chapasRepository.create({
-          ...chapaProps,
-          area: remainingArea,
-          quantidade_estoque: quantity,
-          status: "RESTO",
-        });
-
-        await chapasRepository.save(newChapa);
       }
 
-      await chapasRepository.save(chapa);
+      const updatedChapa = await prisma.chapas.update({
+        where: { id_chapa: chapa.id_chapa },
+        data: {
+          quantidade_disponivel: { decrement: parseInt(quantity) },
+          quantidade_estoque: { decrement: parseInt(quantity) },
+        },
+      });
 
-      let chapaItem = await chapaItemRepository.findOne({ where: { chapa: chapa, item: item } });
+      if (updatedChapa.quantidade_disponivel === 0) {
+        await prisma.chapas.update({
+          where: { id_chapa: chapa.id_chapa },
+          data: { status: "USADO" },
+        });
+      }
+
+      let chapaItem = await prisma.chapa_Item.findFirst({
+        where: {
+          AND: [{ chapa: { id_chapa: chapaID } }, { item: { id_item: item.id_item } }],
+        },
+      });
 
       if (chapaItem) {
-        // Ensure that quantity is a number before adding it to the existing quantity
-        chapaItem.quantidade += Number(quantity);
+        await prisma.chapa_Item.update({
+          where: { id_chapa_item: chapaItem.id_chapa_item },
+          data: { quantidade: { increment: Number(quantity) } },
+        });
       } else {
-        chapaItem = chapaItemRepository.create({
-          chapa: chapa,
-          item: item,
-          quantidade: Number(quantity), // Ensure that quantity is a number when creating a new Chapa_Item
+        await prisma.chapa_Item.create({
+          data: {
+            quantidade: Number(quantity),
+            chapa: { connect: { id_chapa: chapaID } },
+            item: { connect: { id_item: item.id_item } },
+          },
         });
       }
-
-      await chapaItemRepository.save(chapaItem);
     }
 
     return item;
+  }
+
+  // ------------------------------
+  // deleteItemComment Function
+  // ------------------------------
+  async deleteItem(itemId) {
+    const item = await prisma.item.findUnique({
+      where: { id_item: itemId },
+      include: { chapas: true },
+    });
+
+    const operations = [];
+
+    for (const chapaItem of item.chapas) {
+      operations.push(
+        prisma.chapas.update({
+          where: { id_chapa: chapaItem.chapaId },
+          data: { quantidade_estoque: { increment: chapaItem.quantidade } },
+        }),
+      );
+
+      operations.push(prisma.chapa_Item.delete({ where: { id_chapa_item: chapaItem.id_chapa_item } }));
+    }
+
+    operations.push(prisma.item.delete({ where: { id_item: itemId } }));
+
+    await prisma.$transaction(operations);
+  }
+
+  // ------------------------------
+  // deleteItemComment Function
+  // ------------------------------
+  async deleteChapaFromItem(itemId, chapaId) {
+    const chapaItem = await prisma.chapa_Item.findFirst({
+      where: {
+        itemId: itemId,
+        chapaId: chapaId,
+      },
+    });
+
+    if (!chapaItem) {
+      throw new Error("Chapa não encontrada no item");
+    }
+
+    const operations = [];
+
+    operations.push(
+      prisma.chapas.update({
+        where: { id_chapa: chapaId },
+        data: { quantidade_estoque: { increment: chapaItem.quantidade } },
+      }),
+    );
+
+    operations.push(prisma.chapa_Item.delete({ where: { id_chapa_item: chapaItem.id_chapa_item } }));
+
+    await prisma.$transaction(operations);
   }
 }
 

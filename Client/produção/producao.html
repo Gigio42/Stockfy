@@ -1,11 +1,41 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
+<!doctype html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="author" content="Seu Nome" />
+        <title>Controle de Produção</title>
+
+        <link id="theme" rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+        <link rel="stylesheet" href="producao.css" />
+    </head>
+    <body class="body">
+        <header class="navbar navbar-dark bg-dark">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">User Name</a>
+                    <a class="navbar-brand" href="#">Machine Name</a>
+                </div>
+                <button class="btn btn-danger navbar-btn">Sair</button>
+            </div>
+        </header>
+
+        <div class="table-container">
+            <div class="table-header">
+                <div class="header-item">Header 1</div>
+                <div class="header-item">Header 2</div>
+                <div class="header-item">Header 3</div>
+            </div>
+            <div class="table-body">
+                <!-- Populate this with rows using JavaScript -->
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script type="module" src="producao.js"></script>
+    </body>
 </html>
