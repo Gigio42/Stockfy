@@ -29,11 +29,6 @@ async function fetchMaquinas() {
       let allMaquina = document.getElementById('allMaquina');
       let cardMaquina = document.createElement('div');
       cardMaquina.className = 'cardMaquina';
-<<<<<<< HEAD
-      cardMaquina.id = 'cardMaquina'
-=======
-      cardMaquina.id = 'cardMaquina';
->>>>>>> e36b2e82fee2bd79008baff98fefc5c027b89760
 
       // Criar o elemento de texto para o nome da máquina
       let maquinaName = document.createElement('span');
@@ -44,19 +39,12 @@ async function fetchMaquinas() {
       let svgIcon = document.createElement('img');
       svgIcon.src = 'media/icons8-link-externo.svg';
       svgIcon.alt = 'External link icon';
-<<<<<<< HEAD
-      svgIcon.className = 'svgIcon'; // Adicione uma classe para estilização se necessário
-      cardMaquina.appendChild(svgIcon);
-
-=======
 
       // Adicionar duas classes ao elemento
       svgIcon.classList.add('svgIcon', 'abrirModal');
 
       // Adicionar o elemento de imagem ao card
       cardMaquina.appendChild(svgIcon);
-
->>>>>>> e36b2e82fee2bd79008baff98fefc5c027b89760
       // Adicionar o card ao contêiner
       allMaquina.appendChild(cardMaquina);
     });
@@ -85,11 +73,7 @@ function closeModal() {
 
 // Adiciona um evento de clique ao ícone para abrir o modal com o nome da máquina
 document.addEventListener('click', function (event) {
-<<<<<<< HEAD
-  if (event.target.className === 'svgIcon') {
-=======
   if (event.target.classList.contains('svgIcon')) {
->>>>>>> e36b2e82fee2bd79008baff98fefc5c027b89760
     // Obtém o elemento de texto (span) que contém o nome da máquina
     var maquinaName = event.target.parentNode.querySelector('span').textContent;
     openModal(maquinaName);
@@ -105,7 +89,7 @@ document.getElementById('myModal').addEventListener('click', function (event) {
 
 // Adiciona um evento de clique ao botão de fechar para fechar o modal
 document.addEventListener('click', function (event) {
-<<<<<<< HEAD
+
   if (event.target.className === 'close') {
     closeModal();
   }
@@ -161,9 +145,3 @@ async function fetchitens() {
 
 fetchitens();
 
-=======
-  if (event.target.classList.contains('close')) {
-    closeModal();
-  }
-});
->>>>>>> e36b2e82fee2bd79008baff98fefc5c027b89760

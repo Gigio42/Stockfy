@@ -47,6 +47,8 @@ function openFilePicker() {
     }
 }
 
+
+
 function handleFile(file) {
     console.log("Lendo arquivo:", file.name);
     var reader = new FileReader();
@@ -373,8 +375,6 @@ function handleFile(file) {
                             }
                         }
                     }
-
-
                     // Exibe o modal com os dados
                     var modal = document.getElementById('myModal');
                     if (modal) {
@@ -392,17 +392,6 @@ function handleFile(file) {
     };
 
     reader.readAsArrayBuffer(file);
-}
-
-// Função para abrir o modal
-function abrirModal() {
-    var modal = document.getElementById('myModal');
-    if (modal) {
-        modal.style.display = 'block';
-        console.log("Modal aberto.");
-    } else {
-        console.error("Modal não encontrado.");
-    }
 }
 
 
@@ -464,15 +453,6 @@ function renameProperties(obj) {
     return newObj;
 }
 
-
-
-function addRoundedBordersToTableRows() {
-    var tableRows = document.querySelectorAll('#dataTable tbody tr');
-    tableRows.forEach(function (row) {
-        row.classList.add('rounded-rows'); // Adiciona a classe de bordas arredondadas a cada linha
-    });
-}
-
 // Obtém o valor do input de data prevista
 var expectedDateInput = document.getElementById('expectedDate');
 
@@ -514,31 +494,3 @@ if (editButton) {
     console.error("Botão 'Editar' não encontrado.");
 }
 
-// Adiciona um ouvinte de evento de clique ao botão "Adicionar chapa manualmente"
-var addChapaButton = document.getElementById('addChapa');
-if (addChapaButton) {
-    addChapaButton.addEventListener('click', function () {
-        // Verifica se a tabela existe
-        var dataTable = document.getElementById('dataTable');
-        if (dataTable) {
-            // Cria uma nova linha na tabela
-            var newRow = dataTable.insertRow();
-
-            // Adiciona células vazias à nova linha, cada uma contendo um input para inserção de dados
-            for (var i = 0; i < 6; i++) { // Defina o número de células conforme necessário
-                var cell = newRow.insertCell();
-                var input = document.createElement('input');
-                input.type = 'text'; // Define o tipo de input como texto
-                input.classList.add('form-control'); // Adiciona classes para estilização (se necessário)
-                cell.appendChild(input); // Adiciona o input à célula
-            }
-
-            // Adiciona classes e outros atributos à nova linha, se necessário
-            newRow.classList.add('new-row'); // Adiciona uma classe para identificar as novas linhas, se necessário
-        } else {
-            console.error("Tabela não encontrada.");
-        }
-    });
-} else {
-    console.error("Botão 'Adicionar chapa manualmente' não encontrado.");
-}
