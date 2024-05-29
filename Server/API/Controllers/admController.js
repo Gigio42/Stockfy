@@ -1,5 +1,5 @@
-import Maquina from "../Models/maquina.js";
-import Chapa_Item from "../Models/chapa_item.js";
+import Maquina from "../Models/maquinaModel.js";
+import Chapa_Item from "../Models/chapa_itemModel.js";
 
 class AdmController {
   constructor() {}
