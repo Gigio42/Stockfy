@@ -7,6 +7,7 @@ import registerRoutes from "./API/Routes/index.js";
 const fastify = Fastify({ logger: log });
 fastify.register(cors);
 const port = process.env.PORT || 3000;
+const host = process.env.HOST || "localhost";
 
 fastify.get("/", async () => {
   return { text: "Hello, World!" };
@@ -22,7 +23,7 @@ prisma
 
     registerRoutes(fastify);
 
-    fastify.listen({ port: port, host: "localhost" }, (err, address) => {
+    fastify.listen({ port: port, host: host }, (err, address) => {
       if (err) {
         fastify.log.error(err);
         process.exit(1);

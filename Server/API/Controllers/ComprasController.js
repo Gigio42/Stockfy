@@ -1,4 +1,4 @@
-import Chapas from '../Models/chapas.js';
+import Chapas from '../Models/chapasModel.js';
 
 class ComprasController {
   constructor() {}
