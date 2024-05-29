@@ -13,36 +13,40 @@ export class Card {
   createValueDiv(key, value) {
     let valueDiv = createElementWithClass("div", `card-value-div col text-center value align-items-center justify-content-center rounded`);
 
-    if (key.startsWith("data")) {
-      let [day, month] = value.split("/");
-      valueDiv.textContent = `${day}/${month}`;
+    if (value === null) {
+      valueDiv.textContent = "N/A";
     } else {
-      valueDiv.textContent = value;
-    }
-
-    if (key === "status") {
-      valueDiv.className += " card-status ";
-      let status = value.toLowerCase();
-      if (status === "recebido") {
-        valueDiv.className += " card-status-recebido";
-      } else if (status === "comprado") {
-        valueDiv.className += " card-status-comprado";
-      }
-    }
-
-    if (key === "quantidade_estoque") {
-      if (value < 0) {
-        valueDiv.style.color = "red";
-        valueDiv.textContent = Math.abs(value);
-      } else if (value === 0) {
-        valueDiv.style.color = "";
+      if (key.startsWith("data")) {
+        let [day, month] = value.split("/");
+        valueDiv.textContent = `${day}/${month}`;
       } else {
-        valueDiv.style.color = "green";
+        valueDiv.textContent = value;
       }
-    }
 
-    if (key === this.keys[this.keys.length - 1]) {
-      valueDiv.className += " mr-3";
+      if (key === "status") {
+        valueDiv.className += " card-status ";
+        let status = value.toLowerCase();
+        if (status === "recebido") {
+          valueDiv.className += " card-st atus-recebido";
+        } else if (status === "comprado") {
+          valueDiv.className += " card-status-comprado";
+        }
+      }
+
+      if (key === "quantidade_estoque") {
+        if (value < 0) {
+          valueDiv.style.color = "red";
+          valueDiv.textContent = Math.abs(value);
+        } else if (value === 0) {
+          valueDiv.style.color = "";
+        } else {
+          valueDiv.style.color = "green";
+        }
+      }
+
+      if (key === this.keys[this.keys.length - 1]) {
+        valueDiv.className += " mr-3";
+      }
     }
 
     return valueDiv;
