@@ -15,7 +15,6 @@ fastify.get("/", async () => {
 
 const prisma = new PrismaClient();
 
-
 prisma
   .$connect()
   .then(() => {

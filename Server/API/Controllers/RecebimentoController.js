@@ -46,7 +46,7 @@ class RecebimentoController {
   }
 
   async getChapasByIdCompra(id_compra) {
-    id_compra=parseInt(id_compra,10)
+    id_compra = parseInt(id_compra, 10);
     if (!id_compra) throw new Error("id_compra is undefined");
 
     const chapas = await prisma.chapas.findMany({
