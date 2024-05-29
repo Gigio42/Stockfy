@@ -30,6 +30,17 @@ export class Card {
       }
     }
 
+    if (key === "quantidade_estoque") {
+      if (value < 0) {
+        valueDiv.style.color = "red";
+        valueDiv.textContent = Math.abs(value);
+      } else if (value === 0) {
+        valueDiv.style.color = "";
+      } else {
+        valueDiv.style.color = "green";
+      }
+    }
+
     if (key === this.keys[this.keys.length - 1]) {
       valueDiv.className += " mr-3";
     }
@@ -41,7 +52,7 @@ export class Card {
     let valueRow = createElementWithClass("div", "value-row row flex-nowrap overflow-auto w-100 align-items-stretch");
     this.keys.forEach((key) => valueRow.appendChild(this.createValueDiv(key, this.chapa[key])));
     return valueRow;
-}
+  }
 
   createCheckbox() {
     let checkbox = createElementWithClass("input", "card-checkbox  mr-3");

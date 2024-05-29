@@ -1,354 +1,366 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administração de Chapas</title>
-    <link rel="stylesheet" href="adm.css">
-</head>
-<body>
-    <header>
-        <div class="null"></div>
-        <h1>Administração de Chapas</h1>
-    </header>
-    <main>
-        <aside>
-            <div class="btn-aside">
-                <div>
-                    <div class="input-procurarbypart_number">
-                        <select id="procurarInputbypart_number"></select>
-                        <button onclick="confirmarProcurarPart_number()">Confirmar</button>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Administração de Chapas</title>
+        <link rel="stylesheet" href="adm.css" />
+    </head>
+    <body>
+        <header>
+            <div class="null"></div>
+            <h1>Administração de Chapas</h1>
+        </header>
+        <main>
+            <aside>
+                <div class="btn-aside">
+                    <div>
+                        <div class="input-procurarbypart_number">
+                            <select id="procurarInputbypart_number"></select>
+                            <button onclick="confirmarProcurarPart_number()">Confirmar</button>
+                        </div>
+                        <div class="input-procurarByMaquinaId">
+                            <select id="procurarInputByMaquinaId"></select>
+                            <button onclick="confirmarProcurarMaquina()">Confirmar</button>
+                        </div>
                     </div>
-                    <div class="input-procurarByMaquinaId">
-                        <select id="procurarInputByMaquinaId"></select>
-                        <button onclick="confirmarProcurarMaquina()">Confirmar</button>
-                    </div>
+
+                    <button onclick="procurar()">procurar</button>
+                    <button onclick="showProduction()">mostrar produção</button>
+                    <button onclick="criar()">criar</button>
+                    <button onclick="remover()">remover</button>
+                </div>
+            </aside>
+            <div class="tabelas">
+                <div class="chapa-item-maquina">
+                    part_number maquina
+                    <table id="chapa_item_maquina">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>part_number</th>
+                                <th>maquina</th>
+                                <th>chapa</th>
+                                <th>quantidade</th>
+                                <th>ordem</th>
+                                <th>prazo</th>
+                                <th>status</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
                 </div>
 
-                <button onclick="procurar()">procurar</button>
-                <button onclick="showItemMaquinaProduction()">mostrar produção</button>
-                <button onclick="criar()">criar</button>
-                <button onclick="remover()">remover</button>
-            </div>
-        </aside>
-        <div class="tabelas">
-            <div class="item-maquina">
-                part_number maquina
-                <table id="item_maquina">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>part_number</th>
-                            <th>maquina</th>                            
-                            <th>chapas</th>
-                            <th>quantidade</th>
-                            <th>ordem</th>
-                            <th>prazo</th>
-                            <th>status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
+                <div class="item">
+                    <div>part number</div>
+                    <table id="chapa_item">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>quantidade</th>
+                                <th>chapaId</th>
+                                <th>part_number</th>
+                                <th>status</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
 
-            <div class="item">
-                <div>part number</div>
-                <table id="chapa_item">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>quantidade</th>
-                            <th>chapaId</th>
-                            <th>part_number</th>
-                            <th>status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+                <div class="chapa-item">
+                    chapa part_number
+                    <table id="chapa_chapa">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>fornecedor</th>
+                                <th>cliente</th>
+                                <th>medida</th>
+                                <th>onda</th>
+                                <th>qualidade</th>
+                                <th>vincos</th>
+                                <th>quantidade</th>
+                                <th>estoque</th>
+                                <th>quantidade_recebida</th>
+                                <th>data_compra</th>
+                                <th>data_prevista</th>
+                                <th>data_recebimento</th>
+                                <th>status</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
             </div>
+        </main>
 
-            <div class="chapa-item">
-                chapa part_number
-                <table id="chapa_chapa">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>fornecedor</th>
-                            <th>cliente</th>
-                            <th>medida</th>
-                            <th>onda</th>
-                            <th>qualidade</th>
-                            <th>vincos</th>
-                            <th>quantidade</th>
-                            <th>estoque</th>
-                            <th>quantidade_recebida</th>
-                            <th>data_compra</th>
-                            <th>data_prevista</th>
-                            <th>data_recebimento</th>
-                            <th>status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+        <!-- Modals -->
+        <div id="modalChapaItemMaquina" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('modalChapaItemMaquina')">&times;</span>
+                <div id="modalContentChapaItemMaquina"></div>
             </div>
         </div>
-    </main>
 
-    <!-- Modals -->
-    <div id="modalItemMaquina" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('modalItemMaquina')">&times;</span>
-            <div id="modalContentItemMaquina"></div>
-        </div>
-    </div>
-
-    <div id="modalChapaItem" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('modalChapaItem')">&times;</span>
-            <div id="modalContentChapaItem"></div>
-        </div>
-    </div>
-
-    <div id="modalChapaChapa" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('modalChapaChapa')">&times;</span>
-            <div id="modalContentChapaChapa"></div>
-        </div>
-    </div>
-
-    <div id="modalCriar" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('modalCriar')">&times;</span>
-            <div id="modalContentCriar">
-                <h2>criar ordem de produção</h2>
-                <p>Part Number: 
-                    <select id="partNumberInput">
-                        <option value="">Selecione</option>
-                    </select>
-                </p>
-                <p>Máquina: 
-                    <select id="maquinaInput">
-                        <option value="">Selecione</option>
-                    </select>
-                </p>
-                <p>Ordem: <input type="text" id="ordemInput" value=""></p>
-                <p>Prazo: <input type="date" id="prazoInput" value=""></p>
-                <button onclick="confirmarCriar()">Confirmar</button>
+        <div id="modalChapaItem" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('modalChapaItem')">&times;</span>
+                <div id="modalContentChapaItem"></div>
             </div>
         </div>
-    </div>
 
-    <script>
+        <div id="modalChapaChapa" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('modalChapaChapa')">&times;</span>
+                <div id="modalContentChapaChapa"></div>
+            </div>
+        </div>
 
-        document.addEventListener('DOMContentLoaded', function() {
-            getAll()
-            
-            
-        });
+        <div id="modalCriar" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('modalCriar')">&times;</span>
+                <div id="modalContentCriar">
+                    <h2>criar ordem de produção</h2>
+                    <p>
+                        Part Number:
+                        <select id="partNumberInput">
+                            <option value="">Selecione</option>
+                        </select>
+                    </p>
+                    <p>
+                        Máquina:
+                        <select id="maquinaInput">
+                            <option value="">Selecione</option>
+                        </select>
+                    </p>
+                    <p>
+                        Chapa:
+                        <select id="chapaInput">
+                            <option value="">Selecione</option>
+                        </select>
+                    </p>
+                    <p>Ordem: <input type="text" id="ordemInput" value="" /></p>
+                    <p>Prazo: <input type="date" id="prazoInput" value="" /></p>
+                    <button onclick="confirmarCriar()">Confirmar</button>
+                </div>
+            </div>
+        </div>
 
-        let itemId = "";
-        let maquinaId = "";
-        let part_number = "";  //input
-        let maquina = "";    //input
-        let ordem = "";   //input
-        let prazo = "";   //input
-        let all = "";
-        let allPart_number = [];
-        let allMaquina = [];
-        let quantidadeChapa = '';
-        let chapa = '';
-
-        function procurar() {
-            getAll()
-            const inputProcurarItemId = document.querySelector('.input-procurarbypart_number');
-            const inputProcurarMaquinaId = document.querySelector('.input-procurarByMaquinaId');
-            inputProcurarItemId.style.display = inputProcurarItemId.style.display === 'block' ? 'none' : 'block';
-            inputProcurarMaquinaId.style.display = inputProcurarMaquinaId.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function confirmarProcurarPart_number() {
-            part_number = document.getElementById('procurarInputbypart_number').value;
-            const tabelaChapaChapa = document.querySelector('#chapa_chapa tbody');
-            const tabelaItemMaquina = document.querySelector('#item_maquina tbody');
-            tabelaChapaChapa.innerHTML = '';
-            tabelaItemMaquina.innerHTML = '';
-            idPart_number()
-
-
-            getChapaItem();
-            getItemMaquinaByItemId();
-
-            document.querySelector('.item-maquina').style.display = 'flex';
-            document.querySelector('.chapa-item').style.display = 'flex';
-            document.querySelector('.input-procurarbypart_number').style.display = 'none';
-            document.querySelector('.input-procurarByMaquinaId').style.display = 'none';
-        }
-
-        function confirmarProcurarMaquina() {
-            maquina = document.getElementById('procurarInputByMaquinaId').value;
-            const tabelaChapaItem = document.querySelector('#chapa_item tbody');
-            const tabelaChapaChapa = document.querySelector('#chapa_chapa tbody');
-            const tabelaItemMaquina = document.querySelector('#item_maquina tbody');
-            tabelaChapaItem.innerHTML = '';
-            tabelaChapaChapa.innerHTML = '';
-            tabelaItemMaquina.innerHTML = '';
-            idMaquina()
-
-            itemIdByMaquinaId()
-
-            document.querySelector('.item-maquina').style.display = 'flex';
-            document.querySelector('.item').style.display = 'flex';
-            document.querySelector('.chapa-item').style.display = 'flex';
-            document.querySelector('.input-procurarbypart_number').style.display = 'none';
-            document.querySelector('.input-procurarByMaquinaId').style.display = 'none';
-        }
-
-        function showItemMaquinaProduction(){
-            getAll()
-            console.log(chapa)
-            const itemMaquinaStyle = document.querySelector('.item-maquina')
-            document.querySelector('.item').style.display = 'none';
-            document.querySelector('.chapa-item').style.display = 'none';
-            itemMaquinaStyle.style.display = itemMaquinaStyle.style.display === 'block' ? 'none' : 'block';
-
-            const tabelaItemMaquina = document.querySelector('#item_maquina tbody');
-                    tabelaItemMaquina.innerHTML = '';
-                    all.item_maquinas.forEach(maquina => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${maquina.id_item_maquina}</td>
-                            <td>${maquina.itemId.part_number}</td>
-                            <td>${maquina.maquinaId.name}</td>
-                            <td>${chapa}</td>
-                            <td>${quantidadeChapa}</td>
-                            <td>${maquina.ordem}</td>
-                            <td>${maquina.prazo}</td>
-                            <td>${maquina.status}</td>
-                        `;
-                        row.addEventListener('click', () => handleRowClickItemMaquina(maquina));
-                        tabelaItemMaquina.appendChild(row);
-                    });
-        }
-
-        function adicionar() {
-            getAll()
-
-            
-        }
-
-        function criar() {
-            getAll()
-            document.getElementById('modalCriar').style.display = 'block';
-        }
-
-        function remover() {
-            getAll()
-           
-        }
-
-        function getAll(){
-            fetch('http://localhost:3000/adm/getAll')
-                .then(response => response.json())
-                .then(data => {
-                    all = data;
-                    allMaquina = data.maquinas.map(maquina => maquina.name);
-                    allPart_number = data.items.map(item => item.part_number);
-                    
-
-                    populateSelect('partNumberInput', allPart_number, "part_numbers");
-                    populateSelect('maquinaInput', allMaquina, "maquinas");
-                    populateSelect('procurarInputbypart_number', allPart_number, "part_number"); 
-                    populateSelect('procurarInputByMaquinaId', allMaquina, "maquinas"); 
-                });
-        }
-
-        function populateSelect(selectId, options, name) {
-            const selectElement = document.getElementById(selectId);
-            selectElement.innerHTML = `<option value="">${name}</option>`;
-            options.forEach(option => {
-                const optionElement = document.createElement('option');
-                optionElement.value = option;
-                optionElement.textContent = option;
-                selectElement.appendChild(optionElement);
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                getAll();
             });
-        }
 
-        function confirmarCriar() {
-            part_number = document.getElementById('partNumberInput').value;
-            maquina = document.getElementById('maquinaInput').value;
-            ordem = document.getElementById('ordemInput').value;
-            prazo = document.getElementById('prazoInput').value;
-            status = 'Produção'
-            idPart_number();
-            idMaquina();
-            
-            const data = [{ // Ajuste conforme necessário
-                ordem: ordem,
-                prazo: prazo,
-                maquinaId: maquinaId,
-                itemId: itemId,
-                status: status
-            }];
-            console.log(data)
+            let itemId = "";
+            let maquinaId = "";
+            let part_number = ""; //input
+            let maquina = ""; //input
+            let ordem = ""; //input
+            let prazo = ""; //input
+            let all = "";
+            let allPart_number = [];
+            let allMaquina = [];
+            let quantidade_Chapa = "";
+            let allChapa = "";
+            let itemIdChapas = [];
+            let chapaId = "";
 
-            fetch('http://localhost:3000/adm/add_ordem', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            }).then(response => response.json())
-              .then(data => {
-                  console.log('Success:', data);
-                  closeModal('modalCriar');
-              }).catch((error) => {
-                  console.error('Error:', error);
-              });
-        }
+            function procurar() {
+                getAll();
+                const inputProcurarItemId = document.querySelector(".input-procurarbypart_number");
+                const inputProcurarMaquinaId = document.querySelector(".input-procurarByMaquinaId");
+                inputProcurarItemId.style.display = inputProcurarItemId.style.display === "block" ? "none" : "block";
+                inputProcurarMaquinaId.style.display = inputProcurarMaquinaId.style.display === "block" ? "none" : "block";
+            }
 
-        function idPart_number() {
-            const item = all.items.find(item => item.part_number == part_number);
-            itemId = item.id_item;
-        }
+            function confirmarProcurarPart_number() {
+                part_number = document.getElementById("procurarInputbypart_number").value;
+                const tabelaChapaChapa = document.querySelector("#chapa_chapa tbody");
+                const tabelaItemMaquina = document.querySelector("#chapa_item_maquina tbody");
+                tabelaChapaChapa.innerHTML = "";
+                tabelaItemMaquina.innerHTML = "";
+                idPart_number();
 
-        function idMaquina() {
-            const machine = all.maquinas.find(machine => machine.name == maquina);
-            maquinaId = machine.id;
-        }
+                getChapaItem();
+                getItemMaquinaByItemId();
 
-        function itemIdByMaquinaId(){
-            const items_maquina = all.item_maquinas.filter(item_maquina => 
-                item_maquina.maquinaId.id === maquinaId
-            ).map(item_maquina => item_maquina.itemId.id_item);
-            
-            items_maquina.forEach(item_id =>{
-                itemId = item_id
-                console.log(itemId)
-                getChapaItem()
-                getItemMaquinaByItemId()
-            })
-        }
+                document.querySelector(".chapa-item-maquina").style.display = "flex";
+                document.querySelector(".chapa-item").style.display = "flex";
+                document.querySelector(".input-procurarbypart_number").style.display = "none";
+                document.querySelector(".input-procurarByMaquinaId").style.display = "none";
+            }
 
-        function getChapaItem() {
-            fetch(`http://localhost:3000/adm/chapa_item/${itemId}`)
-                .then(response => response.json())
-                .then(chapas => {
+            function confirmarProcurarMaquina() {
+                maquina = document.getElementById("procurarInputByMaquinaId").value;
+                const tabelaChapaItem = document.querySelector("#chapa_item tbody");
+                const tabelaChapaChapa = document.querySelector("#chapa_chapa tbody");
+                const tabelaChapaItemMaquina = document.querySelector("#chapa_item_maquina tbody");
+                tabelaChapaItem.innerHTML = "";
+                tabelaChapaChapa.innerHTML = "";
+                tabelaChapaItemMaquina.innerHTML = "";
+                idMaquina();
 
-                    chapa = chapas.map(item => item.chapa.id_chapa);
-                    quantidadeChapa = chapas.map(item => item.quantidade);
+                itemIdByMaquinaId();
 
-                    console.log(chapa)
+                document.querySelector(".chapa-item-maquina").style.display = "flex";
+                document.querySelector(".item").style.display = "flex";
+                document.querySelector(".chapa-item").style.display = "flex";
+                document.querySelector(".input-procurarbypart_number").style.display = "none";
+                document.querySelector(".input-procurarByMaquinaId").style.display = "none";
+            }
 
-                    const tabelaChapaChapa = document.querySelector('#chapa_chapa tbody');
-                    chapas.forEach(chapa => {
+            function showProduction() {
+                getAll();
+                const itemMaquinaStyle = document.querySelector(".chapa-item-maquina");
+                document.querySelector(".item").style.display = "none";
+                document.querySelector(".chapa-item").style.display = "none";
+                itemMaquinaStyle.style.display = itemMaquinaStyle.style.display === "block" ? "none" : "block";
 
-                        
-                        quantidadeChapa = chapa.quantidade
-                        //chapa = chapa.chapa.id_chapa
+                const tabelaChapaItemMaquina = document.querySelector("#chapa_item_maquina tbody");
+                tabelaChapaItemMaquina.innerHTML = "";
+                all.chapa_item_maquinas.forEach((ordem) => {
+                    const row = document.createElement("tr");
+                    console.log(ordem);
 
+                    itemId = ordem.item.id_item;
+                    chapaByItemId();
+
+                    row.innerHTML = `
+                            <td>${ordem.id_chapa_item_maquina}</td>
+                            <td>${ordem.item.part_number}</td>
+                            <td>${ordem.maquina.name}</td>
+                            <td>${itemIdChapas}</td>
+                            <td>${ordem.chapa_item.quantidade}</td>
+                            <td>${ordem.ordem}</td>
+                            <td>${ordem.prazo}</td>
+                            <td>${ordem.status}</td>
+                        `;
+                    row.addEventListener("click", () => handleRowClickItemMaquina(ordem));
+                    tabelaChapaItemMaquina.appendChild(row);
+                });
+            }
+
+            function adicionar() {
+                getAll();
+            }
+
+            function criar() {
+                getAll();
+                document.getElementById("modalCriar").style.display = "block";
+            }
+
+            function remover() {
+                getAll();
+                console.log(all);
+            }
+
+            function getAll() {
+                fetch("http://localhost:3000/adm/getAll")
+                    .then((response) => response.json())
+                    .then((data) => {
+                        all = data;
+                        allMaquina = data.maquinas.map((maquina) => maquina.name);
+                        allPart_number = data.items.map((item) => item.part_number);
+                        allchapa = data.chapa_item.map((chapa) => chapa.id);
+
+                        populateSelect("partNumberInput", allPart_number, "part_numbers");
+                        populateSelect("maquinaInput", allMaquina, "maquinas");
+                        populateSelect("chapaInput", allchapa, "chapas");
+                        populateSelect("procurarInputbypart_number", allPart_number, "part_number");
+                        populateSelect("procurarInputByMaquinaId", allMaquina, "maquinas");
+                    });
+            }
+
+            function populateSelect(selectId, options, name) {
+                const selectElement = document.getElementById(selectId);
+                selectElement.innerHTML = `<option value="">${name}</option>`;
+                options.forEach((option) => {
+                    const optionElement = document.createElement("option");
+                    optionElement.value = option;
+                    optionElement.textContent = option;
+                    selectElement.appendChild(optionElement);
+                });
+            }
+
+            function confirmarCriar() {
+                part_number = document.getElementById("partNumberInput").value;
+                maquina = document.getElementById("maquinaInput").value;
+                ordem = document.getElementById("ordemInput").value;
+                prazo = document.getElementById("prazoInput").value;
+                chapa = document.getElementById("chapaInput").value;
+                status = "Produção";
+
+                idPart_number();
+                idMaquina();
+                quantidadeChapa();
+
+                const data = [
+                    {
+                        // Ajuste conforme necessário
+                        ordem: ordem,
+                        prazo: prazo,
+                        maquina: maquinaId,
+                        item: itemId,
+                        chapa: chapaId,
+                        quantidade: quantidade,
+                        status: status,
+                    },
+                ];
+                console.log(data);
+
+                fetch("http://localhost:3000/adm/add_ordem", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(data),
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log("Success:", data);
+                        closeModal("modalCriar");
+                    })
+                    .catch((error) => {
+                        console.error("Error:", error);
+                    });
+            }
+
+            function idPart_number() {
+                const item = all.items.find((item) => item.part_number == part_number);
+                itemId = item.id_item;
+            }
+
+            function idMaquina() {
+                const machine = all.maquinas.find((machine) => machine.name == maquina);
+                maquinaId = machine.id;
+            }
+
+            function itemIdByMaquinaId() {
+                const items_maquina = all.item_maquinas.filter((item_maquina) => item_maquina.maquina.id === maquinaId).map((item_maquina) => item_maquina.item.id_item);
+
+                items_maquina.forEach((item_id) => {
+                    itemId = item_id;
+                    console.log(itemId);
+                    getChapaItem();
+                    getItemMaquinaByItemId();
+                });
+            }
+
+            function quantidadeChapa() {
+                console.log(all.chapa_item.id);
+                const quantidade = all.chapa_item.find((chapa) => chapa.id == chapa);
+                console.log(quantidade);
+                quantidade_Chapa = quantidade;
+            }
+
+            function chapaByItemId() {
+                fetch(`http://localhost:3000/adm/chapa_item/${itemId}`)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        itemIdChapas = data.map((item) => item.chapa.id_chapa);
+
+                        const tabelaChapaChapa = document.querySelector("#chapa_chapa tbody");
+                        data.forEach((chapa) => {
                             // <td>${chapa.id}</td>
                             // <td>${chapa.quantidade}</td>
                             // <td>${chapa.chapa.id_chapa}</td>
@@ -356,8 +368,8 @@
                             // <td>${chapa.item.part_number}</td>
                             // <td>${chapa.item.Status}</td>
 
-                        const rowChapa = document.createElement('tr');
-                        rowChapa.innerHTML = `
+                            const rowChapa = document.createElement("tr");
+                            rowChapa.innerHTML = `
                             <td>${chapa.chapa.id_chapa}</td>
                             <td>${chapa.chapa.fornecedor}</td>
                             <td>${chapa.chapa.numero_cliente}</td>
@@ -370,83 +382,84 @@
                             <td>${chapa.chapa.quantidade_recebida}</td>
                             <td>${chapa.chapa.data_compra}</td>
                             <td>${chapa.chapa.data_prevista}</td>
-                            <td>${chapa.chapa.data_recebimento || ''}</td>
+                            <td>${chapa.chapa.data_recebimento || ""}</td>
                             <td>${chapa.chapa.status}</td>
                         `;
-                        rowChapa.addEventListener('click', () => handleRowClickChapaChapa(chapa.chapa));
-                        tabelaChapaChapa.appendChild(rowChapa);
+                            rowChapa.addEventListener("click", () => handleRowClickChapaChapa(chapa.chapa));
+                            tabelaChapaChapa.appendChild(rowChapa);
+                        });
                     });
-                });
-        }
+            }
 
-        function getItemMaquinaByItemId() {
-            fetch(`http://localhost:3000/adm/item_maquina/${itemId}`)
-                .then(response => response.json())
-                .then(maquinas => {
-                    const tabelaItemMaquina = document.querySelector('#item_maquina tbody');
-                    maquinas.forEach(maquina => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${maquina.id_item_maquina}</td>
-                            <td>${maquina.itemId.part_number}</td>
-                            <td>${maquina.maquinaId.name}</td>
+            function getItemMaquinaByItemId() {
+                fetch(`http://localhost:3000/adm/item_maquina/${itemId}`)
+                    .then((response) => response.json())
+                    .then((maquinas) => {
+                        const tabelaChapaItemMaquina = document.querySelector("#chapa_item_maquina tbody");
+                        maquinas.forEach((maquina) => {
+                            const row = document.createElement("tr");
+                            row.innerHTML = `
+                            <td>${maquina.id_chapa_item_maquina}</td>
+                            <td>${maquina.item.part_number}</td>
+                            <td>${maquina.maquina.name}</td>
                             <td>${chapa}</td>
-                            <td>${quantidadeChapa}</td>
+                            <td>${quantidade_Chapa}</td>
                             <td>${maquina.ordem}</td>
                             <td>${maquina.prazo}</td>
                             <td>${maquina.status}</td>
                         `;
-                        row.addEventListener('click', () => handleRowClickItemMaquina(maquina));
-                        tabelaItemMaquina.appendChild(row);
+                            row.addEventListener("click", () => handleRowClickItemMaquina(maquina));
+                            tabelaChapaItemMaquina.appendChild(row);
+                        });
                     });
-                });
-        }
+            }
 
-        // Funções para abrir e fechar os modais
-        function openModal(modalId, contentId, contentHtml) {
-            const modal = document.getElementById(modalId);
-            const content = document.getElementById(contentId);
-            content.innerHTML = contentHtml;
-            modal.style.display = "block";
-        }
+            // Funções para abrir e fechar os modais
+            function openModal(modalId, contentId, contentHtml) {
+                const modal = document.getElementById(modalId);
+                const content = document.getElementById(contentId);
+                content.innerHTML = contentHtml;
+                modal.style.display = "block";
+            }
 
-        function closeModal(modalId) {
-            const modal = document.getElementById(modalId);
-            modal.style.display = "none";
-        }
+            function closeModal(modalId) {
+                const modal = document.getElementById(modalId);
+                modal.style.display = "none";
+            }
 
-        // Função para preencher e abrir o modal para item_maquina
-        function handleRowClickItemMaquina(data) {
-            const contentHtml = `
-                <p>ID: ${data.id_item_maquina}</p>
-                <p>Part Number: ${data.itemId.part_number}</p>
-                <p>Maquina: ${data.maquinaId.name}</p>
+            // Função para preencher e abrir o modal para item_maquina
+            function handleRowClickItemMaquina(data) {
+                const contentHtml = `
+                <p>ID: ${data.id_chapa_item_maquina}</p>
+                <p>Part Number: ${data.item.part_number}</p>
+                <p>Maquina: ${data.maquina.name}</p>
+                <p>Maquina: ${data.chapa_item.id}</p>
                 <p>Ordem: ${data.ordem}</p>
                 <p>Data Termino: ${data.prazo}</p>
             `;
-            openModal('modalItemMaquina', 'modalContentItemMaquina', contentHtml);
-        }
+                openModal("modalItemMaquina", "modalContentItemMaquina", contentHtml);
+            }
 
-        // Função para preencher e abrir o modal para chapa_item
-        function handleRowClickChapaItem(data) {
-            const contentHtml = `
-                <p>ID: ${data.id}</p>
-                <p>Quantidade: ${data.quantidade}</p>
-                <p>Chapa ID: ${data.chapa.id_chapa}</p>
-                <p>Item ID: ${data.item.id_item}</p>
-                <p>Part Number: ${data.item.part_number}</p>
-                <p>Status: ${data.item.Status}</p>
-            `;
-            openModal('modalChapaItem', 'modalContentChapaItem', contentHtml);
-        }
+            // Função para preencher e abrir o modal para chapa_item
+            // function handleRowClickChapaItem(data) {
+            //     const contentHtml = `
+            //         <p>ID: ${data.id}</p>
+            //         <p>Quantidade: ${data.quantidade}</p>
+            //         <p>Chapa ID: ${data.chapa.id_chapa}</p>
+            //         <p>Item ID: ${data.item.id_item}</p>
+            //         <p>Part Number: ${data.item.part_number}</p>
+            //         <p>Status: ${data.item.Status}</p>
+            //     `;
+            //     openModal('modalChapaItem', 'modalContentChapaItem', contentHtml);
+            // }
 
-        // Função para preencher e abrir o modal para chapa_chapa
-        function handleRowClickChapaChapa(data) {
-            const contentHtml = `
+            // Função para preencher e abrir o modal para chapa_chapa
+            function handleRowClickChapaChapa(data) {
+                const contentHtml = `
                 <p>ID: ${data.id_chapa}</p>
                 <p>Data Compra: ${data.data_compra}</p>
                 <p>Data Prevista: ${data.data_prevista}</p>
-                <p>Data Recebimento: ${data.data_recebimento || ''}</p>
+                <p>Data Recebimento: ${data.data_recebimento || ""}</p>
                 <p>Fornecedor: ${data.fornecedor}</p>
                 <p>Gramatura: ${data.gramatura}</p>
                 <p>Medida: ${data.medida}</p>
@@ -464,8 +477,8 @@
                 <p>Valor total: ${data.valor_total}</p>
                 <p>Valor Unitário: ${data.valor_unitario}</p>
             `;
-            openModal('modalChapaChapa', 'modalContentChapaChapa', contentHtml);
-        }
-    </script>
-</body>
+                openModal("modalChapaChapa", "modalContentChapaChapa", contentHtml);
+            }
+        </script>
+    </body>
 </html>

@@ -33,7 +33,6 @@ node_modules/**/*.node
 /qodana.yaml
 
 # banco de dados
-**/estoque.db
-Server/estoque.db
-.secrets
-.db
+*.sqlite
+*.secrets
+*.db

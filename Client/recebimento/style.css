@@ -1,0 +1,80 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh; /* Faz o corpo da página ocupar toda a altura da tela */
+    overflow: hidden; /* Remove a barra de rolagem se não for necessário */
+}
+
+#button-container {
+    width: 100%;
+    padding: 10px 0;
+    background-color: #f5f5f5;
+    text-align: left;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: fixed; /* Fixa o contêiner no topo */
+    top: 0; /* Posição no topo */
+    left: 0; /* Alinha à esquerda */
+    z-index: 1000; /* Garante que fique sobre outros elementos */
+}
+
+#drop-zone {
+    width: 80%;
+    height: 300px;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+}
+
+#tables {
+    width: 100%;
+    height: calc(100% - 50px); /* Ajusta a altura considerando o espaço para o botão */
+    overflow: auto; /* Permite a rolagem dentro das tabelas se necessário */
+    margin-top: 40px; /* Espaço para o contêiner do botão */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse; /* Colapsa as bordas das células para uma borda única */
+    background-color: #f5f5f5; /* Fundo claro para a tabela */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Sombra leve ao redor da tabela para melhor definição */
+}
+
+th, td {
+    text-align: center; /* Centraliza texto em cabeçalhos e células */
+    padding: 8px 10px; /* Espaço adequado dentro das células */
+}
+
+input[type="text"], input[type="date"], select {
+    width: 100%; /* Faz os inputs ocuparem toda a célula */
+    border: none; /* Remove as bordas dos inputs */
+    text-align: center; /* Centraliza o texto dentro dos inputs */
+    background-color: transparent; /* Remove o fundo para igualar ao fundo da célula */
+    padding: 5px; /* Espaçamento interno para conforto visual */
+    box-sizing: border-box; /* Inclui padding no cálculo de width */
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #335c30;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+button:hover {
+    background-color: #2b4d28;
+}
+
+.update-button {
+    display: block;
+    margin: auto;
+}

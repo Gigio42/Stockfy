@@ -2,15 +2,15 @@
    Header Styles
    ====================================== */
 .header-custom {
-    display: flex;
-    color: #1a1a1a;
-    /* Cor do texto padrão para o header */
-    border-bottom: solid 1px #6a6a6a45;
-    background-color: #d4d4d4;
-    height: 5rem;
-    width: 100%;
-    padding-left: 1.5rem;
-    border-radius: 0 !important;
+  display: flex;
+  color: #1a1a1a;
+  /* Cor do texto padrão para o header */
+  border-bottom: solid 1px #6a6a6a45;
+  background-color: #d4d4d4;
+  height: 5rem;
+  width: 100%;
+  padding-left: 1.5rem;
+  border-radius: 0 !important;
 }
 
 .cardfora {
@@ -67,39 +67,36 @@ h1 {
    Navbar Styles
    ====================================== */
 #aside {
-
-    display: flex;
-    background: #e6e6e6;
-    /* Cor de fundo para o aside no modo escuro */
-    min-height: 70%;
-    overflow-y: auto;
-    /* Permite rolagem se o conteúdo for maior do que a altura da página */
-    padding: 0;
-    border-radius: 0 !important;
+  display: flex;
+  background: #e6e6e6;
+  /* Cor de fundo para o aside no modo escuro */
+  min-height: 70%;
+  overflow-y: auto;
+  /* Permite rolagem se o conteúdo for maior do que a altura da página */
+  padding: 0;
+  border-radius: 0 !important;
 }
 
 .logo {
   width: 7rem;
 }
 
-
 .logo-container {
-
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    background: #e6e6e6;
-    height: 5rem;
-    border: solid 1px #6a6a6a45;
-    align-items: center;
-    width: 100%;
-    border-left: none;
-    border-radius: 0 !important;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  background: #e6e6e6;
+  height: 5rem;
+  border: solid 1px #6a6a6a45;
+  align-items: center;
+  width: 100%;
+  border-left: none;
+  border-radius: 0 !important;
 }
 
 .navbar {
   display: flex;
-  margin-top: 3rem;
+  margin-top: 4rem;
   justify-content: center;
 }
 
@@ -173,8 +170,8 @@ li:hover {
 }
 
 .imgicon {
-    width: 1.5rem;
-    border-radius: 0 !important;
+  width: 1.5rem;
+  border-radius: 0 !important;
 }
 
 html {
@@ -211,13 +208,13 @@ body {
 }
 
 #container {
-    max-height: 75vh;
-    overflow-y: auto;
-    /* Adiciona barra de rolagem vertical se necessário */
+  max-height: 100vh;
+  overflow-y: auto;
+  /* Adiciona barra de rolagem vertical se necessário */
 }
 
 .itemContainer {
-    padding-bottom: 0 !important;
+  padding-bottom: 0 !important;
 }
 
 /* ======================================
@@ -308,12 +305,12 @@ body {
 }
 
 .modal-content {
-    background-color: #252525;
-    margin: 10% auto;
-    padding: 20px;
-    border: none !important;
-    width: 80%;
-    overflow: auto;
+  background-color: #252525;
+  margin: 10% auto;
+  padding: 20px;
+  border: none !important;
+  width: 80%;
+  overflow: auto;
 }
 
 .modal-content input {
@@ -351,19 +348,18 @@ formulário
 */
 
 .grouping-form {
-    position: fixed;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    justify-content: space-between;
-    background: #333333;
-    padding: 20px;
-    border-radius: 1.5rem;
-    color: #fff;
-    margin-bottom: 1rem;
-    width: 40%;
-    z-index: 2;
-
+  position: fixed;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  justify-content: space-between;
+  background: #333333;
+  padding: 20px;
+  border-radius: 1.5rem;
+  color: #fff;
+  margin-bottom: 1rem;
+  width: 40%;
+  z-index: 2;
 }
 
 .grouping-form label {
@@ -458,7 +454,7 @@ formulário
 }
 
 .text-left {
-    padding-bottom: 0 !important;
+  padding-bottom: 0 !important;
 }
 
 /* ======================================
@@ -472,8 +468,7 @@ formulário
   border: none;
 }
 
-.card-body {
-}
+
 
 .card-div {
   border-radius: 1.5rem !important;
@@ -492,20 +487,19 @@ formulário
   font-size: 1rem;
 }
 
-
 input[type="checkbox"] {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    width: 25px;
-    height: 25px;
-    background-color: #2d2d2d;
-    border: 2px solid #4e4e4e;
-    border-radius: 4px;
-    position: relative;
-    cursor: pointer;
-    align-items: center;
-    align-content: center;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background-color: #2d2d2d;
+  border: 2px solid #4e4e4e;
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+  align-items: center;
+  align-content: center;
 }
 
 .value-row {
@@ -546,32 +540,39 @@ input[type="checkbox"] {
   background-color: #007bff;
 }
 
-/* valores dentro dos cards relacionados a chapas */
-.card-value-div {
-  text-align: center;
-  width: 100px;
-  padding: 5px;
-  margin-right: 10px;
-  margin-left: 10px;
+@media (max-width: 600px) {
+  .card-value-div {
+    overflow: visible; /* Replaces 'auto' */
+    text-overflow: initial; /* Replaces 'ellipsis' */
+    white-space: normal; /* Replaces 'nowrap' */
+    scrollbar-width: auto; /* Replaces 'none' for Firefox */
+    -ms-overflow-style: auto; /* Replaces 'none' for Edge */
+  }
+}
+
+/* chrome, safari e opera */
+.card-value-div::-webkit-scrollbar {
+  display: none;
 }
 
 /* CHECKBOX o checkbox do card de chapas principal, pelo problema de checkbox do navegador
 talvez tenha algumas coisas nesses primeiros 3 estilos que mudam nada e podem ser excluidos */
 .card-checkbox {
-    display: inline-block;
-    border-radius: 0.5rem !important;
+  display: inline-block;
+  border-radius: 0.5rem !important;
 }
 
-.card-checkbox:checked+.card-checkbox::after {
-    display: block;
-    width: 30px;
-    height: 30px;
+.card-checkbox:checked + .card-checkbox::after {
+  display: block;
+  width: 30px;
+  height: 30px;
 
-    background-color: #4d4d4d;
-    position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  background-color: #4d4d4d;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 
 .card-checkbox:checked + .card-checkbox::after {
   display: block;
@@ -614,52 +615,180 @@ input[type="checkbox"]:checked::before {
 
 /* INFO botão de dropdown pra mostrar mais informações, usado em item e no chapa principal */
 .card-info-button {
-    background: transparent;
-    border: none !important;
-    color: #fff;
-    transition: background 0.3s ease;
-    font-size: 1em;
-    grid-column: span 2;
+  background: transparent;
+  border: none !important;
+  color: #fff;
+  transition: background 0.3s ease;
+  font-size: 1em;
+  grid-column: span 2;
+  padding: 1rem;
 }
 
 .card-info-button:hover {
-    background: #3b3b3b;
-    color: #fff;
+  background: #3b3b3b;
+  color: #fff;
 }
 
 .card-info-button:focus {
-    background:transparent;
-    box-shadow: none !important;
-
+  background: transparent;
+  box-shadow: none !important;
 }
 
 .card-info-button:active {
-    background: #3b3b3b !important;
-    box-shadow: none !important;
-
+  background: #3b3b3b !important;
+  box-shadow: none !important;
 }
 
-
-.bg-warning {
-    background: #ff262656 !important;
-    border: 1px solid #ff000098;
-    color: #ffa4a4;
-    border-radius: 0.7rem  !important;
-    padding: 10px;
+.card-status-comprado{
+  background: #ff262656 !important;
+  border: 1px solid #ff000098;
+  color: #ffa4a4;
+  border-radius: 0.7rem !important;
+  padding: 10px;
 }
 
-.bg-primary {
-    background: #6cff5823 !important;
-    color: #d0ffca;
-    border: solid 1px #c2ffba3d;
-    padding: 10px;
+.card-status-reservado {
+  background: #6cff5823 !important;
+  color: #d0ffca;
+  border: solid 1px #c2ffba3d;
+  padding: 10px;
+}
+.card-status-reservado:hover {
+  color: #d0ffca !important;
+}
+/* botão de fade pro card item pra n clicar em deletar */
+.card-disabled-button {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
-.bg-primary:hover{
-    color: #d0ffca !important;
+/* LUGHTMODE CARD Montei por graça pode tirar se quiser */
+.light-mode .card-div {
+  background-color: #ffffff;
 }
 
+.light-mode .card-value-row {
+  color: #bdb8b8;
+}
 
-* {
-    border-radius: 0.7rem !important; /* Ou qualquer outro valor que você preferir */
+.light-mode .card-body {
+  background-color: #efefef;
+}
+.light-mode .card-body.d-flex {
+  background-color: #f0f0f0;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+/* o treco principal do card */
+.light-mode .body-div {
+  background-color: #efefef;
+}
+/* fundo do modal */
+.light-mode .modal-content {
+  background-color: #f8f8f8;
+}
+/* xizin de fechar modal */
+.light-mode .close {
+  color: #333;
+}.light-mode .card-title {
+  color: #333;
+}
+
+.light-mode .chapa-card {
+  background-color: #e0e0e0;
+}
+
+.light-mode .card-status {
+  color: #333;
+}
+
+.light-mode .card-value-div {
+  color: #333;
+}
+
+.light-mode .card-info-button,
+.light-mode .card-info-button:hover,
+.light-mode .card-info-button:focus,
+.light-mode .card-info-button:active {
+  color: #333;
+  background: #e0e0e0;
+}
+
+.light-mode .bg-warning {
+  background: #fff3cd !important;
+  border: 1px solid #ffcc00;
+  color: #333;
+}
+
+.light-mode .bg-primary {
+  background: #d4edda !important;
+  color: #333;
+  border: solid 1px #c3e6cb;
+}
+
+.light-mode .bg-primary:hover {
+  color: #333 !important;
+}
+
+.light-mode input[type="checkbox"] {
+  background-color: #e0e0e0;
+  border: 2px solid #ccc;
+}
+
+.light-mode input[type="checkbox"]:checked {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.light-mode input[type="checkbox"]:checked::before {
+  color: #fff;
+}
+
+/* LIGHT MODE FORM pode tirar tb, fiz por graça */
+.light-mode .grouping-form {
+  background: #fafafa;
+  color: #333;
+}
+
+.light-mode .grouping-form label {
+  color: #333;
+}
+
+.light-mode .grouping-form input[type="text"],
+.light-mode .grouping-form select {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.light-mode .grouping-form input[type="text"]:hover,
+.light-mode .grouping-form select:hover {
+  background: #d0d0d0;
+  color: #333;
+}
+
+.light-mode .agrupar-button {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.light-mode .updade {
+  background: #d4edda;
+  color: #333;
+  border: solid 1px #c3e6cb;
+}
+
+.light-mode .updade:hover {
+  background: #c3e6cb;
+  color: #333;
+}
+
+.light-mode .checkbox-button {
+  background: #e0e0e0;
+  border: 1px solid #ccc;
+  color: #333;
+}
+
+.light-mode .checkbox-button[data-checked="true"] {
+  background-color: #007bff !important;
+  border: #007bff;
+  color: #fff !important;
 }

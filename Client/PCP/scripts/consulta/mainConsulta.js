@@ -1,6 +1,6 @@
 import { createModalContent } from "../utils/modalUtil.js";
 import { ItemCard } from "./ItemCard.js";
-import { fetchItems, deleteEntity } from "../utils/connection.js";
+import { fetchItems } from "../utils/connection.js";
 
 export class ItemModal {
   constructor() {
@@ -30,7 +30,7 @@ export class ItemModal {
   }
 
   createSearchBar() {
-    const searchBar = document.createElement("input");
+    const searchBar = document.createElement("input")
     searchBar.type = "search";
     searchBar.id = "searchBar";
     searchBar.placeholder = "Procurar PART NUMBER";
@@ -60,7 +60,6 @@ export class ItemModal {
     const fragment = document.createDocumentFragment();
 
     const searchContainer = document.createElement("div");
-    searchContainer.classList.add("agrupar-button");
     searchContainer.style.display = "flex";
     searchContainer.style.justifyContent = "space-between";
     searchContainer.style.marginBottom = "10px";

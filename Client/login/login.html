@@ -1,67 +1,62 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de Login</title>
-    <!-- CSS do Bootstrap -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="login.css">
-
-</head>
-<body>
-
-            <h1 class="p-5 text-center">Bem-vindo ao espaço de gerenciamento de estoque</h1>
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="espaço-login col-12 col-sm-8 col-md-6">
-                        <h1 class="text-center mb-4">Faça o seu login</h1>
-                        <div class="card">
-                            <div class="card-body">
-                                <form>
-                                    <div class="form-group">
-                                        <select class="form-control" id="selectMaquina" required>
-                                            <option value="">Máquina</option>
-                                            <option value="Corte e vinco">Corte e vinco</option>
-                                            <option value="Riscador">Riscador</option>
-                                            <option value="Grampeador">Grampeador</option>
-                                            <option value="Impressora">Impressora</option>
-                                            <option value="Rotativa">Rotativa</option>
-                                            <option value="Coladeira">Coladeira</option>
-                                            <option value="Serra">Serra</option>
-                                            <option value="Prensa">Prensa</option>
-                                            <option value="Corte e vinco plana">Corte e vinco plana</option>
-                                            <option value="Corte e vinco 3">Corte e vinco 3</option>
-                                            <option value="Corte e vinco 4">Corte e vinco 4</option>
-                                            <option value="Corte e vinco 5">Corte e vinco 5</option>
-                                            <option value="Corte e vinco 7">Corte e vinco 7</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-
-                                        <input type="text" class="form-control" id="username"
-                                               placeholder="Nome de usuário" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="password" class="form-control" id="password"
-                                               placeholder="Senha" required>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary btn-block" id="login">Login</button>
-                                </form>
-                            </div>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Página de Login</title>
+        <!-- CSS do Bootstrap -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="login.css" />
+    </head>
+    <body>
+        <h1 class="p-5 text-center">Bem-vindo ao espaço de gerenciamento de estoque</h1>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="espaço-login col-12 col-sm-8 col-md-6">
+                    <h1 class="text-center mb-4">Faça o seu login</h1>
+                    <div class="card">
+                        <div class="card-body">
+                            <form>
+                                <div class="form-group">
+                                    <select class="form-control" id="selectMaquina" required>
+                                        <option value="">Máquina</option>
+                                        <option value="Corte e vinco">Corte e vinco</option>
+                                        <option value="Riscador">Riscador</option>
+                                        <option value="Grampeador">Grampeador</option>
+                                        <option value="Impressora">Impressora</option>
+                                        <option value="Rotativa">Rotativa</option>
+                                        <option value="Coladeira">Coladeira</option>
+                                        <option value="Serra">Serra</option>
+                                        <option value="Prensa">Prensa</option>
+                                        <option value="Corte e vinco plana">Corte e vinco plana</option>
+                                        <option value="Corte e vinco 3">Corte e vinco 3</option>
+                                        <option value="Corte e vinco 4">Corte e vinco 4</option>
+                                        <option value="Corte e vinco 5">Corte e vinco 5</option>
+                                        <option value="Corte e vinco 7">Corte e vinco 7</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="username" placeholder="Nome de usuário" required />
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" class="form-control" id="password" placeholder="Senha" required />
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block" id="login">Login</button>
+                            </form>
                         </div>
                     </div>
+                </div>
 
-                    <div class="dark-mode-toggle">
-                        <input type="checkbox" id="darkModeToggle" />
-                        <label for="darkModeToggle"></label>
-                      </div>
-      
-
+                <div class="dark-mode-toggle">
+                    <input type="checkbox" id="darkModeToggle" />
+                    <label for="darkModeToggle"></label>
+                </div>
+            </div>
+        </div>
 
         <!-- jQuery e JS do Bootstrap -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
         <script src="login.js"></script>
-</body>
+    </body>
 </html>

@@ -1,0 +1,100 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Conjugacoes {
+  id_conjugacoes Int     @id @default(autoincrement())
+  medida         String
+  usado          Boolean @default(false)
+
+  chapaId Int
+  chapa   Chapas @relation(fields: [chapaId], references: [id_chapa])
+
+  @@index([chapaId])
+}
+
+model Chapas {
+  id_chapa              Int     @id @default(autoincrement())
+  id_compra             Int     @default(0)
+  numero_cliente        Int     @default(0)
+  fornecedor            String?
+  comprador             String?
+  unidade               String?
+  qualidade             String
+  medida                String?
+  largura               Int?
+  comprimento           Int?
+  quantidade_comprada   Int?    @default(0)
+  quantidade_recebida   Int?    @default(0)
+  quantidade_estoque    Int?    @default(0)
+  quantidade_disponivel Int?    @default(0)
+  onda                  String?
+  coluna                Float?
+  vincos                String?
+  gramatura             Float?
+  peso_total            Float?
+  valor_unitario        String?
+  valor_total           String?
+  status                String?
+  data_compra           String?
+  data_prevista         String?
+  data_recebimento      String?
+
+  items       Chapa_Item[]
+  conjugacoes Conjugacoes[]
+
+  @@unique([id_chapa, id_compra])
+}
+
+model Chapa_Item {
+  id_chapa_item Int     @id @default(autoincrement())
+  quantidade    Int     @default(0)
+  terminado     Boolean @default(false)
+  chapaId       Int
+  itemId        Int
+  chapa         Chapas  @relation(fields: [chapaId], references: [id_chapa])
+  item          Item    @relation(fields: [itemId], references: [id_item])
+}
+
+model Item {
+  id_item     Int            @id @default(autoincrement())
+  part_number String         @unique @default("0")
+  status      String         @default("")
+  chapas      Chapa_Item[]
+  maquinas    Item_Maquina[]
+}
+
+model Item_Maquina {
+  id_item_maquina Int     @id @default(autoincrement())
+  ordem           Int?
+  prazo           String?
+  maquinaId       Int
+  itemId          Int
+  maquina         Maquina @relation(fields: [maquinaId], references: [id_maquina])
+  Item            Item    @relation(fields: [itemId], references: [id_item])
+}
+
+model Maquina {
+  id_maquina Int            @id @default(autoincrement())
+  nome       String         @default("")
+  items      Item_Maquina[]
+  usuarios   Usuarios[]
+}
+
+model Usuarios {
+  id_usuario Int    @id @default(autoincrement())
+  username   String
+  password   String
+
+  maquinas Maquina[]
+
+  @@index([id_usuario])
+}
