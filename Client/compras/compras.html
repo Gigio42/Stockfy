@@ -4,7 +4,6 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Compras</title>
-        <!-- Adicionando o Bootstrap -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
         <link rel="stylesheet" href="compras.css" />
         <!-- Inclua o CSS do Flatpickr -->
@@ -25,7 +24,9 @@
                 <option value="penha">Penha</option>
                 <option value="fernandez">Fernandez</option>
                 <option value="irani">Irani</option>
+                <option value="Adicionar Manualmente">Adicionar Manualmente</option>
             </select>
+
             <h1 class="text-center mt-4">Bem-vindo à página de compras</h1>
         </div>
 
@@ -39,12 +40,13 @@
                     <div class="fecharbtn d-flex justify-content-between align-items-center">
                         <h2>Confirme as informações dos itens que chegaram</h2>
                         <!-- Adicione a mesma classe ao botão de fechar -->
-                        <button id="addChapa" class="btn addChapa btn-primary">Adicionar chapa manualmente</button>
+
                         <button id="backButton" class="btn voltar btn-primary closeButton">Voltar</button>
                     </div>
                     <!-- Tabela para mostrar os dados -->
                     <div class="table-container">
                         <table id="dataTable" class="table mt-4"></table>
+                        <div id="form-container"></div>
                     </div>
                     <div class="btninferior mt-4 d-flex justify-content-end">
                         <div class="date-input-container">
@@ -56,6 +58,79 @@
                             <pre id="jsonContent"></pre>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div id="mModal" class="modal">
+            <div class="modal-content-m">
+                <div class="fecharbtn d-flex justify-content-between align-items-center">
+                    <h2>Adcione as informações dos itens que chegaram</h2>
+                    <button id="backButton" class="btn voltar btn-primary closeButton">Voltar</button>
+                </div>
+                <div class="formAndcard">
+                    <div id="form-container">
+                        <form id="purchaseForm">
+                            <div class="form-group">
+                                <input type="text" id="customerNumber" name="customerNumber" class="form-control inputform" placeholder="Número Cliente" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="quantity" name="quantity" class="form-control inputform" placeholder="Quantidade Comprada" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="quality" name="quality" class="form-control inputform" placeholder="Qualidade" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="wave" name="wave" class="form-control inputform" placeholder="Onda" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="weight" name="weight" class="form-control inputform" placeholder="Gramatura" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="totalWeight" name="totalWeight" class="form-control inputform" placeholder="Peso Total" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="unitPrice" name="unitPrice" class="form-control inputform" placeholder="Valor Unitário" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="totalPrice" name="totalPrice" class="form-control inputform" placeholder="Valor Total" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="width" name="width" class="form-control inputform" placeholder="Largura" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="length" name="length" class="form-control inputform" placeholder="Comprimento" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="creases" name="creases" class="form-control inputform" placeholder="Vincos" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="buyer" name="buyer" class="form-control inputform" placeholder="Comprador" />
+                            </div>
+                            <div class="form-group">
+                                <input type="date" id="purchaseDate" name="purchaseDate" class="form-control inputform" placeholder="Data Compra" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="supplier" name="supplier" class="form-control inputform" placeholder="Fornecedor" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="purchaseID" name="purchaseID" class="form-control inputform" placeholder="ID Compra" />
+                            </div>
+                            <div class="form-group">
+                                <button id="addPlateButton" type="button" class="btn btn-primary">Adicionar Chapa</button>
+                            </div>
+                            <button id="confirmEditButton" style="display: none;">Confirmar Edição</button>
+
+                        </form>
+                    </div>
+                    <div id="cardsContainer" class="cardsContainer"></div>
+                </div>
+                <div class="btninferior mt-4 d-flex justify-content-end">
+                    <div class="date-input-container">
+                        <input type="text" id="expectedDateManual" placeholder="Data Prevista" />
+                    </div>
+                    <button id="sendbutton" class="btn btn-success mr-2 enviarManual">Enviar</button>
                 </div>
             </div>
         </div>
@@ -149,6 +224,7 @@
                     $("#dataTable").html("");
                     $("#jsonContent").text("");
                     $("#myModal").modal("hide");
+                    $("#mModal").modal("hide");
                 }
 
                 $("#backButton").on("click", function () {
@@ -156,10 +232,12 @@
                     window.location.reload(); // Recarrega a página
                 });
 
-                // Evento de clique para fechar o modal de erro e o modal principal
+                // Evento de clique para fechar o modal mModal e recarregar a página
                 $(".closeButton").on("click", function () {
                     $("#errorModal").hide();
                     $("#myModal").hide();
+                    $("#mModal").hide();
+                    window.location.reload(); // Recarrega a página
                 });
 
                 // Função para carregar o script correspondente ao fornecedor selecionado
@@ -174,6 +252,10 @@
                     const fornecedorSelecionado = $(this).val();
                     if (!fornecedorSelecionado) {
                         showNotification("Por favor, selecione um fornecedor.", "error");
+                        return;
+                    }
+                    if (fornecedorSelecionado === "Adicionar Manualmente") {
+                        carregarScript("adicionar_manualmente.js");
                         return;
                     }
                     carregarScriptParaFornecedor(fornecedorSelecionado);
@@ -205,6 +287,9 @@
                     }
 
                     const script = document.createElement("script");
+                    script.onload = function () {
+                        console.log("Script carregado:", url);
+                    };
                     script.src = url;
                     script.setAttribute("data-fornecedor", "");
                     document.head.appendChild(script);

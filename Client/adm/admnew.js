@@ -29,7 +29,6 @@ async function fetchMaquinas() {
       let allMaquina = document.getElementById('allMaquina');
       let cardMaquina = document.createElement('div');
       cardMaquina.className = 'cardMaquina';
-      cardMaquina.id = 'cardMaquina';
 
       // Criar o elemento de texto para o nome da máquina
       let maquinaName = document.createElement('span');
@@ -46,7 +45,6 @@ async function fetchMaquinas() {
 
       // Adicionar o elemento de imagem ao card
       cardMaquina.appendChild(svgIcon);
-
       // Adicionar o card ao contêiner
       allMaquina.appendChild(cardMaquina);
     });
@@ -91,7 +89,59 @@ document.getElementById('myModal').addEventListener('click', function (event) {
 
 // Adiciona um evento de clique ao botão de fechar para fechar o modal
 document.addEventListener('click', function (event) {
-  if (event.target.classList.contains('close')) {
+
+  if (event.target.className === 'close') {
     closeModal();
   }
 });
+async function fetchitens() {
+  try {
+    const response = await axios.get('http://localhost:3000/adm/items/chapas');
+    const itens = response.data;
+
+    console.log(itens); // Verifique se os dados estão corretos
+
+    let reservados = document.getElementById('reservados');
+
+    // Verifique se o contêiner existe
+    if (!reservados) {
+      console.error('Elemento #reservados não encontrado');
+      return;
+    }
+
+    itens.forEach(item => {
+      let card = document.createElement('div');
+      card.className = 'card';
+
+      // Criar o elemento de texto para o part_number
+      let partNumberInfo = document.createElement('h3');
+      partNumberInfo.textContent = `${item.part_number}`;
+      card.appendChild(partNumberInfo);
+
+      // Iterar sobre as chapas e criar elementos para a medida e quantidade
+      item.chapas.forEach(chapa => {
+        let subcard = document.createElement('div');
+        subcard.className = 'subcard';
+
+        let chapaInfo = document.createElement('p');
+        chapaInfo.textContent = `Medida: ${chapa.medida} | Quantidade: ${chapa.quantidade_comprada}`;
+        subcard.appendChild(chapaInfo);
+
+        card.appendChild(subcard);
+      });
+
+      // Adicionar evento de clique ao card para expandir/contrair os subcards
+      card.addEventListener('click', () => {
+        card.classList.toggle('expanded');
+      });
+
+      // Adicionar o card ao contêiner
+      reservados.appendChild(card);
+    });
+  } catch (error) {
+    console.error('Erro ao recuperar os itens!', error);
+  }
+}
+
+fetchitens();
+
