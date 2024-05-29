@@ -1,7 +1,10 @@
 import Maquina from "../Models/Maquina.js";
 
 class AdmController {
-  constructor() {}
+  constructor(prisma) {
+    this.prisma = prisma;
+  }
+
 
   async getMaquina() {
     const maquinas = await Maquina.findMany();

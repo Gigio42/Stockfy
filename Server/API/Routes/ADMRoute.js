@@ -23,6 +23,18 @@ async function admRoute(fastify, options) {
       reply.code(500).send({ message: "Error retrieving data from SQLite database", error: err.message });
     }
   });
+
+  fastify.get("/items/chapas", async (request, reply) => {
+    try {
+      const chapas = await admController.getChapasInItems();
+      reply.send(chapas);
+    } catch (err) {
+      console.error(err); // Registrar o erro no console do servidor
+      reply.code(500).send({ message: "Internal Server Error" });
+    }
+  });  
+    
+  
 }
 
 export default admRoute;
