@@ -19,7 +19,7 @@ async function main() {
   ];
 
   for (const nome of maquinas) {
-    const existingMaquina = await prisma.maquina.findUnique({
+    const existingMaquina = await prisma.maquina.findFirst({
       where: {
         nome: nome,
       },
