@@ -32,9 +32,7 @@ async function admRoute(fastify, options) {
       console.error(err); // Registrar o erro no console do servidor
       reply.code(500).send({ message: "Internal Server Error" });
     }
-  });  
-    
-  
+  });
 }
 
 export default admRoute;
