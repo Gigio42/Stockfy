@@ -802,7 +802,7 @@ input[type="checkbox"]:checked::before {
   color: #fff !important;
 }
 
-
+/* mudar nome da classe, isso na vdd cuida do preview div do consulta */
 .dark-background {
   background: #5c5c5c23 !important;
 
