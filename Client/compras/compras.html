@@ -121,19 +121,17 @@
                             <div class="form-group">
                                 <button id="addPlateButton" type="button" class="btn btn-primary">Adicionar Chapa</button>
                             </div>
+                            <button id="confirmEditButton" style="display: none;">Confirmar Edição</button>
+
                         </form>
                     </div>
                     <div id="cardsContainer" class="cardsContainer"></div>
                 </div>
                 <div class="btninferior mt-4 d-flex justify-content-end">
                     <div class="date-input-container">
-                        <input type="text" id="expectedDate" placeholder="Data Prevista" />
+                        <input type="text" id="expectedDateManual" placeholder="Data Prevista" />
                     </div>
-                    <button id="sendbutton" class="btn btn-success mr-2">Enviar</button>
-                    <button id="editButton" class="btn btn-warning">Editar</button>
-                    <div class="jsonshow">
-                        <pre id="jsonContent"></pre>
-                    </div>
+                    <button id="sendbutton" class="btn btn-success mr-2 enviarManual">Enviar</button>
                 </div>
             </div>
         </div>
