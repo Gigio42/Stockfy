@@ -18,23 +18,23 @@ document.getElementById("addPlateButton").addEventListener("click", function () 
 
     // Capturando os valores do formulário
     const data = {
-        numero_cliente: form.customerNumber.value,
-        quantidade_comprada: form.quantity.value,
+        numero_cliente: parseInt(form.customerNumber.value) || 0,
+        quantidade_comprada: parseInt(form.quantity.value) || 0,
         unidade: 'CH',
         qualidade: form.quality.value,
         onda: form.wave.value,
-        gramatura: form.weight.value,
-        peso_total: form.totalWeight.value,
+        gramatura: parseFloat(form.weight.value) || 0,
+        peso_total: parseFloat(form.totalWeight.value) || 0,
         valor_unitario: form.unitPrice.value,
         valor_total: form.totalPrice.value,
-        largura: parseInt(form.width.value), // Convertendo para número
-        comprimento: form.length.value,
+        largura: parseInt(form.width.value) || 0, // Convertendo para número
+        comprimento: parseInt(form.length.value) || 0, // Convertendo para número
         vincos: form.creases.value,
         status: 'COMPRADO',
         comprador: form.buyer.value,
         data_compra: form.purchaseDate.value,
         fornecedor: form.supplier.value,
-        id_compra: form.purchaseID.value,
+        id_compra: parseInt(form.purchaseID.value) || 0,
         data_prevista: document.getElementById("expectedDate").value
     };
 
@@ -175,9 +175,9 @@ function sendJSONDataToBackend() {
     cards.forEach(card => {
         let data = {
             numero_cliente: parseInt(getTextContent(".card-title", card)) || 0,
-            quantidade_comprada: parseInt(getTextContent(".card-text:nth-of-type(4)", card)) || 0,
+            quantidade_comprada: parseInt(getTextContent(".card-text:nth-of-type(5)", card)) || 0,
             unidade: 'CH',
-            qualidade: getTextContent(".card-text:nth-of-type(3)", card),
+            qualidade: getTextContent(".card-text:nth-of-type(4)", card),
             onda: getTextContent(".card-details .card-text:nth-of-type(1)", card),
             gramatura: parseFloat(getTextContent(".card-details .card-text:nth-of-type(2)", card)) || 0,
             peso_total: parseFloat(getTextContent(".card-details .card-text:nth-of-type(3)", card)) || 0,
@@ -185,7 +185,7 @@ function sendJSONDataToBackend() {
             valor_total: getTextContent(".card-details .card-text:nth-of-type(5)", card) || "",
             largura: parseInt(getTextContent(".card-text:nth-of-type(2)", card)) || 0,
             comprimento: parseInt(getTextContent(".card-text:nth-of-type(3)", card)) || 0,
-            vincos: getTextContent(".card-text:nth-of-type(5)", card) || "",
+            vincos: getTextContent(".card-text:nth-of-type(6)", card) || "",
             status: 'COMPRADO',
             comprador: getTextContent(".card-details .card-text:nth-of-type(7)", card) || "",
             data_compra: getTextContent(".card-details .card-text:nth-of-type(8)", card) || "",

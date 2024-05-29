@@ -228,7 +228,7 @@
                     row.innerHTML = `
                             <td>${ordem.id_chapa_item_maquina}</td>
                             <td>${ordem.item.part_number}</td>
-                            <td>${ordem.maquina.name}</td>
+                            <td>${ordem.maquina.nome}</td>
                             <td>${itemIdChapas}</td>
                             <td>${ordem.chapa_item.quantidade}</td>
                             <td>${ordem.ordem}</td>
@@ -259,7 +259,7 @@
                     .then((response) => response.json())
                     .then((data) => {
                         all = data;
-                        allMaquina = data.maquinas.map((maquina) => maquina.name);
+                        allMaquina = data.maquinas.map((maquina) => maquina.nome);
                         allPart_number = data.items.map((item) => item.part_number);
                         allchapa = data.chapa_item.map((chapa) => chapa.id);
 
@@ -401,7 +401,7 @@
                             row.innerHTML = `
                             <td>${maquina.id_chapa_item_maquina}</td>
                             <td>${maquina.item.part_number}</td>
-                            <td>${maquina.maquina.name}</td>
+                            <td>${maquina.maquina.nome}</td>
                             <td>${chapa}</td>
                             <td>${quantidade_Chapa}</td>
                             <td>${maquina.ordem}</td>
@@ -432,7 +432,7 @@
                 const contentHtml = `
                 <p>ID: ${data.id_chapa_item_maquina}</p>
                 <p>Part Number: ${data.item.part_number}</p>
-                <p>Maquina: ${data.maquina.name}</p>
+                <p>Maquina: ${data.maquina.nome}</p>
                 <p>Maquina: ${data.chapa_item.id}</p>
                 <p>Ordem: ${data.ordem}</p>
                 <p>Data Termino: ${data.prazo}</p>

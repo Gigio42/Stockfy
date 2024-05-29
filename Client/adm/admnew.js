@@ -32,7 +32,7 @@ async function fetchMaquinas() {
 
       // Criar o elemento de texto para o nome da máquina
       let maquinaName = document.createElement('span');
-      maquinaName.textContent = maquina.name;
+      maquinaName.textContent = maquina.nome;
       cardMaquina.appendChild(maquinaName);
 
       // Criar o elemento de imagem para o SVG
