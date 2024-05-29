@@ -1,4 +1,5 @@
-const PCP_URL = "http://localhost:3000/PCP";
+const SERVER_URL = process.env.APP_SERVER_URL || "http://localhost:3000";
+const PCP_URL = `${SERVER_URL}/PCP`;
 
 function handleError(error) {
   if (error.response) {
