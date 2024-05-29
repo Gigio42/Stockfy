@@ -1,7 +1,11 @@
 import Maquina from "../Models/Maquina.js";
+import Chapa_Item from "../Models/Chapa_Item.js";
 
 class AdmController {
-  constructor() {}
+  constructor(prisma) {
+    this.prisma = prisma;
+  }
+
 
   async getMaquina() {
     const maquinas = await Maquina.findMany();
@@ -29,7 +33,7 @@ class AdmController {
   }
 
   async getChapasInItems() {
-    const chapaItems = await prisma.chapa_Item.findMany({
+    const chapaItems = await Chapa_Item.findMany({
       where: {
         item: {
           status: {
