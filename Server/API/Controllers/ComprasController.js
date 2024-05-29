@@ -1,6 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import Chapas from '../Models/chapas.js';
 
 class ComprasController {
   constructor() {}
@@ -13,6 +11,9 @@ class ComprasController {
         .split("x")
         .map((dim) => parseFloat(dim.replace(",", ".").replace(".", "")));
       if (dimensions.length === 2) {
+          if(chapa.largura.isInt()){
+            // console.log(chapa.largura)
+          }
         chapa.largura = dimensions[0];
         chapa.comprimento = dimensions[1];
       }
@@ -21,12 +22,12 @@ class ComprasController {
   }
 
   async createCompra(orderData) {
-    const promises = orderData.info_prod_comprados.map(async (chapa) => {
-      chapa.quantidade_disponivel = chapa.quantidade_comprada;
+      const promises = orderData.info_prod_comprados.map(async (chapa) => {
+        chapa.quantidade_disponivel = chapa.quantidade_comprada;
 
-      chapa = this.extractDimensions(chapa);
+        chapa = this.extractDimensions(chapa);
 
-      return prisma.chapas.create({ data: chapa });
+      return Chapas.create({ data: chapa });
     });
 
     return await Promise.all(promises);

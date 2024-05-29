@@ -40,7 +40,6 @@ html, body {
 }
 
 .fecharbtn {
-    position: fixed;
     padding: 1rem 2rem;
     background: #d9d9d9;
     color: #555555;
@@ -67,6 +66,7 @@ html, body {
 }
 
 .table-container {
+
     max-height: calc(100vh - 10rem); /* Altura máxima - altura dos botões inferiores e do fecharbtn */
     overflow-y: auto; /* Adiciona rolagem vertical quando necessário */
     background: white;
@@ -470,7 +470,7 @@ td .centered-input {
 
 .formAndcard {
     display: flex;
-    margin-top: 7rem;
+    margin-top: 2rem;
     flex-direction: column;
     justify-content: space-around;
     align-items: flex-start;
@@ -519,4 +519,26 @@ border-radius: 2rem;
 .expand-icon {
     width: 34px; /* Defina a largura desejada */
     height: 34px; /* Defina a altura desejada */
+}
+
+
+.enviarManual {
+    font-size: 2rem;
+    border-radius: 1rem;
+    background: #2ab14a61;
+    color: #2b8540;
+}
+
+.enviarManual:hover {
+    background: rgba(49, 163, 76, 0.622);
+    color: #2b8540;
+}
+
+.icon:hover {
+    background-color: #c7c7c7;
+    border-radius: 0.5rem;
+}
+
+.toggle-arrow {
+    padding: 0.5rem;
 }
