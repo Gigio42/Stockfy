@@ -540,6 +540,7 @@ input[type="checkbox"] {
   background-color: #007bff;
 }
 
+
 @media (max-width: 600px) {
   .card-value-div {
     overflow: visible; /* Replaces 'auto' */
@@ -799,4 +800,12 @@ input[type="checkbox"]:checked::before {
   background-color: #007bff !important;
   border: #007bff;
   color: #fff !important;
+}
+
+
+.dark-background {
+  background: #5c5c5c23 !important;
+
+  border: solid 1px #8a8a8a3d;
+  padding: 10px;
 }

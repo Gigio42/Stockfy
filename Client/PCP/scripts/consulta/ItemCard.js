@@ -25,15 +25,16 @@ export class ItemCard {
     itemContainer.appendChild(partNumberDiv);
     itemContainer.appendChild(statusDiv);
 
-    //Conteiner p/ info das chapas
-    const chapasContainer = this.createChapasContainer();
+    const previewDiv = this.createPreviewDiv();
+    titleContainer.appendChild(previewDiv);
+
+    const chapasContainer = this.createChapasContainer(); // Define chapasContainer here
     cardBody.appendChild(chapasContainer);
 
-    //Conteiner p/ info dos botões na direita
     const buttonContainer = createElementWithClass("div", "d-flex justify-content-end");
     titleContainer.appendChild(buttonContainer);
 
-    const dropdownButton = this.createDropdownButton(chapasContainer);
+    const dropdownButton = this.createDropdownButton(chapasContainer); // Now chapasContainer is defined
     buttonContainer.appendChild(dropdownButton);
 
     const deleteButton = this.createDeleteButton();
@@ -61,6 +62,27 @@ export class ItemCard {
       statusDiv.className += " bg-secondary";
     }
     return statusDiv;
+  }
+
+  createPreviewDiv() {
+    const lastChapa = this.item.chapas[this.item.chapas.length - 1];
+    const previewDiv = createElementWithClass("div", "preview dark-background"); // Add a new class for the dark background
+    const keys = ["medida", "vincos", "qualidade", "onda", "quantidade_comprada", "quantidade_estoque", "data_prevista"];
+    keys.forEach((key) => {
+      const span = document.createElement("span");
+      span.style.marginRight = "10px"; // Add some margin to the right of the span
+      if (lastChapa[key] !== null) {
+        // Check that lastChapa[key] is not null
+        if (key.startsWith("data")) {
+          let [day, month] = lastChapa[key].split("/");
+          span.textContent = `${day}/${month}`;
+        } else {
+          span.textContent = lastChapa[key];
+        }
+      }
+      previewDiv.appendChild(span);
+    });
+    return previewDiv;
   }
 
   createChapasContainer() {
