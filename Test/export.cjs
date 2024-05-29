@@ -15,7 +15,7 @@ const rl = readline.createInterface({
 const key = process.env.ENCRYPTION_KEY;
 
 rl.question('Vincular nome ao banco: ', (name) => {
-  main(name, key)
+  main(nome, key)
     .catch((e) => {
       console.error(e);
       process.exit(1);
