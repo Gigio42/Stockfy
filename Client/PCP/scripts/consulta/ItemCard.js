@@ -15,21 +15,21 @@ export class ItemCard {
     const titleContainer = createElementWithClass("div", "d-flex justify-content-between align-items-center");
     cardBody.appendChild(titleContainer);
 
+    const partNumberDiv = this.createPartNumberDiv();
     const statusDiv = this.createStatusDiv();
-    titleContainer.appendChild(statusDiv);
 
-    const itemInfo = createElementWithClass("h5", "card-title mb-0");
-    itemInfo.textContent = this.item.part_number;
-    titleContainer.appendChild(itemInfo);
+    //Conteiner p/ info dos itens na esquerda
+    const itemContainer = createElementWithClass("div", "d-flex justify-content-start");
+    titleContainer.appendChild(itemContainer);
 
-    if (this.item.chapas.length > 0) {
-      const briefView = this.createBriefView();
-      titleContainer.appendChild(briefView);
-    }
+    itemContainer.appendChild(partNumberDiv);
+    itemContainer.appendChild(statusDiv);
 
+    //Conteiner p/ info das chapas
     const chapasContainer = this.createChapasContainer();
     cardBody.appendChild(chapasContainer);
 
+    //Conteiner p/ info dos botões na direita
     const buttonContainer = createElementWithClass("div", "d-flex justify-content-end");
     titleContainer.appendChild(buttonContainer);
 
@@ -42,6 +42,12 @@ export class ItemCard {
     }
 
     return itemCard;
+  }
+
+  createPartNumberDiv() {
+    const partNumberDiv = createElementWithClass("div", "btn btn-sm card-part-number");
+    partNumberDiv.textContent = this.item.part_number;
+    return partNumberDiv;
   }
 
   createStatusDiv() {
@@ -57,31 +63,9 @@ export class ItemCard {
     return statusDiv;
   }
 
-  createBriefView() {
-    const lastChapa = this.item.chapas[this.item.chapas.length - 1];
-    const briefView = createElementWithClass("div", "card-brief-view d-flex");
-    const keys = ["medida", "vincos", "qualidade", "onda", "quantidade_comprada", "quantidade_estoque", "data_prevista"];
-    keys.forEach((key) => {
-      const span = document.createElement("span");
-      if (key.startsWith("data")) {
-        let [day, month] = lastChapa[key].split("/");
-        span.textContent = `${day}/${month}`;
-      } else {
-        span.textContent = lastChapa[key];
-      }
-      briefView.appendChild(span);
-    });
-
-    const dotsSpan = document.createElement("span");
-    dotsSpan.textContent = "...";
-    briefView.appendChild(dotsSpan);
-
-    return briefView;
-  }
-
   createChapasContainer() {
     const chapasContainer = createElementWithClass("div", "card-body chapas-container");
-    chapasContainer.style.display = "none"; 
+    chapasContainer.style.display = "none";
     this.item.chapas.forEach((chapa) => {
       const chapaCard = new ChapaCard(chapa, this.item.status, this.item.id_item);
       const chapaCardElement = chapaCard.render();
