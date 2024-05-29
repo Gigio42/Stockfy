@@ -19,8 +19,10 @@
     "@fastify/cors": "^9.0.1",
     "@prisma/client": "^5.14.0",
     "axios": "^1.6.8",
+    "dotenv": "^16.4.5",
     "fastify": "^4.27.0",
     "pino-pretty": "^11.0.0",
+    "qrcode": "^1.5.3",
     "sqlite3": "^5.1.7",
     "typeorm": "^0.3.20"
   },
