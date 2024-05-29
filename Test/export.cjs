@@ -45,6 +45,8 @@ async function main(name, key) {
     usuarios,
   };
 
+  console.log(data);
+
   const dir = 'temp_db_imports';
   if (!fs.existsSync(dir)){
     fs.mkdirSync(dir);
