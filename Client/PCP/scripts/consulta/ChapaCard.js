@@ -33,7 +33,11 @@ export class ChapaCard {
 
   createValueRow() {
     let valueRow = createElementWithClass("div", "value-row row flex-nowrap flex-sm-wrap overflow-auto w-100 align-items-stretch");
-    this.keys.forEach((key) => valueRow.appendChild(this.createValueDiv(key, this.chapa[key])));
+    this.keys.forEach((key) => {
+      if (this.chapa[key] !== null && this.chapa[key] !== undefined) {
+        valueRow.appendChild(this.createValueDiv(key, this.chapa[key]));
+      }
+    });
 
     if (this.itemStatus.toLowerCase() == "reservado") {
       const deleteButton = this.createDeleteButton();
