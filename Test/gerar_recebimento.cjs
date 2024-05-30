@@ -3,9 +3,9 @@ const faker = require('faker');
 
 async function postData() {
   const data = Array.from({ length: 1}, () => ({
-    id_chapa: 11,
+    id_chapa: 4,
     data_recebimento: faker.date.past().toISOString().split('T')[0],
-    quantidade_recebida: 1500,
+    quantidade_recebida: 200,
     status: "RECEBIDO"
   }));
 

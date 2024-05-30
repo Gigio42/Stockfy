@@ -1,5 +1,3 @@
-
-
 var darkModeToggle = document.getElementById('darkModeToggle');
 var body = document.body;
 
@@ -31,20 +29,22 @@ async function fetchMaquinas() {
       let allMaquina = document.getElementById('allMaquina');
       let cardMaquina = document.createElement('div');
       cardMaquina.className = 'cardMaquina';
-      cardMaquina.id = 'cardMaquina'
 
       // Criar o elemento de texto para o nome da máquina
       let maquinaName = document.createElement('span');
-      maquinaName.textContent = maquina.name;
+      maquinaName.textContent = maquina.nome;
       cardMaquina.appendChild(maquinaName);
 
       // Criar o elemento de imagem para o SVG
       let svgIcon = document.createElement('img');
       svgIcon.src = 'media/icons8-link-externo.svg';
       svgIcon.alt = 'External link icon';
-      svgIcon.className = 'svgIcon'; // Adicione uma classe para estilização se necessário
-      cardMaquina.appendChild(svgIcon);
 
+      // Adicionar duas classes ao elemento
+      svgIcon.classList.add('svgIcon', 'abrirModal');
+
+      // Adicionar o elemento de imagem ao card
+      cardMaquina.appendChild(svgIcon);
       // Adicionar o card ao contêiner
       allMaquina.appendChild(cardMaquina);
     });
@@ -52,7 +52,6 @@ async function fetchMaquinas() {
     console.error('Houve um erro!', error);
   }
 }
-
 
 fetchMaquinas();
 
@@ -74,7 +73,7 @@ function closeModal() {
 
 // Adiciona um evento de clique ao ícone para abrir o modal com o nome da máquina
 document.addEventListener('click', function (event) {
-  if (event.target.className === 'svgIcon') {
+  if (event.target.classList.contains('svgIcon')) {
     // Obtém o elemento de texto (span) que contém o nome da máquina
     var maquinaName = event.target.parentNode.querySelector('span').textContent;
     openModal(maquinaName);
@@ -90,6 +89,7 @@ document.getElementById('myModal').addEventListener('click', function (event) {
 
 // Adiciona um evento de clique ao botão de fechar para fechar o modal
 document.addEventListener('click', function (event) {
+
   if (event.target.className === 'close') {
     closeModal();
   }
@@ -99,7 +99,7 @@ async function fetchitens() {
     const response = await axios.get('http://localhost:3000/adm/items/chapas');
     const itens = response.data;
 
-    console.log(itens); // Verifique se os dados estão corretos
+    console.log('Itens recebidos:', itens); // Verifique se os dados estão corretos
 
     let reservados = document.getElementById('reservados');
 
@@ -109,7 +109,12 @@ async function fetchitens() {
       return;
     }
 
+    // Certifique-se de que o contêiner está vazio antes de adicionar novos elementos
+    reservados.innerHTML = '';
+
     itens.forEach(item => {
+      console.log('Processando item:', item); // Adicionando log para verificar o item
+
       let card = document.createElement('div');
       card.className = 'card';
 
@@ -118,17 +123,20 @@ async function fetchitens() {
       partNumberInfo.textContent = `${item.part_number}`;
       card.appendChild(partNumberInfo);
 
-      // Iterar sobre as chapas e criar elementos para a medida e quantidade
       item.chapas.forEach(chapa => {
+        console.log('Processando chapa:', chapa); // Adicionando log para verificar a chapa
+    
         let subcard = document.createElement('div');
         subcard.className = 'subcard';
-
+    
         let chapaInfo = document.createElement('p');
-        chapaInfo.textContent = `Medida: ${chapa.medida} | Quantidade: ${chapa.quantidade_comprada}`;
+        // Adicionando quebra de linha entre a medida e a quantidade comprada
+        chapaInfo.innerHTML = `${chapa.medida}<br>${chapa.quantidade_comprada}`;
         subcard.appendChild(chapaInfo);
-
+    
         card.appendChild(subcard);
-      });
+    });
+    
 
       // Adicionar evento de clique ao card para expandir/contrair os subcards
       card.addEventListener('click', () => {
@@ -137,11 +145,13 @@ async function fetchitens() {
 
       // Adicionar o card ao contêiner
       reservados.appendChild(card);
+      console.log('Card adicionado:', card); // Verifique se o card foi adicionado
     });
+
+    console.log('Finalizou o processamento dos itens'); // Log final para indicar que o processamento terminou
   } catch (error) {
     console.error('Erro ao recuperar os itens!', error);
   }
 }
 
 fetchitens();
-

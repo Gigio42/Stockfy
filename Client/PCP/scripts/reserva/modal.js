@@ -1,3 +1,5 @@
+import { reserveChapas } from "../utils/connection.js";
+
 export function handleShowSelectedButtonClick(getSelectedSubcards) {
   const showSelectedButton = document.getElementById("showSelectedButton");
   const modalContent = document.getElementById("modalContent");
@@ -5,8 +7,10 @@ export function handleShowSelectedButtonClick(getSelectedSubcards) {
   const popupContainer = document.getElementById("popupContainer");
 
   removeExistingListener(showSelectedButton);
-  showSelectedButton.onclick = createModalContent(modalContent, closeModal, getSelectedSubcards, popupContainer);
-  closeModal.onclick = closePopup(popupContainer);
+  showSelectedButton.onclick = createModalHandler(modalContent, closeModal, getSelectedSubcards, popupContainer);
+  closeModal.onclick = () => {
+    popupContainer.style.display = "none";
+  };
 }
 
 function removeExistingListener(element) {
@@ -15,7 +19,7 @@ function removeExistingListener(element) {
   }
 }
 
-function createModalContent(modalContent, closeModal, getSelectedSubcards, popupContainer) {
+function createModalHandler(modalContent, closeModal, getSelectedSubcards, popupContainer) {
   return () => {
     modalContent.innerHTML = "";
     modalContent.appendChild(closeModal);
@@ -24,99 +28,97 @@ function createModalContent(modalContent, closeModal, getSelectedSubcards, popup
     contentWrapper.style.maxHeight = "50vh";
     contentWrapper.style.overflowY = "auto";
 
-    const selectedSubcards = getSelectedSubcards();
-    const table = createTable(selectedSubcards);
-    contentWrapper.appendChild(table);
+    const keys = ["id_chapa", "fornecedor", "medida", "qualidade", "quantidade_comprada", "quantidade_estoque"];
 
-    const buttonFormContainer = createButtonFormContainer(selectedSubcards);
-    contentWrapper.appendChild(buttonFormContainer);
+    const selectedSubcards = getSelectedSubcards();
+    selectedSubcards.forEach((chapa) => {
+      contentWrapper.appendChild(createCard(chapa, keys));
+    });
+
+    contentWrapper.appendChild(createButtonFormContainer(selectedSubcards));
 
     modalContent.appendChild(contentWrapper);
-
     popupContainer.style.display = "block";
   };
 }
 
-function createTable(selectedSubcards) {
-  const table = document.createElement("table");
-  table.className = "table";
+function createCard(chapa, keys) {
+  const card = document.createElement("div");
+  card.className = "card mb-3 shadow-sm";
+  const cardBody = document.createElement("div");
+  cardBody.className = "body-div card-body rounded d-flex align-items-center";
 
-  const headers = ["Chapa ID", "Fornecedor", "Medida", "Qualidade", "Comprado", "Estoque", "Quantidade", "Reciclar"];
-  table.appendChild(createTableHeader(headers));
-  table.appendChild(createTableBody(selectedSubcards));
-
-  return table;
-}
-
-function createTableHeader(headers) {
-  const thead = document.createElement("thead");
-  const headerRow = document.createElement("tr");
-
-  headers.forEach((header) => {
-    const th = document.createElement("th");
-    th.textContent = header;
-    headerRow.appendChild(th);
+  const valueRow = document.createElement("div");
+  valueRow.className = "value-row row flex-nowrap overflow-auto w-100 align-items-stretch";
+  keys.forEach((key) => {
+    const valueDiv = document.createElement("div");
+    valueDiv.className = "card-value-div col text-center value align-items-center justify-content-center rounded";
+    valueDiv.textContent = chapa[key];
+    valueRow.appendChild(valueDiv);
   });
+  cardBody.appendChild(valueRow);
+  cardBody.appendChild(createFormRow(chapa));
 
-  thead.appendChild(headerRow);
-  return thead;
+  card.appendChild(cardBody);
+  return card;
 }
 
-function createTableBody(selectedSubcards) {
-  const tbody = document.createElement("tbody");
+function createFormRow(chapa) {
+  const formRow = document.createElement("div");
+  formRow.className = "form-row row flex-nowrap overflow-auto w-100 align-items-stretch";
 
-  selectedSubcards.forEach((chapa) => {
-    const row = document.createElement("tr");
-    ["id_chapa", "fornecedor", "medida", "qualidade", "quantidade_comprada", "quantidade_estoque"].forEach((key) => {
-      const td = document.createElement("td");
-      td.textContent = chapa[key];
-      row.appendChild(td);
-    });
+  const quantityInput = createInputCell("number", "Quantidade", `quantityInput-${chapa.id_chapa}`);
+  const medidaInput = createInputCell("text", "medida", `medidaInput-${chapa.id_chapa}`);
+  medidaInput.style.display = "none";
 
-    row.appendChild(createTableCellWithInput("number", "Quantidade", `quantityInput-${chapa.id_chapa}`));
+  const recycleTd = document.createElement("div");
+  recycleTd.className = "form-cell col-1 text-center value align-items-center justify-content-center rounded";
+  recycleTd.style.display = "flex";
+  recycleTd.style.justifyContent = "center";
+  recycleTd.style.alignItems = "center";
+  const recycleCheckbox = document.createElement("input");
+  recycleCheckbox.type = "checkbox";
+  recycleCheckbox.id = `recycleCheckbox-${chapa.id_chapa}`;
+  recycleCheckbox.style.width = "25px";
+  recycleCheckbox.style.height = "25px";
+  recycleCheckbox.onchange = () => {
+    medidaInput.style.display = recycleCheckbox.checked ? "" : "none";
+  };
+  recycleTd.appendChild(recycleCheckbox);
 
-    const medidaTd = createTableCellWithInput("text", "medida", `medidaInput-${chapa.id_chapa}`);
-    medidaTd.style.display = "none";
-    row.appendChild(medidaTd);
+  formRow.appendChild(quantityInput);
+  formRow.appendChild(medidaInput);
+  formRow.appendChild(recycleTd);
 
-    const recycleTd = document.createElement("td");
-    const recycleCheckbox = document.createElement("input");
-    recycleCheckbox.type = "checkbox";
-    recycleCheckbox.id = `recycleCheckbox-${chapa.id_chapa}`;
-    recycleCheckbox.style.width = "25px";
-    recycleCheckbox.style.height = "25px";
-    recycleCheckbox.onchange = () => {
-      medidaTd.style.display = recycleCheckbox.checked ? "" : "none";
-    };
-    recycleTd.appendChild(recycleCheckbox);
-    row.appendChild(recycleTd);
-
-    tbody.appendChild(row);
-  });
-
-  return tbody;
+  return formRow;
 }
 
-function createTableCellWithInput(type, placeholder, id) {
-  const td = document.createElement("td");
+function createInputCell(type, placeholder, id) {
+  const cell = document.createElement("div");
+  cell.className = "form-cell col text-center value align-items-center justify-content-center rounded";
   const input = document.createElement("input");
   input.type = type;
   input.placeholder = placeholder;
   input.id = id;
   input.min = 0;
-  td.appendChild(input);
-  return td;
+  input.oninput = function () {
+    if (this.value < 0) {
+      this.value = 0;
+    }
+  };
+  cell.appendChild(input);
+  return cell;
 }
 
 function createButtonFormContainer(selectedSubcards) {
-  const buttonFormContainer = document.createElement("div");
-  buttonFormContainer.style.display = "flex";
-  buttonFormContainer.style.justifyContent = "space-between";
+  const container = document.createElement("div");
+  container.style.display = "flex";
+  container.style.justifyContent = "space-between";
 
-  buttonFormContainer.appendChild(createPartNumberForm());
-  buttonFormContainer.appendChild(createReserveButton(selectedSubcards));
+  container.appendChild(createPartNumberForm());
+  container.appendChild(createReserveButton(selectedSubcards));
 
-  return buttonFormContainer;
+  return container;
 }
 
 function createPartNumberForm() {
@@ -133,49 +135,22 @@ function createReserveButton(selectedSubcards) {
   const reserveButton = document.createElement("button");
   reserveButton.textContent = "RESERVAR";
   reserveButton.classList.add("agrupar-button");
-  reserveButton.onclick = () => {
-    const partNumberInput = document.querySelector("#partNumberInput");
-    const partNumber = partNumberInput.value;
+  reserveButton.onclick = async () => {
+    const partNumber = document.getElementById("partNumberInput").value;
 
-    const chapas = selectedSubcards.map((subcard) => {
-      const chapaID = subcard.id_chapa;
-      const quantityInput = document.querySelector(`#quantityInput-${chapaID}`);
-      const quantity = quantityInput.value;
-      const medidaInput = document.querySelector(`#medidaInput-${chapaID}`);
-      const medida = medidaInput.value;
-      const recycleCheckbox = document.querySelector(`#recycleCheckbox-${chapaID}`);
-      const keepRemaining = recycleCheckbox.checked;
+    const chapas = selectedSubcards.map((subcard) => ({
+      chapaID: subcard.id_chapa,
+      quantity: document.getElementById(`quantityInput-${subcard.id_chapa}`).value,
+      medida: document.getElementById(`medidaInput-${subcard.id_chapa}`).value,
+      keepRemaining: document.getElementById(`recycleCheckbox-${subcard.id_chapa}`).checked,
+    }));
 
-      return {
-        chapaID,
-        quantity,
-        medida,
-        keepRemaining,
-      };
-    });
-
-    const data = {
-      partNumber,
-      chapas,
-    };
-
-    /* alert(JSON.stringify(data, null, 2)); */
-
-    axios
-      .post("http://localhost:3000/PCP", data)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    try {
+      const response = await reserveChapas({ partNumber, chapas });
+      console.log(response);
+    } catch (error) {
+      alert(error.message);
+    }
   };
-
   return reserveButton;
-}
-
-function closePopup(popupContainer) {
-  return () => {
-    popupContainer.style.display = "none";
-  };
 }

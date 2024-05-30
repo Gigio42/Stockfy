@@ -306,8 +306,8 @@
 
   .svgIcon {
     margin-left: 10px; /* Espaçamento entre o nome da máquina e o ícone */
-    width: 24px; /* Tamanho do ícone */
-    height: 24px; /* Tamanho do ícone */
+    width: 48px; /* Tamanho do ícone */
+    height: 48px; /* Tamanho do ícone */
   }
 
   h3 {
@@ -336,6 +336,12 @@
     justify-content: center;
 }
 
+.containerReserv {
+  display: flex;
+  justify-content: flex-end;
+  height: 100%;
+}
+
 .modal-content {
     background-color: #141414;
     margin: 7% auto;
@@ -349,6 +355,9 @@
   /* Estilos para o ícone */
   .svgIcon {
     cursor: pointer; /* Muda o cursor para parecer um botão */
+    padding: 0.3rem;
+    border-radius: 1rem;
+ 
   }
 
   .nomemaquina {
@@ -360,12 +369,13 @@
     width:fit-content;
   }
 
+
   .card {
     border: none;
     padding: 10px;
     margin: 10px 0;
     cursor: pointer;
-    background-color: #0f0f0f;
+    background-color: #191919;
     border-radius: 1rem;
   }
   
@@ -385,7 +395,7 @@
   }
   
 #reservados {
-  width: 30%;
+  width: 100%;
   overflow-y:auto;
   max-height: 48vh;
   border-radius: 1rem;
@@ -398,11 +408,23 @@
 }
 
 h3 {
-  background-color: #4f27ffd4;
+  background-color: #4f27ff72;
   padding: 0.5rem;
   border-radius: 0.7rem;
   border: solid 1px #9178ff;
   color: #9178ff ;
   width: fit-content;
   margin: 0;
+}
+
+  .abrirModal:hover {
+    background: #353535;
+
+  }
+
+.conteudoInterno {
+  background: #1e1e1e;
+
+  padding: 1rem;
+  border-radius: 2rem;
 }

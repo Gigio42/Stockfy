@@ -1,4 +1,3 @@
-
 :root {
     --background-color: #333;     /* Cor de fundo para o tema escuro */
     --text-color: #ccc;     /* Cor de texto para o tema claro */
@@ -67,7 +66,7 @@ table {
 }
 
 th, td {
-
+    
     text-align: center; /* Centraliza texto em cabeçalhos e células */
     padding: 8px 10px; /* Espaço adequado dentro das células */
 }
@@ -98,4 +97,40 @@ button:hover {
 .update-button {
     display: block;
     margin: auto;
+}
+/* Estilos existentes */
+
+@media (max-width: 768px) {
+    #button-container {
+        position: relative; /* Alterado de fixed para relative */
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        padding: 10px 0; /* Aumenta o padding para melhor toque em dispositivos móveis */
+    }
+
+    button {
+        width: 90%; /* Ajuste na largura para melhor toque */
+        margin: 5px 0; /* Reduz o espaçamento para otimizar o espaço */
+    }
+    
+    #tables {
+        width: 100%;
+        margin-top: 20px; /* Ajuste para garantir que a tabela não seja coberta */
+    }
+    
+    .scrollable-table {
+        overflow-x: auto;
+    }
+    
+    table {
+        width: auto; /* Permite que a tabela expanda conforme necessário */
+        min-width: 100%; /* Garante mínimo de largura conforme a largura do dispositivo */
+    }
+    
+    th, td {
+        padding: 8px;
+        min-width: 60px; /* Define uma largura mínima para cada célula */
+        white-space: nowrap; /* Mantém o conteúdo na mesma linha */
+    }
 }
