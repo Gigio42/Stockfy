@@ -6,7 +6,6 @@ class AdmController {
     this.prisma = prisma;
   }
 
-
   async getMaquina() {
     const maquinas = await Maquina.findMany();
     return maquinas;
