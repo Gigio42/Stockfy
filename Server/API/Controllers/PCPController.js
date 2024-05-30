@@ -135,27 +135,27 @@ class PCPController {
         });
       }
 
-      let chapaItem = await Chapa_Item.findFirst({
-        where: {
-          AND: [{ chapa: { id_chapa: chapaID } }, { item: { id_item: item.id_item } }],
-        },
-      });
-
-      if (chapaItem) {
-        await Chapa_Item.update({
-          where: { id_chapa_item: chapaItem.id_chapa_item },
-          data: { quantidade: { increment: Number(quantity) } },
-        });
-      } else {
-        await Chapa_Item.create({
-          data: {
-            quantidade: Number(quantity),
-            chapa: { connect: { id_chapa: chapaID } },
-            item: { connect: { id_item: item.id_item } },
+        let chapaItem = await Chapa_Item.findFirst({
+          where: {
+            AND: [{ chapa: { id_chapa: chapaID } }, { item: { id_item: item.id_item } }],
           },
         });
+
+        if (chapaItem) {
+          await Chapa_Item.update({
+            where: { id_chapa_item: chapaItem.id_chapa_item },
+            data: { quantidade: { increment: Number(quantity) } },
+          });
+        } else {
+          await Chapa_Item.create({
+            data: {
+              quantidade: Number(quantity),
+              chapa: { connect: { id_chapa: chapaID } },
+              item: { connect: { id_item: item.id_item } },
+            },
+          });
+        }
       }
-    }
 
     return item;
   }

@@ -28,7 +28,7 @@ function createModalHandler(modalContent, closeModal, getSelectedSubcards, popup
     contentWrapper.style.maxHeight = "50vh";
     contentWrapper.style.overflowY = "auto";
 
-    const keys = ["id_chapa", "fornecedor", "medida", "qualidade", "quantidade_comprada", "quantidade_estoque"];
+    const keys = ["id_chapa", "largura", "fornecedor", "qualidade", "quantidade_comprada", "quantidade_estoque"];
 
     const selectedSubcards = getSelectedSubcards();
     selectedSubcards.forEach((chapa) => {
@@ -53,7 +53,13 @@ function createCard(chapa, keys) {
   keys.forEach((key) => {
     const valueDiv = document.createElement("div");
     valueDiv.className = "card-value-div col text-center value align-items-center justify-content-center rounded";
-    valueDiv.textContent = chapa[key];
+    if (key === "largura") {
+      let largura = chapa.largura;
+      let comprimento = chapa.comprimento;
+      valueDiv.textContent = `${largura} x ${comprimento}`;
+    } else {
+      valueDiv.textContent = chapa[key];
+    }
     valueRow.appendChild(valueDiv);
   });
   cardBody.appendChild(valueRow);
@@ -68,6 +74,7 @@ function createFormRow(chapa) {
   formRow.className = "form-row row flex-nowrap overflow-auto w-100 align-items-stretch";
 
   const quantityInput = createInputCell("number", "Quantidade", `quantityInput-${chapa.id_chapa}`);
+
   const medidaInput = createInputCell("text", "medida", `medidaInput-${chapa.id_chapa}`);
   medidaInput.style.display = "none";
 
@@ -76,6 +83,7 @@ function createFormRow(chapa) {
   recycleTd.style.display = "flex";
   recycleTd.style.justifyContent = "center";
   recycleTd.style.alignItems = "center";
+
   const recycleCheckbox = document.createElement("input");
   recycleCheckbox.type = "checkbox";
   recycleCheckbox.id = `recycleCheckbox-${chapa.id_chapa}`;

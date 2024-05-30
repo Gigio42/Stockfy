@@ -44,6 +44,12 @@ export class Card {
         }
       }
 
+      if (key === "largura") {
+        let largura = this.chapa.largura;
+        let comprimento = this.chapa.comprimento;
+        valueDiv.textContent = `${largura} x ${comprimento}`;
+      }
+
       if (key === this.keys[this.keys.length - 1]) {
         valueDiv.className += " mr-3";
       }
