@@ -99,7 +99,7 @@ async function fetchitens() {
     const response = await axios.get('http://localhost:3000/adm/items/chapas');
     const itens = response.data;
 
-    console.log(itens); // Verifique se os dados estão corretos
+    console.log('Itens recebidos:', itens); // Verifique se os dados estão corretos
 
     let reservados = document.getElementById('reservados');
 
@@ -109,7 +109,12 @@ async function fetchitens() {
       return;
     }
 
+    // Certifique-se de que o contêiner está vazio antes de adicionar novos elementos
+    reservados.innerHTML = '';
+
     itens.forEach(item => {
+      console.log('Processando item:', item); // Adicionando log para verificar o item
+
       let card = document.createElement('div');
       card.className = 'card';
 
@@ -118,17 +123,20 @@ async function fetchitens() {
       partNumberInfo.textContent = `${item.part_number}`;
       card.appendChild(partNumberInfo);
 
-      // Iterar sobre as chapas e criar elementos para a medida e quantidade
       item.chapas.forEach(chapa => {
+        console.log('Processando chapa:', chapa); // Adicionando log para verificar a chapa
+    
         let subcard = document.createElement('div');
         subcard.className = 'subcard';
-
+    
         let chapaInfo = document.createElement('p');
-        chapaInfo.textContent = `Medida: ${chapa.medida} | Quantidade: ${chapa.quantidade_comprada}`;
+        // Adicionando quebra de linha entre a medida e a quantidade comprada
+        chapaInfo.innerHTML = `${chapa.medida}<br>${chapa.quantidade_comprada}`;
         subcard.appendChild(chapaInfo);
-
+    
         card.appendChild(subcard);
-      });
+    });
+    
 
       // Adicionar evento de clique ao card para expandir/contrair os subcards
       card.addEventListener('click', () => {
@@ -137,11 +145,13 @@ async function fetchitens() {
 
       // Adicionar o card ao contêiner
       reservados.appendChild(card);
+      console.log('Card adicionado:', card); // Verifique se o card foi adicionado
     });
+
+    console.log('Finalizou o processamento dos itens'); // Log final para indicar que o processamento terminou
   } catch (error) {
     console.error('Erro ao recuperar os itens!', error);
   }
 }
 
 fetchitens();
-

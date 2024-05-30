@@ -2,7 +2,10 @@ import Maquina from "../Models/maquinaModel.js";
 import Chapa_Item from "../Models/chapa_itemModel.js";
 
 class AdmController {
-  constructor() {}
+  constructor(prisma) {
+    this.prisma = prisma;
+  }
+
 
   async getMaquina() {
     const maquinas = await Maquina.findMany();
