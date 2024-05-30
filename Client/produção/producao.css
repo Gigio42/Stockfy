@@ -11,8 +11,9 @@
 
 .grid-container {
   display: grid;
-  gap: 105px; 
+  gap: 7rem; /* 7rem 105px */
 }
+
 
 .card {
   border-radius: 10px;
@@ -49,8 +50,10 @@
   border-radius: 10px;
 }
 .chapa-details {
+  /* background-color: #28a745; */
   display: flex;
   justify-content: space-between;
+  width: 75%;
 }
 
 .chapa-card {

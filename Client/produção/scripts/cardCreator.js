@@ -95,6 +95,9 @@ export function createChapasList(chapas) {
     const chapaContentDiv = document.createElement("div");
     chapaContentDiv.className = "chapa-content flex-container";
     chapaContentDiv.style.width = "100%";
+    chapaContentDiv.style.justifyContent = "space-between";
+
+
 
     const chapaDetailsDiv = document.createElement("div");
     chapaDetailsDiv.className = "chapa-details grid-container";
