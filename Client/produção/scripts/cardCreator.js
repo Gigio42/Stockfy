@@ -1,3 +1,5 @@
+import { updateItemStatus } from "../scripts/connections.js";
+
 /* ============================== */
 /* LISTA DE CARDS                 */
 /* ============================== */
@@ -36,7 +38,7 @@ export function createCard(item) {
 
   const orderPrazoDiv = document.createElement("div");
   const orderSpan = document.createElement("span");
-  orderSpan.textContent = `Ordem: ${item.ordem}`;
+  orderSpan.textContent = `Processo: ${item.ordem}`;
   const prazoSpan = document.createElement("span");
   prazoSpan.textContent = `Prazo: ${item.prazo}`;
   orderPrazoDiv.appendChild(orderSpan);
@@ -53,7 +55,12 @@ export function createCard(item) {
   submitButton.className = "btn-submit mt-2 align-right";
   submitButton.textContent = "Finalizar produção";
   submitButton.disabled = true;
-  submitButton.addEventListener("click", () => alert(`Item ${item.Item.part_number} enviado`));
+  submitButton.addEventListener("click", async () => {
+    const itemId = item.Item.id_item; 
+    const data = await updateItemStatus(itemId);
+    alert(`Item ${item.Item.part_number}, id: ${item.Item.id_item} enviado`);
+    console.log(data);
+  });
   cardBody.appendChild(submitButton);
 
   updateSubmitButtonState(chapasList, submitButton);
@@ -96,8 +103,6 @@ export function createChapasList(chapas) {
     chapaContentDiv.className = "chapa-content flex-container";
     chapaContentDiv.style.width = "100%";
     chapaContentDiv.style.justifyContent = "space-between";
-
-
 
     const chapaDetailsDiv = document.createElement("div");
     chapaDetailsDiv.className = "chapa-details grid-container";

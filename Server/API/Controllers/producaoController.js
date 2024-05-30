@@ -13,11 +13,19 @@ class ProducaoController {
       select: {
         nome: true,
         items: {
+          where: {
+            Item: {
+              status: {
+                not: "FINALIZADO",
+              },
+            },
+          },
           select: {
             ordem: true,
             prazo: true,
             Item: {
               select: {
+                id_item: true,
                 part_number: true,
                 status: true,
                 chapas: {
@@ -45,6 +53,19 @@ class ProducaoController {
     console.log(JSON.stringify(maquina, null, 2));
 
     return maquina;
+  }
+
+  async markItemAsProduzido(id) {
+    const item = await prisma.item.update({
+      where: {
+        id_item: id,
+      },
+      data: {
+        status: "FINALIZADO",
+      },
+    });
+
+    return item;
   }
 }
 
