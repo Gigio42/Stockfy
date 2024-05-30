@@ -8,12 +8,18 @@ export function createCard(item) {
   const cardContainer = document.createElement("div");
   cardContainer.className = "card h-100";
 
-  const cardHeader = document.createElement("div");
-  cardHeader.className = "card-header";
+  const cardBody = document.createElement("div");
+  cardBody.className = "card-body";
+
+  const headerDiv = document.createElement("div");
+  headerDiv.style.display = "flex";
+  headerDiv.style.justifyContent = "space-between";
+  headerDiv.style.marginBottom = "20px"; 
 
   const partNumberDiv = document.createElement("div");
   partNumberDiv.className = "part-number";
   partNumberDiv.textContent = item.Item.part_number;
+  headerDiv.appendChild(partNumberDiv);
 
   const orderPrazoDiv = document.createElement("div");
   const orderSpan = document.createElement("span");
@@ -23,29 +29,24 @@ export function createCard(item) {
   orderPrazoDiv.appendChild(orderSpan);
   orderPrazoDiv.appendChild(document.createTextNode(" | "));
   orderPrazoDiv.appendChild(prazoSpan);
+  headerDiv.appendChild(orderPrazoDiv);
 
-  cardHeader.appendChild(partNumberDiv);
-  cardHeader.appendChild(orderPrazoDiv);
-
-  const cardBody = document.createElement("div");
-  cardBody.className = "card-body";
+  cardBody.appendChild(headerDiv);
 
   const chapasList = createChapasList(item.Item.chapas);
   cardBody.appendChild(chapasList);
-
-  cardContainer.appendChild(cardHeader);
-  cardContainer.appendChild(cardBody);
-
-  card.appendChild(cardContainer);
 
   const submitButton = document.createElement("button");
   submitButton.className = "btn-submit mt-2 align-right";
   submitButton.textContent = "Enviar";
   submitButton.disabled = true;
   submitButton.addEventListener("click", () => alert(`Item ${item.Item.part_number} enviado`));
-
   cardBody.appendChild(submitButton);
+
   updateSubmitButtonState(card, submitButton);
+
+  cardContainer.appendChild(cardBody);
+  card.appendChild(cardContainer);
 
   return card;
 }
