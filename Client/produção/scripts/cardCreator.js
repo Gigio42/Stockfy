@@ -7,6 +7,10 @@ export function createCard(item) {
   const card = document.createElement("div");
   card.className = "col-12 mb-4";
 
+  if (item.Item.status === "FINALIZADO") {
+    card.classList.add("finalizado");
+    card.style.order = 1;
+  }
   const cardContainer = document.createElement("div");
   cardContainer.className = "card h-100";
 
@@ -71,6 +75,74 @@ export function createCard(item) {
   cardBody.appendChild(submitButton);
 
   updateSubmitButtonState(chapasList, submitButton);
+
+  cardContainer.appendChild(cardBody);
+  card.appendChild(cardContainer);
+
+  return card;
+}
+
+export function createFinalizadoCard(item) {
+  const card = document.createElement("div");
+  card.className = "col-12 mb-4 finalizado";
+  card.style.order = 1;
+
+  const cardContainer = document.createElement("div");
+  cardContainer.className = "card h-100";
+
+  const cardBody = document.createElement("div");
+  cardBody.className = "card-body";
+
+  const headerDiv = document.createElement("div");
+  headerDiv.style.display = "flex";
+  headerDiv.style.justifyContent = "space-between";
+  headerDiv.style.marginBottom = "20px";
+
+  const partNumberDiv = document.createElement("div");
+  partNumberDiv.className = "part-number";
+  partNumberDiv.textContent = item.Item.part_number;
+  headerDiv.appendChild(partNumberDiv);
+
+  const keysDiv = document.createElement("div");
+  keysDiv.className = "keys grid-container";
+  keysDiv.style.gridTemplateColumns = "repeat(4, 1fr)";
+
+  const keys = ["CHAPAS", "QUANT.", "CLIENTE", "MEDIDA"];
+  keys.forEach((key) => {
+    const keyDiv = document.createElement("div");
+    keyDiv.textContent = key;
+    keysDiv.appendChild(keyDiv);
+  });
+
+  headerDiv.appendChild(keysDiv);
+
+  const orderPrazoDiv = document.createElement("div");
+  orderPrazoDiv.className = "order-prazo";
+  orderPrazoDiv.style.display = "flex";
+  orderPrazoDiv.style.flexDirection = "column";
+
+  const orderSpan = document.createElement("span");
+  orderSpan.className = "ordem";
+  orderSpan.textContent = `Processo: ${item.ordem}`;
+  orderPrazoDiv.appendChild(orderSpan);
+
+  const prazoSpan = document.createElement("span");
+  prazoSpan.className = "prazo";
+  prazoSpan.textContent = `Prazo: ${item.prazo}`;
+  orderPrazoDiv.appendChild(prazoSpan);
+
+  headerDiv.appendChild(orderPrazoDiv);
+
+  cardBody.appendChild(headerDiv);
+
+  const chapasList = createChapasList(item.Item.chapas);
+  cardBody.appendChild(chapasList);
+
+  const checkboxes = chapasList.querySelectorAll('input[type="checkbox"]');
+  checkboxes.forEach((checkbox) => {
+    checkbox.checked = true;
+    checkbox.disabled = true;
+  });
 
   cardContainer.appendChild(cardBody);
   card.appendChild(cardContainer);

@@ -12,13 +12,13 @@ class ProducaoController {
       select: {
         nome: true,
         items: {
-          where: {
+          /* where: {
             Item: {
               status: {
                 not: "FINALIZADO",
               },
             },
-          },
+          }, */
           select: {
             ordem: true,
             prazo: true,
