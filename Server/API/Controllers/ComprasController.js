@@ -14,6 +14,8 @@ class ComprasController {
         chapa.largura = dimensions[0];
         chapa.comprimento = dimensions[1];
       }
+    } else if (chapa.largura && chapa.comprimento) {
+      chapa.medida = `${chapa.largura}x${chapa.comprimento}`;
     }
     return chapa;
   }

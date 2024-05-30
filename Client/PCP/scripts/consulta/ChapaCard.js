@@ -6,7 +6,7 @@ export class ChapaCard {
     this.chapa = chapa;
     this.itemStatus = itemStatus;
     this.itemId = itemId;
-    this.keys = ["status", "medida", "vincos", "qualidade", "onda", "quantidade_comprada", "quantidade_estoque", "data_prevista"];
+    this.keys = ["status", "largura", "vincos", "qualidade", "onda", "quantidade_disponivel", "data_prevista"];
   }
 
   createValueDiv(key, value) {
@@ -25,6 +25,12 @@ export class ChapaCard {
       } else if (status === "comprado") {
         valueDiv.className += " card-status-comprado ";
       }
+    }
+
+    if (key === "largura") {
+      let largura = this.chapa.largura;
+      let comprimento = this.chapa.comprimento;
+      value = `${largura} x ${comprimento}`;
     }
 
     valueDiv.textContent = value;

@@ -39,7 +39,7 @@ async function postData() {
         valor_unitario: faker.commerce.price(),
         valor_total: faker.commerce.price(),
         qualidade: qualidade,
-        medida: `${faker.datatype.number({ min: 1, max: 6 }) * 500}x${faker.datatype.number({ min: 1, max: 6 }) * 500}`,
+        medida: `${faker.datatype.number({ min: 1, max: 6 }) * 500}x${faker.datatype.number({ min: 1, max: 6 }) * 500}`, 
         onda: faker.random.arrayElement(['B', 'C', 'BC', 'BB', 'E']),
         vincos: faker.datatype.number({ min: 1, max: 100 }) <= 75 ? 'Não' : 'Sim',
         coluna: coluna || faker.random.arrayElement([3, 12]),

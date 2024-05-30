@@ -14,7 +14,6 @@
   gap: 7rem; /* 7rem 105px */
 }
 
-
 .card {
   border-radius: 10px;
   overflow: hidden;
@@ -109,4 +108,10 @@
 }
 .btn-submit.align-right {
   margin-left: auto;
+}
+
+.finalizado {
+  color: #727272;
+  backdrop-filter: blur(10px);
+  opacity: 0.5;
 }

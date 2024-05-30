@@ -468,8 +468,6 @@ formulário
   border: none;
 }
 
-
-
 .card-div {
   border-radius: 1.5rem !important;
   padding: 0px;
@@ -538,17 +536,6 @@ input[type="checkbox"] {
 
 .card-status-comprado {
   background-color: #007bff;
-}
-
-
-@media (max-width: 600px) {
-  .card-value-div {
-    overflow: visible; /* Replaces 'auto' */
-    text-overflow: initial; /* Replaces 'ellipsis' */
-    white-space: normal; /* Replaces 'nowrap' */
-    scrollbar-width: auto; /* Replaces 'none' for Firefox */
-    -ms-overflow-style: auto; /* Replaces 'none' for Edge */
-  }
 }
 
 /* chrome, safari e opera */
@@ -648,7 +635,7 @@ input[type="checkbox"]:checked::before {
   margin-right: 10px;
 }
 
-.card-status-comprado{
+.card-status-comprado {
   background: #ff262656 !important;
   border: 1px solid #ff000098;
   color: #ffa4a4;
@@ -669,6 +656,43 @@ input[type="checkbox"]:checked::before {
 .card-disabled-button {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* ======================================
+   media mode do card Styles
+   ====================================== */
+
+/* Responsive styles */
+@media (max-width: 600px) {
+  .card {
+    margin-bottom: 5px;
+    margin-top: 1px;
+  }
+
+  .card-div {
+    height: auto; 
+  }
+
+  .card-value-row {
+    font-size: 0.1rem;
+  }
+
+  input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+  }
+
+  .card-checkbox:checked + .card-checkbox::after {
+    width: 20px;
+    height: 20px;
+  }
+
+  .card-part-number,
+  .card-status-comprado,
+  .card-status-reservado {
+    padding: 5px; /* Adjust padding for smaller screens */
+    margin-right: 5px; /* Adjust margin for smaller screens */
+  }
 }
 
 /* LUGHTMODE CARD Montei por graça pode tirar se quiser */
@@ -698,7 +722,8 @@ input[type="checkbox"]:checked::before {
 /* xizin de fechar modal */
 .light-mode .close {
   color: #333;
-}.light-mode .card-title {
+}
+.light-mode .card-title {
   color: #333;
 }
 
