@@ -38,8 +38,11 @@ export class ItemCard {
     buttonContainer.appendChild(dropdownButton);
 
     const deleteButton = this.createDeleteButton();
-    if (this.item.status.toLowerCase() == "reservado") {
-      buttonContainer.appendChild(deleteButton);
+    buttonContainer.appendChild(deleteButton);
+    if (this.item.status.toLowerCase() != "reservado") {
+      deleteButton.disabled = true;
+      deleteButton.classList.remove("btn-danger");
+      deleteButton.classList.add("btn-secondary");
     }
 
     return itemCard;
@@ -66,14 +69,17 @@ export class ItemCard {
 
   createPreviewDiv() {
     const lastChapa = this.item.chapas[this.item.chapas.length - 1];
-    const previewDiv = createElementWithClass("div", "preview dark-background"); // Add a new class for the dark background
-    const keys = ["medida", "vincos", "qualidade", "onda", "quantidade_comprada", "quantidade_estoque", "data_prevista"];
+    const previewDiv = createElementWithClass("div", "preview dark-background");
+    const keys = ["largura", "qualidade", "onda", "quantidade_comprada"];
     keys.forEach((key) => {
       const span = document.createElement("span");
-      span.style.marginRight = "10px"; // Add some margin to the right of the span
+      span.style.marginRight = "10px";
       if (lastChapa[key] !== null) {
-        // Check that lastChapa[key] is not null
-        if (key.startsWith("data")) {
+        if (key === "largura") {
+          let largura = lastChapa.largura;
+          let comprimento = lastChapa.comprimento;
+          span.textContent = `${largura} x ${comprimento}`;
+        } else if (key.startsWith("data")) {
           let [day, month] = lastChapa[key].split("/");
           span.textContent = `${day}/${month}`;
         } else {
