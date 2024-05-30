@@ -14,12 +14,24 @@ export function createCard(item) {
   const headerDiv = document.createElement("div");
   headerDiv.style.display = "flex";
   headerDiv.style.justifyContent = "space-between";
-  headerDiv.style.marginBottom = "20px"; 
+  headerDiv.style.marginBottom = "20px";
 
   const partNumberDiv = document.createElement("div");
   partNumberDiv.className = "part-number";
   partNumberDiv.textContent = item.Item.part_number;
   headerDiv.appendChild(partNumberDiv);
+
+  const keysDiv = document.createElement("div");
+  keysDiv.className = "keys";
+
+  const keys = ["CHAPAS", "QUANT.", "CLIENTE", "MEDIDA"];
+  keys.forEach((key) => {
+    const keyDiv = document.createElement("div");
+    keyDiv.textContent = key;
+    keysDiv.appendChild(keyDiv);
+  });
+
+  headerDiv.appendChild(keysDiv);
 
   const orderPrazoDiv = document.createElement("div");
   const orderSpan = document.createElement("span");

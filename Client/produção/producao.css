@@ -1,5 +1,7 @@
 .card-container {
   margin-top: 20px;
+  margin-right: 25%;
+  margin-left: 25%;
 }
 
 .card {
@@ -17,13 +19,26 @@
   font-weight: bold;
 }
 .part-number {
-  background: #7a1bff23 !important; 
-  color: #bf8cff; 
+  background: #7a1bff23 !important;
+  color: #bf8cff;
   border: solid 1px #9b5fff3d;
   padding: 10px;
   display: inline-block;
   border-radius: 10px;
 }
+
+.keys {
+  background-color: rgb(40, 40, 40);
+  color: white;
+  flex-grow: 1;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border-radius: 10px;
+}
+
 .chapa-card {
   border-radius: 10px;
 }
@@ -34,11 +49,14 @@
 .form-check-input:checked + .form-check-label {
   text-decoration: line-through;
 }
+
 .custom-checkbox {
   position: relative;
   display: flex;
   align-items: center;
 }
+
+/* checkboxes */
 .custom-checkbox input[type="checkbox"] {
   position: absolute;
   opacity: 0;
