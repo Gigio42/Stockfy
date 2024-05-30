@@ -1,9 +1,8 @@
 //Detalhes: As funções de deletar eu usei o prisma.$transaction por achar que seria mais seguro, pois
 //se uma das operações falhar, ele vai dar rollback
-
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import Chapas from "../Models/chapasModel.js";
+import Chapa_Item from "../Models/chapa_itemModel.js";
+import Item from "../Models/itemModel.js";
 
 class PCPController {
   constructor() {}
@@ -12,7 +11,7 @@ class PCPController {
   // GetChapasComment Function
   // ------------------------------
   async getChapas(query, filterCriteria, sortOrder, sortBy) {
-    let data = await prisma.chapas.findMany({ include: { conjugacoes: true } });
+    let data = await Chapas.findMany({ include: { conjugacoes: true } });
 
     data = data.filter((chapa) => chapa.status !== "USADO");
 
@@ -49,7 +48,7 @@ class PCPController {
   // GetItemsComment Function
   // ------------------------------
   async getItems(searchQuery = "") {
-    const chapaItems = await prisma.chapa_Item.findMany({
+    const chapaItems = await Chapa_Item.findMany({
       where: {
         item: {
           part_number: {
@@ -97,7 +96,7 @@ class PCPController {
     let item;
 
     for (const { chapaID, quantity } of chapas) {
-      const chapa = await prisma.chapas.findUnique({ where: { id_chapa: chapaID } });
+      const chapa = await Chapas.findUnique({ where: { id_chapa: chapaID } });
 
       if (!chapa) throw new Error("Chapa não encontrada");
       if (!quantity) throw new Error("Informe a quantidade de chapas a serem reservadas");
@@ -118,7 +117,7 @@ class PCPController {
         }
       }
 
-      const updatedChapa = await prisma.chapas.update({
+      const updatedChapa = await Chapas.update({
         where: { id_chapa: chapa.id_chapa },
         data: {
           quantidade_disponivel: { decrement: parseInt(quantity) },
@@ -133,7 +132,7 @@ class PCPController {
         });
       }
 
-      let chapaItem = await prisma.chapa_Item.findFirst({
+      let chapaItem = await Chapa_Item.findFirst({
         where: {
           AND: [{ chapa: { id_chapa: chapaID } }, { item: { id_item: item.id_item } }],
         },
@@ -162,7 +161,7 @@ class PCPController {
   // deleteItemComment Function
   // ------------------------------
   async deleteItem(itemId) {
-    const item = await prisma.item.findUnique({
+    const item = await Item.findUnique({
       where: { id_item: itemId },
       include: { chapas: true },
     });
@@ -189,7 +188,7 @@ class PCPController {
   // deleteItemComment Function
   // ------------------------------
   async deleteChapaFromItem(itemId, chapaId) {
-    const chapaItem = await prisma.chapa_Item.findFirst({
+    const chapaItem = await Chapa_Item.findFirst({
       where: {
         itemId: itemId,
         chapaId: chapaId,
