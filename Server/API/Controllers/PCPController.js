@@ -1,8 +1,8 @@
 //Detalhes: As funções de deletar eu usei o prisma.$transaction por achar que seria mais seguro, pois
 //se uma das operações falhar, ele vai dar rollback
-import Chapas from '../Models/chapasModel.js';
-import Chapa_Item from '../Models/chapa_itemModel.js';
-import Item from '../Models/itemModel.js';
+import Chapas from "../Models/chapasModel.js";
+import Chapa_Item from "../Models/chapa_itemModel.js";
+import Item from "../Models/itemModel.js";
 
 class PCPController {
   constructor() {}
