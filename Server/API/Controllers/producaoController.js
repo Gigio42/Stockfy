@@ -1,12 +1,11 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import Maquina from "../Models/maquinaModel.js";
+import Item from "../models/itemModel.js";
 
 class ProducaoController {
   constructor() {}
 
   async getChapasInItemsInMaquinas(name) {
-    const maquina = await prisma.maquina.findFirst({
+    const maquina = await Maquina.findFirst({
       where: {
         nome: name,
       },
@@ -56,7 +55,7 @@ class ProducaoController {
   }
 
   async markItemAsProduzido(id) {
-    const item = await prisma.item.update({
+    const item = await Item.update({
       where: {
         id_item: id,
       },
