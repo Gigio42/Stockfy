@@ -1,5 +1,5 @@
 /* ============================== */
-/* LISTA DE CARDS */
+/* LISTA DE CARDS                 */
 /* ============================== */
 export function createCard(item) {
   const card = document.createElement("div");
@@ -22,7 +22,8 @@ export function createCard(item) {
   headerDiv.appendChild(partNumberDiv);
 
   const keysDiv = document.createElement("div");
-  keysDiv.className = "keys";
+  keysDiv.className = "keys grid-container";
+  keysDiv.style.gridTemplateColumns = "repeat(4, 1fr)";
 
   const keys = ["CHAPAS", "QUANT.", "CLIENTE", "MEDIDA"];
   keys.forEach((key) => {
@@ -50,12 +51,12 @@ export function createCard(item) {
 
   const submitButton = document.createElement("button");
   submitButton.className = "btn-submit mt-2 align-right";
-  submitButton.textContent = "Enviar";
+  submitButton.textContent = "Finalizar produção";
   submitButton.disabled = true;
   submitButton.addEventListener("click", () => alert(`Item ${item.Item.part_number} enviado`));
   cardBody.appendChild(submitButton);
 
-  updateSubmitButtonState(card, submitButton);
+  updateSubmitButtonState(chapasList, submitButton);
 
   cardContainer.appendChild(cardBody);
   card.appendChild(cardContainer);
@@ -63,8 +64,9 @@ export function createCard(item) {
   return card;
 }
 
-function updateSubmitButtonState(card, submitButton) {
-  const checkboxes = card.querySelectorAll('input[type="checkbox"]');
+function updateSubmitButtonState(chapasContainer, submitButton) {
+  const checkboxes = chapasContainer.querySelectorAll('input[type="checkbox"]');
+
   checkboxes.forEach((checkbox) => {
     checkbox.addEventListener("change", () => {
       const allChecked = Array.from(checkboxes).every((cb) => cb.checked);
@@ -75,7 +77,7 @@ function updateSubmitButtonState(card, submitButton) {
 }
 
 /* ============================== */
-/* LISTA DE CHAPAS */
+/* LISTA DE CHAPAS                */
 /* ============================== */
 
 export function createChapasList(chapas) {
@@ -90,16 +92,32 @@ export function createChapasList(chapas) {
     const chapaCardBody = document.createElement("div");
     chapaCardBody.className = "card-body d-flex justify-content-between align-items-center";
 
+    const chapaContentDiv = document.createElement("div");
+    chapaContentDiv.className = "chapa-content flex-container";
+    chapaContentDiv.style.width = "100%";
+
     const chapaDetailsDiv = document.createElement("div");
-    const qualidadeDiv = document.createElement("div");
-    qualidadeDiv.textContent = `Qualidade: ${chapa.chapa.qualidade}`;
-    const medidaDiv = document.createElement("div");
-    medidaDiv.textContent = `Medida: ${chapa.chapa.medida}`;
+    chapaDetailsDiv.className = "chapa-details grid-container";
+    chapaDetailsDiv.style.gridTemplateColumns = "repeat(4, 1fr)";
+
+    const emptyDiv = document.createElement("div");
+    chapaDetailsDiv.appendChild(emptyDiv);
+
     const larguraComprimentoDiv = document.createElement("div");
-    larguraComprimentoDiv.textContent = `Largura x Comprimento: ${chapa.chapa.largura}x${chapa.chapa.comprimento}`;
-    chapaDetailsDiv.appendChild(qualidadeDiv);
-    chapaDetailsDiv.appendChild(medidaDiv);
+    larguraComprimentoDiv.textContent = `${chapa.chapa.largura}x${chapa.chapa.comprimento}`;
     chapaDetailsDiv.appendChild(larguraComprimentoDiv);
+
+    const quantidadeDiv = document.createElement("div");
+    quantidadeDiv.textContent = `${chapa.quantidade}`;
+    chapaDetailsDiv.appendChild(quantidadeDiv);
+
+    const numeroClienteDiv = document.createElement("div");
+    numeroClienteDiv.textContent = `${chapa.chapa.numero_cliente}`;
+    chapaDetailsDiv.appendChild(numeroClienteDiv);
+
+    const medidaCorteDiv = document.createElement("div");
+    medidaCorteDiv.textContent = "300x500";
+    chapaDetailsDiv.appendChild(medidaCorteDiv);
 
     const customCheckboxDiv = document.createElement("div");
     customCheckboxDiv.className = "custom-checkbox";
@@ -121,8 +139,10 @@ export function createChapasList(chapas) {
     customCheckboxDiv.appendChild(checkmarkSpan);
     customCheckboxDiv.appendChild(label);
 
-    chapaCardBody.appendChild(chapaDetailsDiv);
-    chapaCardBody.appendChild(customCheckboxDiv);
+    chapaContentDiv.appendChild(chapaDetailsDiv);
+    chapaContentDiv.appendChild(customCheckboxDiv);
+
+    chapaCardBody.appendChild(chapaContentDiv);
 
     chapaCard.appendChild(chapaCardBody);
     chapasContainer.appendChild(chapaCard);

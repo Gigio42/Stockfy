@@ -27,6 +27,7 @@ class ProducaoController {
                     chapa: {
                       select: {
                         qualidade: true,
+                        numero_cliente: true,
                         medida: true,
                         largura: true,
                         comprimento: true,

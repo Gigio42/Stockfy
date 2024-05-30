@@ -4,6 +4,16 @@
   margin-left: 25%;
 }
 
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.grid-container {
+  display: grid;
+  gap: 105px; 
+}
+
 .card {
   border-radius: 10px;
   overflow: hidden;
@@ -37,6 +47,10 @@
   margin-left: 10px;
   margin-right: 10px;
   border-radius: 10px;
+}
+.chapa-details {
+  display: flex;
+  justify-content: space-between;
 }
 
 .chapa-card {

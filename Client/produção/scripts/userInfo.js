@@ -1,6 +1,5 @@
-export function setUserInfo() {
-  const userName = localStorage.getItem('userName');
-  document.getElementById('user-name').textContent = userName;
+export function setUserInfo(name) {
+  document.getElementById('user-name').textContent = name;
 }
 
 export function setMachineName(name) {
