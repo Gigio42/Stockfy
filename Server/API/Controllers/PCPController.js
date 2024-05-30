@@ -3,6 +3,9 @@
 import Chapas from "../Models/chapasModel.js";
 import Chapa_Item from "../Models/chapa_itemModel.js";
 import Item from "../Models/itemModel.js";
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 class PCPController {
   constructor() {}
@@ -99,14 +102,14 @@ class PCPController {
       const chapa = await Chapas.findUnique({ where: { id_chapa: chapaID } });
 
       if (!chapa) throw new Error("Chapa não encontrada");
-      if (!quantity) throw new Error("Informe a quantidade de chapas a serem reservadas");
+      if (!quantity || quantity <= 0) throw new Error("Informe a quantidade de chapas a serem reservadas");
       if (quantity > chapa.quantidade_disponivel) throw new Error(`Chapa ${chapaID} não possui quantidade suficiente`);
 
       if (!item) {
-        item = await prisma.item.findUnique({ where: { part_number: partNumber } });
+        item = await Item.findUnique({ where: { part_number: partNumber } });
 
         if (!item) {
-          item = await prisma.item.create({
+          item = await Item.create({
             data: {
               part_number: partNumber,
               status: "RESERVADO",
@@ -126,7 +129,7 @@ class PCPController {
       });
 
       if (updatedChapa.quantidade_disponivel === 0) {
-        await prisma.chapas.update({
+        await Chapas.update({
           where: { id_chapa: chapa.id_chapa },
           data: { status: "USADO" },
         });
@@ -139,12 +142,12 @@ class PCPController {
       });
 
       if (chapaItem) {
-        await prisma.chapa_Item.update({
+        await Chapa_Item.update({
           where: { id_chapa_item: chapaItem.id_chapa_item },
           data: { quantidade: { increment: Number(quantity) } },
         });
       } else {
-        await prisma.chapa_Item.create({
+        await Chapa_Item.create({
           data: {
             quantidade: Number(quantity),
             chapa: { connect: { id_chapa: chapaID } },
@@ -170,16 +173,16 @@ class PCPController {
 
     for (const chapaItem of item.chapas) {
       operations.push(
-        prisma.chapas.update({
+        Chapas.update({
           where: { id_chapa: chapaItem.chapaId },
           data: { quantidade_estoque: { increment: chapaItem.quantidade } },
         }),
       );
 
-      operations.push(prisma.chapa_Item.delete({ where: { id_chapa_item: chapaItem.id_chapa_item } }));
+      operations.push(Chapa_Item.delete({ where: { id_chapa_item: chapaItem.id_chapa_item } }));
     }
 
-    operations.push(prisma.item.delete({ where: { id_item: itemId } }));
+    operations.push(Item.delete({ where: { id_item: itemId } }));
 
     await prisma.$transaction(operations);
   }
@@ -202,13 +205,13 @@ class PCPController {
     const operations = [];
 
     operations.push(
-      prisma.chapas.update({
+      Chapas.update({
         where: { id_chapa: chapaId },
         data: { quantidade_estoque: { increment: chapaItem.quantidade } },
       }),
     );
 
-    operations.push(prisma.chapa_Item.delete({ where: { id_chapa_item: chapaItem.id_chapa_item } }));
+    operations.push(Chapa_Item.delete({ where: { id_chapa_item: chapaItem.id_chapa_item } }));
 
     await prisma.$transaction(operations);
   }
