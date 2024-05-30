@@ -33,14 +33,13 @@ export class Card {
         }
       }
 
-      if (key === "quantidade_estoque") {
-        if (value < 0) {
-          valueDiv.style.color = "red";
-          valueDiv.textContent = Math.abs(value);
-        } else if (value === 0) {
-          valueDiv.style.color = "";
-        } else {
+      if (key === "quantidade_disponivel") {
+        if (this.chapa.status.toUpperCase() === "RECEBIDO") {
           valueDiv.style.color = "green";
+        } else if (this.chapa.status.toUpperCase() === "COMPRADO") {
+          valueDiv.style.color = "red";
+        } else if (this.chapa.status.toUpperCase() === "PARCIAL") {
+          valueDiv.style.color = "orange";
         }
       }
 

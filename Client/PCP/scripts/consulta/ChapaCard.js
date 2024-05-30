@@ -6,7 +6,7 @@ export class ChapaCard {
     this.chapa = chapa;
     this.itemStatus = itemStatus;
     this.itemId = itemId;
-    this.keys = ["status", "largura", "vincos", "qualidade", "onda", "quantidade_comprada", "quantidade_estoque", "data_prevista"];
+    this.keys = ["status", "largura", "vincos", "qualidade", "onda", "quantidade_disponivel", "data_prevista"];
   }
 
   createValueDiv(key, value) {

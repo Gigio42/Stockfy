@@ -78,7 +78,7 @@ export class Reservar {
 
       this.containerElement.innerHTML = "";
       items.forEach((chapa, index) => {
-        const keys = ["largura", "vincos", "qualidade", "onda", "quantidade_comprada", "quantidade_estoque", "data_prevista", "status"];
+        const keys = ["largura", "vincos", "qualidade", "onda", "quantidade_disponivel", "data_prevista", "status"];
         const card = new Card(chapa, keys, index, sortKey, onSubcardSelectionChange, this.selectedChapas.has(chapa.id_chapa));
         this.containerElement.appendChild(card.createCard());
       });
