@@ -3,7 +3,7 @@
 import Chapas from "../Models/chapasModel.js";
 import Chapa_Item from "../Models/chapa_itemModel.js";
 import Item from "../Models/itemModel.js";
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
