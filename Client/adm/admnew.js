@@ -94,61 +94,88 @@ document.addEventListener('click', function (event) {
     closeModal();
   }
 });
+
+// Função para lidar com o clique no botão "Adicionar Item" e atualizar o status do item para "PRODUZINDO"
+async function adicionarItem(itemId) {
+  try {
+    const response = await axios.post(`http://localhost:3000/adm/items/${itemId}/produzindo`);
+    console.log(response.data); // Verifica a resposta do servidor
+    // Adicione aqui qualquer lógica adicional após a atualização bem-sucedida do status do item
+  
+  } catch (error) {
+    console.error('Erro ao adicionar item:', error);
+    // Adicione aqui o tratamento de erro, se necessário
+  }
+}
+
 async function fetchitens() {
   try {
     const response = await axios.get('http://localhost:3000/adm/items/chapas');
     const itens = response.data;
 
-    console.log('Itens recebidos:', itens); // Verifique se os dados estão corretos
-
     let reservados = document.getElementById('reservados');
 
-    // Verifique se o contêiner existe
     if (!reservados) {
       console.error('Elemento #reservados não encontrado');
       return;
     }
 
-    // Certifique-se de que o contêiner está vazio antes de adicionar novos elementos
     reservados.innerHTML = '';
 
     itens.forEach(item => {
-      console.log('Processando item:', item); // Adicionando log para verificar o item
-
       let card = document.createElement('div');
       card.className = 'card';
 
-      // Criar o elemento de texto para o part_number
       let partNumberInfo = document.createElement('h3');
       partNumberInfo.textContent = `${item.part_number}`;
       card.appendChild(partNumberInfo);
 
       item.chapas.forEach(chapa => {
-        console.log('Processando chapa:', chapa); // Adicionando log para verificar a chapa
-    
         let subcard = document.createElement('div');
         subcard.className = 'subcard';
-    
+
         let chapaInfo = document.createElement('p');
-        // Adicionando quebra de linha entre a medida e a quantidade comprada
         chapaInfo.innerHTML = `${chapa.medida}<br>${chapa.quantidade_comprada}`;
         subcard.appendChild(chapaInfo);
-    
-        card.appendChild(subcard);
-    });
-    
 
-      // Adicionar evento de clique ao card para expandir/contrair os subcards
+        card.appendChild(subcard);
+      });
+
+      // Adicionando botão "Adicionar Item" ao card
+      let adicionarItemButton = document.createElement('button');
+      adicionarItemButton.textContent = 'Adicionar Item';
+      card.appendChild(adicionarItemButton);
+      console.log(item.id_item)
+      // Define o ID do item como um atributo de dados no botão "Adicionar Item"
+      adicionarItemButton.dataset.id = item.id_item;
+
+
+      // Adicionando evento de clique ao card para expandir/contrair os subcards
       card.addEventListener('click', () => {
         card.classList.toggle('expanded');
       });
 
-      // Adicionar o card ao contêiner
+      // Adicionando evento de clique ao botão "Adicionar Item"
+      adicionarItemButton.addEventListener('click', async (event) => {
+        event.stopPropagation();
+        try {
+          // Obtenha o ID do item a partir do atributo "data-id" do botão
+          const itemId = event.target.dataset.id;
+          console.log('ID do item:', itemId); // Verifica o ID do item
+          // Chame a função adicionarItem() com o ID correto do item
+          await adicionarItem(itemId);
+        } catch (error) {
+          console.error('Erro ao adicionar item:', error);
+          // Adicione aqui o tratamento de erro, se necessário
+        }
+      });
+
+
+
       reservados.appendChild(card);
-      console.log('Card adicionado:', card); // Verifique se o card foi adicionado
     });
 
-    console.log('Finalizou o processamento dos itens'); // Log final para indicar que o processamento terminou
+    console.log('Finalizou o processamento dos itens');
   } catch (error) {
     console.error('Erro ao recuperar os itens!', error);
   }

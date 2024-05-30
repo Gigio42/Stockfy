@@ -338,7 +338,7 @@
 
 .containerReserv {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   height: 100%;
 }
 
@@ -367,6 +367,7 @@
     padding: 1rem;
     border-radius: 1rem;
     width:fit-content;
+    margin-bottom: 1rem;
   }
 
 
@@ -402,11 +403,6 @@
   
 }
 
-.conteudoInterno {
-  display: flex;
-  justify-content: flex-end;
-}
-
 h3 {
   background-color: #4f27ff72;
   padding: 0.5rem;
@@ -423,8 +419,20 @@ h3 {
   }
 
 .conteudoInterno {
+  display: flex;
+  justify-content: flex-end;
   background: #1e1e1e;
-
+  width: 15rem;
   padding: 1rem;
+  border-radius: 2rem;
+  overflow-y: auto;
+  max-height: 24rem !important;
+  margin-left: 1.5rem;
+}
+
+.programMaquina {
+  flex: 1; /* Isso faz com que a div ocupe todo o espaço disponível */
+  height: 98%;
+  background: #1e1e1e;
   border-radius: 2rem;
 }
