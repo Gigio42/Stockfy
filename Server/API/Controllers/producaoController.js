@@ -8,10 +8,10 @@ class ProducaoController {
   async getChapasInItemsInMaquinas(name) {
     const maquina = await prisma.maquina.findFirst({
       where: {
-        name: name,
+        nome: name,
       },
       select: {
-        name: true,
+        nome: true,
         items: {
           select: {
             ordem: true,
