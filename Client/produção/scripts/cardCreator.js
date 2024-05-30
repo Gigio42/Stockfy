@@ -37,13 +37,20 @@ export function createCard(item) {
   headerDiv.appendChild(keysDiv);
 
   const orderPrazoDiv = document.createElement("div");
+  orderPrazoDiv.className = "order-prazo";
+  orderPrazoDiv.style.display = "flex";
+  orderPrazoDiv.style.flexDirection = "column";
+
   const orderSpan = document.createElement("span");
+  orderSpan.className = "ordem";
   orderSpan.textContent = `Processo: ${item.ordem}`;
-  const prazoSpan = document.createElement("span");
-  prazoSpan.textContent = `Prazo: ${item.prazo}`;
   orderPrazoDiv.appendChild(orderSpan);
-  orderPrazoDiv.appendChild(document.createTextNode(" | "));
+
+  const prazoSpan = document.createElement("span");
+  prazoSpan.className = "prazo";
+  prazoSpan.textContent = `Prazo: ${item.prazo}`;
   orderPrazoDiv.appendChild(prazoSpan);
+
   headerDiv.appendChild(orderPrazoDiv);
 
   cardBody.appendChild(headerDiv);
@@ -56,7 +63,7 @@ export function createCard(item) {
   submitButton.textContent = "Finalizar produção";
   submitButton.disabled = true;
   submitButton.addEventListener("click", async () => {
-    const itemId = item.Item.id_item; 
+    const itemId = item.Item.id_item;
     const data = await updateItemStatus(itemId);
     alert(`Item ${item.Item.part_number}, id: ${item.Item.id_item} enviado`);
     console.log(data);
