@@ -1,8 +1,12 @@
 import Maquina from "../Models/maquinaModel.js";
 import Chapa_Item from "../Models/chapa_itemModel.js";
+import Item from "../Models/itemModel.js";
+import Item_Maquina from "../Models/item_maquinaModel.js";
 
 class AdmController {
-  constructor() {}
+  constructor(prisma) {
+    this.prisma = prisma;
+  }
 
   async getMaquina() {
     const maquinas = await Maquina.findMany();
@@ -61,6 +65,26 @@ class AdmController {
     }, {});
 
     return Object.values(items);
+  }
+
+  async changeItemStatusProduzindo(itemId, maquinaId) {
+    try {
+      // Atualiza o status do item para PRODUZINDO
+      await Item.update({
+        where: { id_item: itemId },
+        data: { status: "PRODUZINDO" },
+      });
+
+      // Cria o relacionamento entre Item e Maquina
+      await Item_Maquina.create({
+        data: {
+          maquinaId: maquinaId,
+          itemId: itemId,
+        },
+      });
+    } catch (error) {
+      throw new Error("Erro ao atualizar o status do item para PRODUZINDO: " + error.message);
+    }
   }
 }
 

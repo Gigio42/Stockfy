@@ -1,147 +1,189 @@
-var darkModeToggle = document.getElementById('darkModeToggle');
-var body = document.body;
+//============================================
+// Função para lidar com a lógica do Dark Mode
+//============================================
 
-// DARK MODE
-darkModeToggle.addEventListener('change', function () {
-  body.classList.toggle('dark-mode', darkModeToggle.checked);
-  localStorage.setItem('darkMode', darkModeToggle.checked ? 'enabled' : 'disabled');
+function handleDarkModeToggle() {
+  var darkModeToggle = document.getElementById("darkModeToggle");
+  var body = document.body;
 
-  var aside = document.getElementById('aside');
-  aside.classList.toggle('dark-mode-aside', darkModeToggle.checked);
-});
+  darkModeToggle.addEventListener("change", function () {
+    body.classList.toggle("dark-mode", darkModeToggle.checked);
+    localStorage.setItem("darkMode", darkModeToggle.checked ? "enabled" : "disabled");
 
-if (localStorage.getItem('darkMode') === 'enabled') {
-  darkModeToggle.checked = true;
-  body.classList.add('dark-mode');
+    var aside = document.getElementById("aside");
+    if (aside) {
+      aside.classList.toggle("dark-mode-aside", darkModeToggle.checked);
+    }
+  });
 
-  var aside = document.getElementById('aside');
-  if (aside) {
-    aside.classList.add('dark-mode-aside');
+  if (localStorage.getItem("darkMode") === "enabled") {
+    darkModeToggle.checked = true;
+    body.classList.add("dark-mode");
+
+    var aside = document.getElementById("aside");
+    if (aside) {
+      aside.classList.add("dark-mode-aside");
+    }
   }
 }
+
+//============================================
+// Função para buscar e exibir as máquinas
+//============================================
 
 async function fetchMaquinas() {
   try {
-    const response = await axios.get('http://localhost:3000/adm/maquina');
+    const response = await axios.get("http://localhost:3000/adm/maquina");
     const maquinas = response.data;
 
-    maquinas.forEach(maquina => {
-      let allMaquina = document.getElementById('allMaquina');
-      let cardMaquina = document.createElement('div');
-      cardMaquina.className = 'cardMaquina';
-
-      // Criar o elemento de texto para o nome da máquina
-      let maquinaName = document.createElement('span');
-      maquinaName.textContent = maquina.nome;
-      cardMaquina.appendChild(maquinaName);
-
-      // Criar o elemento de imagem para o SVG
-      let svgIcon = document.createElement('img');
-      svgIcon.src = 'media/icons8-link-externo.svg';
-      svgIcon.alt = 'External link icon';
-
-      // Adicionar duas classes ao elemento
-      svgIcon.classList.add('svgIcon', 'abrirModal');
-
-      // Adicionar o elemento de imagem ao card
-      cardMaquina.appendChild(svgIcon);
-      // Adicionar o card ao contêiner
-      allMaquina.appendChild(cardMaquina);
+    maquinas.forEach((maquina) => {
+      createMaquinaCard(maquina);
     });
   } catch (error) {
-    console.error('Houve um erro!', error);
+    console.error("Houve um erro!", error);
   }
 }
 
-fetchMaquinas();
+//============================================
+// Função para criar um card de máquina
+//============================================
 
-// Função para abrir o modal com o nome da máquina
-function openModal(maquinaName) {
-  var modal = document.getElementById('myModal');
-  modal.style.display = 'block';
+function createMaquinaCard(maquina) {
+  let allMaquina = document.getElementById("allMaquina");
+  let cardMaquina = document.createElement("div");
+  cardMaquina.className = "cardMaquina";
 
-  // Encontre o elemento de texto dentro do modal e atualize seu conteúdo com o nome da máquina
-  var modalContent = modal.querySelector('.modal-content');
-  var span = modalContent.querySelector('span');
+  let maquinaName = document.createElement("span");
+  maquinaName.textContent = maquina.nome;
+  cardMaquina.appendChild(maquinaName);
+
+  let svgIcon = document.createElement("img");
+  svgIcon.src = "media/icons8-link-externo.svg";
+  svgIcon.alt = "External link icon";
+  svgIcon.classList.add("svgIcon", "abrirModal");
+  cardMaquina.appendChild(svgIcon);
+
+  svgIcon.addEventListener("click", function () {
+    openModal(maquinaName.textContent, maquina.id_maquina);
+  });
+
+  allMaquina.appendChild(cardMaquina);
+}
+
+//========================
+//modal
+//========================
+
+function openModal(maquinaName, maquinaId) {
+  var modal = document.getElementById("myModal");
+  modal.style.display = "block";
+
+  var modalContent = modal.querySelector(".modal-content");
+  var span = modalContent.querySelector("span");
   span.textContent = maquinaName;
+
+  fetchitens(maquinaId);
+
+  modal.addEventListener("click", closeModal);
+  modalContent.addEventListener("click", function (event) {
+    event.stopPropagation();                                                            
+  });
 }
 
-// Função para fechar o modal
 function closeModal() {
-  document.getElementById('myModal').style.display = 'none';
+  document.getElementById("myModal").style.display = "none";
 }
+//=================================================
+// Função para adicionar item
+//=================================================
 
-// Adiciona um evento de clique ao ícone para abrir o modal com o nome da máquina
-document.addEventListener('click', function (event) {
-  if (event.target.classList.contains('svgIcon')) {
-    // Obtém o elemento de texto (span) que contém o nome da máquina
-    var maquinaName = event.target.parentNode.querySelector('span').textContent;
-    openModal(maquinaName);
-  }
-});
-
-// Adiciona um evento de clique ao fundo escuro do modal para fechar o modal
-document.getElementById('myModal').addEventListener('click', function (event) {
-  if (event.target === document.getElementById('myModal')) {
-    closeModal();
-  }
-});
-
-// Adiciona um evento de clique ao botão de fechar para fechar o modal
-document.addEventListener('click', function (event) {
-
-  if (event.target.className === 'close') {
-    closeModal();
-  }
-});
-async function fetchitens() {
+async function adicionarItem(itemId, maquinaId) {
   try {
-    const response = await axios.get('http://localhost:3000/adm/items/chapas');
+    const response = await axios.post(`http://localhost:3000/adm/maquina/${maquinaId}/item/${itemId}/produzindo`);
+    console.log(response.data);
+  } catch (error) {
+    console.error("Erro ao adicionar item:", error);
+  }
+}
+//=================================================
+// Função para buscar e exibir os itens
+//=================================================
+
+async function fetchitens(maquinaId) {
+  try {
+    const response = await axios.get("http://localhost:3000/adm/items/chapas");
     const itens = response.data;
 
-    console.log(itens); // Verifique se os dados estão corretos
-
-    let reservados = document.getElementById('reservados');
-
-    // Verifique se o contêiner existe
+    let reservados = document.getElementById("reservados");
     if (!reservados) {
-      console.error('Elemento #reservados não encontrado');
+      console.error("Elemento #reservados não encontrado");
       return;
     }
+    reservados.innerHTML = "";
 
-    itens.forEach(item => {
-      let card = document.createElement('div');
-      card.className = 'card';
-
-      // Criar o elemento de texto para o part_number
-      let partNumberInfo = document.createElement('h3');
-      partNumberInfo.textContent = `${item.part_number}`;
-      card.appendChild(partNumberInfo);
-
-      // Iterar sobre as chapas e criar elementos para a medida e quantidade
-      item.chapas.forEach(chapa => {
-        let subcard = document.createElement('div');
-        subcard.className = 'subcard';
-
-        let chapaInfo = document.createElement('p');
-        chapaInfo.textContent = `Medida: ${chapa.medida} | Quantidade: ${chapa.quantidade_comprada}`;
-        subcard.appendChild(chapaInfo);
-
-        card.appendChild(subcard);
-      });
-
-      // Adicionar evento de clique ao card para expandir/contrair os subcards
-      card.addEventListener('click', () => {
-        card.classList.toggle('expanded');
-      });
-
-      // Adicionar o card ao contêiner
-      reservados.appendChild(card);
+    itens.forEach((item) => {
+      createItemCard(item, maquinaId);
     });
+
+    console.log("Finalizou o processamento dos itens");
   } catch (error) {
-    console.error('Erro ao recuperar os itens!', error);
+    console.error("Erro ao recuperar os itens!", error);
   }
 }
 
-fetchitens();
+//=================================================
+// Função para criar um card de item
+//=================================================
 
+function createItemCard(item, maquinaId) {
+  let reservados = document.getElementById("reservados");
+  let card = document.createElement("div");
+  card.className = "card";
+
+  let partNumberInfo = document.createElement("h3");
+  partNumberInfo.textContent = `${item.part_number}`;
+  card.appendChild(partNumberInfo);
+
+  item.chapas.forEach((chapa) => {
+    let subcard = document.createElement("div");
+    subcard.className = "subcard";
+
+    let chapaInfo = document.createElement("p");
+    chapaInfo.innerHTML = `${chapa.medida}<br>${chapa.quantidade_comprada}`;
+    subcard.appendChild(chapaInfo);
+
+    card.appendChild(subcard);
+  });
+
+  let adicionarItemButton = document.createElement("button");
+  adicionarItemButton.textContent = "Adicionar Item";
+  card.appendChild(adicionarItemButton);
+  adicionarItemButton.dataset.id = item.id_item;
+
+  card.addEventListener("click", () => {
+    card.classList.toggle("expanded");
+  });
+
+  adicionarItemButton.addEventListener("click", async (event) => {
+    event.preventDefault(); 
+    event.stopPropagation();
+    try {
+      console.log("ID do item:", item.id_item);
+      console.log("ID da máquina:", maquinaId);
+      await adicionarItem(item.id_item, maquinaId);
+    } catch (error) {
+      console.error("Erro ao adicionar item:", error);
+    }
+  });
+
+  reservados.appendChild(card);
+}
+
+//=================================================
+// Chama as funções necessárias ao carregar a página
+//=================================================
+
+window.onload = function () {
+  handleDarkModeToggle();
+  fetchMaquinas();
+};
