@@ -1,4 +1,4 @@
-import Chapas from '../Models/chapas.js';
+import Chapas from "../Models/chapasModel.js";
 
 class ComprasController {
   constructor() {}
@@ -14,15 +14,17 @@ class ComprasController {
         chapa.largura = dimensions[0];
         chapa.comprimento = dimensions[1];
       }
+    } else if (chapa.largura && chapa.comprimento) {
+      chapa.medida = `${chapa.largura}x${chapa.comprimento}`;
     }
     return chapa;
   }
 
   async createCompra(orderData) {
-      const promises = orderData.info_prod_comprados.map(async (chapa) => {
-        chapa.quantidade_disponivel = chapa.quantidade_comprada;
+    const promises = orderData.info_prod_comprados.map(async (chapa) => {
+      chapa.quantidade_disponivel = chapa.quantidade_comprada;
 
-        chapa = this.extractDimensions(chapa);
+      chapa = this.extractDimensions(chapa);
 
       return Chapas.create({ data: chapa });
     });

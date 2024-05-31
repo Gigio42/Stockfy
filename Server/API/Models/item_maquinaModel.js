@@ -1,3 +1,3 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
-export default prisma.chapas;
+export default prisma.item_Maquina;

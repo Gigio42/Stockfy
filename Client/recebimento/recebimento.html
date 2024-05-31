@@ -1,426 +1,406 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conversor de PDF para Texto</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="file-info.js"></script>
-    <script src="atualizar.js"></script>
-    <link rel="stylesheet" href="recebimento.css">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Conversor de PDF para Texto</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="file-info.js"></script>
+        <script src="atualizar.js"></script>
+        <link rel="stylesheet" href="recebimento.css" />
+    </head>
+    <body>
+        <div class="button-container" id="button-container">
+            <div>
+                <button id="toggle-drop-zone">Mostrar/Ocultar Área de Solta</button>
+                <button id="compare-tables">Comparar Tabelas</button>
+            </div>
+            <div>
+                <input id="id_compra" placeholder="id_compra" />
+                <button id="buscarChapa" onclick="buscarChapa()">buscar</button>
+            </div>
 
-</head>
-<body>
-    <div class="button-container" id="button-container">
-        <div>
-            <button id="toggle-drop-zone">Mostrar/Ocultar Área de Solta</button>
-            <button id="compare-tables">Comparar Tabelas</button>
+            <button id="theme-toggle">Alternar Tema</button>
         </div>
-        <div>
-            <input id="id_compra" placeholder="id_compra"></input>
-            <button id="buscarChapa" onclick="buscarChapa()">buscar</button>
+        <div id="drop-zone" style="display: flex">Arraste e solte seu arquivo aqui</div>
+
+        <div id="tables" style="display: none" class="scrollable-table">
+            <div id="text-content"></div>
+            <!-- Suas tabelas aqui -->
+            <div style="height: 20px"></div>
+            <div>
+                <h2 style="display: flex; justify-content: center">Informações da compra</h2>
+            </div>
+            <table id="bancoDados">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Fornecedor</th>
+                        <th>Id_compra</th>
+                        <th>Quantidade</th>
+                        <th>Qualidade</th>
+                        <th>Medida</th>
+                        <th>Onda</th>
+                        <th>Vincos</th>
+                        <th>Status</th>
+                        <th>Data compra</th>
+                        <th>Data prevista</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+            <div style="height: 10px"></div>
+            <div>
+                <h2 style="display: flex; justify-content: center">Recebimento</h2>
+            </div>
+            <table id="recebimento">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <!-- Nova coluna ID adicionada aqui -->
+                        <th>Fornecedor</th>
+                        <th>Id_compra</th>
+                        <th>Quantidade</th>
+                        <th>Qualidade</th>
+                        <th>Medida</th>
+                        <th>Onda</th>
+                        <th>Vincos</th>
+                        <th>Status</th>
+                        <th>Data_recebimento</th>
+                        <th>Atualizar</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody2"></tbody>
+            </table>
+            <button onclick="addLine()">addLine</button>
         </div>
-        
-        <button id="theme-toggle">Alternar Tema</button>
-        
-    </div>
-    <div id="drop-zone" style="display:flex;">Arraste e solte seu arquivo aqui</div>
-    
-    <div id="tables" style="display:none;" class="scrollable-table">
-        <div id="text-content"></div>
-        <!-- Suas tabelas aqui -->
-        <div style="height: 20px;"></div>
-        <div>
-            <h2 style="display: flex; justify-content: center;">Informações da compra</h2>
-        </div>
-        <table id="bancoDados">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Fornecedor</th>
-                    <th>Id_compra</th>
-                    <th>Quantidade</th>
-                    <th>Qualidade</th>
-                    <th>Medida</th>
-                    <th>Onda</th>
-                    <th>Vincos</th>
-                    <th>Status</th>
-                    <th>Data compra</th>
-                    <th>Data prevista</th>
-                </tr>
-            </thead>
-            <tbody id="tableBody">
-            </tbody>
-        </table>
-        <div style="height: 10px;"></div>
-        <div>
-            <h2 style="display: flex; justify-content: center;">Recebimento</h2>
-        </div>
-        <table id="recebimento">
-            <thead>
-                <tr>
-                    <th>ID</th> <!-- Nova coluna ID adicionada aqui -->
-                    <th>Fornecedor</th>
-                    <th>Id_compra</th>
-                    <th>Quantidade</th>
-                    <th>Qualidade</th>
-                    <th>Medida</th>
-                    <th>Onda</th>
-                    <th>Vincos</th>
-                    <th>Status</th>
-                    <th>Data_recebimento</th>
-                    <th>Atualizar</th>
-                </tr>
-            </thead>  
-            <tbody id="tableBody2">
-            </tbody>
-        </table>
-        <button onclick="addLine()">addLine</button>
-    </div>
-    
-    
-    
-    <script>
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
-        
-        const dropZone = document.getElementById('drop-zone');
-        
-        dropZone.addEventListener('dragover', function(event) {
-            event.stopPropagation();
-            event.preventDefault();
-            event.dataTransfer.dropEffect = 'copy';
-        });
-        
-        dropZone.addEventListener('drop', function(event) {
-            event.stopPropagation();
-            event.preventDefault();
-            const file = event.dataTransfer.files[0]; // Obtenha o primeiro arquivo que foi solto
-            
-            if (!file) {
-                alert('Por favor, solte um arquivo válido.');
-                return;
+
+        <script>
+            pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js";
+
+            const dropZone = document.getElementById("drop-zone");
+
+            dropZone.addEventListener("dragover", function (event) {
+                event.stopPropagation();
+                event.preventDefault();
+                event.dataTransfer.dropEffect = "copy";
+            });
+
+            dropZone.addEventListener("drop", function (event) {
+                event.stopPropagation();
+                event.preventDefault();
+                const file = event.dataTransfer.files[0]; // Obtenha o primeiro arquivo que foi solto
+
+                if (!file) {
+                    alert("Por favor, solte um arquivo válido.");
+                    return;
+                }
+
+                switch (file.type) {
+                    case "application/pdf":
+                        processPDF(file);
+                        break;
+                    case "text/xml":
+                        processXML(file);
+                        break;
+                    default:
+                        alert("Formato de arquivo não suportado!");
+                        break;
+                }
+            });
+
+            function processPDF(file) {
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    var typedarray = new Uint8Array(event.target.result);
+                    extractText(typedarray);
+                };
+                reader.readAsArrayBuffer(file);
             }
-            
-            switch (file.type) {
-                case 'application/pdf':
-                processPDF(file);
-                break;
-                case 'text/xml':
-                processXML(file);
-                break;
-                default:
-                alert('Formato de arquivo não suportado!');
-                break;
+
+            function processXML(file) {
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    var xml = event.target.result;
+                    parseXML(xml);
+                };
+                reader.readAsText(file);
             }
-        });
-        
-        function processPDF(file) {
-            var reader = new FileReader();
-            reader.onload = function(event) {
-                var typedarray = new Uint8Array(event.target.result);
-                extractText(typedarray);
-            };
-            reader.readAsArrayBuffer(file);
-        }
-        
-        function processXML(file) {
-            var reader = new FileReader();
-            reader.onload = function(event) {
-                var xml = event.target.result;
-                parseXML(xml);
-                
-            };
-            reader.readAsText(file);
-        }
-        
-        function buscarChapa(){
-            const idCompra = document.getElementById('id_compra').value;
-            fetchChapas(idCompra);
-            document.getElementById('drop-zone').style.display = 'none';
-            document.getElementById('tables').style.display = 'block';
-            addLine();
-        }
-        
-        
-        //criar tabelasconst tableb = document.getElementById('bancoDados').getElementsByTagName('tbody')[0];
-        
-        function fetchChapas(xPed) {
-            clearTable();  // Limpa as tabelas antes de buscar e adicionar novos dados
-            axios.get(`http://localhost:3000/recebimento/${xPed}`)  // Altera o ID para puxar as chapas
-            .then(response => {
-                const data = response.data;
-                if (data && data.length > 0) {
-                    data.forEach(chapa => {
-                        const tableb = document.getElementById('bancoDados');
-                        
-                        chapa.valor_unitario = chapa.valor_unitario.replace(',','.')
-                        chapa.valor_total = chapa.valor_total.replace('.','').replace(',','.');  
-                        chapa.quantidade_recebida = chapa.quantidade_comprada
-                        
-                        criarTable(tableb, chapa);
-                        
-                        
+
+            function buscarChapa() {
+                const idCompra = document.getElementById("id_compra").value;
+                fetchChapas(idCompra);
+                document.getElementById("drop-zone").style.display = "none";
+                document.getElementById("tables").style.display = "block";
+                addLine();
+            }
+
+            //criar tabelasconst tableb = document.getElementById('bancoDados').getElementsByTagName('tbody')[0];
+
+            function fetchChapas(xPed) {
+                clearTable(); // Limpa as tabelas antes de buscar e adicionar novos dados
+                axios
+                    .get(`http://localhost:3000/recebimento/${xPed}`) // Altera o ID para puxar as chapas
+                    .then((response) => {
+                        const data = response.data;
+                        if (data && data.length > 0) {
+                            data.forEach((chapa) => {
+                                const tableb = document.getElementById("bancoDados");
+
+                                chapa.valor_unitario = chapa.valor_unitario.replace(",", ".");
+                                chapa.valor_total = chapa.valor_total.replace(".", "").replace(",", ".");
+                                chapa.quantidade_recebida = chapa.quantidade_comprada;
+
+                                criarTable(tableb, chapa);
+                            });
+                        }
+                    })
+                    .catch((error) => {
+                        alert(`chapa ${xPed} não encontrada`);
+                        console.error("Erro ao buscar dados: ", error);
                     });
-                }
-            })
-            .catch(error => {
-                alert(`chapa ${xPed} não encontrada`)
-                console.error('Erro ao buscar dados: ', error);
-            });
-        }
-        
-        function clearTable() {
-            clearRows(document.getElementById('tableBody'));  // Limpa o tbody de bancoDados
-            clearRows(document.getElementById('tableBody2'));  // Limpa o tbody de recebimento
-        }
-        
-        function clearRows(tbody) {
-            while (tbody.firstChild) {
-                tbody.removeChild(tbody.firstChild);  // Remove todos os filhos do tbody
             }
-        }
-        
-        
-        
-        var rowId = 0;    // Variável global para manter o ID da linha
-        function criarTable(table, chapaData) {
-            
-            var tbody = table.querySelector('tbody');
-            var row = tbody.insertRow(-1);
-            
-            var idCell = row.insertCell(0);
-            idCell.innerHTML = `<input type='text' value='${chapaData.id_chapa ? chapaData.id_chapa : ''}' class='editable-id'>`;
-            
-            var cellContents = [
-            `<input type='text' value='${chapaData.fornecedor}'>`,
-            `<input type='text' value='${chapaData.id_compra}'>`,
-            `<input type='text' class='quantity' value='${chapaData.quantidade_recebida}'>`,
-            `<input type='text' value='${chapaData.qualidade}'>`,
-            `<input type='text' value='${chapaData.medida}'>`,
-            `<select>${["E", "B", "C", "BB", "BC", ""].map(type => `<option value="${type}" ${type === chapaData.onda ? "selected" : ""}>${type}</option>`).join("")}</select>`,
-            `<select><option value="">Vazio</option><option value="Sim" ${"Sim" === chapaData.vincos ? "selected" : ""}>Sim</option><option value="Não" ${"Não" === chapaData.vincos ? "selected" : ""}>Não</option></select>`,
-            `<select style='width: 120px;'>${["Comprado", "Recebido", "Parcialmente", "Atrasado", "Cancelado"].map(status => `<option ${status === chapaData.status ? "selected" : ""}>${status}</option>`).join("")}</select>`
-            ];
-            
-            cellContents.forEach((content, index) => {
-                var cell = row.insertCell(index + 1);
-                cell.innerHTML = content;
-            });
-            
-            // Adicionando as células específicas baseado no ID da tabela
-            if (table.id === 'bancoDados') {
-                let dataCompraCell = row.insertCell(-1);
-                let formattedDataCompra = chapaData.data_compra.split('/').reverse().join('-');
-                dataCompraCell.innerHTML = `<input type='date' value='${formattedDataCompra}'>`;
-                
-                let dataPrevistaCell = row.insertCell(-1);
-                let formattedDataPrevista = chapaData.data_prevista.split('/').reverse().join('-');
-                dataPrevistaCell.innerHTML = `<input type='date' value='${formattedDataPrevista}'>`;
-            } else if (table.id === 'recebimento') {
-                let dataRecebimentoCell = row.insertCell(-1);
-                let todayDate = new Date().toISOString().slice(0, 10); // Esta já está no formato correto
-                dataRecebimentoCell.innerHTML = `<input type='date' value='${todayDate}'>`;
-                
-                let atualizarCell = row.insertCell(-1);
-                atualizarCell.innerHTML = `<button class='update-button'>Atualizar</button>`;
-            }
-        }
-        
-        
-        function addLine() {
-        const table = document.getElementById('recebimento');
-        const tbody = table.querySelector('tbody');
-        const row = tbody.insertRow(-1);
-        const fields = ['ID', 'Fornecedor', 'Id_compra', 'Quantidade', 'Qualidade', 'Medida', 'Onda', 'Vincos', 'Status', 'Data_recebimento'];
 
-        fields.forEach((field, index) => {
-            const cell = row.insertCell(index);
-            if (field === 'Status' || field === 'Onda'  || field === 'Vincos') {
-                // Adicionar dropdowns para campos específicos
-                let selectHTML = `<select>`;
-                if (field === 'Status') {
-                    selectHTML += `<option>Comprado</option><option>Recebido</option><option>Parcialmente</option>`;
-                } else if(field == 'Onda'){
-                    selectHTML += `<option>E</option><option>B</option><option>C</option><option>BB</option><option>BC</option>`;
-                } else {
-                    selectHTML += `<option>Vazio</option><option>Sim</option><option>Não</option>`;
-                }
-                selectHTML += `</select>`;
-                cell.innerHTML = selectHTML;
-            } else if( field == 'Data_recebimento') {
-                cell.innerHTML = `<input type='date'>`;
-            } else {
-                cell.innerHTML = `<input type='text'>`; // Campos editáveis
+            function clearTable() {
+                clearRows(document.getElementById("tableBody")); // Limpa o tbody de bancoDados
+                clearRows(document.getElementById("tableBody2")); // Limpa o tbody de recebimento
             }
-        });
 
-        // Adicionar botão de atualizar
-        const updateCell = row.insertCell(-1);
-        updateCell.innerHTML = `<button class='update-button'>Atualizar</button>`;
-    }
-        
-        
-        document.getElementById('toggle-drop-zone').addEventListener('click', function() {
-            var dropZone = document.getElementById('drop-zone');
-            var tables = document.getElementById('tables');
-            if (dropZone.style.display === 'none') {
-                dropZone.style.display = 'flex';
-                tables.style.display = 'none';
-            } else {
-                dropZone.style.display = 'none';
-                tables.style.display = 'block';
+            function clearRows(tbody) {
+                while (tbody.firstChild) {
+                    tbody.removeChild(tbody.firstChild); // Remove todos os filhos do tbody
+                }
             }
-        });
-        
-        
-        const observer = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                mutation.addedNodes.forEach((node) => {
-                    if (node.nodeType === 1) { // Verifica se o nó é do tipo Element
-                        // Aplica readonly aos inputs de texto e de data
-                        if (node.matches('#bancoDados input[type="text"], #bancoDados input[type="date"]')) {
-                            node.setAttribute('readonly', 'true');
+
+            var rowId = 0; // Variável global para manter o ID da linha
+            function criarTable(table, chapaData) {
+                var tbody = table.querySelector("tbody");
+                var row = tbody.insertRow(-1);
+
+                var idCell = row.insertCell(0);
+                idCell.innerHTML = `<input type='text' value='${chapaData.id_chapa ? chapaData.id_chapa : ""}' class='editable-id'>`;
+
+                var cellContents = [
+                    `<input type='text' value='${chapaData.fornecedor}'>`,
+                    `<input type='text' value='${chapaData.id_compra}'>`,
+                    `<input type='text' class='quantity' value='${chapaData.quantidade_recebida}'>`,
+                    `<input type='text' value='${chapaData.qualidade}'>`,
+                    `<input type='text' value='${chapaData.medida}'>`,
+                    `<select>${["E", "B", "C", "BB", "BC", ""].map((type) => `<option value="${type}" ${type === chapaData.onda ? "selected" : ""}>${type}</option>`).join("")}</select>`,
+                    `<select><option value="">Vazio</option><option value="Sim" ${"Sim" === chapaData.vincos ? "selected" : ""}>Sim</option><option value="Não" ${"Não" === chapaData.vincos ? "selected" : ""}>Não</option></select>`,
+                    `<select style='width: 120px;'>${["Comprado", "Recebido", "Parcialmente", "Atrasado", "Cancelado"].map((status) => `<option ${status === chapaData.status ? "selected" : ""}>${status}</option>`).join("")}</select>`,
+                ];
+
+                cellContents.forEach((content, index) => {
+                    var cell = row.insertCell(index + 1);
+                    cell.innerHTML = content;
+                });
+
+                // Adicionando as células específicas baseado no ID da tabela
+                if (table.id === "bancoDados") {
+                    let dataCompraCell = row.insertCell(-1);
+                    let formattedDataCompra = chapaData.data_compra.split("/").reverse().join("-");
+                    dataCompraCell.innerHTML = `<input type='date' value='${formattedDataCompra}'>`;
+
+                    let dataPrevistaCell = row.insertCell(-1);
+                    let formattedDataPrevista = chapaData.data_prevista.split("/").reverse().join("-");
+                    dataPrevistaCell.innerHTML = `<input type='date' value='${formattedDataPrevista}'>`;
+                } else if (table.id === "recebimento") {
+                    let dataRecebimentoCell = row.insertCell(-1);
+                    let todayDate = new Date().toISOString().slice(0, 10); // Esta já está no formato correto
+                    dataRecebimentoCell.innerHTML = `<input type='date' value='${todayDate}'>`;
+
+                    let atualizarCell = row.insertCell(-1);
+                    atualizarCell.innerHTML = `<button class='update-button'>Atualizar</button>`;
+                }
+            }
+
+            function addLine() {
+                const table = document.getElementById("recebimento");
+                const tbody = table.querySelector("tbody");
+                const row = tbody.insertRow(-1);
+                const fields = ["ID", "Fornecedor", "Id_compra", "Quantidade", "Qualidade", "Medida", "Onda", "Vincos", "Status", "Data_recebimento"];
+
+                fields.forEach((field, index) => {
+                    const cell = row.insertCell(index);
+                    if (field === "Status" || field === "Onda" || field === "Vincos") {
+                        // Adicionar dropdowns para campos específicos
+                        let selectHTML = `<select>`;
+                        if (field === "Status") {
+                            selectHTML += `<option>Comprado</option><option>Recebido</option><option>Parcialmente</option>`;
+                        } else if (field == "Onda") {
+                            selectHTML += `<option>E</option><option>B</option><option>C</option><option>BB</option><option>BC</option>`;
+                        } else {
+                            selectHTML += `<option>Vazio</option><option>Sim</option><option>Não</option>`;
                         }
-                        // Aplica disabled aos selects
-                        if (node.matches('#bancoDados select')) {
-                            node.setAttribute('disabled', 'true');
-                        }
-                        // Verifica e modifica elementos filhos dentro de nó adicionado
-                        node.querySelectorAll('#bancoDados input[type="text"], #bancoDados input[type="date"], #bancoDados select').forEach(child => {
-                            if (child.tagName === 'INPUT' && (child.type === 'text' || child.type === 'date')) {
-                                child.setAttribute('readonly', 'true');
-                            }
-                            if (child.tagName === 'SELECT') {
-                                child.setAttribute('disabled', 'true');
-                            }
-                        });
+                        selectHTML += `</select>`;
+                        cell.innerHTML = selectHTML;
+                    } else if (field == "Data_recebimento") {
+                        cell.innerHTML = `<input type='date'>`;
+                    } else {
+                        cell.innerHTML = `<input type='text'>`; // Campos editáveis
                     }
                 });
-            });
-        });
-        
-        // Configura o observer para observar mudanças na árvore do DOM
-        observer.observe(document.body, {
-            childList: true,
-            subtree: true
-        });
-        
-        
-        document.getElementById('drop-zone').addEventListener('dragover', function(event) {
-            event.preventDefault();
-            event.dataTransfer.dropEffect = 'copy';
-        });
-        
-        document.getElementById('drop-zone').addEventListener('drop', function(event) {
-            event.preventDefault();
-            const file = event.dataTransfer.files[0];
-            if (file) {
-                document.getElementById('drop-zone').style.display = 'none';
-                document.getElementById('tables').style.display = 'block';
-                // Processar o arquivo aqui
-            } else {
-                alert('Por favor, solte um arquivo válido.');
+
+                // Adicionar botão de atualizar
+                const updateCell = row.insertCell(-1);
+                updateCell.innerHTML = `<button class='update-button'>Atualizar</button>`;
             }
-        });
-        
-        
-        
-        document.getElementById('compare-tables').addEventListener('click', function() {
-            const table1 = document.getElementById('bancoDados').getElementsByTagName('tbody')[0];
-            const table2 = document.getElementById('recebimento').getElementsByTagName('tbody')[0];
-            
-            for (let i = 0; i < table2.rows.length; i++) {
-                const row2 = table2.rows[i];
-                let foundMatch = false;
-                
-                for (let j = 0; j < table1.rows.length; j++) {
-                    const row1 = table1.rows[j];
-                    let allMatch = true;
-                    
-                    // Ajustado para comparar colunas específicas: 4-7 (0-indexado)
-                    for (let k = 4; k <= 7; k++) {
-                        let cell1 = row1.cells[k].querySelector('input, select') ? row1.cells[k].querySelector('input, select').value.trim().toLowerCase() : row1.cells[k].textContent.trim().toLowerCase();
-                        let cell2 = row2.cells[k].querySelector('input, select') ? row2.cells[k].querySelector('input, select').value.trim().toLowerCase() : row2.cells[k].textContent.trim().toLowerCase();
-                        
-                        if (cell1 !== cell2) {
-                            allMatch = false;
+
+            document.getElementById("toggle-drop-zone").addEventListener("click", function () {
+                var dropZone = document.getElementById("drop-zone");
+                var tables = document.getElementById("tables");
+                if (dropZone.style.display === "none") {
+                    dropZone.style.display = "flex";
+                    tables.style.display = "none";
+                } else {
+                    dropZone.style.display = "none";
+                    tables.style.display = "block";
+                }
+            });
+
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    mutation.addedNodes.forEach((node) => {
+                        if (node.nodeType === 1) {
+                            // Verifica se o nó é do tipo Element
+                            // Aplica readonly aos inputs de texto e de data
+                            if (node.matches('#bancoDados input[type="text"], #bancoDados input[type="date"]')) {
+                                node.setAttribute("readonly", "true");
+                            }
+                            // Aplica disabled aos selects
+                            if (node.matches("#bancoDados select")) {
+                                node.setAttribute("disabled", "true");
+                            }
+                            // Verifica e modifica elementos filhos dentro de nó adicionado
+                            node.querySelectorAll('#bancoDados input[type="text"], #bancoDados input[type="date"], #bancoDados select').forEach((child) => {
+                                if (child.tagName === "INPUT" && (child.type === "text" || child.type === "date")) {
+                                    child.setAttribute("readonly", "true");
+                                }
+                                if (child.tagName === "SELECT") {
+                                    child.setAttribute("disabled", "true");
+                                }
+                            });
+                        }
+                    });
+                });
+            });
+
+            // Configura o observer para observar mudanças na árvore do DOM
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true,
+            });
+
+            document.getElementById("drop-zone").addEventListener("dragover", function (event) {
+                event.preventDefault();
+                event.dataTransfer.dropEffect = "copy";
+            });
+
+            document.getElementById("drop-zone").addEventListener("drop", function (event) {
+                event.preventDefault();
+                const file = event.dataTransfer.files[0];
+                if (file) {
+                    document.getElementById("drop-zone").style.display = "none";
+                    document.getElementById("tables").style.display = "block";
+                    // Processar o arquivo aqui
+                } else {
+                    alert("Por favor, solte um arquivo válido.");
+                }
+            });
+
+            document.getElementById("compare-tables").addEventListener("click", function () {
+                const table1 = document.getElementById("bancoDados").getElementsByTagName("tbody")[0];
+                const table2 = document.getElementById("recebimento").getElementsByTagName("tbody")[0];
+
+                for (let i = 0; i < table2.rows.length; i++) {
+                    const row2 = table2.rows[i];
+                    let foundMatch = false;
+
+                    for (let j = 0; j < table1.rows.length; j++) {
+                        const row1 = table1.rows[j];
+                        let allMatch = true;
+
+                        // Ajustado para comparar colunas específicas: 4-7 (0-indexado)
+                        for (let k = 4; k <= 7; k++) {
+                            let cell1 = row1.cells[k].querySelector("input, select")
+                                ? row1.cells[k].querySelector("input, select").value.trim().toLowerCase()
+                                : row1.cells[k].textContent.trim().toLowerCase();
+                            let cell2 = row2.cells[k].querySelector("input, select")
+                                ? row2.cells[k].querySelector("input, select").value.trim().toLowerCase()
+                                : row2.cells[k].textContent.trim().toLowerCase();
+
+                            if (cell1 !== cell2) {
+                                allMatch = false;
+                                break;
+                            }
+                        }
+
+                        if (allMatch) {
+                            validar_status(row1, row2);
+                            const idBancoDados = row1.cells[0].querySelector("input").value;
+                            row2.cells[0].querySelector("input").value = idBancoDados;
+
+                            const id_compraBancoDados = row1.cells[2].querySelector("input").value;
+                            row2.cells[2].querySelector("input").value = id_compraBancoDados;
+
+                            foundMatch = true;
                             break;
                         }
                     }
-                    
-                    if (allMatch) {
-                        validar_status(row1, row2);
-                        const idBancoDados = row1.cells[0].querySelector('input').value;
-                        row2.cells[0].querySelector('input').value = idBancoDados;
-                        
-                        const id_compraBancoDados = row1.cells[2].querySelector('input').value;
-                        row2.cells[2].querySelector('input').value = id_compraBancoDados;
-                        
-                        foundMatch = true;
-                        break;
+
+                    if (!foundMatch) {
+                        console.log("Nenhuma linha correspondente encontrada para a linha " + (i + 1) + " da tabela de baixo.");
                     }
                 }
-                
-                if (!foundMatch) {
-                    console.log('Nenhuma linha correspondente encontrada para a linha ' + (i + 1) + ' da tabela de baixo.');
+
+                chapas_extras();
+                alert("Comparação e validação de status concluídas.");
+            });
+
+            function validar_status(rowBancoDados, rowRecebimento) {
+                const cellDataPrevista = rowBancoDados.cells[10].querySelector("input");
+                const cellDataRecebimento = rowRecebimento.cells[9].querySelector("input");
+
+                const dataPrevista = new Date(cellDataPrevista.value);
+                const dataRecebimento = new Date(cellDataRecebimento.value);
+                const quantidadeBancoDados = parseInt(rowBancoDados.cells[3].querySelector("input").value, 10);
+                const quantidadeRecebimento = parseInt(rowRecebimento.cells[3].querySelector("input").value, 10);
+
+                if (dataRecebimento <= dataPrevista && quantidadeRecebimento >= quantidadeBancoDados) {
+                    rowRecebimento.cells[8].querySelector("select").value = "Recebido";
+                    console.log("Status mudado para Recebido");
+                } else if (dataRecebimento <= dataPrevista && quantidadeRecebimento < quantidadeBancoDados) {
+                    rowRecebimento.cells[8].querySelector("select").value = "Parcialmente";
+                    console.log("Status mudado para Parcialmente");
                 }
             }
-            
-            chapas_extras();
-            alert('Comparação e validação de status concluídas.');
-        });
-        
-        function validar_status(rowBancoDados, rowRecebimento) {
-            const cellDataPrevista = rowBancoDados.cells[10].querySelector('input');
-            const cellDataRecebimento = rowRecebimento.cells[9].querySelector('input');
-            
-            const dataPrevista = new Date(cellDataPrevista.value);
-            const dataRecebimento = new Date(cellDataRecebimento.value);
-            const quantidadeBancoDados = parseInt(rowBancoDados.cells[3].querySelector('input').value, 10);
-            const quantidadeRecebimento = parseInt(rowRecebimento.cells[3].querySelector('input').value, 10);
-            
-            
-            if (dataRecebimento <= dataPrevista && quantidadeRecebimento >= quantidadeBancoDados ) {
-                rowRecebimento.cells[8].querySelector('select').value = "Recebido";
-                console.log('Status mudado para Recebido'); 
-            } else if (dataRecebimento <= dataPrevista && quantidadeRecebimento < quantidadeBancoDados) {
-                rowRecebimento.cells[8].querySelector('select').value = "Parcialmente";
-                console.log('Status mudado para Parcialmente');
-            }
-        }
-        
-        
-        
-        function chapas_extras() {
-            const table1 = document.getElementById('bancoDados').getElementsByTagName('tbody')[0];
-            const table2 = document.getElementById('recebimento').getElementsByTagName('tbody')[0];
-            
-            for (let i = 0; i < table2.rows.length; i++) {
-                const row2 = table2.rows[i];
-                for (let j = 0; j < table1.rows.length; j++) {
-                    const row1 = table1.rows[j];
-                    const status = row1.cells[10].querySelector('select').value;
-                    
-                    if (status === "Cancelado") {
-                        row2.cells[10].querySelector('select').value = status;
+
+            function chapas_extras() {
+                const table1 = document.getElementById("bancoDados").getElementsByTagName("tbody")[0];
+                const table2 = document.getElementById("recebimento").getElementsByTagName("tbody")[0];
+
+                for (let i = 0; i < table2.rows.length; i++) {
+                    const row2 = table2.rows[i];
+                    for (let j = 0; j < table1.rows.length; j++) {
+                        const row1 = table1.rows[j];
+                        const status = row1.cells[10].querySelector("select").value;
+
+                        if (status === "Cancelado") {
+                            row2.cells[10].querySelector("select").value = status;
+                        }
                     }
                 }
             }
-        }
-        
-        
-        document.getElementById('theme-toggle').addEventListener('click', function() {
-            if (document.body.getAttribute('data-theme') === 'dark') {
-                document.body.setAttribute('data-theme', 'light');
-            } else {
-                document.body.setAttribute('data-theme', 'dark');
-            }
-        });
-        
-        
-        
-    </script>
-    
-</body>
+
+            document.getElementById("theme-toggle").addEventListener("click", function () {
+                if (document.body.getAttribute("data-theme") === "dark") {
+                    document.body.setAttribute("data-theme", "light");
+                } else {
+                    document.body.setAttribute("data-theme", "dark");
+                }
+            });
+        </script>
+    </body>
 </html>
