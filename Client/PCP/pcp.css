@@ -77,6 +77,12 @@ h1 {
   border-radius: 0 !important;
 }
 
+@media (min-width: 992px) {
+  #aside {
+    transform: translateX(0);
+  }
+}
+
 .logo {
   width: 7rem;
 }
@@ -360,6 +366,12 @@ formulário
   margin-bottom: 1rem;
   width: 40%;
   z-index: 2;
+}
+
+@media (max-width: 600px) {
+  .grouping-form {
+    width: 90%;
+  }
 }
 
 .grouping-form label {
@@ -677,6 +689,26 @@ input[type="checkbox"]:checked::before {
     font-size: 0.1rem;
   }
 
+  .value-row {
+    font-size: 1rem;
+    margin-right: 0px;
+    margin-left: 0px;
+    white-space: nowrap;
+  }
+  
+  .chapa-card {
+    background-color: #252525;
+  }
+  
+  .chapas-container {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  
+  .chapa-card-element {
+    padding: 0px;
+  }
+
   input[type="checkbox"] {
     width: 20px;
     height: 20px;
@@ -690,8 +722,8 @@ input[type="checkbox"]:checked::before {
   .card-part-number,
   .card-status-comprado,
   .card-status-reservado {
-    padding: 5px; /* Adjust padding for smaller screens */
-    margin-right: 5px; /* Adjust margin for smaller screens */
+    padding: 5px; 
+    margin-right: 5px; 
   }
 }
 

@@ -115,3 +115,8 @@ document.getElementById("optionsButton").addEventListener("click", function () {
   var form = document.getElementById("groupingForm");
   form.classList.toggle("d-none");
 });
+
+document.getElementById("mobileOptionsButton").addEventListener("click", function () {
+  var form = document.getElementById("groupingForm");
+  form.classList.toggle("d-none");
+});
