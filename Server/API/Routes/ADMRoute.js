@@ -33,6 +33,20 @@ async function admRoute(fastify, options) {
       reply.code(500).send({ message: "Internal Server Error" });
     }
   });
+
+  fastify.post("/maquina/:maquinaId/item/:itemId/produzindo", async (request, reply) => {
+    console.log(request.params.itemId)
+    try {
+      const maquinaId = parseInt(request.params.maquinaId, 10); // Captura o ID do item da URL
+      const itemId = parseInt(request.params.itemId, 10); // Captura o ID do item da URL
+      await admController.changeItemStatusProduzindo(itemId, maquinaId); // Chama a função no controller para atualizar o status
+      reply.send({ message: "Status do item atualizado para PRODUZINDO" });
+    } catch (err) {
+      console.error(err); // Registrar o erro no console do servidor
+      reply.code(500).send({ message: "Internal Server Error" });
+    }
+  });
+  
 }
 
 export default admRoute;
