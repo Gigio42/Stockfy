@@ -1,24 +1,35 @@
-var darkModeToggle = document.getElementById('darkModeToggle');
-var body = document.body;
+//============================================
+// Função para lidar com a lógica do Dark Mode
+//============================================
 
-// DARK MODE
-darkModeToggle.addEventListener('change', function () {
-  body.classList.toggle('dark-mode', darkModeToggle.checked);
-  localStorage.setItem('darkMode', darkModeToggle.checked ? 'enabled' : 'disabled');
+function handleDarkModeToggle() {
+  var darkModeToggle = document.getElementById('darkModeToggle');
+  var body = document.body;
 
-  var aside = document.getElementById('aside');
-  aside.classList.toggle('dark-mode-aside', darkModeToggle.checked);
-});
+  darkModeToggle.addEventListener('change', function () {
+    body.classList.toggle('dark-mode', darkModeToggle.checked);
+    localStorage.setItem('darkMode', darkModeToggle.checked ? 'enabled' : 'disabled');
 
-if (localStorage.getItem('darkMode') === 'enabled') {
-  darkModeToggle.checked = true;
-  body.classList.add('dark-mode');
+    var aside = document.getElementById('aside');
+    if (aside) {
+      aside.classList.toggle('dark-mode-aside', darkModeToggle.checked);
+    }
+  });
 
-  var aside = document.getElementById('aside');
-  if (aside) {
-    aside.classList.add('dark-mode-aside');
+  if (localStorage.getItem('darkMode') === 'enabled') {
+    darkModeToggle.checked = true;
+    body.classList.add('dark-mode');
+
+    var aside = document.getElementById('aside');
+    if (aside) {
+      aside.classList.add('dark-mode-aside');
+    }
   }
 }
+
+//============================================
+// Função para buscar e exibir as máquinas
+//============================================
 
 async function fetchMaquinas() {
   try {
@@ -26,87 +37,112 @@ async function fetchMaquinas() {
     const maquinas = response.data;
 
     maquinas.forEach(maquina => {
-      let allMaquina = document.getElementById('allMaquina');
-      let cardMaquina = document.createElement('div');
-      cardMaquina.className = 'cardMaquina';
-
-      // Criar o elemento de texto para o nome da máquina
-      let maquinaName = document.createElement('span');
-      maquinaName.textContent = maquina.nome;
-      cardMaquina.appendChild(maquinaName);
-
-      // Criar o elemento de imagem para o SVG
-      let svgIcon = document.createElement('img');
-      svgIcon.src = 'media/icons8-link-externo.svg';
-      svgIcon.alt = 'External link icon';
-
-      // Adicionar duas classes ao elemento
-      svgIcon.classList.add('svgIcon', 'abrirModal');
-
-      // Adicionar o elemento de imagem ao card
-      cardMaquina.appendChild(svgIcon);
-      // Adicionar o card ao contêiner
-      allMaquina.appendChild(cardMaquina);
+      createMaquinaCard(maquina);
     });
   } catch (error) {
     console.error('Houve um erro!', error);
   }
 }
 
-fetchMaquinas();
+//============================================
+// Função para criar um card de máquina
+//============================================
 
-// Função para abrir o modal com o nome da máquina
-function openModal(maquinaName) {
+function createMaquinaCard(maquina) {
+  let allMaquina = document.getElementById('allMaquina');
+  let cardMaquina = document.createElement('div');
+  cardMaquina.className = 'cardMaquina';
+
+  let maquinaName = document.createElement('span');
+  maquinaName.textContent = maquina.nome;
+  cardMaquina.appendChild(maquinaName);
+
+  // Adicionando o ID da máquina como um atributo de dados (data attribute)
+  cardMaquina.dataset.maquinaId = maquina.id_maquina;
+
+  let svgIcon = document.createElement('img');
+  svgIcon.src = 'media/icons8-link-externo.svg';
+  svgIcon.alt = 'External link icon';
+  svgIcon.classList.add('svgIcon', 'abrirModal');
+  cardMaquina.appendChild(svgIcon);
+
+  // Adicionar evento de clique para este card de máquina
+  cardMaquina.addEventListener('click', function() {
+    const maquinaId = this.dataset.maquinaId;
+    console.log('ID da Máquina:', maquinaId);
+    // Aqui você pode adicionar qualquer lógica adicional que precise do ID da máquina
+  });
+
+  allMaquina.appendChild(cardMaquina);
+}
+
+
+
+//========================
+//modal
+//========================
+
+function openModal(maquinaName, maquinaId) {
+ 
   var modal = document.getElementById('myModal');
   modal.style.display = 'block';
 
-  // Encontre o elemento de texto dentro do modal e atualize seu conteúdo com o nome da máquina
   var modalContent = modal.querySelector('.modal-content');
   var span = modalContent.querySelector('span');
   span.textContent = maquinaName;
 }
 
-// Função para fechar o modal
 function closeModal() {
   document.getElementById('myModal').style.display = 'none';
 }
 
-// Adiciona um evento de clique ao ícone para abrir o modal com o nome da máquina
-document.addEventListener('click', function (event) {
-  if (event.target.classList.contains('svgIcon')) {
-    // Obtém o elemento de texto (span) que contém o nome da máquina
-    var maquinaName = event.target.parentNode.querySelector('span').textContent;
-    openModal(maquinaName);
-  }
-});
+function addMaquinaIconClickEvent() {
+  document.addEventListener('click', function (event) {
+    if (event.target.classList.contains('svgIcon')) {
+      var maquinaId = event.target.dataset.maquinaId; // Recupera o ID da máquina do atributo de dados
+      var maquinaName = event.target.parentNode.querySelector('span').textContent;
+      openModal(maquinaName, maquinaId); // Passa o ID da máquina para a função openModal
+    }
+  });
+}
 
-// Adiciona um evento de clique ao fundo escuro do modal para fechar o modal
-document.getElementById('myModal').addEventListener('click', function (event) {
-  if (event.target === document.getElementById('myModal')) {
-    closeModal();
-  }
-});
 
-// Adiciona um evento de clique ao botão de fechar para fechar o modal
-document.addEventListener('click', function (event) {
+function addModalCloseEvent() {
+  document.getElementById('myModal').addEventListener('click', function (event) {
+    if (event.target === document.getElementById('myModal')) {
+      closeModal();
+    }
+  });
+}
 
-  if (event.target.className === 'close') {
-    closeModal();
-  }
-});
+function addCloseButtonClickEvent() {
+  document.addEventListener('click', function (event) {
+    if (event.target.className === 'close') {
+      closeModal();
+    }
+  });
+}
 
-// Função para lidar com o clique no botão "Adicionar Item" e atualizar o status do item para "PRODUZINDO"
-async function adicionarItem(itemId) {
+
+
+//=================================================
+// Função para adicionar item
+//=================================================
+
+async function adicionarItem(itemId, maquinaId) {
   try {
-    const response = await axios.post(`http://localhost:3000/adm/items/${itemId}/produzindo`);
+    const response = await axios.post(`http://localhost:3000/adm/maquina/${maquinaId}/item/${itemId}/produzindo`);
     console.log(response.data); // Verifica a resposta do servidor
     // Adicione aqui qualquer lógica adicional após a atualização bem-sucedida do status do item
-  
   } catch (error) {
     console.error('Erro ao adicionar item:', error);
     // Adicione aqui o tratamento de erro, se necessário
   }
 }
+
+//=================================================
+// Função para buscar e exibir os itens
+//=================================================
 
 async function fetchitens() {
   try {
@@ -123,56 +159,7 @@ async function fetchitens() {
     reservados.innerHTML = '';
 
     itens.forEach(item => {
-      let card = document.createElement('div');
-      card.className = 'card';
-
-      let partNumberInfo = document.createElement('h3');
-      partNumberInfo.textContent = `${item.part_number}`;
-      card.appendChild(partNumberInfo);
-
-      item.chapas.forEach(chapa => {
-        let subcard = document.createElement('div');
-        subcard.className = 'subcard';
-
-        let chapaInfo = document.createElement('p');
-        chapaInfo.innerHTML = `${chapa.medida}<br>${chapa.quantidade_comprada}`;
-        subcard.appendChild(chapaInfo);
-
-        card.appendChild(subcard);
-      });
-
-      // Adicionando botão "Adicionar Item" ao card
-      let adicionarItemButton = document.createElement('button');
-      adicionarItemButton.textContent = 'Adicionar Item';
-      card.appendChild(adicionarItemButton);
-      console.log(item.id_item)
-      // Define o ID do item como um atributo de dados no botão "Adicionar Item"
-      adicionarItemButton.dataset.id = item.id_item;
-
-
-      // Adicionando evento de clique ao card para expandir/contrair os subcards
-      card.addEventListener('click', () => {
-        card.classList.toggle('expanded');
-      });
-
-      // Adicionando evento de clique ao botão "Adicionar Item"
-      adicionarItemButton.addEventListener('click', async (event) => {
-        event.stopPropagation();
-        try {
-          // Obtenha o ID do item a partir do atributo "data-id" do botão
-          const itemId = event.target.dataset.id;
-          console.log('ID do item:', itemId); // Verifica o ID do item
-          // Chame a função adicionarItem() com o ID correto do item
-          await adicionarItem(itemId);
-        } catch (error) {
-          console.error('Erro ao adicionar item:', error);
-          // Adicione aqui o tratamento de erro, se necessário
-        }
-      });
-
-
-
-      reservados.appendChild(card);
+      createItemCard(item);
     });
 
     console.log('Finalizou o processamento dos itens');
@@ -181,4 +168,76 @@ async function fetchitens() {
   }
 }
 
-fetchitens();
+//=================================================
+// Função para criar um card de item
+//=================================================
+
+function createItemCard(item) {
+  let reservados = document.getElementById('reservados');
+  let card = document.createElement('div');
+  card.className = 'card';
+
+  let partNumberInfo = document.createElement('h3');
+  partNumberInfo.textContent = `${item.part_number}`;
+  card.appendChild(partNumberInfo);
+
+  item.chapas.forEach(chapa => {
+    let subcard = document.createElement('div');
+    subcard.className = 'subcard';
+
+    let chapaInfo = document.createElement('p');
+    chapaInfo.innerHTML = `${chapa.medida}<br>${chapa.quantidade_comprada}`;
+    subcard.appendChild(chapaInfo);
+
+    card.appendChild(subcard);
+  });
+
+  let adicionarItemButton = document.createElement('button');
+  adicionarItemButton.textContent = 'Adicionar Item';
+  card.appendChild(adicionarItemButton);
+  adicionarItemButton.dataset.id = item.id_item;
+
+  card.addEventListener('click', () => {
+    card.classList.toggle('expanded');
+  });
+
+  adicionarItemButton.addEventListener('click', async (event) => {
+    event.preventDefault(); // Impede o comportamento padrão do botão
+    event.stopPropagation();
+    try {
+      if (event.target && event.target.dataset) {
+        const itemId = event.target.dataset.id;
+        // Obtendo o elemento .cardMaquina associado ao botão
+        const maquinaCard = event.target.closest('.cardMaquina');
+        if (maquinaCard) {
+          const maquinaId = maquinaCard.dataset.maquinaId;
+          console.log('ID do item:', itemId);
+          console.log('ID da máquina:', maquinaId);
+          await adicionarItem(itemId, maquinaId);
+        } else {
+          console.error('Erro ao adicionar item: .cardMaquina não encontrado.');
+        }
+      } else {
+        console.error('Erro ao adicionar item: Elemento do evento não é um botão ou não tem dataset.');
+      }
+    } catch (error) {
+      console.error('Erro ao adicionar item:', error);
+    }
+  });
+
+  reservados.appendChild(card);
+}
+
+//=================================================
+// Chama as funções necessárias ao carregar a página
+//=================================================
+
+window.onload = function () {
+  handleDarkModeToggle();
+  fetchMaquinas();
+  addMaquinaIconClickEvent();
+  addModalCloseEvent();
+  addCloseButtonClickEvent();
+  fetchitens();
+};
+
