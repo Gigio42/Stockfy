@@ -13,26 +13,6 @@ class AdmController {
     return maquinas;
   }
 
-  async getChapasInItemsInMaquinas() {
-    const maquinas = await Maquina.findMany({
-      include: {
-        items: {
-          include: {
-            Item: {
-              include: {
-                chapas: true,
-              },
-            },
-          },
-        },
-      },
-    });
-
-    console.log(maquinas);
-
-    return maquinas;
-  }
-
   async getChapasInItems() {
     const chapaItems = await Chapa_Item.findMany({
       where: {
@@ -66,24 +46,44 @@ class AdmController {
 
     return Object.values(items);
   }
-
-  async changeItemStatusProduzindo(itemId, maquinaId) {
+  async changeItemStatusProduzindo(itemId, maquinaId, prazo, ordem, corte) {
     try {
-      // Atualiza o status do item para PRODUZINDO
       await Item.update({
         where: { id_item: itemId },
         data: { status: "PRODUZINDO" },
       });
-
-      // Cria o relacionamento entre Item e Maquina
+  
       await Item_Maquina.create({
         data: {
           maquinaId: maquinaId,
           itemId: itemId,
+          prazo: prazo, // Adicionando prazo ao criar o registro
+          ordem: ordem, // Adicionando ordem ao criar o registro
+          corte: corte, // Adicionando corte ao criar o registro
         },
       });
+  
+      console.log(`Item ${itemId} atualizado para status PRODUZINDO com prazo ${prazo} e ordem ${ordem} e corte ${corte}`);
     } catch (error) {
+      console.error("Erro ao atualizar o status do item para PRODUZINDO:", error);
       throw new Error("Erro ao atualizar o status do item para PRODUZINDO: " + error.message);
+    }
+  }
+
+  async getAllItemsByMaquina(maquinaId) {
+    try {
+      const items = await Item_Maquina.findMany({
+        where: {
+          maquinaId: maquinaId,
+        },
+        include: {
+          Item: true,
+        },
+      });
+
+      return items.map((item_maquina) => item_maquina.Item);
+    } catch (error) {
+      throw new Error("Erro ao buscar itens para a máquina: " + error.message);
     }
   }
 }
