@@ -1,8 +1,11 @@
 name: Run server and test
 
-on:
+on: 
+  push:
+    branches:
+      - main
   schedule:
-    - cron:  '0,30 * * * *'
+    - cron:  '*/30 * * * *'
 
 jobs:
   build:
@@ -26,7 +29,13 @@ jobs:
         HOST: localhost
 
     - name: Run test
-      run: node Test/gerar_chapas.cjs
+      run: node ./Test/generators/gerar_chapas.cjs
+
+    - name: Reset database
+      run: node ./Test/resetar_banco_de_dados.cjs
+
+    - name: Seed database
+      run: node ./Test/seed.cjs
 
     - name: Show SQLite database
       run: |

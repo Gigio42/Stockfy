@@ -1,14 +1,13 @@
-const sqlite3 = require("sqlite3").verbose();
+const { PrismaClient } = require("@prisma/client");
 
-let db = new sqlite3.Database("../Server/estoque.sqlite", (err) => {
-  if (err) {
-    console.error(err.message);
-  }
-  console.log("Destruição do banco de dados em 5 segundos...");
+const prisma = new PrismaClient();
+
+async function main() {
+  console.log("Destruição do banco de dados em 3 segundos...");
 
   // Momento dramático até vc cancelar
-  let counter = 5;
-  let countdown = setInterval(() => {
+  let counter = 3;
+  let countdown = setInterval(async () => {
     counter--;
     if (counter > 1) {
       console.log(`${counter} segundos restantes...`);
@@ -18,38 +17,25 @@ let db = new sqlite3.Database("../Server/estoque.sqlite", (err) => {
       console.log("# Limpando todos os dados...");
       clearInterval(countdown);
 
-      db.serialize(() => {
-        db.run("DELETE FROM Conjugacoes");
-        db.run("DELETE FROM Chapas");
-        db.run("DELETE FROM Chapa_Item");
-        db.run("DELETE FROM Item");
-        db.run("DELETE FROM Item_Maquina");
-        db.run("DELETE FROM Maquina");
-        db.run("DELETE FROM Usuarios");
+      await prisma.conjugacoes.deleteMany();
+      await prisma.chapa_Item.deleteMany();
+      await prisma.chapas.deleteMany();
+      await prisma.item_Maquina.deleteMany();
+      await prisma.item.deleteMany();
+      await prisma.maquina.deleteMany();
+      await prisma.usuarios.deleteMany();
 
-        /* const maquinas = [
-          "Corte e vinco",
-          "Riscador",
-          "Grampeador",
-          "Impressora",
-          "Rotativa",
-          "Coladeira",
-          "Serra",
-          "Prensa",
-          "Corte e vinco plana",
-          "Corte e vinco 3",
-          "Corte e vinco 4",
-          "Corte e vinco 5",
-          "Corte e vinco 7",
-        ]; */
-      });
+      console.log(`finalizado, parabéns vc destruiu tudo!`);
 
-      db.close((err) => {
-        if (err) {
-          console.error(err.message);
-        }
-        console.log(`finalizado, parabéns vc destruiu tudo!`);
-      });
+      await prisma.$disconnect();
     }
   }, 1000);
-});
+}
+
+main()
+  .catch((e) => {
+    throw e;
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
