@@ -26,17 +26,8 @@ jobs:
     - name: Install dependencies
       run: npm i
 
-    - name: Start server
-      run: npm run auto-prisma
-
-    - name: Run test
-      run: node ./Test/generators/gerar_chapas.cjs
-
-    - name: Reset database
-      run: node ./Test/resetar_banco_de_dados.cjs
-
-    - name: Seed database
-      run: node ./Test/seed.cjs
+    - name: Start server and run tests
+      run: npm run start-and-test
 
     - name: Show SQLite database
       run: |

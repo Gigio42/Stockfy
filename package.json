@@ -9,8 +9,9 @@
     "migrate": "prisma migrate dev",
     "generate": "prisma generate",
     "start": "nodemon .\\Server\\server.js",
+    "startUnix": "nodemon ./Server/server.js",
     "prisma": "npm run migrate && npm run generate && npm run start",
-    "auto-prisma": "prisma migrate dev --name auto_migration && npm run generate && nodemon ./Server/server.js",
+    "start-and-test": "prisma migrate dev --name auto_migration && npm run generate && start-server-and-test startUnix http://localhost:3000 ./Test/generators/gerar_chapas.cjs",
     "studio": "npx prisma studio --port 2943"
   },
   "keywords": [],
@@ -32,6 +33,7 @@
     "faker": "^5.5.3",
     "nodemon": "^3.1.0",
     "prettier": "^3.2.5",
-    "prisma": "^5.14.0"
+    "prisma": "^5.14.0",
+    "start-server-and-test": "^2.0.3"
   }
 }
