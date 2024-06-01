@@ -19,10 +19,6 @@ out/
 logs/
 *.log
 
-# Dependency lock do yarn e npm (O package.json vc deixa, o lock pode tirar)
-package-lock.json
-yarn.lock
-
 # Environment variables
 .env
 .env.local
@@ -31,8 +27,3 @@ yarn.lock
 # Binários
 node_modules/**/*.node
 /qodana.yaml
-
-# banco de dados
-*.sqlite
-*.secrets
-*.db
