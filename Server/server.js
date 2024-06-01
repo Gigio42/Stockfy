@@ -13,6 +13,8 @@ fastify.get("/", async () => {
   return { text: "Hello, World!" };
 });
 
+console.log();
+
 const prisma = new PrismaClient();
 
 prisma
