@@ -7,11 +7,15 @@ export class ItemModal {
     this.modal = document.getElementById("itemModal");
     this.modalContent = document.getElementById("itemContainer");
     this.openModalLink = document.getElementById("openModalLink");
+    //mobile
+    this.mobileOpenModalLink = document.getElementById("mobileOpenModalLink");
     this.closeModalButton = document.getElementById("closeItemModal");
   }
 
   initialize() {
     this.openModalLink.addEventListener("click", this.openModal.bind(this));
+    //mobile
+    this.mobileOpenModalLink.addEventListener("click", this.openModal.bind(this));
     this.closeModalButton.addEventListener("click", this.closeModal.bind(this));
     this.modal.addEventListener("click", this.closeModal.bind(this));
     this.modalContent.addEventListener("click", (event) => event.stopPropagation());
@@ -30,7 +34,7 @@ export class ItemModal {
   }
 
   createSearchBar() {
-    const searchBar = document.createElement("input")
+    const searchBar = document.createElement("input");
     searchBar.type = "search";
     searchBar.id = "searchBar";
     searchBar.placeholder = "Procurar PART NUMBER";

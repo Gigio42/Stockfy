@@ -24,6 +24,8 @@ async function admRoute(fastify, options) {
 
 
   fastify.post("/maquina/:maquinaId/item/:itemId/produzindo", async (request, reply) => {
+
+    console.log(request.params.itemId);
     try {
       const maquinaId = parseInt(request.params.maquinaId, 10); // Captura o ID da máquina da URL
       const itemId = parseInt(request.params.itemId, 10); // Captura o ID do item da URL
@@ -38,9 +40,6 @@ async function admRoute(fastify, options) {
       reply.code(500).send({ message: "Internal Server Error" });
     }
   });
-  
-  
-  
 
   fastify.get('/maquina/:maquinaId/item', async (request, reply) => {
     try {

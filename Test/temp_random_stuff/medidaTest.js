@@ -4,7 +4,7 @@ function extractDimensions(chapa) {
       .toLowerCase()
       .replace(/\s/g, "")
       .split("x")
-      .map((dim) => parseFloat(dim.replace(',', '.').replace('.', '')));
+      .map((dim) => parseFloat(dim.replace(",", ".").replace(".", "")));
     if (dimensions.length === 2) {
       chapa.largura = dimensions[0];
       chapa.comprimento = dimensions[1];
@@ -14,9 +14,9 @@ function extractDimensions(chapa) {
 }
 
 const chapa = {
-  medida: '472x1201'
+  medida: "472x1201",
 };
 
 const result = extractDimensions(chapa);
 
-console.log(result);  
+console.log(result);

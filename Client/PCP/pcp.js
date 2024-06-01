@@ -95,6 +95,7 @@ function showMore(id) {
 // Lógica para o modal do botão criar usuário
 
 function criarUsuario() {
+  alert("Criar usuário function called!");
   document.getElementById("modal").style.display = "block";
 }
 
@@ -112,6 +113,11 @@ function mostrarSenha() {
 }
 
 document.getElementById("optionsButton").addEventListener("click", function () {
+  var form = document.getElementById("groupingForm");
+  form.classList.toggle("d-none");
+});
+
+document.getElementById("mobileOptionsButton").addEventListener("click", function () {
   var form = document.getElementById("groupingForm");
   form.classList.toggle("d-none");
 });

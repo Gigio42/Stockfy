@@ -89,7 +89,7 @@ function openModal(maquinaName, maquinaId) {
 
   modal.addEventListener("click", closeModal);
   modalContent.addEventListener("click", function (event) {
-    event.stopPropagation();                                                            
+    event.stopPropagation();
   });
 }
 
@@ -291,10 +291,17 @@ function createItemCard(item, maquinaId) {
     card.classList.toggle("expanded");
   });
 
-  adicionarItemButton.addEventListener("click", (event) => {
-    event.preventDefault(); 
-    event.stopPropagation(); 
-    adicionarItemAoStaged(item, maquinaId);
+
+  adicionarItemButton.addEventListener("click", async (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    try {
+      console.log("ID do item:", item.id_item);
+      console.log("ID da máquina:", maquinaId);
+      await adicionarItem(item.id_item, maquinaId);
+    } catch (error) {
+      console.error("Erro ao adicionar item:", error);
+    }
   });
 
   reservados.appendChild(card);
@@ -382,4 +389,5 @@ function createProduzindoItemCard(item) {
 window.onload = function () {
   handleDarkModeToggle();
   fetchMaquinas();
-}
+};
+

@@ -1,20 +1,20 @@
-const { PrismaClient } = require('@prisma/client');
-const fs = require('fs');
-const readline = require('readline');
-const path = require('path');
-const crypto = require('crypto');
-require('dotenv').config();
+const { PrismaClient } = require("@prisma/client");
+const fs = require("fs");
+const readline = require("readline");
+const path = require("path");
+const crypto = require("crypto");
+require("dotenv").config();
 
 const prisma = new PrismaClient();
 
 const rl = readline.createInterface({
   input: process.stdin,
-  output: process.stdout
+  output: process.stdout,
 });
 
 const key = process.env.ENCRYPTION_KEY;
 
-rl.question('Vincular nome ao banco: ', (name) => {
+rl.question("Vincular nome ao banco: ", (name) => {
   main(nome, key)
     .catch((e) => {
       console.error(e);
@@ -47,20 +47,20 @@ async function main(name, key) {
 
   console.log(data);
 
-  const dir = 'temp_db_imports';
-  if (!fs.existsSync(dir)){
+  const dir = "temp_db_imports";
+  if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir);
   }
 
   const filePath = path.join(dir, `${name}.data.json`);
 
   const iv = crypto.randomBytes(16);
-  const cipher = crypto.createCipheriv('aes-256-cbc', crypto.createHash('sha256').update(key).digest(), iv);
-  const encrypted = Buffer.concat([cipher.update(JSON.stringify(data, null, 2), 'utf8'), cipher.final()]);
+  const cipher = crypto.createCipheriv("aes-256-cbc", crypto.createHash("sha256").update(key).digest(), iv);
+  const encrypted = Buffer.concat([cipher.update(JSON.stringify(data, null, 2), "utf8"), cipher.final()]);
 
   const encryptedData = {
-    iv: iv.toString('hex'),
-    content: encrypted.toString('hex')
+    iv: iv.toString("hex"),
+    content: encrypted.toString("hex"),
   };
 
   fs.writeFileSync(filePath, JSON.stringify(encryptedData));

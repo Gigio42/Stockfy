@@ -1,5 +1,5 @@
 import Maquina from "../Models/maquinaModel.js";
-import Item from "../models/itemModel.js";
+import Item from "../Models/itemModel.js";
 
 class ProducaoController {
   constructor() {}
