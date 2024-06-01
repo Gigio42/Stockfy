@@ -13,7 +13,7 @@ jobs:
     env:
       PORT: 3000
       HOST: localhost
-      DATABASE_URL: "sqlite:../Server/estoque.sqlite"
+      DATABASE_URL: "file:../Server/estoque.sqlite"
 
     steps:
     - uses: actions/checkout@v2
