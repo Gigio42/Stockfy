@@ -74,8 +74,11 @@ model Item {
 
 model Item_Maquina {
   id_item_maquina Int     @id @default(autoincrement())
+  prioridade      Int     @default(0)
   prazo           String?
   ordem           Int?
+  ordem_total     Int?
+  finalizado      Boolean @default(false)
   corte           String?
   maquinaId       Int
   itemId          Int
