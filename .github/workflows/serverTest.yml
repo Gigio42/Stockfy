@@ -35,4 +35,20 @@ jobs:
     - name: Show SQLite database
       run: |
         sudo apt-get install -y sqlite3
-        sqlite3 Server/estoque.sqlite .dump
+        echo -e ".headers on\n.mode column\nSELECT * FROM Chapas;" | sqlite3 Server/estoque.sqlite
+
+    - name: Setup commit
+      uses: actions/checkout@v2
+      with:
+        token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+    
+    - name: Commit and push changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git fetch origin main
+        git checkout main
+        git merge --strategy-option ours
+        git add Server/estoque.sqlite
+        git commit -m "Update estoque.sqlite with new Chapas" -a
+        git push
