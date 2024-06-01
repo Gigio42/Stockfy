@@ -2,15 +2,17 @@ const axios = require("axios");
 const faker = require("faker");
 
 // Gerador de dados para encher a tabela de chapas para testes, escolha
-// a quantidade de chapas que vc quiser em 'pedidos' e go crazy, mas
-// detalhe, atualmente o id_compra precisa mudar manualmente
+// a quantidade de chapas que vc quiser em 'pedidos' e go crazy
 
-const pedidos = 10;
+const runRecebimento = true;
+const pedidos = Math.floor(Math.random() * 4) + 3;
+const id_compra = Math.floor(100000 + Math.random() * 900000);
 
 async function postData() {
   const data = {
     info_prod_comprados: Array.from({ length: pedidos }, (_, index) => {
       let fornecedor = faker.random.arrayElement(["IRANI", "PENHA", "FERNANDEZ"]);
+      
       let qualidade;
       let coluna;
 
@@ -30,7 +32,7 @@ async function postData() {
       return {
         fornecedor: fornecedor,
         unidade: faker.random.arrayElement(["CH", "AA"]),
-        id_compra: 596508,
+        id_compra: id_compra,
         numero_cliente: faker.datatype.number(),
         data_compra: faker.date.past().toLocaleDateString("pt-BR"),
         data_prevista: faker.date.future().toLocaleDateString("pt-BR"),
@@ -40,7 +42,7 @@ async function postData() {
         qualidade: qualidade,
         medida: `${faker.datatype.number({ min: 1, max: 6 }) * 500}x${faker.datatype.number({ min: 1, max: 6 }) * 500}`,
         onda: faker.random.arrayElement(["B", "C", "BC", "BB", "E"]),
-        vincos: faker.datatype.number({ min: 1, max: 100 }) <= 75 ? "Não" : "Sim",
+        vincos: faker.datatype.number({ min: 1, max: 100 }) <= 75 ? "Não" : Math.floor(100 + Math.random() * 900),
         coluna: coluna || faker.random.arrayElement([3, 12]),
         gramatura: faker.datatype.number({ min: 100, max: 500 }),
         peso_total: faker.datatype.number({ min: 1000, max: 5000 }),
@@ -51,10 +53,46 @@ async function postData() {
 
   try {
     const response = await axios.post("http://localhost:3000/compras", data);
-    console.log(response.data);
+    console.log("Chapas inseridas com sucesso");
   } catch (error) {
     console.error(error);
   }
 }
 
-postData();
+async function testRecebimento() {
+  try {
+    const response = await axios.get(`http://localhost:3000/recebimento/${id_compra}`);
+    const chapas = response.data;
+
+    const selectedChapas = chapas.slice(0, 3).map(chapa => chapa.id_chapa);
+    console.log('Chapas selecionadas para recebimento:', selectedChapas);
+
+    const porcentagens = [0.5, 1, 1.1]; // 50%, 100%, 110%
+
+    for (let i = 0; i < selectedChapas.length; i++) {
+      const id_chapa = selectedChapas[i];
+      const chapa = chapas.find(chapa => chapa.id_chapa === id_chapa);
+
+      const data_recebimento = faker.date.future().toLocaleDateString("pt-BR");
+
+      const updateData = [{
+        id_chapa: id_chapa,
+        quantidade_recebida: chapa.quantidade_comprada * porcentagens[i],
+        status: 'RECEBIDO', 
+        data_recebimento: data_recebimento,
+      }];
+
+      await axios.put('http://localhost:3000/recebimento', updateData);
+    }
+
+    console.log('Chapas recebidas com sucesso');
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+postData().then(() => {
+  if (runRecebimento) {
+    testRecebimento();
+  }
+});
