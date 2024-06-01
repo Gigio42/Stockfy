@@ -29,9 +29,9 @@ async function main(name, key) {
   const dir = "temp_db_imports";
   const filePath = path.join(dir, `${name}.data.json`);
 
-  const encryptedData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-  const decipher = crypto.createDecipheriv('aes-256-cbc', crypto.createHash('sha256').update(key).digest(), Buffer.from(encryptedData.iv, 'hex'));
-  const decrypted = Buffer.concat([decipher.update(Buffer.from(encryptedData.content, 'hex')), decipher.final()]);
+  const encryptedData = JSON.parse(fs.readFileSync(filePath, "utf8"));
+  const decipher = crypto.createDecipheriv("aes-256-cbc", crypto.createHash("sha256").update(key).digest(), Buffer.from(encryptedData.iv, "hex"));
+  const decrypted = Buffer.concat([decipher.update(Buffer.from(encryptedData.content, "hex")), decipher.final()]);
 
   const data = JSON.parse(decrypted.toString("utf8"));
 

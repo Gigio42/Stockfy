@@ -95,7 +95,7 @@ function showMore(id) {
 // Lógica para o modal do botão criar usuário
 
 function criarUsuario() {
-  alert('Criar usuário function called!');
+  alert("Criar usuário function called!");
   document.getElementById("modal").style.display = "block";
 }
 

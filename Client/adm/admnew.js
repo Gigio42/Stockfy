@@ -86,7 +86,7 @@ function openModal(maquinaName, maquinaId) {
 
   modal.addEventListener("click", closeModal);
   modalContent.addEventListener("click", function (event) {
-    event.stopPropagation();                                                            
+    event.stopPropagation();
   });
 }
 
@@ -165,7 +165,7 @@ function createItemCard(item, maquinaId) {
   });
 
   adicionarItemButton.addEventListener("click", async (event) => {
-    event.preventDefault(); 
+    event.preventDefault();
     event.stopPropagation();
     try {
       console.log("ID do item:", item.id_item);

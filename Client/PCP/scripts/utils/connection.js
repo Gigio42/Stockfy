@@ -39,12 +39,12 @@ export async function reserveChapas(data) {
   }
 }
 
-export async function fetchItems(searchQuery = '') {
+export async function fetchItems(searchQuery = "") {
   try {
     const response = await axios.get(`${PCP_URL}/items`, {
       params: {
-        search: searchQuery
-      }
+        search: searchQuery,
+      },
     });
     return response.data;
   } catch (error) {

@@ -34,7 +34,7 @@ export class ItemModal {
   }
 
   createSearchBar() {
-    const searchBar = document.createElement("input")
+    const searchBar = document.createElement("input");
     searchBar.type = "search";
     searchBar.id = "searchBar";
     searchBar.placeholder = "Procurar PART NUMBER";
