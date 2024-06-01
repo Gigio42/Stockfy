@@ -11,7 +11,7 @@
     "start": "nodemon .\\Server\\server.js",
     "startUnix": "nodemon ./Server/server.js",
     "prisma": "npm run migrate && npm run generate && npm run start",
-    "start-and-test": "prisma migrate dev --name auto_migration && npm run generate && start-server-and-test startUnix http://localhost:3000 ./Test/generators/gerar_chapas.cjs",
+    "start-and-test": "prisma migrate dev --name auto_migration && npm run generate && start-server-and-test startUnix http://localhost:3000 node ./Test/generators/gerar_chapas.cjs",
     "studio": "npx prisma studio --port 2943"
   },
   "keywords": [],
