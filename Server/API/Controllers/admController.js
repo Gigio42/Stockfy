@@ -47,7 +47,6 @@ class AdmController {
     return Object.values(items);
   }
   async changeItemStatusProduzindo(itemId, maquinaId, prazo, ordem, corte) {
-
     try {
       await Item.update({
         where: { id_item: itemId },
@@ -63,7 +62,7 @@ class AdmController {
           corte: corte, // Adicionando corte ao criar o registro
         },
       });
-  
+
       console.log(`Item ${itemId} atualizado para status PRODUZINDO com prazo ${prazo} e ordem ${ordem} e corte ${corte}`);
     } catch (error) {
       console.error("Erro ao atualizar o status do item para PRODUZINDO:", error);
@@ -87,6 +86,5 @@ class AdmController {
       throw new Error("Erro ao buscar itens para a máquina: " + error.message);
     }
   }
-
 }
 export default AdmController;
