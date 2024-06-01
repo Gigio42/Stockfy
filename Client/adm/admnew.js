@@ -328,7 +328,7 @@ async function fetchAllItems(maquinaId) {
 
     let produzindoItemList = document.getElementById("produzindoItemsList");
     let finalizadoItemList = document.getElementById("finalizadoItemsList");
-    
+
     if (!produzindoItemList || !finalizadoItemList) {
       console.error("Elementos #produzindoItemsList ou #finalizadoItemsList não encontrados");
       return;
@@ -350,20 +350,20 @@ async function fetchAllItems(maquinaId) {
 //===================================================
 
 function createProduzindoItemCard(item) {
-  let itemCard = document.createElement('div');
-  itemCard.className = 'item-card';
+  let itemCard = document.createElement("div");
+  itemCard.className = "item-card";
   itemCard.draggable = true;
   itemCard.id = `item-${item.part_number}`; // Identificador único
 
-  itemCard.addEventListener('dragstart', (event) => {
-    event.dataTransfer.setData('text/plain', JSON.stringify(item));
-    setTimeout(() => itemCard.style.display = 'none', 0);
+  itemCard.addEventListener("dragstart", (event) => {
+    event.dataTransfer.setData("text/plain", JSON.stringify(item));
+    setTimeout(() => (itemCard.style.display = "none"), 0);
   });
 
-  itemCard.addEventListener('dragend', (event) => {
+  itemCard.addEventListener("dragend", (event) => {
     setTimeout(() => {
       if (itemCard.parentElement) {
-        itemCard.style.display = 'block';
+        itemCard.style.display = "block";
       }
     }, 0);
   });
@@ -382,7 +382,7 @@ function createProduzindoItemCard(item) {
   }
   itemCard.appendChild(statusElement);
 
-  let list = item.status === 'PRODUZINDO' ? document.getElementById('produzindoItemsList') : document.getElementById('finalizadoItemsList');
+  let list = item.status === "PRODUZINDO" ? document.getElementById("produzindoItemsList") : document.getElementById("finalizadoItemsList");
   if (list) {
     list.appendChild(itemCard);
   } else {
@@ -390,23 +390,20 @@ function createProduzindoItemCard(item) {
   }
 }
 
+document.addEventListener("DOMContentLoaded", (event) => {
+  let produzindoItemList = document.getElementById("produzindoItemsList");
+  let finalizadoItemList = document.getElementById("finalizadoItemsList");
 
-
-
-document.addEventListener('DOMContentLoaded', (event) => {
-  let produzindoItemList = document.getElementById('produzindoItemsList');
-  let finalizadoItemList = document.getElementById('finalizadoItemsList');
-
-  [produzindoItemList, finalizadoItemList].forEach(list => {
-    list.addEventListener('dragover', (event) => {
+  [produzindoItemList, finalizadoItemList].forEach((list) => {
+    list.addEventListener("dragover", (event) => {
       event.preventDefault();
     });
 
-    list.addEventListener('drop', (event) => {
+    list.addEventListener("drop", (event) => {
       event.preventDefault();
-      let itemData = event.dataTransfer.getData('text/plain');
+      let itemData = event.dataTransfer.getData("text/plain");
       let item = JSON.parse(itemData);
-      item.status = list.id === 'produzindoItemsList' ? 'PRODUZINDO' : 'FINALIZADO';
+      item.status = list.id === "produzindoItemsList" ? "PRODUZINDO" : "FINALIZADO";
 
       // Remove o cartão antigo
       let oldCard = document.getElementById(`item-${item.part_number}`);
@@ -419,8 +416,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
   });
 });
-
-
 
 //=================================================
 // Chama as funções necessárias ao carregar a página
