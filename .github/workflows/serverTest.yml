@@ -10,6 +10,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      PORT: 3000
+      HOST: localhost
+      DATABASE_URL: "sqlite:../Server/estoque.sqlite"
 
     steps:
     - uses: actions/checkout@v2
@@ -23,11 +27,8 @@ jobs:
       run: npm i
 
     - name: Start server
-      run: npx nodemon Server/server.js &
-      env:
-        PORT: 3000
-        HOST: localhost
-        DATABASE_URL: "sqlite:../Server/estoque.sqlite"
+      run: npm run auto-prisma
+
     - name: Run test
       run: node ./Test/generators/gerar_chapas.cjs
 
