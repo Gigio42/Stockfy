@@ -12,7 +12,7 @@ async function postData() {
   const data = {
     info_prod_comprados: Array.from({ length: pedidos }, (_, index) => {
       let fornecedor = faker.random.arrayElement(["IRANI", "PENHA", "FERNANDEZ"]);
-      
+
       let qualidade;
       let coluna;
 
@@ -64,28 +64,30 @@ async function testRecebimento() {
     const response = await axios.get(`http://localhost:3000/recebimento/${id_compra}`);
     const chapas = response.data;
 
-    const selectedChapas = chapas.slice(0, 3).map(chapa => chapa.id_chapa);
-    console.log('Chapas selecionadas para recebimento:', selectedChapas);
+    const selectedChapas = chapas.slice(0, 3).map((chapa) => chapa.id_chapa);
+    console.log("Chapas selecionadas para recebimento:", selectedChapas);
 
     const porcentagens = [0.5, 1, 1.1]; // 50%, 100%, 110%
 
     for (let i = 0; i < selectedChapas.length; i++) {
       const id_chapa = selectedChapas[i];
-      const chapa = chapas.find(chapa => chapa.id_chapa === id_chapa);
+      const chapa = chapas.find((chapa) => chapa.id_chapa === id_chapa);
 
       const data_recebimento = faker.date.future().toLocaleDateString("pt-BR");
 
-      const updateData = [{
-        id_chapa: id_chapa,
-        quantidade_recebida: chapa.quantidade_comprada * porcentagens[i],
-        status: 'RECEBIDO', 
-        data_recebimento: data_recebimento,
-      }];
+      const updateData = [
+        {
+          id_chapa: id_chapa,
+          quantidade_recebida: chapa.quantidade_comprada * porcentagens[i],
+          status: "RECEBIDO",
+          data_recebimento: data_recebimento,
+        },
+      ];
 
-      await axios.put('http://localhost:3000/recebimento', updateData);
+      await axios.put("http://localhost:3000/recebimento", updateData);
     }
 
-    console.log('Chapas recebidas com sucesso');
+    console.log("Chapas recebidas com sucesso");
   } catch (error) {
     console.error(error);
   }
