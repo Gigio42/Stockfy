@@ -1,4 +1,5 @@
-const PCP_URL = "http://localhost:3000/PCP";
+import BASE_URL from './config.js';
+const PCP_URL = `${BASE_URL}/PCP`;
 
 function handleError(error) {
   if (error.response) {
