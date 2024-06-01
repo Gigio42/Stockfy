@@ -95,7 +95,6 @@ function openModal(maquinaName, maquinaId) {
 
 function closeModal() {
   var modalContent2 = document.querySelector(".modal-content-2");
-
   if (!modalContent2.classList.contains("d-none")) {
     return;
   }
