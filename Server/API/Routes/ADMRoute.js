@@ -41,13 +41,13 @@ async function admRoute(fastify, options) {
     }
   });
 
-  fastify.get('/maquina/:maquinaId/item', async (request, reply) => {
+  fastify.get("/maquina/:maquinaId/item", async (request, reply) => {
     try {
       const maquinaId = parseInt(request.params.maquinaId, 10);
       const items = await admController.getAllItemsByMaquina(maquinaId);
       reply.send(items);
     } catch (err) {
-      reply.code(500).send({ message: 'Internal Server Error' });
+      reply.code(500).send({ message: "Internal Server Error" });
     }
   });
 }
