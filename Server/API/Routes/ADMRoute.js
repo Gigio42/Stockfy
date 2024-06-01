@@ -22,9 +22,7 @@ async function admRoute(fastify, options) {
     }
   });
 
-
   fastify.post("/maquina/:maquinaId/item/:itemId/produzindo", async (request, reply) => {
-
     console.log(request.params.itemId);
     try {
       const maquinaId = parseInt(request.params.maquinaId, 10); // Captura o ID da máquina da URL

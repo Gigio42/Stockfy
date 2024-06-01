@@ -288,7 +288,6 @@ function createItemCard(item, maquinaId) {
     card.classList.toggle("expanded");
   });
 
-
   adicionarItemButton.addEventListener("click", async (event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -385,4 +384,3 @@ window.onload = function () {
   handleDarkModeToggle();
   fetchMaquinas();
 };
-
