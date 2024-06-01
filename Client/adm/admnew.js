@@ -89,13 +89,13 @@ function openModal(maquinaName, maquinaId) {
 
   modal.addEventListener("click", closeModal);
   modalContent.addEventListener("click", function (event) {
-    event.stopPropagation();                                                            
+    event.stopPropagation();
   });
 }
 
 function closeModal() {
   var modalContent2 = document.querySelector(".modal-content-2");
-  
+
   if (!modalContent2.classList.contains("d-none")) {
     return;
   }
@@ -134,7 +134,6 @@ async function fetchitens(maquinaId) {
     itens.forEach((item) => {
       createItemCard(item, maquinaId);
     });
-
   } catch (error) {
     console.error("Erro ao recuperar os itens!", error);
   }
@@ -210,18 +209,18 @@ async function confirmarItensStaged() {
   for (let itemCard of stagedItems) {
     let itemId = itemCard.dataset.id;
     let maquinaId = currentMaquinaId;
-    
+
     // Capturar os valores dos campos de entrada
-    let prazo = itemCard.querySelector('.inputPrazo').value;
-    let corte = itemCard.querySelector('.inputMedida').value;
-    let ordem = itemCard.querySelector('.inputOrdem').value;
+    let prazo = itemCard.querySelector(".inputPrazo").value;
+    let corte = itemCard.querySelector(".inputMedida").value;
+    let ordem = itemCard.querySelector(".inputOrdem").value;
 
     try {
       // Incluir os valores no corpo da solicitação
       await axios.post(`http://localhost:3000/adm/maquina/${maquinaId}/item/${itemId}/produzindo`, {
         prazo: prazo,
         corte: corte,
-        ordem: ordem
+        ordem: ordem,
       });
     } catch (error) {
       console.error("Erro ao adicionar item:", error);
@@ -231,7 +230,6 @@ async function confirmarItensStaged() {
   document.getElementById("stagedItems").innerHTML = "";
   alert("Itens confirmados com sucesso!");
 }
-
 
 document.getElementById("confirmButton").addEventListener("click", confirmarItensStaged);
 
@@ -292,14 +290,13 @@ function createItemCard(item, maquinaId) {
   });
 
   adicionarItemButton.addEventListener("click", (event) => {
-    event.preventDefault(); 
-    event.stopPropagation(); 
+    event.preventDefault();
+    event.stopPropagation();
     adicionarItemAoStaged(item, maquinaId);
   });
 
   reservados.appendChild(card);
 }
-
 
 //============================================================
 //botão para abrir p modal com os itens e seus status
@@ -308,9 +305,9 @@ function createItemCard(item, maquinaId) {
 document.getElementById("MostrarProg").addEventListener("click", function () {
   var modalContent2 = document.querySelector(".modal-content-2");
   modalContent2.classList.remove("d-none");
-  
+
   var maquinaId = currentMaquinaId;
-  
+
   fetchAllItems(maquinaId);
 });
 
@@ -324,7 +321,7 @@ document.getElementById("voltarModalContent").addEventListener("click", function
 //===============================================================================
 
 async function fetchAllItems(maquinaId) {
-  try {    
+  try {
     const response = await axios.get(`http://localhost:3000/adm/maquina/${maquinaId}/item`);
 
     const allItems = response.data;
@@ -339,7 +336,6 @@ async function fetchAllItems(maquinaId) {
     allItems.forEach((item) => {
       createProduzindoItemCard(item);
     });
-
   } catch (error) {
     console.error("Erro ao recuperar os itens!", error);
   }
@@ -350,28 +346,28 @@ async function fetchAllItems(maquinaId) {
 //===================================================
 
 function createProduzindoItemCard(item) {
-  let itemCard = document.createElement('div');
-  itemCard.className = 'item-card';
+  let itemCard = document.createElement("div");
+  itemCard.className = "item-card";
 
-  let partNumberElement = document.createElement('h3');
+  let partNumberElement = document.createElement("h3");
   partNumberElement.textContent = `${item.part_number}`;
   itemCard.appendChild(partNumberElement);
 
-  let statusElement = document.createElement('p');
+  let statusElement = document.createElement("p");
   statusElement.textContent = `${item.status}`;
-  
-  if (item.status === 'PRODUZINDO') {
-    statusElement.className = 'status-produzindo';
-  } else if (item.status === 'FINALIZADO') {
-    statusElement.className = 'status-finalizado';
+
+  if (item.status === "PRODUZINDO") {
+    statusElement.className = "status-produzindo";
+  } else if (item.status === "FINALIZADO") {
+    statusElement.className = "status-finalizado";
   }
   itemCard.appendChild(statusElement);
 
-  let produzindoItemList = document.getElementById('produzindoItemsList');
+  let produzindoItemList = document.getElementById("produzindoItemsList");
   if (produzindoItemList) {
     produzindoItemList.appendChild(itemCard);
   } else {
-    console.error('Elemento #produzindoItemsList não encontrado ao criar cartão do item');
+    console.error("Elemento #produzindoItemsList não encontrado ao criar cartão do item");
   }
 }
 
@@ -382,4 +378,4 @@ function createProduzindoItemCard(item) {
 window.onload = function () {
   handleDarkModeToggle();
   fetchMaquinas();
-}
+};
