@@ -317,7 +317,7 @@ document.getElementById("voltarModalContent").addEventListener("click", function
 });
 
 //===============================================================================
-// Função para buscar e exibir os itens PRODUZINDO para a máquina específica
+// Função para buscar e exibir os itens PRODUZINDO e FINALIZADO para a máquina específica
 //===============================================================================
 
 async function fetchAllItems(maquinaId) {
@@ -327,11 +327,15 @@ async function fetchAllItems(maquinaId) {
     const allItems = response.data;
 
     let produzindoItemList = document.getElementById("produzindoItemsList");
-    if (!produzindoItemList) {
-      console.error("Elemento #produzindoItemsList não encontrado");
+    let finalizadoItemList = document.getElementById("finalizadoItemsList");
+    
+    if (!produzindoItemList || !finalizadoItemList) {
+      console.error("Elementos #produzindoItemsList ou #finalizadoItemsList não encontrados");
       return;
     }
+
     produzindoItemList.innerHTML = "";
+    finalizadoItemList.innerHTML = "";
 
     allItems.forEach((item) => {
       createProduzindoItemCard(item);
@@ -342,12 +346,27 @@ async function fetchAllItems(maquinaId) {
 }
 
 //===================================================
-//função para criar o card de visualização de status de item de cada Maquina
+// Função para criar o card de visualização de status de item de cada Maquina
 //===================================================
 
 function createProduzindoItemCard(item) {
-  let itemCard = document.createElement("div");
-  itemCard.className = "item-card";
+  let itemCard = document.createElement('div');
+  itemCard.className = 'item-card';
+  itemCard.draggable = true;
+  itemCard.id = `item-${item.part_number}`; // Identificador único
+
+  itemCard.addEventListener('dragstart', (event) => {
+    event.dataTransfer.setData('text/plain', JSON.stringify(item));
+    setTimeout(() => itemCard.style.display = 'none', 0);
+  });
+
+  itemCard.addEventListener('dragend', (event) => {
+    setTimeout(() => {
+      if (itemCard.parentElement) {
+        itemCard.style.display = 'block';
+      }
+    }, 0);
+  });
 
   let partNumberElement = document.createElement("h3");
   partNumberElement.textContent = `${item.part_number}`;
@@ -363,13 +382,45 @@ function createProduzindoItemCard(item) {
   }
   itemCard.appendChild(statusElement);
 
-  let produzindoItemList = document.getElementById("produzindoItemsList");
-  if (produzindoItemList) {
-    produzindoItemList.appendChild(itemCard);
+  let list = item.status === 'PRODUZINDO' ? document.getElementById('produzindoItemsList') : document.getElementById('finalizadoItemsList');
+  if (list) {
+    list.appendChild(itemCard);
   } else {
-    console.error("Elemento #produzindoItemsList não encontrado ao criar cartão do item");
+    console.error(`Elemento #${list.id} não encontrado ao criar cartão do item`);
   }
 }
+
+
+
+
+document.addEventListener('DOMContentLoaded', (event) => {
+  let produzindoItemList = document.getElementById('produzindoItemsList');
+  let finalizadoItemList = document.getElementById('finalizadoItemsList');
+
+  [produzindoItemList, finalizadoItemList].forEach(list => {
+    list.addEventListener('dragover', (event) => {
+      event.preventDefault();
+    });
+
+    list.addEventListener('drop', (event) => {
+      event.preventDefault();
+      let itemData = event.dataTransfer.getData('text/plain');
+      let item = JSON.parse(itemData);
+      item.status = list.id === 'produzindoItemsList' ? 'PRODUZINDO' : 'FINALIZADO';
+
+      // Remove o cartão antigo
+      let oldCard = document.getElementById(`item-${item.part_number}`);
+      if (oldCard) {
+        oldCard.remove();
+      }
+
+      // Cria o novo cartão na lista apropriada
+      createProduzindoItemCard(item);
+    });
+  });
+});
+
+
 
 //=================================================
 // Chama as funções necessárias ao carregar a página
