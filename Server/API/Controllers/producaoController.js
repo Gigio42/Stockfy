@@ -12,13 +12,6 @@ class ProducaoController {
       select: {
         nome: true,
         items: {
-          /* where: {
-            Item: {
-              status: {
-                not: "FINALIZADO",
-              },
-            },
-          }, */
           select: {
             ordem: true,
             prazo: true,
