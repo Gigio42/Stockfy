@@ -37,10 +37,10 @@ jobs:
         sudo apt-get install -y sqlite3
         echo -e ".headers on\n.mode column\nSELECT * FROM Chapas;" | sqlite3 Server/estoque.sqlite
 
-    - name: Setup SSH
-      uses: webfactory/ssh-agent@v0.5.3
+    - name: Setup commit
+      uses: actions/checkout@v2
       with:
-        ssh-private-key: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
     
     - name: Commit and push changes
       run: |
