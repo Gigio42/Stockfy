@@ -6,7 +6,7 @@ async function producaoRoute(fastify, options) {
   fastify.get("/maquina/:name/itens/chapas", {
     handler: async (request, reply) => {
       try {
-        const name = request.params.name;
+        const name = request.params.nome;
         const data = await producaoController.getChapasInItemsInMaquinas(name);
         reply.send(data);
       } catch (err) {
