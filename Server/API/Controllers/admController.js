@@ -52,7 +52,7 @@ class AdmController {
         where: { id_item: itemId },
         data: { status: "PRODUZINDO" },
       });
-  
+
       await Item_Maquina.create({
         data: {
           maquinaId: maquinaId,
@@ -62,7 +62,7 @@ class AdmController {
           corte: corte, // Adicionando corte ao criar o registro
         },
       });
-  
+
       console.log(`Item ${itemId} atualizado para status PRODUZINDO com prazo ${prazo} e ordem ${ordem} e corte ${corte}`);
     } catch (error) {
       console.error("Erro ao atualizar o status do item para PRODUZINDO:", error);
