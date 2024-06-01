@@ -10,7 +10,7 @@
     "generate": "prisma generate",
     "start": "nodemon .\\Server\\server.js",
     "prisma": "npm run migrate && npm run generate && npm run start",
-    "auto-prisma": "npm run auto-migrate && npm run generate && npm run start",
+    "auto-prisma": "prisma migrate dev --name auto_migration && npm run generate && npm run start",
     "studio": "npx prisma studio --port 2943"
   },
   "keywords": [],
