@@ -347,6 +347,23 @@ button:hover {
   color: #0e0e0e;
 }
 
+@media (max-width: 600px) {
+  .modal-content {
+    width: 95%; 
+    padding: 5px; 
+    font-size: 0.8em;
+  }
+  .modal-content input {
+    font-size: 0.8em; 
+  }
+  .preview {
+    display: none;
+  }
+  .card{
+    width: 120%;
+  }
+}
+
 /*
 ==================
 formulário
@@ -366,12 +383,6 @@ formulário
   margin-bottom: 1rem;
   width: 40%;
   z-index: 2;
-}
-
-@media (max-width: 600px) {
-  .grouping-form {
-    width: 90%;
-  }
 }
 
 .grouping-form label {
@@ -467,6 +478,47 @@ formulário
 
 .text-left {
   padding-bottom: 0 !important;
+}
+
+.header-custom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 15px;
+}
+
+.mobileOptions {
+  background: #a0a0a0;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 0 5px; /* Adjusted margin */
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.mobileOptions:hover {
+  background: #5c5c5c;
+  transform: scale(1.1);
+}
+
+@media (min-width: 601px) {
+  .mobileOptions {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .grouping-form {
+    width: 90%;
+  }
+  .hide-on-mobile {
+    display: none;
+  }
 }
 
 /* ======================================
@@ -682,7 +734,7 @@ input[type="checkbox"]:checked::before {
   }
 
   .card-div {
-    height: auto; 
+    height: auto;
   }
 
   .card-value-row {
@@ -695,16 +747,16 @@ input[type="checkbox"]:checked::before {
     margin-left: 0px;
     white-space: nowrap;
   }
-  
+
   .chapa-card {
     background-color: #252525;
   }
-  
+
   .chapas-container {
     padding-left: 0px;
     padding-right: 0px;
   }
-  
+
   .chapa-card-element {
     padding: 0px;
   }
@@ -722,8 +774,8 @@ input[type="checkbox"]:checked::before {
   .card-part-number,
   .card-status-comprado,
   .card-status-reservado {
-    padding: 5px; 
-    margin-right: 5px; 
+    padding: 5px;
+    margin-right: 5px;
   }
 }
 
