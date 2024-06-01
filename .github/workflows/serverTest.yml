@@ -1,6 +1,11 @@
 name: Run server and test
 
-on: push
+on: 
+  push:
+    branches:
+      - main
+  schedule:
+    - cron:  '*/30 * * * *'
 
 jobs:
   build:
