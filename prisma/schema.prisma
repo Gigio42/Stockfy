@@ -74,8 +74,9 @@ model Item {
 
 model Item_Maquina {
   id_item_maquina Int     @id @default(autoincrement())
-  ordem           Int?
   prazo           String?
+  ordem           Int?
+  corte           String?
   maquinaId       Int
   itemId          Int
   maquina         Maquina @relation(fields: [maquinaId], references: [id_maquina])
