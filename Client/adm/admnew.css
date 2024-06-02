@@ -315,9 +315,7 @@ body {
   /* Tamanho do ícone */
 }
 
-h3 {
-  color: #858585;
-}
+
 
 /*
   ================
@@ -358,17 +356,17 @@ h3 {
 
 .modal-content {
   background-color: #141414;
-  margin: 7% auto;
+  margin: 1% auto;
   padding: 20px;
-  width: 80vw;
+  width: 95vw;
   border: none;
   border-radius: 1.5rem;
-  height: fit-content;
+  height: 95vh;
 }
 
 .modal-content-2 {
   padding: 20px;
-  width: 80vw;
+  width: 95vw;
   border: none;
   border-radius: 1.5rem;
   position: absolute;
@@ -378,7 +376,7 @@ h3 {
   bottom: 0;
   background-color: #141414;
   z-index: 999;
-  height: 60vh;
+  height: 95vh;
 }
 
 #voltarModalContent {
@@ -456,10 +454,10 @@ h3 {
   background-color: #4f27ff47;
   padding: 0.5rem;
   border-radius: 0.7rem;
-
   color: #9178ff;
   width: fit-content;
   margin: 0;
+  font-size: 1.4rem;
 }
 
 .abrirModal:hover {
@@ -592,6 +590,7 @@ h3 {
   font-weight: bold;
   text-align: center;
   margin-top: 1rem;
+  font-size: 0.8rem;
 }
 
 .status-finalizado {
@@ -603,6 +602,7 @@ h3 {
   font-weight: bold;
   text-align: center;
   margin-top: 1rem;
+  font-size: 0.9rem;
 }
 
 .item-card {
@@ -610,6 +610,7 @@ h3 {
   margin-bottom: 10px;
   border-radius: 1rem;
   background-color: #1d1d1d;
+
 }
 
 
@@ -617,9 +618,35 @@ h3 {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  overflow-y: auto;
-  max-height: 40vh;
   border-radius: 1rem;
+  margin-bottom:2rem ;
+}
+
+#finalizadoItemsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+}
+
+.itensContainerstatus {
+  display: flex;
+  flex-direction:column;
+  overflow-y: auto;
+  max-height:87%;
+  border-radius: 1rem;
+}
+
+.textoModal {
+background-color: #2f2f2f;
+width: fit-content;
+padding: 0.5rem 1REM;
+
+margin-bottom: 1rem;
+border-radius: 1rem;
+color: #929292;
+border: solid 1px #b3b3b341;
+font-weight: bold;
 }
 
 .inputPrazo,
