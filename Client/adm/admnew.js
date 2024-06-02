@@ -1,4 +1,4 @@
-import BASE_URL from '../utils/config.js';
+import BASE_URL from "../utils/config.js";
 
 //============================================
 // Função para lidar com a lógica do Dark Mode

@@ -1,4 +1,4 @@
-import BASE_URL from '../utils/config.js';
+import BASE_URL from "../utils/config.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   document.body.addEventListener("click", function (event) {

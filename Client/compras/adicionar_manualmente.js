@@ -1,4 +1,4 @@
-import BASE_URL from '../utils/config.js';
+import BASE_URL from "../utils/config.js";
 
 // Variável global para armazenar o ID do cartão sendo editado
 let cardIDBeingEdited = null;
