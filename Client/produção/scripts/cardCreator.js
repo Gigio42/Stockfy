@@ -41,7 +41,7 @@ export function createCard(item, maquinaName, estado) {
 
   cardBody.appendChild(headerDiv);
 
-  const chapasList = createChapasList(item.Item.chapas);
+  const chapasList = createChapasList(item.Item.chapas, item);
   cardBody.appendChild(chapasList);
 
   const buttonContainer = document.createElement("div");
@@ -132,7 +132,7 @@ export function createChapasHeader(keys) {
 /* LISTA DE CHAPAS                */
 /* ============================== */
 
-export function createChapasList(chapas) {
+export function createChapasList(chapas, item) {
   const chapasContainer = document.createElement("div");
   chapasContainer.className = "chapas-container";
 
@@ -172,7 +172,7 @@ export function createChapasList(chapas) {
     chapaDetailsDiv.appendChild(numeroClienteDiv);
 
     const medidaCorteDiv = document.createElement("div");
-    medidaCorteDiv.textContent = "300x500";
+    medidaCorteDiv.textContent = `${item.corte}`;
     chapaDetailsDiv.appendChild(medidaCorteDiv);
 
     const customCheckboxDiv = document.createElement("div");

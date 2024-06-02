@@ -16,6 +16,7 @@ class ProducaoController {
           select: {
             ordem: true,
             prazo: true,
+            corte: true,
             finalizado: true,
             Item: {
               select: {
