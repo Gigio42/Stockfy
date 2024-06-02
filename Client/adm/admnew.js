@@ -1,3 +1,5 @@
+import BASE_URL from "../utils/config.js";
+
 //============================================
 // Função para lidar com a lógica do Dark Mode
 //============================================
@@ -33,7 +35,7 @@ function handleDarkModeToggle() {
 
 async function fetchMaquinas() {
   try {
-    const response = await axios.get("http://localhost:3000/adm/maquina");
+    const response = await axios.get(`${BASE_URL}/adm/maquina`);
     const maquinas = response.data;
 
     maquinas.forEach((maquina) => {
@@ -109,7 +111,7 @@ function closeModal() {
 
 async function adicionarItem(itemId, maquinaId) {
   try {
-    const response = await axios.post(`http://localhost:3000/adm/maquina/${maquinaId}/item/${itemId}/produzindo`);
+    const response = await axios.post(`${BASE_URL}/adm/maquina/${maquinaId}/item/${itemId}/produzindo`);
   } catch (error) {
     console.error("Erro ao adicionar item:", error);
   }
@@ -121,7 +123,7 @@ async function adicionarItem(itemId, maquinaId) {
 
 async function fetchitens(maquinaId) {
   try {
-    const response = await axios.get("http://localhost:3000/adm/items/chapas");
+    const response = await axios.get(`${BASE_URL}/adm/items/chapas`);
     const itens = response.data;
 
     let reservados = document.getElementById("reservados");
@@ -217,7 +219,7 @@ async function confirmarItensStaged() {
 
     try {
       // Incluir os valores no corpo da solicitação
-      await axios.post(`http://localhost:3000/adm/maquina/${maquinaId}/item/${itemId}/produzindo`, {
+      await axios.post(`${BASE_URL}/adm/maquina/${maquinaId}/item/${itemId}/produzindo`, {
         prazo: prazo,
         corte: corte,
         ordem: ordem,
@@ -322,7 +324,7 @@ document.getElementById("voltarModalContent").addEventListener("click", function
 
 async function fetchAllItems(maquinaId) {
   try {
-    const response = await axios.get(`http://localhost:3000/adm/maquina/${maquinaId}/item`);
+    const response = await axios.get(`${BASE_URL}/adm/maquina/${maquinaId}/item`);
 
     const allItems = response.data;
 

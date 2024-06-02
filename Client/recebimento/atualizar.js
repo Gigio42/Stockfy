@@ -1,3 +1,5 @@
+import BASE_URL from "../utils/config.js";
+
 document.addEventListener("DOMContentLoaded", function () {
   document.body.addEventListener("click", function (event) {
     if (event.target.classList.contains("update-button")) {
@@ -10,7 +12,7 @@ async function sendDataToServer() {
   try {
     var data = tableObj();
     console.log(data); // Log para depuração
-    const response = await axios.put("http://localhost:3000/recebimento", data);
+    const response = await axios.put(`${BASE_URL}/recebimento`, data);
     alert("Dados atualizados com sucesso!");
   } catch (error) {
     console.error("Erro ao enviar dados: ", error);
