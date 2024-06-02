@@ -183,8 +183,10 @@ export function createChapasList(chapas) {
     chapaContentDiv.style.justifyContent = "space-between";
 
     const chapaDetailsDiv = document.createElement("div");
-    chapaDetailsDiv.className = "chapa-details grid-container";
-    chapaDetailsDiv.style.gridTemplateColumns = "repeat(4, 1fr)";
+    chapaDetailsDiv.className = "chapa-details flex-container";
+    chapaDetailsDiv.style.justifyContent = "space-between";
+    chapaDetailsDiv.style.flexWrap = "wrap";
+    chapaDetailsDiv.style.alignItems = "center";
 
     const emptyDiv = document.createElement("div");
     chapaDetailsDiv.appendChild(emptyDiv);

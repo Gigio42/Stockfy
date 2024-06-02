@@ -4,6 +4,7 @@
   margin-left: 25%;
 }
 
+
 .flex-container {
   display: flex;
   justify-content: space-between;
@@ -92,7 +93,7 @@
 }
 
 .green-div {
-  background-color: #4caf50;
+  background-color: #4d7099;
   color: white; 
   padding: 10px; 
   margin: 10px; 
@@ -111,11 +112,10 @@
     padding: 10px; 
 }
 
-/* Responsive design for the 'ordem' div */
 @media (max-width: 600px) {
   .ordem {
     position: static;
-    border-radius: 0;
+    border-radius: 50px;
   }
 }
 
@@ -143,3 +143,15 @@
   backdrop-filter: blur(10px);
   opacity: 0.5;
 }
+
+@media screen and (max-width: 600px) {
+  .card-container {
+    margin-right: 2%;
+    margin-left: 2%;
+  }
+  .keys {
+    display: none;
+  }
+  
+}
+
