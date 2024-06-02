@@ -71,9 +71,12 @@ export function createCard(item) {
 
 export function createFinalizadoCard(item) {
   const card = document.createElement("div");
-  card.className = "col-12 mb-4 finalizado";
-  card.style.order = 1;
+  card.className = "col-12 mb-4";
 
+  if (item.Item.status === "FINALIZADO") {
+    card.classList.add("finalizado");
+    card.style.order = 1;
+  }
   const cardContainer = document.createElement("div");
   cardContainer.className = "card h-100";
 
@@ -83,34 +86,32 @@ export function createFinalizadoCard(item) {
   const headerDiv = document.createElement("div");
   headerDiv.style.display = "flex";
   headerDiv.style.justifyContent = "space-between";
-  headerDiv.style.marginBottom = "20px";
+  headerDiv.style.marginBottom = "1px";
+  headerDiv.style.alignItems = "flex-start";
 
   const partNumberDiv = document.createElement("div");
   partNumberDiv.className = "part-number";
   partNumberDiv.textContent = item.Item.part_number;
   headerDiv.appendChild(partNumberDiv);
 
-  const orderPrazoDiv = document.createElement("div");
-  orderPrazoDiv.className = "order-prazo";
-  orderPrazoDiv.style.display = "flex";
-  orderPrazoDiv.style.flexDirection = "column";
-
-  const orderSpan = document.createElement("span");
-  orderSpan.className = "ordem";
-  orderSpan.textContent = `Processo: ${item.ordem}`;
-  orderPrazoDiv.appendChild(orderSpan);
-
-  const prazoSpan = document.createElement("span");
-  prazoSpan.className = "prazo";
-  prazoSpan.textContent = `Prazo: ${item.prazo}`;
-  orderPrazoDiv.appendChild(prazoSpan);
-
-  headerDiv.appendChild(orderPrazoDiv);
+  const orderDiv = document.createElement("div");
+  orderDiv.className = "ordem ordem-div";
+  orderDiv.textContent = item.ordem;
+  headerDiv.appendChild(orderDiv);
 
   cardBody.appendChild(headerDiv);
 
   const chapasList = createChapasList(item.Item.chapas);
   cardBody.appendChild(chapasList);
+
+  const buttonContainer = document.createElement("div");
+  buttonContainer.style.display = "flex";
+  buttonContainer.style.justifyContent = "space-between";
+
+  const prazoDiv = document.createElement("div");
+  prazoDiv.className = "prazo prazo-div";
+  prazoDiv.textContent = `Prazo: ${item.prazo}`;
+  headerDiv.appendChild(prazoDiv);
 
   const checkboxes = chapasList.querySelectorAll('input[type="checkbox"]');
   checkboxes.forEach((checkbox) => {
