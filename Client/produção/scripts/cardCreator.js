@@ -3,14 +3,20 @@ import { updateItemStatus } from "../scripts/connections.js";
 /* ============================== */
 /* LISTA DE CARDS                 */
 /* ============================== */
-export function createCard(item) {
+export function createCard(item, maquinaName, estado) {
   const card = document.createElement("div");
   card.className = "col-12 mb-4";
 
-  if (item.Item.status === "FINALIZADO") {
+  if (estado === "FEITO") {
     card.classList.add("finalizado");
+    card.style.order = 3;
+  } else if (estado === "PROXIMAS") {
+    card.classList.add("proxima");
+    card.style.order = 2;
+  } else {
     card.style.order = 1;
   }
+
   const cardContainer = document.createElement("div");
   cardContainer.className = "card h-100";
 
@@ -50,10 +56,10 @@ export function createCard(item) {
   const submitButton = document.createElement("button");
   submitButton.className = "btn-submit mt-2 align-right";
   submitButton.textContent = "Finalizar produção";
-  submitButton.disabled = true;
+  submitButton.disabled = estado !== "ATUAL";
   submitButton.addEventListener("click", async () => {
     const itemId = item.Item.id_item;
-    const data = await updateItemStatus(itemId);
+    const data = await updateItemStatus(itemId, maquinaName);
     alert(`Item ${item.Item.part_number}, id: ${item.Item.id_item} enviado`);
     console.log(data);
   });
@@ -63,60 +69,12 @@ export function createCard(item) {
 
   updateSubmitButtonState(chapasList, submitButton);
 
-  cardContainer.appendChild(cardBody);
-  card.appendChild(cardContainer);
-
-  return card;
-}
-
-export function createFinalizadoCard(item) {
-  const card = document.createElement("div");
-  card.className = "col-12 mb-4";
-
-  if (item.Item.status === "FINALIZADO") {
-    card.classList.add("finalizado");
-    card.style.order = 1;
-  }
-  const cardContainer = document.createElement("div");
-  cardContainer.className = "card h-100";
-
-  const cardBody = document.createElement("div");
-  cardBody.className = "card-body";
-
-  const headerDiv = document.createElement("div");
-  headerDiv.style.display = "flex";
-  headerDiv.style.justifyContent = "space-between";
-  headerDiv.style.marginBottom = "1px";
-  headerDiv.style.alignItems = "flex-start";
-
-  const partNumberDiv = document.createElement("div");
-  partNumberDiv.className = "part-number";
-  partNumberDiv.textContent = item.Item.part_number;
-  headerDiv.appendChild(partNumberDiv);
-
-  const orderDiv = document.createElement("div");
-  orderDiv.className = "ordem ordem-div";
-  orderDiv.textContent = item.ordem;
-  headerDiv.appendChild(orderDiv);
-
-  cardBody.appendChild(headerDiv);
-
-  const chapasList = createChapasList(item.Item.chapas);
-  cardBody.appendChild(chapasList);
-
-  const buttonContainer = document.createElement("div");
-  buttonContainer.style.display = "flex";
-  buttonContainer.style.justifyContent = "space-between";
-
-  const prazoDiv = document.createElement("div");
-  prazoDiv.className = "prazo prazo-div";
-  prazoDiv.textContent = `Prazo: ${item.prazo}`;
-  headerDiv.appendChild(prazoDiv);
-
   const checkboxes = chapasList.querySelectorAll('input[type="checkbox"]');
   checkboxes.forEach((checkbox) => {
-    checkbox.checked = true;
-    checkbox.disabled = true;
+    checkbox.disabled = estado !== "ATUAL";
+    if (estado === "FEITO") {
+      checkbox.checked = true;
+    }
   });
 
   cardContainer.appendChild(cardBody);

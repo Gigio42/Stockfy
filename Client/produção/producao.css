@@ -143,7 +143,8 @@ Cards Styles
   background-color: #28a745;
 }
 
-.ordem-div, .prazo-div {
+.ordem-div,
+.prazo-div {
   background-color: #4d7099;
   color: white;
   padding: 10px;
@@ -195,6 +196,22 @@ Cards Styles
   opacity: 0.5;
 }
 
+.proxima {
+  position: relative;
+}
+
+.proxima::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 15px;
+  right: 15px;
+  bottom: 0;
+  background: rgba(61, 167, 40, 0.151); 
+  border-radius: 10px;
+  z-index: 1;
+}
+
 @media screen and (max-width: 600px) {
   .card-container {
     margin-right: 2%;
@@ -242,7 +259,7 @@ body.light-mode .card-header {
 body.light-mode .part-number {
   background: #000000;
   color: #8000ff;
-  border: solid 1px rgb(174, 0, 255)
+  border: solid 1px rgb(174, 0, 255);
 }
 
 body.light-mode .keys {
@@ -259,7 +276,8 @@ body.light-mode .custom-checkbox input:checked ~ .checkmark {
   background-color: #59e664;
 }
 
-body.light-mode .ordem-div, body.light-mode .prazo-div {
+body.light-mode .ordem-div,
+body.light-mode .prazo-div {
   background-color: #1d77ddc4;
   color: #ffffff;
 }
