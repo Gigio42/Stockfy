@@ -11,6 +11,7 @@ class ProducaoController {
         nome: name,
       },
       select: {
+        id_maquina: true,
         nome: true,
         items: {
           select: {
@@ -46,7 +47,16 @@ class ProducaoController {
     });
 
     if (maquina) {
-      const groupedItems = maquina.items.reduce((groups, item) => {
+      const allItemsMaquinas = await Item_Maquina.findMany({
+        select: {
+          ordem: true,
+          finalizado: true,
+          itemId: true,
+          maquinaId: true,
+        },
+      });
+
+      const groupedItems = allItemsMaquinas.reduce((groups, item) => {
         if (!groups[item.itemId]) {
           groups[item.itemId] = [];
         }
@@ -61,16 +71,22 @@ class ProducaoController {
         items.forEach((item) => {
           if (item.finalizado) {
             item.estado = "FEITO";
-          } else if (item === currentItem) {
+          } else if (item === currentItem && item.maquinaId === maquina.id_maquina) {
             item.estado = "ATUAL";
           } else {
             item.estado = "PROXIMAS";
           }
         });
       });
-    }
 
-    console.log(JSON.stringify(maquina, null, 2));
+      maquina.items.forEach((item) => {
+        const itemMaquina = groupedItems[item.Item.id_item];
+        if (itemMaquina) {
+          const correspondingItem = maquina.items.find((i) => i.Item.id_item === item.Item.id_item);
+          correspondingItem.estado = itemMaquina[0].estado;
+        }
+      });
+    }
 
     return maquina;
   }
