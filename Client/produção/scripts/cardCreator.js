@@ -20,25 +20,13 @@ export function createCard(item) {
   const headerDiv = document.createElement("div");
   headerDiv.style.display = "flex";
   headerDiv.style.justifyContent = "space-between";
-  headerDiv.style.marginBottom = "20px";
+  headerDiv.style.marginBottom = "1px";
+  headerDiv.style.alignItems = "flex-start";
 
   const partNumberDiv = document.createElement("div");
   partNumberDiv.className = "part-number";
   partNumberDiv.textContent = item.Item.part_number;
   headerDiv.appendChild(partNumberDiv);
-
-  const keysDiv = document.createElement("div");
-  keysDiv.className = "keys grid-container";
-  keysDiv.style.gridTemplateColumns = "repeat(4, 1fr)";
-
-  const keys = ["CHAPAS", "QUANT.", "CLIENTE", "MEDIDA"];
-  keys.forEach((key) => {
-    const keyDiv = document.createElement("div");
-    keyDiv.textContent = key;
-    keysDiv.appendChild(keyDiv);
-  });
-
-  headerDiv.appendChild(keysDiv);
 
   const orderDiv = document.createElement("div");
   orderDiv.className = "ordem green-div";
@@ -102,19 +90,6 @@ export function createFinalizadoCard(item) {
   partNumberDiv.textContent = item.Item.part_number;
   headerDiv.appendChild(partNumberDiv);
 
-  const keysDiv = document.createElement("div");
-  keysDiv.className = "keys grid-container";
-  keysDiv.style.gridTemplateColumns = "repeat(4, 1fr)";
-
-  const keys = ["CHAPAS", "QUANT.", "CLIENTE", "MEDIDA"];
-  keys.forEach((key) => {
-    const keyDiv = document.createElement("div");
-    keyDiv.textContent = key;
-    keysDiv.appendChild(keyDiv);
-  });
-
-  headerDiv.appendChild(keysDiv);
-
   const orderPrazoDiv = document.createElement("div");
   orderPrazoDiv.className = "order-prazo";
   orderPrazoDiv.style.display = "flex";
@@ -161,6 +136,39 @@ function updateSubmitButtonState(chapasContainer, submitButton) {
   });
 }
 
+export function createChapasHeader(keys) {
+  const chapaCard = document.createElement("div");
+  chapaCard.className = "card text-white mb-2 chapa-card";
+  chapaCard.style.borderRadius = "10px";
+  chapaCard.style.backgroundColor = "#2a2a2a";
+
+  const chapaCardBody = document.createElement("div");
+  chapaCardBody.className = "card-body d-flex justify-content-between align-items-center";
+
+  const chapaContentDiv = document.createElement("div");
+  chapaContentDiv.className = "chapa-content flex-container";
+  chapaContentDiv.style.width = "100%";
+  chapaContentDiv.style.justifyContent = "space-between";
+
+  const chapaDetailsDiv = document.createElement("div");
+  chapaDetailsDiv.className = "chapa-details flex-container";
+  chapaDetailsDiv.style.justifyContent = "space-between";
+  chapaDetailsDiv.style.flexWrap = "wrap";
+  chapaDetailsDiv.style.alignItems = "center";
+
+  keys.forEach((key) => {
+    const keyDiv = document.createElement("div");
+    keyDiv.textContent = key;
+    chapaDetailsDiv.appendChild(keyDiv);
+  });
+
+  chapaContentDiv.appendChild(chapaDetailsDiv);
+  chapaCardBody.appendChild(chapaContentDiv);
+  chapaCard.appendChild(chapaCardBody);
+
+  return chapaCard;
+}
+
 /* ============================== */
 /* LISTA DE CHAPAS                */
 /* ============================== */
@@ -168,6 +176,10 @@ function updateSubmitButtonState(chapasContainer, submitButton) {
 export function createChapasList(chapas) {
   const chapasContainer = document.createElement("div");
   chapasContainer.className = "chapas-container";
+
+  // Create header
+  const header = createChapasHeader(["CHAPAS", "QUANT.", "CLIENTE", "MEDIDA"]);
+  chapasContainer.appendChild(header);
 
   chapas.forEach((chapa) => {
     const chapaCard = document.createElement("div");
@@ -187,9 +199,6 @@ export function createChapasList(chapas) {
     chapaDetailsDiv.style.justifyContent = "space-between";
     chapaDetailsDiv.style.flexWrap = "wrap";
     chapaDetailsDiv.style.alignItems = "center";
-
-    const emptyDiv = document.createElement("div");
-    chapaDetailsDiv.appendChild(emptyDiv);
 
     const larguraComprimentoDiv = document.createElement("div");
     larguraComprimentoDiv.textContent = `${chapa.chapa.largura}x${chapa.chapa.comprimento}`;

@@ -4,7 +4,6 @@
   margin-left: 25%;
 }
 
-
 .flex-container {
   display: flex;
   justify-content: space-between;
@@ -39,6 +38,7 @@
 }
 
 .keys {
+  display: none;
   background-color: rgb(40, 40, 40);
   color: white;
   flex-grow: 1;
@@ -49,12 +49,14 @@
   margin-right: 10px;
   border-radius: 10px;
 }
+
 .chapa-details {
   /* background-color: #28a745; */
   display: flex;
   justify-content: space-between;
   width: 75%;
 }
+
 
 .chapa-card {
   border-radius: 10px;
@@ -152,6 +154,9 @@
   .keys {
     display: none;
   }
-  
+  .card-header, .card {
+    font-size: 11px;
+    font-weight: normal;
+  }
 }
 
