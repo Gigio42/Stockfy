@@ -20,47 +20,32 @@ export function createCard(item) {
   const headerDiv = document.createElement("div");
   headerDiv.style.display = "flex";
   headerDiv.style.justifyContent = "space-between";
-  headerDiv.style.marginBottom = "20px";
+  headerDiv.style.marginBottom = "1px";
+  headerDiv.style.alignItems = "flex-start";
 
   const partNumberDiv = document.createElement("div");
   partNumberDiv.className = "part-number";
   partNumberDiv.textContent = item.Item.part_number;
   headerDiv.appendChild(partNumberDiv);
 
-  const keysDiv = document.createElement("div");
-  keysDiv.className = "keys grid-container";
-  keysDiv.style.gridTemplateColumns = "repeat(4, 1fr)";
-
-  const keys = ["CHAPAS", "QUANT.", "CLIENTE", "MEDIDA"];
-  keys.forEach((key) => {
-    const keyDiv = document.createElement("div");
-    keyDiv.textContent = key;
-    keysDiv.appendChild(keyDiv);
-  });
-
-  headerDiv.appendChild(keysDiv);
-
-  const orderPrazoDiv = document.createElement("div");
-  orderPrazoDiv.className = "order-prazo";
-  orderPrazoDiv.style.display = "flex";
-  orderPrazoDiv.style.flexDirection = "column";
-
-  const orderSpan = document.createElement("span");
-  orderSpan.className = "ordem";
-  orderSpan.textContent = `Processo: ${item.ordem}`;
-  orderPrazoDiv.appendChild(orderSpan);
-
-  const prazoSpan = document.createElement("span");
-  prazoSpan.className = "prazo";
-  prazoSpan.textContent = `Prazo: ${item.prazo}`;
-  orderPrazoDiv.appendChild(prazoSpan);
-
-  headerDiv.appendChild(orderPrazoDiv);
+  const orderDiv = document.createElement("div");
+  orderDiv.className = "ordem ordem-div";
+  orderDiv.textContent = item.ordem;
+  headerDiv.appendChild(orderDiv);
 
   cardBody.appendChild(headerDiv);
 
   const chapasList = createChapasList(item.Item.chapas);
   cardBody.appendChild(chapasList);
+
+  const buttonContainer = document.createElement("div");
+  buttonContainer.style.display = "flex";
+  buttonContainer.style.justifyContent = "space-between";
+
+  const prazoDiv = document.createElement("div");
+  prazoDiv.className = "prazo prazo-div";
+  prazoDiv.textContent = `Prazo: ${item.prazo}`;
+  buttonContainer.appendChild(prazoDiv);
 
   const submitButton = document.createElement("button");
   submitButton.className = "btn-submit mt-2 align-right";
@@ -72,7 +57,9 @@ export function createCard(item) {
     alert(`Item ${item.Item.part_number}, id: ${item.Item.id_item} enviado`);
     console.log(data);
   });
-  cardBody.appendChild(submitButton);
+  buttonContainer.appendChild(submitButton);
+
+  cardBody.appendChild(buttonContainer);
 
   updateSubmitButtonState(chapasList, submitButton);
 
@@ -84,9 +71,12 @@ export function createCard(item) {
 
 export function createFinalizadoCard(item) {
   const card = document.createElement("div");
-  card.className = "col-12 mb-4 finalizado";
-  card.style.order = 1;
+  card.className = "col-12 mb-4";
 
+  if (item.Item.status === "FINALIZADO") {
+    card.classList.add("finalizado");
+    card.style.order = 1;
+  }
   const cardContainer = document.createElement("div");
   cardContainer.className = "card h-100";
 
@@ -96,47 +86,32 @@ export function createFinalizadoCard(item) {
   const headerDiv = document.createElement("div");
   headerDiv.style.display = "flex";
   headerDiv.style.justifyContent = "space-between";
-  headerDiv.style.marginBottom = "20px";
+  headerDiv.style.marginBottom = "1px";
+  headerDiv.style.alignItems = "flex-start";
 
   const partNumberDiv = document.createElement("div");
   partNumberDiv.className = "part-number";
   partNumberDiv.textContent = item.Item.part_number;
   headerDiv.appendChild(partNumberDiv);
 
-  const keysDiv = document.createElement("div");
-  keysDiv.className = "keys grid-container";
-  keysDiv.style.gridTemplateColumns = "repeat(4, 1fr)";
-
-  const keys = ["CHAPAS", "QUANT.", "CLIENTE", "MEDIDA"];
-  keys.forEach((key) => {
-    const keyDiv = document.createElement("div");
-    keyDiv.textContent = key;
-    keysDiv.appendChild(keyDiv);
-  });
-
-  headerDiv.appendChild(keysDiv);
-
-  const orderPrazoDiv = document.createElement("div");
-  orderPrazoDiv.className = "order-prazo";
-  orderPrazoDiv.style.display = "flex";
-  orderPrazoDiv.style.flexDirection = "column";
-
-  const orderSpan = document.createElement("span");
-  orderSpan.className = "ordem";
-  orderSpan.textContent = `Processo: ${item.ordem}`;
-  orderPrazoDiv.appendChild(orderSpan);
-
-  const prazoSpan = document.createElement("span");
-  prazoSpan.className = "prazo";
-  prazoSpan.textContent = `Prazo: ${item.prazo}`;
-  orderPrazoDiv.appendChild(prazoSpan);
-
-  headerDiv.appendChild(orderPrazoDiv);
+  const orderDiv = document.createElement("div");
+  orderDiv.className = "ordem ordem-div";
+  orderDiv.textContent = item.ordem;
+  headerDiv.appendChild(orderDiv);
 
   cardBody.appendChild(headerDiv);
 
   const chapasList = createChapasList(item.Item.chapas);
   cardBody.appendChild(chapasList);
+
+  const buttonContainer = document.createElement("div");
+  buttonContainer.style.display = "flex";
+  buttonContainer.style.justifyContent = "space-between";
+
+  const prazoDiv = document.createElement("div");
+  prazoDiv.className = "prazo prazo-div";
+  prazoDiv.textContent = `Prazo: ${item.prazo}`;
+  headerDiv.appendChild(prazoDiv);
 
   const checkboxes = chapasList.querySelectorAll('input[type="checkbox"]');
   checkboxes.forEach((checkbox) => {
@@ -162,6 +137,39 @@ function updateSubmitButtonState(chapasContainer, submitButton) {
   });
 }
 
+export function createChapasHeader(keys) {
+  const chapaCard = document.createElement("div");
+  chapaCard.className = "card text-white mb-2 chapa-card";
+  chapaCard.style.borderRadius = "10px";
+  chapaCard.style.backgroundColor = "#2a2a2a";
+
+  const chapaCardBody = document.createElement("div");
+  chapaCardBody.className = "card-body d-flex justify-content-between align-items-center";
+
+  const chapaContentDiv = document.createElement("div");
+  chapaContentDiv.className = "chapa-content flex-container";
+  chapaContentDiv.style.width = "100%";
+  chapaContentDiv.style.justifyContent = "space-between";
+
+  const chapaDetailsDiv = document.createElement("div");
+  chapaDetailsDiv.className = "chapa-details flex-container";
+  chapaDetailsDiv.style.justifyContent = "space-between";
+  chapaDetailsDiv.style.flexWrap = "wrap";
+  chapaDetailsDiv.style.alignItems = "center";
+
+  keys.forEach((key) => {
+    const keyDiv = document.createElement("div");
+    keyDiv.textContent = key;
+    chapaDetailsDiv.appendChild(keyDiv);
+  });
+
+  chapaContentDiv.appendChild(chapaDetailsDiv);
+  chapaCardBody.appendChild(chapaContentDiv);
+  chapaCard.appendChild(chapaCardBody);
+
+  return chapaCard;
+}
+
 /* ============================== */
 /* LISTA DE CHAPAS                */
 /* ============================== */
@@ -169,6 +177,10 @@ function updateSubmitButtonState(chapasContainer, submitButton) {
 export function createChapasList(chapas) {
   const chapasContainer = document.createElement("div");
   chapasContainer.className = "chapas-container";
+
+  // Create header
+  const header = createChapasHeader(["CHAPAS", "QUANT.", "CLIENTE", "MEDIDA"]);
+  chapasContainer.appendChild(header);
 
   chapas.forEach((chapa) => {
     const chapaCard = document.createElement("div");
@@ -184,11 +196,10 @@ export function createChapasList(chapas) {
     chapaContentDiv.style.justifyContent = "space-between";
 
     const chapaDetailsDiv = document.createElement("div");
-    chapaDetailsDiv.className = "chapa-details grid-container";
-    chapaDetailsDiv.style.gridTemplateColumns = "repeat(4, 1fr)";
-
-    const emptyDiv = document.createElement("div");
-    chapaDetailsDiv.appendChild(emptyDiv);
+    chapaDetailsDiv.className = "chapa-details flex-container";
+    chapaDetailsDiv.style.justifyContent = "space-between";
+    chapaDetailsDiv.style.flexWrap = "wrap";
+    chapaDetailsDiv.style.alignItems = "center";
 
     const larguraComprimentoDiv = document.createElement("div");
     larguraComprimentoDiv.textContent = `${chapa.chapa.largura}x${chapa.chapa.comprimento}`;
