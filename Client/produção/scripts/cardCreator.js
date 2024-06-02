@@ -29,7 +29,7 @@ export function createCard(item) {
   headerDiv.appendChild(partNumberDiv);
 
   const orderDiv = document.createElement("div");
-  orderDiv.className = "ordem green-div";
+  orderDiv.className = "ordem ordem-div";
   orderDiv.textContent = item.ordem;
   headerDiv.appendChild(orderDiv);
 
@@ -43,7 +43,7 @@ export function createCard(item) {
   buttonContainer.style.justifyContent = "space-between";
 
   const prazoDiv = document.createElement("div");
-  prazoDiv.className = "prazo green-div";
+  prazoDiv.className = "prazo prazo-div";
   prazoDiv.textContent = `Prazo: ${item.prazo}`;
   buttonContainer.appendChild(prazoDiv);
 
