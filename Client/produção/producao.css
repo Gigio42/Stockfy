@@ -91,6 +91,34 @@
   background-color: #28a745;
 }
 
+.green-div {
+  background-color: #4caf50;
+  color: white; 
+  padding: 10px; 
+  margin: 10px; 
+  border-radius: 5px; 
+}
+
+.ordem {
+    width: 50px; 
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px; 
+    font-weight: bold; 
+    box-sizing: border-box;
+    padding: 10px; 
+}
+
+/* Responsive design for the 'ordem' div */
+@media (max-width: 600px) {
+  .ordem {
+    position: static;
+    border-radius: 0;
+  }
+}
+
 .btn-submit {
   display: block;
   margin-top: 10px;

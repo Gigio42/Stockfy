@@ -40,27 +40,24 @@ export function createCard(item) {
 
   headerDiv.appendChild(keysDiv);
 
-  const orderPrazoDiv = document.createElement("div");
-  orderPrazoDiv.className = "order-prazo";
-  orderPrazoDiv.style.display = "flex";
-  orderPrazoDiv.style.flexDirection = "column";
-
-  const orderSpan = document.createElement("span");
-  orderSpan.className = "ordem";
-  orderSpan.textContent = `Processo: ${item.ordem}`;
-  orderPrazoDiv.appendChild(orderSpan);
-
-  const prazoSpan = document.createElement("span");
-  prazoSpan.className = "prazo";
-  prazoSpan.textContent = `Prazo: ${item.prazo}`;
-  orderPrazoDiv.appendChild(prazoSpan);
-
-  headerDiv.appendChild(orderPrazoDiv);
+  const orderDiv = document.createElement("div");
+  orderDiv.className = "ordem green-div";
+  orderDiv.textContent = item.ordem;
+  headerDiv.appendChild(orderDiv);
 
   cardBody.appendChild(headerDiv);
 
   const chapasList = createChapasList(item.Item.chapas);
   cardBody.appendChild(chapasList);
+
+  const buttonContainer = document.createElement("div");
+  buttonContainer.style.display = "flex";
+  buttonContainer.style.justifyContent = "space-between";
+
+  const prazoDiv = document.createElement("div");
+  prazoDiv.className = "prazo green-div";
+  prazoDiv.textContent = `Prazo: ${item.prazo}`;
+  buttonContainer.appendChild(prazoDiv);
 
   const submitButton = document.createElement("button");
   submitButton.className = "btn-submit mt-2 align-right";
@@ -72,7 +69,9 @@ export function createCard(item) {
     alert(`Item ${item.Item.part_number}, id: ${item.Item.id_item} enviado`);
     console.log(data);
   });
-  cardBody.appendChild(submitButton);
+  buttonContainer.appendChild(submitButton);
+
+  cardBody.appendChild(buttonContainer);
 
   updateSubmitButtonState(chapasList, submitButton);
 
