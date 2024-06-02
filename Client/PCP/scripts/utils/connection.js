@@ -1,4 +1,4 @@
-import BASE_URL from './config.js';
+import BASE_URL from '../../../utils/config.js';
 const PCP_URL = `${BASE_URL}/PCP`;
 
 function handleError(error) {
