@@ -1,3 +1,5 @@
+import BASE_URL from '../utils/config.js';
+
 // Variável global para armazenar o ID do cartão sendo editado
 let cardIDBeingEdited = null;
 let cardCounter = 0; // Contador para gerar IDs únicos para os cartões
@@ -207,7 +209,7 @@ function sendJSONDataToBackend() {
 
 // Função para enviar dados para o backend
 function sendData(jsonData) {
-  let url = "http://localhost:3000/compras";
+  let url = `${BASE_URL}/compras`;
 
   axios
     .post(url, jsonData, {
