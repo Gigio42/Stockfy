@@ -13,7 +13,7 @@ async function usuarioRoutes(fastify, options) {
       reply.status(500).send({ error: "Erro ao verificar o usuário" });
     }
   });
-  
+
   fastify.post("/add", async (request, reply) => {
     const { name, password } = request.body;
     try {
@@ -25,7 +25,6 @@ async function usuarioRoutes(fastify, options) {
       reply.status(500).send({ success: false, error: "Erro ao adicionar o usuário" });
     }
   });
-  
 }
 
 export default usuarioRoutes;
