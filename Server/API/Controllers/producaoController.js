@@ -2,11 +2,15 @@ import Maquina from "../Models/maquinaModel.js";
 import Item from "../Models/itemModel.js";
 import Item_Maquina from "../Models/item_maquinaModel.js";
 
+import { PrismaClient } from "@prisma/client";
+
 class ProducaoController {
-  constructor() {}
+  constructor() {
+    this.prisma = new PrismaClient();
+  }
 
   async getChapasInItemsInMaquinas(name) {
-    const maquina = await Maquina.findFirst({
+    const maquina = await this.prisma.maquina.findFirst({
       where: {
         nome: name,
       },
@@ -49,7 +53,7 @@ class ProducaoController {
     });
 
     if (maquina) {
-      const allItemsMaquinas = await Item_Maquina.findMany({
+      const allItemsMaquinas = await this.prisma.item_Maquina.findMany({
         select: {
           ordem: true,
           finalizado: true,
