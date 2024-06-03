@@ -1,6 +1,6 @@
 import Maquina from "../Models/maquinaModel.js";
 import Item from "../Models/itemModel.js";
-import Item_Maquina from "../Models/item_MaquinaModel.js";
+import Item_Maquina from "../Models/item_maquinaModel.js";
 
 class ProducaoController {
   constructor() {}
