@@ -88,76 +88,81 @@ class PCPController {
   // PostItemsComment Function
   // ------------------------------
   async createItemWithChapa(body) {
-    console.log(body);
-    const { partNumber, chapas } = body;
+    try {
+      console.log(body);
+      const { partNumber, chapas } = body;
 
-    for (const { quantity, keepRemaining } of chapas) {
-      if (keepRemaining) throw new Error("Reciclagem ainda está sendo desenvolvida"); //TODO Desenvolver reciclagem de chapas
-      if (!quantity) throw new Error("Todas as chapas devem ter uma quantidade");
-    }
+      for (const { quantity, keepRemaining } of chapas) {
+        if (keepRemaining) throw new Error("Reciclagem ainda está sendo desenvolvida"); //TODO Desenvolver reciclagem de chapas
+        if (!quantity) throw new Error("Todas as chapas devem ter uma quantidade");
+      }
 
-    let item;
+      let item;
 
-    for (const { chapaID, quantity } of chapas) {
-      const chapa = await Chapas.findUnique({ where: { id_chapa: chapaID } });
+      for (const { chapaID, quantity } of chapas) {
+        const chapa = await Chapas.findUnique({ where: { id_chapa: chapaID } });
 
-      if (!chapa) throw new Error("Chapa não encontrada");
-      if (!quantity || quantity <= 0) throw new Error("Informe a quantidade de chapas a serem reservadas");
-      if (quantity > chapa.quantidade_disponivel) throw new Error(`Chapa ${chapaID} não possui quantidade suficiente`);
-
-      if (!item) {
-        item = await Item.findUnique({ where: { part_number: partNumber } });
+        if (!chapa) throw new Error("Chapa não encontrada");
+        if (!quantity || quantity <= 0) throw new Error("Informe a quantidade de chapas a serem reservadas");
+        if (quantity > chapa.quantidade_disponivel) throw new Error(`Chapa ${chapaID} não possui quantidade suficiente`);
 
         if (!item) {
-          item = await Item.create({
+          item = await Item.findUnique({ where: { part_number: partNumber } });
+
+          if (!item) {
+            item = await Item.create({
+              data: {
+                part_number: partNumber,
+                status: "RESERVADO",
+              },
+            });
+          } else if (item.status !== "RESERVADO") {
+            throw new Error("Item em processo");
+          }
+        }
+
+        const updatedChapa = await Chapas.update({
+          where: { id_chapa: chapa.id_chapa },
+          data: {
+            quantidade_disponivel: { decrement: parseInt(quantity) },
+            quantidade_estoque: { decrement: parseInt(quantity) },
+          },
+        });
+
+        if (updatedChapa.quantidade_disponivel === 0) {
+          await Chapas.update({
+            where: { id_chapa: chapa.id_chapa },
+            data: { status: "USADO" },
+          });
+        }
+
+        let chapaItem = await Chapa_Item.findFirst({
+          where: {
+            AND: [{ chapa: { id_chapa: chapaID } }, { item: { id_item: item.id_item } }],
+          },
+        });
+
+        if (chapaItem) {
+          await Chapa_Item.update({
+            where: { id_chapa_item: chapaItem.id_chapa_item },
+            data: { quantidade: { increment: Number(quantity) } },
+          });
+        } else {
+          await Chapa_Item.create({
             data: {
-              part_number: partNumber,
-              status: "RESERVADO",
+              quantidade: Number(quantity),
+              chapa: { connect: { id_chapa: chapaID } },
+              item: { connect: { id_item: item.id_item } },
             },
           });
-        } else if (item.status !== "RESERVADO") {
-          throw new Error("Item em processo");
         }
       }
 
-      const updatedChapa = await Chapas.update({
-        where: { id_chapa: chapa.id_chapa },
-        data: {
-          quantidade_disponivel: { decrement: parseInt(quantity) },
-          quantidade_estoque: { decrement: parseInt(quantity) },
-        },
-      });
-
-      if (updatedChapa.quantidade_disponivel === 0) {
-        await Chapas.update({
-          where: { id_chapa: chapa.id_chapa },
-          data: { status: "USADO" },
-        });
-      }
-
-      let chapaItem = await Chapa_Item.findFirst({
-        where: {
-          AND: [{ chapa: { id_chapa: chapaID } }, { item: { id_item: item.id_item } }],
-        },
-      });
-
-      if (chapaItem) {
-        await Chapa_Item.update({
-          where: { id_chapa_item: chapaItem.id_chapa_item },
-          data: { quantidade: { increment: Number(quantity) } },
-        });
-      } else {
-        await Chapa_Item.create({
-          data: {
-            quantidade: Number(quantity),
-            chapa: { connect: { id_chapa: chapaID } },
-            item: { connect: { id_item: item.id_item } },
-          },
-        });
-      }
+      return item;
+    } catch (error) {
+      console.error(error);
+      return { error: error.message };
     }
-
-    return item;
   }
 
   // ------------------------------

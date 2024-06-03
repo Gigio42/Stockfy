@@ -16,11 +16,12 @@ async function producaoRoute(fastify, options) {
     },
   });
 
-  fastify.put("/item/:id/status", {
+  fastify.put("/item/:id/maquina/:maquinaName", {
     handler: async (request, reply) => {
       try {
         const id = parseInt(request.params.id, 10);
-        const result = await producaoController.markItemAsProduzido(id);
+        const maquinaName = request.params.maquinaName;
+        const result = await producaoController.markItemAsFinalizado(id, maquinaName);
         reply.send(result);
       } catch (err) {
         console.log(err.message);

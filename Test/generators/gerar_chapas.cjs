@@ -31,6 +31,7 @@ async function postData() {
 
       return {
         fornecedor: fornecedor,
+        comprador: faker.name.findName(),
         unidade: faker.random.arrayElement(["CH", "AA"]),
         id_compra: id_compra,
         numero_cliente: faker.datatype.number(),
