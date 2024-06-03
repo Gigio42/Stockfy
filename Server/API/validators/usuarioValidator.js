@@ -3,20 +3,19 @@ export const usuarioSchema = {
     type: "object",
     properties: {
       name: { type: "string" },
-      password: { type: "string" }
+      password: { type: "string" },
     },
-    required: ["name", "password"]
-  }
+    required: ["name", "password"],
+  },
 };
 
 export const addUserSchema = {
   body: {
-    type: 'object',
+    type: "object",
     properties: {
-      name: { type: 'string', minLength: 1 },
-      password: { type: 'string', minLength: 1 }
+      name: { type: "string", minLength: 1 },
+      password: { type: "string", minLength: 1 },
     },
-    required: ['name', 'password']
-  }
+    required: ["name", "password"],
+  },
 };
-
