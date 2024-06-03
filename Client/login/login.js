@@ -83,6 +83,7 @@ function carregarMaquinas() {
       const select = document.getElementById("selectMaquina");
       // Limpa opções existentes
       select.innerHTML = '<option value="">Máquina</option>';
+      console.log();
 
       // Adiciona novas opções baseadas na resposta
       data.forEach((maquina) => {
