@@ -20,24 +20,30 @@ export const getItemsSchema = {
 
 export const createItemWithChapaSchema = {
   body: {
+    type: "object",
     required: ["partNumber", "chapas"],
     properties: {
       partNumber: {
-        pattern: "^\\d{4}\\.\\d{4}$",
+        type: "string",
+        pattern: "^\\d{4}\\.\\d{4}$"
       },
       chapas: {
+        type: "array",
         items: {
+          type: "object",
           required: ["chapaID", "quantity"],
           properties: {
             chapaID: {
-              minimum: 1,
+              type: "number",
+              minimum: 1
             },
             quantity: {
-              minimum: 1,
-            },
-          },
-        },
-      },
-    },
-  },
+              type: "number",
+              minimum: 1
+            }
+          }
+        }
+      }
+    }
+  }
 };
