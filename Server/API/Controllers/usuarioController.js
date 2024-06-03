@@ -31,6 +31,7 @@ class UsuarioController {
   }
 
   async addUsuario(data) {
+    console.log("test2")
     const { name, password } = data;
     const hashedPassword = password; // Substitua isso por uma hash real com bcrypt
 
