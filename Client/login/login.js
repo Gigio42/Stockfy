@@ -1,3 +1,5 @@
+import BASE_URL from "../utils/config.js"
+
 document.getElementById("login").addEventListener("click", function (event) {
   event.preventDefault();
   validaUsuario();
@@ -16,14 +18,14 @@ document.getElementById("toggleProducao").addEventListener("change", function ()
 function validaUsuario() {
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
-  const url = `http://127.0.0.1:3000/user?name=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
+  const url = `${BASE_URL}/user?name=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
       if (data.exists) {
         const nome = document.getElementById("username").value;
         localStorage.setItem("nome", nome);
-        window.location.href = "https://stockfysite.onrender.com/home.html";
+        window.location.href = "../home.html";
       } else {
         alert("Usuário ou senha inválidos!");
       }
@@ -50,7 +52,7 @@ function cadastrarUsuario() {
 
   const userData = { name: username, password: password };
 
-  fetch("http://127.0.0.1:3000/user/add", {
+  fetch(`${BASE_URL}/user/add`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(userData),
@@ -75,7 +77,7 @@ function alterarTema() {
 }
 
 function carregarMaquinas() {
-  fetch("http://127.0.0.1:3000/adm/maquina")
+  fetch(`${BASE_URL}/adm/maquina`)
     .then((response) => response.json())
     .then((data) => {
       const select = document.getElementById("selectMaquina");

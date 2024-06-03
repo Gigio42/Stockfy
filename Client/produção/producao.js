@@ -1,7 +1,7 @@
 import { setUserInfo, setMachineName } from "./scripts/userInfo.js";
 import { render } from "./scripts/render.js";
 
-const username = "João";
+const username = localStorage.getItem("nome") || "UserName";
 const name = "riscador";
 
 setUserInfo(username);
