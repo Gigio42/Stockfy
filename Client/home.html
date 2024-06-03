@@ -8,6 +8,9 @@
         <link rel="stylesheet" href="home.css" />
     </head>
     <body>
+        <div>
+            <span id="nomeUsuario"></span>
+        </div>
         <div class="container">
             <div class="theme-switch-wrapper">
                 <label class="theme-switch" for="checkbox">
@@ -30,6 +33,11 @@
             checkbox.addEventListener("change", () => {
                 document.body.classList.toggle("light-mode");
             });
+
+            window.onload = function () {
+                const nome = localStorage.getItem("nome");
+                document.getElementById("nomeUsuario").textContent = nome;
+            };
         </script>
     </body>
 </html>

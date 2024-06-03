@@ -106,33 +106,43 @@ function penha(fullText) {
 }
 
 function filtroPenha(text) {
+  console.log(text);
   function replaceMed(match) {
     return match.replace("-MED.", " ");
   }
-
-  var result = text.replace(
-    /\bUN\b|\bCHAPA DE PAP\. ONDUL\.-QUAL\.\b|\b--REF\.: CHAPA\b|\bONDA\b|\b-SEU PEDI DO\b|\b-N\/PEDIDO:\b|\b000\b|\b-N\/PEDIDO\b|\b-SEU PEDI DO\b|\b:\b/g,
-    "",
-  );
-  result = result.replace(/VINCADA.*?\d.*?:/g, function (match) {
-    return match.replace(/\d.*?:/, ":");
-  });
+  var result = text.replace(/\bUN\b|\bCHAPA DE PAP\. ONDUL\.-QUAL\.\b|\b--REF\.: CHAPA\b|\bPEDI DO\b|\b-N\/PEDIDO:\b|\b000\b|\bPEDI DO\b|\b:\b/g, "");
+  result = result.replace(/(.*?)-MED\.(.*?)/g, replaceMed);
+  result = result.replace(/(VINCADA)[\s\S]*?(ONDA)/, "$1 $2");
+  result = result.replace(/PEDIDO/g, "");
+  result = result.replace(/ONDA/g, "");
   result = result.replace(/-SEU PEDI  DO\b/g, "");
   result = result.replace(/:/g, "");
   result = result.replace(/-SEU/g, "");
-  result = result.replace(/PEDIDO/g, "");
-  result = result.replace(/(.*?)-MED\.(.*?)/g, replaceMed);
+
   var resultArray = result.split(/\s+/).filter(Boolean);
+
   return organizarpenha(resultArray);
 }
 
 function organizarpenha(array) {
+  console.log(array);
   var indexesToRemove = [0, 1, 2, 5, 6, 8, 9, 12, 17];
-  var indexesToRemoveVincos = [0, 1, 2, 5, 6, 8, 9, 17];
+  var indexesToRemoveVincos = [0, 1, 2, 5, 6, 8, 9, 12, 17];
   var newArray = [];
   for (var i = 0; i < array.length; i += 18) {
     var subArray = array.slice(i, i + 18);
 
+    if (subArray.length === 18 && subArray[17].length !== 7) {
+      // Remove o último índice
+      subArray.pop();
+
+      // Adiciona o próximo índice ao subArray se disponível
+      if (array[i + 18] !== undefined) {
+        subArray.push(array[i + 18]);
+        i++; // Incrementa i para evitar que o próximo índice seja duplicado em outro subArray
+      }
+    }
+    console.log(subArray);
     if (subArray.length > 0) {
       for (var j = 0; j < indexesToRemove.length; j++) {
         if (subArray[14] == "VINCADA") {
@@ -168,13 +178,24 @@ function criaObjPenha(array) {
   var valorUnitario = parseFloat(array[1].replace(",", ".")); // Correção para formato de número
   var valor_total = parseFloat(array[0].replace(".", "").replace(",", "."));
 
+  var medidas = array[4].split("X").map(function (medidas) {
+    return medidas.replace(/^0+/, "");
+  });
+  var vinco = "";
+  if (array[5] == "VINCADA") {
+    vinco = "sim";
+  } else {
+    vinco = "não";
+  }
+
   return {
     id_compra: (id_compra || "").trim(),
     fornecedor: "Penha",
     qualidade: array[3] || "",
-    medida: array[4] || "",
+    largura: medidas[1],
+    comprimento: medidas[0],
     onda: array[6] || "",
-    vincos: array[5] || "",
+    vincos: vinco,
     valor_unitario: valorUnitario || "0", // Verificação e correção
     quantidade_recebida: qRec || "",
     valor_total: valor_total,
@@ -230,12 +251,12 @@ function filtroIrani(array) {
 }
 
 function criaObjIrani(array) {
-  console.log(array);
   return {
     id_compra: array[2],
     fornecedor: "Irani",
     qualidade: array[6],
-    medida: array[0] + " X " + array[1],
+    comprimento: array[1],
+    largura: array[0],
     onda: array[7],
     vincos: "", // Vazio como solicitado
     quantidade_recebida: array[3],
@@ -250,21 +271,23 @@ function fernandez(fullText) {
     console.warn('Palavra-chave "A.IPI" não encontrada.');
     return [];
   }
-  var relevantText = fullText.substring(aiIndex + 5).replace(/UN|000/g, "");
+  var relevantText = fullText.substring(aiIndex + 5).replace(/UN/g, "");
   var resultArray = relevantText.split(/\s+/).filter(Boolean);
   var idCompra = id_compraF(fullText);
   return organizarFernandez(resultArray, idCompra);
 }
 
 function organizarFernandez(array, idCompra) {
-  var indexesToRemove = [2, 3, 8, 9, 10, 11];
+  console.log(array);
+  var indexesToRemove = [0, 2, 3, 4, 7, 9, 10, 11, 12];
   var newArray = [];
-  for (var i = 0; i < array.length; i += 12) {
-    var subArray = array.slice(i, i + 12);
+  for (var i = 0; i < array.length; i += 13) {
+    var subArray = array.slice(i, i + 13);
+    console.log(subArray);
     if (subArray.length > 1) {
       var filteredSubArray = subArray.filter((item, index) => !indexesToRemove.includes(index));
-      var filteredAndProcessed = filtroFernandez(filteredSubArray[1]);
-      filteredSubArray.splice(1, 1);
+      var filteredAndProcessed = filtroFernandez(filteredSubArray[0]);
+      filteredSubArray.splice(0, 1);
       var objeto = criaObjFernandez([...filteredSubArray, ...filteredAndProcessed]);
 
       if (objeto.quantidade_recebida) {
@@ -275,6 +298,7 @@ function organizarFernandez(array, idCompra) {
       objeto.valor_unitario = objeto.valor_unitario.replace(/\./g, "").replace(/,/g, ".");
       objeto.valor_total = objeto.valor_total.replace(/\./g, "").replace(/,/g, ".");
       objeto.id_compra = idCompra;
+
       newArray.push(objeto);
     }
   }
@@ -299,6 +323,7 @@ function id_compraF(fullText) {
 }
 
 function filtroFernandez(secondArray) {
+  console.log(secondArray);
   let parts = secondArray.split("-");
   let secondPart = parts.length > 1 ? parts[1] : "";
   let result = secondPart.split(/(\d.+)/, 2);
@@ -306,14 +331,17 @@ function filtroFernandez(secondArray) {
 }
 
 function criaObjFernandez(array) {
+  console.log(array);
+  var medidas = array[5].split("X");
   return {
     id_compra: array[0],
     fornecedor: "Fernandez",
-    qualidade: array[5],
-    medida: array[7],
-    onda: array[6],
+    qualidade: array[3],
+    largura: medidas[0],
+    comprimento: medidas[1],
+    onda: array[4],
     vincos: "",
-    quantidade_recebida: array[1],
+    quantidade_recebida: array[0],
     valor_unitario: array[2],
     valor_total: array[3],
   };
@@ -378,12 +406,15 @@ function data_Chapa(prodDetails, product, supplier, xmlDoc) {
   const vProd = parseFloat(product.getElementsByTagName("vProd")[0].textContent) || 0;
 
   const { qualidade, medida, tipoOnda, vincada } = prodDetails;
-
+  var medidas = medida.split(/x/i).map(function (medidas) {
+    return medidas.replace(/^0+/, "");
+  });
   return {
     id_compra: xPed,
     fornecedor: supplier,
     qualidade: qualidade,
-    medida: medida,
+    comprimento: medidas[0],
+    largura: medidas[1],
     onda: tipoOnda,
     quantidade_recebida: qCom,
     vincos: vincada,
@@ -413,6 +444,16 @@ function prod_Irani(product) {
   var ondaEmedida = xProd.split("/")[1];
   var tipoOnda = ondaEmedida.match(/([A-Za-z]+) /)[1];
   var medida = ondaEmedida.match(/\d+ X \d+/)[0];
+
+  medida = invertDimensions(medida);
+
+  function invertDimensions(dimensions) {
+    const parts = dimensions.split(" X ");
+    if (parts.length !== 2) {
+      return dimensions;
+    }
+    return parts.reverse().join("X");
+  }
 
   return {
     qualidade: qualidade,
