@@ -25,7 +25,7 @@ export const createItemWithChapaSchema = {
     properties: {
       partNumber: {
         type: "string",
-        pattern: "^\\d{4}\\.\\d{4}$"
+        pattern: "^\\d{4}\\.\\d{4}$",
       },
       chapas: {
         type: "array",
@@ -35,15 +35,15 @@ export const createItemWithChapaSchema = {
           properties: {
             chapaID: {
               type: "number",
-              minimum: 1
+              minimum: 1,
             },
             quantity: {
               type: "number",
-              minimum: 1
-            }
-          }
-        }
-      }
-    }
-  }
+              minimum: 1,
+            },
+          },
+        },
+      },
+    },
+  },
 };
