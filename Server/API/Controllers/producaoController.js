@@ -19,6 +19,8 @@ class ProducaoController {
             prazo: true,
             corte: true,
             finalizado: true,
+            maquinaId: true,
+            itemId: true,
             Item: {
               select: {
                 id_item: true,
