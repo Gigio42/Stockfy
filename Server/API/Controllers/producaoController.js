@@ -2,15 +2,11 @@ import Maquina from "../Models/maquinaModel.js";
 import Item from "../Models/itemModel.js";
 import Item_Maquina from "../Models/item_maquinaModel.js";
 
-import { PrismaClient } from "@prisma/client";
-
 class ProducaoController {
-  constructor() {
-    this.prisma = new PrismaClient();
-  }
+  constructor() {}
 
   async getChapasInItemsInMaquinas(name) {
-    const maquina = await this.prisma.maquina.findFirst({
+    const maquina = await Maquina.findFirst({
       where: {
         nome: name,
       },
@@ -21,10 +17,6 @@ class ProducaoController {
           select: {
             ordem: true,
             prazo: true,
-            corte: true,
-            finalizado: true,
-            maquinaId: true,
-            itemId: true,
             Item: {
               select: {
                 id_item: true,
@@ -53,7 +45,7 @@ class ProducaoController {
     });
 
     if (maquina) {
-      const allItemsMaquinas = await this.prisma.item_Maquina.findMany({
+      const allItemsMaquinas = await Item_Maquina.findMany({
         select: {
           ordem: true,
           finalizado: true,
