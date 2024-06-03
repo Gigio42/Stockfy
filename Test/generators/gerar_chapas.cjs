@@ -98,8 +98,8 @@ async function testRecebimento() {
     console.error(error);
   }
 
-  const endTime = Date.now(); 
-  console.log(`[INFO] testRecebimento tempo de execução: ${endTime - startTime} ms`); 
+  const endTime = Date.now();
+  console.log(`[INFO] testRecebimento tempo de execução: ${endTime - startTime} ms`);
 }
 
 postData().then(() => {
