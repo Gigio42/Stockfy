@@ -1,11 +1,11 @@
 :root {
-    --background-color: #333;     /* Cor de fundo para o tema escuro */
+    --background-color: #1e1e1e;     /* Cor de fundo para o tema escuro */
     --text-color: #ccc;     /* Cor de texto para o tema claro */
 }
 
 [data-theme="light"] {
     --background-color: #f5f5f5;  /* Cor de fundo para o tema claro */
-    --text-color: #333;         /* Cor de texto para o tema escuro */
+    --text-color: #1e1e1e;         /* Cor de texto para o tema escuro */
 }
 
 
@@ -108,7 +108,7 @@ button:hover {
         align-items: center;
         padding: 10px 0; /* Aumenta o padding para melhor toque em dispositivos móveis */
     }
-
+    
     button {
         width: 90%; /* Ajuste na largura para melhor toque */
         margin: 5px 0; /* Reduz o espaçamento para otimizar o espaço */

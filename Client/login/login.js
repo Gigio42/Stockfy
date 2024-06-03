@@ -1,6 +1,95 @@
-document.getElementById("login").addEventListener("click", function (event) {
-  event.preventDefault();
-  //@Gigio42 Aqui você pode adicionar a lógica para conectar ao backend
-  // Você pode usar o fetch API para fazer uma solicitação POST ao seu servidor, ou como preferir
-  // fetch('url_do_seu_servidor', { method: 'POST', body: JSON.stringify({ username: uname, password: psw }) })
-});
+        
+        document.getElementById('login').addEventListener('click', function(event) {
+          event.preventDefault();
+          validaUsuario();
+        });
+        
+        document.getElementById('signup').addEventListener('click', function(event) {
+          event.preventDefault();
+          cadastrarUsuario();
+        });
+        
+        document.getElementById('toggleProducao').addEventListener('change', function() {
+          var maquinaSelect = document.getElementById('maquinaSelectContainer');
+          maquinaSelect.style.display = this.checked ? 'block' : 'none';
+        });
+        
+        function validaUsuario() {
+          const username = document.getElementById('username').value;
+          const password = document.getElementById('password').value;
+          const url = `http://127.0.0.1:3000/user?name=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
+          fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            if (data.exists) {
+              const nome = document.getElementById('username').value;
+              localStorage.setItem('nome', nome);
+              window.location.href = "https://stockfysite.onrender.com/home.html";
+            } else {
+              alert('Usuário ou senha inválidos!');
+            }
+          })
+          .catch(error => {
+            console.error('Erro ao validar o usuário:', error);
+            alert('Falha ao conectar ao servidor!');
+          });
+        }
+        
+        function cadastrarUsuario() {
+          const username = document.getElementById('username').value;
+          const password = document.getElementById('password').value;
+          const userData = { name: username, password: password };
+          fetch('http://127.0.0.1:3000/user/add', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(userData)
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data) {
+            alert('Usuário cadastrado com sucesso!');
+          }
+        })
+        .catch(error => {
+          console.error('Erro ao cadastrar usuário:', error);
+          alert('Falha ao conectar ao servidor!');
+        });
+      }
+      
+      function alterarTema() {
+        const toggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+        body.classList.toggle('body-light-mode', !toggle.checked);
+        localStorage.setItem('theme', toggle.checked ? 'dark' : 'light');
+      }
+      
+      function carregarMaquinas() {
+        fetch('http://127.0.0.1:3000/adm/maquina')
+        .then(response => response.json())
+        .then(data => {
+          const select = document.getElementById('selectMaquina');
+          // Limpa opções existentes
+          select.innerHTML = '<option value="">Máquina</option>';
+          
+          // Adiciona novas opções baseadas na resposta
+          data.forEach(maquina => {
+            const option = document.createElement('option');
+            option.value = maquina.nome; // Assumindo que o retorno é um array de objetos com a propriedade 'nome'
+            option.textContent = maquina.nome;
+            select.appendChild(option);
+          });
+        })
+        .catch(error => console.error('Erro ao carregar as máquinas:', error));
+      }
+      
+      // Chamada da função quando a página carrega
+      document.addEventListener('DOMContentLoaded', carregarMaquinas);
+      
+      document.getElementById('darkModeToggle').addEventListener('change', alterarTema);
+      
+      document.addEventListener('DOMContentLoaded', () => {
+        const savedTheme = localStorage.getItem('theme');
+        const toggle = document.getElementById('darkModeToggle');
+        toggle.checked = (savedTheme !== 'light'); // Default is dark mode
+        alterarTema();
+      });
