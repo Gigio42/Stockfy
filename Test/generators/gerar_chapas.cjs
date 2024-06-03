@@ -9,6 +9,7 @@ const pedidos = Math.floor(Math.random() * 4) + 3;
 const id_compra = Math.floor(100000 + Math.random() * 900000);
 
 async function postData() {
+  const startTime = Date.now();
   const data = {
     info_prod_comprados: Array.from({ length: pedidos }, (_, index) => {
       let fornecedor = faker.random.arrayElement(["IRANI", "PENHA", "FERNANDEZ"]);
@@ -58,9 +59,13 @@ async function postData() {
   } catch (error) {
     console.error(error);
   }
+
+  const endTime = Date.now();
+  console.log(`[INFO] postData tempo de execução: ${endTime - startTime} ms`);
 }
 
 async function testRecebimento() {
+  const startTime = Date.now();
   try {
     const response = await axios.get(`http://localhost:3000/recebimento/${id_compra}`);
     const chapas = response.data;
@@ -92,6 +97,9 @@ async function testRecebimento() {
   } catch (error) {
     console.error(error);
   }
+
+  const endTime = Date.now(); 
+  console.log(`[INFO] testRecebimento tempo de execução: ${endTime - startTime} ms`); 
 }
 
 postData().then(() => {
