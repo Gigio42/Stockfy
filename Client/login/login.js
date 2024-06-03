@@ -1,4 +1,4 @@
-import BASE_URL from "../utils/config.js"
+import BASE_URL from "../utils/config.js";
 
 document.getElementById("login").addEventListener("click", function (event) {
   event.preventDefault();
