@@ -26,10 +26,6 @@ class RecebimentoController {
       return prisma.chapas.update({
         where: { id_chapa: id_chapa_int },
         data: {
-          vincos: item.vincos,
-          onda: item.onda,
-          medida: item.medida,
-          qualidade: item.qualidade,
           data_recebimento: item.data_recebimento,
           quantidade_recebida: {
             increment: item.quantidade_recebida,
@@ -56,7 +52,8 @@ class RecebimentoController {
         id_compra: true,
         fornecedor: true,
         qualidade: true,
-        medida: true,
+        largura: true,
+        comprimento: true,
         onda: true,
         vincos: true,
         status: true,

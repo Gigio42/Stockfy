@@ -25,17 +25,26 @@ function tableObj() {
 
   for (let i = 0; i < rows.length; i++) {
     var row = rows[i];
+    // Obtem o valor do input na primeira coluna
+    var idChapaValue = row.cells[0].querySelector("input").value;
+
+    // Verifica se a primeira coluna está vazia, se estiver, pula para a próxima iteração do loop
+    if (idChapaValue.trim() === "") {
+      continue;
+    }
+
     var rowData = {
-      id_chapa: row.cells[0].querySelector("input").value,
+      id_chapa: idChapaValue,
       fornecedor: row.cells[1].querySelector("input").value,
       id_compra: row.cells[2].querySelector("input").value,
       quantidade_recebida: parseFloat(row.cells[3].querySelector("input").value) || 0,
       qualidade: row.cells[4].querySelector("input").value,
-      medida: row.cells[5].querySelector("input").value,
-      onda: row.cells[6].querySelector("select").value,
-      vincos: row.cells[7].querySelector("select").value,
-      status: row.cells[8].querySelector("select").value,
-      data_recebimento: row.cells[9].querySelector("input").value,
+      largura: row.cells[5].querySelector("input").value,
+      comprimento: row.cells[6].querySelector("input").value,
+      onda: row.cells[7].querySelector("select").value,
+      vincos: row.cells[8].querySelector("select").value,
+      status: row.cells[9].querySelector("select").value,
+      data_recebimento: row.cells[10].querySelector("input").value,
     };
     data.push(rowData);
   }

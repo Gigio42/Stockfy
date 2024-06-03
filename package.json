@@ -13,7 +13,8 @@
     "prisma": "npm run migrate && npm run generate && npm run start",
     "chapatest": "node ./Test/generators/gerar_chapas.cjs",
     "start-and-test": "prisma migrate dev --name auto_migration && npm run generate && start-server-and-test startUnix http://localhost:3000 chapatest",
-    "studio": "npx prisma studio --port 2943"
+    "studio": "npx prisma studio --port 2943",
+    "render": "npx prisma generate && nodemon server.js"
   },
   "keywords": [],
   "author": "",

@@ -1,3 +1,5 @@
+import BASE_URL from "../utils/config.js";
+
 var dropzone = document.getElementById("dropzone");
 var jsonData; // Variável global para armazenar os dados JSON processados
 var dropEnabled = true; // Variável para controlar se o evento de solta (drop) está habilitado
@@ -407,7 +409,7 @@ function abrirModal() {
 }
 
 function sendJSONDataToBackend() {
-  let url = "http://localhost:3000/compras";
+  let url = `${BASE_URL}/compras`;
 
   // Validar e converter tipos de dados
   var jsonDataToSend = JSON.parse(JSON.stringify(jsonData), function (key, value) {
