@@ -15,9 +15,9 @@ class ProducaoController {
         nome: true,
         items: {
           select: {
+            corte: true,
             ordem: true,
             prazo: true,
-            corte: true,
             finalizado: true,
             Item: {
               select: {
