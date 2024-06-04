@@ -21,7 +21,7 @@ async function producaoRoute(fastify, options) {
       try {
         const id = parseInt(request.params.id, 10);
         const maquinaName = request.params.maquinaName;
-        const executor = request.params.executor; 
+        const executor = request.params.executor;
         const result = await producaoController.markItemAsFinalizado(id, maquinaName, executor);
         reply.send(result);
       } catch (err) {
@@ -29,7 +29,7 @@ async function producaoRoute(fastify, options) {
         reply.code(500).send({ message: "Error updating item status in SQLite database", error: err.message });
       }
     },
-});
+  });
 }
 
 export default producaoRoute;

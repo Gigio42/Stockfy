@@ -31,7 +31,7 @@ function validaUsuario() {
 
         const isProducaoChecked = document.getElementById("toggleProducao").checked;
         if (isProducaoChecked) {
-          window.location.href = "../produção/producao.html"; 
+          window.location.href = "../produção/producao.html";
         } else {
           window.location.href = "../home.html";
         }
