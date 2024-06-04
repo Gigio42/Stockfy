@@ -29,7 +29,12 @@ function validaUsuario() {
         const maquina = document.getElementById("selectMaquina").value;
         localStorage.setItem("maquina", maquina);
 
-        window.location.href = "../home.html";
+        const isProducaoChecked = document.getElementById("toggleProducao").checked;
+        if (isProducaoChecked) {
+          window.location.href = "../produção/producao.html";
+        } else {
+          window.location.href = "../home.html";
+        }
       } else {
         alert("Usuário ou senha inválidos!");
       }
