@@ -1,7 +1,7 @@
 import { fetchMaquinaData } from "./connections.js";
 import { createCard } from "./cardCreator.js";
 
-export async function render(name) {
+export async function render(name, userName) {
   const data = await fetchMaquinaData(name);
   if (data && data.items) {
     const itemsList = document.getElementById("itemsList");
@@ -9,7 +9,7 @@ export async function render(name) {
     itemsList.style.flexDirection = "column";
 
     data.items.forEach((item) => {
-      const card = createCard(item, name, item.estado);
+      const card = createCard(item, name, item.estado, userName);
       itemsList.appendChild(card);
     });
   }

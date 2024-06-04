@@ -3,7 +3,7 @@ import { updateItemStatus } from "../scripts/connections.js";
 /* ============================== */
 /* LISTA DE CARDS                 */
 /* ============================== */
-export function createCard(item, maquinaName, estado) {
+export function createCard(item, maquinaName, estado, executor) {
   const card = document.createElement("div");
   card.className = "col-12 mb-4";
 
@@ -59,7 +59,7 @@ export function createCard(item, maquinaName, estado) {
   submitButton.disabled = estado !== "ATUAL";
   submitButton.addEventListener("click", async () => {
     const itemId = item.Item.id_item;
-    const data = await updateItemStatus(itemId, maquinaName);
+    const data = await updateItemStatus(itemId, maquinaName, executor);
     alert(`Item ${item.Item.part_number}, id: ${item.Item.id_item} enviado`);
     console.log(data);
   });

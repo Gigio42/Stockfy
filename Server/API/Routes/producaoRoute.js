@@ -6,7 +6,7 @@ async function producaoRoute(fastify, options) {
   fastify.get("/maquina/:name/itens/chapas", {
     handler: async (request, reply) => {
       try {
-        const name = request.params.nome;
+        const name = request.params.name;
         const data = await producaoController.getChapasInItemsInMaquinas(name);
         reply.send(data);
       } catch (err) {
@@ -16,12 +16,13 @@ async function producaoRoute(fastify, options) {
     },
   });
 
-  fastify.put("/item/:id/maquina/:maquinaName", {
+  fastify.put("/item/:id/maquina/:maquinaName/:executor", {
     handler: async (request, reply) => {
       try {
         const id = parseInt(request.params.id, 10);
         const maquinaName = request.params.maquinaName;
-        const result = await producaoController.markItemAsFinalizado(id, maquinaName);
+        const executor = request.params.executor;
+        const result = await producaoController.markItemAsFinalizado(id, maquinaName, executor);
         reply.send(result);
       } catch (err) {
         console.log(err.message);

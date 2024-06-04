@@ -9,9 +9,9 @@ export async function fetchMaquinaData(name) {
   }
 }
 
-export async function updateItemStatus(itemId, maquinaName) {
+export async function updateItemStatus(itemId, maquinaName, executor) {
   try {
-    const response = await axios.put(`${BASE_URL}/producao/item/${itemId}/maquina/${maquinaName}`);
+    const response = await axios.put(`${BASE_URL}/producao/item/${itemId}/maquina/${maquinaName}/${executor}`);
     return response.data;
   } catch (error) {
     console.error("Error:", error);
