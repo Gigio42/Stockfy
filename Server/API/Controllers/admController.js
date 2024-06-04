@@ -81,7 +81,15 @@ class AdmController {
         },
       });
 
-      return items.map((item_maquina) => item_maquina.Item);
+      // Mapeia os itens e inclui o id_item_maquina e a ordem de cada item
+      return items.map((item_maquina) => {
+        const item = item_maquina.Item;
+        return {
+          ...item,
+          id_item_maquina: item_maquina.id_item_maquina,
+          ordem: item_maquina.ordem, // Inclui a coluna "ordem"
+        };
+      });
     } catch (error) {
       throw new Error("Erro ao buscar itens para a máquina: " + error.message);
     }
