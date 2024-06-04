@@ -6,6 +6,8 @@ class ProducaoController {
   constructor() {}
 
   async getChapasInItemsInMaquinas(name) {
+
+    console.log("name", name)
     const maquina = await Maquina.findFirst({
       where: {
         nome: name,

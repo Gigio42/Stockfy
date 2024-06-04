@@ -25,6 +25,10 @@ function validaUsuario() {
       if (data.exists) {
         const nome = document.getElementById("username").value;
         localStorage.setItem("nome", nome);
+
+        const maquina = document.getElementById("selectMaquina").value;
+        localStorage.setItem("maquina", maquina);
+        
         window.location.href = "../home.html";
       } else {
         alert("Usuário ou senha inválidos!");
@@ -107,3 +111,6 @@ document.addEventListener("DOMContentLoaded", () => {
   toggle.checked = savedTheme !== "light"; // Default is dark mode
   alterarTema();
 });
+
+
+  
