@@ -4,7 +4,7 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="author" content="Seu Nome" />
-        <title>Administração</title>
+        <title>Controle de Produção</title>
         <!-- Bootstrap CSS -->
         <link id="theme" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css" rel="stylesheet" />
         <!-- Font Awesome -->
@@ -12,7 +12,6 @@
         <!-- CSS Personalizado -->
         <link rel="stylesheet" href="admnew.css" />
     </head>
-
     <body class="body">
         <div class="container-fluid">
             <div class="row">
@@ -47,13 +46,14 @@
                 <div class="col-md-10 header">
                     <div class="header-custom text-light d-flex justify-content-between align-items-center">
                         <div class="d-flex align-items-center">
-                            <h1 class="m-0">Administração</h1>
+                            <h1 class="m-0">Gerenciamento PCP</h1>
                         </div>
                         <div class="dark-mode-toggle">
                             <input type="checkbox" id="darkModeToggle" />
                             <label for="darkModeToggle"></label>
                         </div>
                     </div>
+
                     <div id="allMaquina" class="cards w-100"></div>
 
                     <div id="myModal" class="modal">
@@ -61,19 +61,27 @@
                             <div class="modal-content-2 d-none">
                                 <div class="HeaderModal2">
                                     <button id="voltarModalContent">Voltar</button>
-                                    <button id="proxiProcesso">
-                                        <img class="imgButtonHeader" src="media\icons8-direita-3-96.png" />
-                                    </button>
+                                    <div class="ButtonsModal2">
+                                        <button id="confirmarOrdem">Cofirmar Prioridades
+                                        </button>
+                                        <button id="ListarFinalizados">
+                                            <img class="imgButtonHeader" src="media/icons8-tarefa-concluída-48.png" />
+                                        </button>
+                                        <button id="proxiProcesso">
+                                            <img class="imgButtonHeader" src="media/icons8-direita-3-96.png" />
+                                        </button>
+                                    </div>
                                 </div>
-
                                 <div class="itensContainerstatus">
                                     <h2 class="textoModal">Itens em processo de produção</h2>
                                     <div id="produzindoItemsList"></div>
-                                    <h2 class="textoModal">Itens finalizados</h2>
-                                    <div id="finalizadoItemsList"></div>
                                 </div>
-
-                                <div id="produzindoItemsList"></div>
+                                
+                            </div>
+                            <div class="modal-content-3 d-none">
+                                <button id="voltarModalContent2">Voltar</button>
+                                <h2 class="textoModal">Itens finalizados</h2>
+                                <div id="finalizadoItemsList"></div>
                             </div>
 
                             <div class="headerModal">
@@ -85,7 +93,6 @@
                                 </div>
                             </div>
                             <div class="containerReserv">
-                                <!-- Adicione isto no seu HTML -->
                                 <div id="stagedArea">
                                     <div id="stagedItems"></div>
                                     <button id="confirmButton">Confirmar Itens</button>
