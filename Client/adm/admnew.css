@@ -24,8 +24,8 @@
   }
   
   /* ======================================
-     Dark Mode Toggle Styles
-     ====================================== */
+       Dark Mode Toggle Styles
+       ====================================== */
   .dark-mode-toggle input[type="checkbox"] {
     display: none;
   }
@@ -64,8 +64,8 @@
   }
   
   /* ======================================
-     Navbar Styles
-     ====================================== */
+       Navbar Styles
+       ====================================== */
   #aside {
     display: flex;
     background: #e6e6e6;
@@ -101,9 +101,8 @@
   }
   
   /* ======================================
-     Active Link Styles
-     ====================================== */
-
+       Active Link Styles
+       ====================================== */
   
   .active img.imgicon {
     filter: brightness(0) invert(1);
@@ -126,8 +125,8 @@
   }
   
   /* ======================================
-     General Link Styles
-     ====================================== */
+       General Link Styles
+       ====================================== */
   a {
     color: #535353;
     padding: 1rem;
@@ -160,8 +159,8 @@
   }
   
   /* ======================================
-     Grid and Layout Styles
-     ====================================== */
+       Grid and Layout Styles
+       ====================================== */
   .col-md-2 {
     padding: 0%;
   }
@@ -215,16 +214,18 @@
   }
   
   /* ======================================
-     Scrollbar Styles
-     ====================================== */
+       Scrollbar Styles
+       ====================================== */
   ::-webkit-scrollbar {
     width: 10px;
     /* largura da barra de rolagem */
   }
   
   ::-webkit-scrollbar-thumb {
-    background-color: #424242; /* cor do 'thumb' (a parte que você arrasta) */
-    border-radius: 5px; /* borda arredondada */
+    background-color: #424242;
+    /* cor do 'thumb' (a parte que você arrasta) */
+    border-radius: 5px;
+    /* borda arredondada */
   }
   
   ::-webkit-scrollbar-track {
@@ -233,8 +234,8 @@
   }
   
   /* ======================================
-     Dark Mode Styles
-     ====================================== */
+       Dark Mode Styles
+       ====================================== */
   .dark-mode #aside {
     background: #9a9a9a27;
     /* Altere o fundo do modo escuro para a barra lateral conforme necessário */
@@ -295,31 +296,30 @@
   
   .cardMaquina {
     padding: 2rem;
-    width: 32%;
     border-radius: 2rem;
     background-color: #2d2d2d;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
   .svgIcon {
-    margin-left: 10px; /* Espaçamento entre o nome da máquina e o ícone */
-    width: 48px; /* Tamanho do ícone */
-    height: 48px; /* Tamanho do ícone */
+    margin-left: 10px;
+    /* Espaçamento entre o nome da máquina e o ícone */
+    width: 48px;
+    /* Tamanho do ícone */
+    height: 48px;
+    /* Tamanho do ícone */
   }
-
-  h3 {
-    color: #858585;
-  }
-
+  
   /*
-  ================
-  modal
-  ================
-  */
-
+    ================
+    modal
+    ================
+    */
+  
   .modal {
     position: fixed;
     display: none;
@@ -334,43 +334,104 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-}
-
-.containerReserv {
-  display: flex;
-  justify-content: space-between;
-  height: 100%;
-}
-
-.modal-content {
+  }
+  
+  .containerReserv {
+    gap: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    height: 100%;
+  }
+  
+  #stagedItems {
+    padding: 1rem;
+    border-radius: 1rem;
+    overflow-y: auto;
+    max-height: 32vh;
+  }
+  
+  .modal-content {
     background-color: #141414;
-    margin: 7% auto;
+    margin: 1% auto;
     padding: 20px;
-    width: 80vw;
+    width: 95vw;
     border: none;
     border-radius: 1.5rem;
-    height: 60vh;
+    height: 95vh;
   }
-
+  
+  .modal-content-2 {
+    padding: 20px;
+    width: 95vw;
+    border: none;
+    border-radius: 1.5rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #141414;
+    z-index: 999;
+    height: 95vh;
+  }
+  
+  .modal-content-3 {
+    padding: 20px;
+    width: 95vw;
+    border: none;
+    border-radius: 1.5rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #141414;
+    z-index: 999;
+    height: 95vh;
+    display: none;
+  }
+  
+  .modal-content-3.show {
+    display: block; /* Mostrar quando a classe "show" for adicionada */
+    /* Adicione outros estilos conforme necessário */
+  }
+  
+  #voltarModalContent2,
+  #voltarModalContent {
+    padding: 1rem;
+    border-radius: 1rem;
+    width: fit-content;
+    margin-bottom: 1rem;
+    border: none;
+    background-color: #1c1c1c;
+    color: #b4b4b4;
+    font-size: 2rem;
+  }
+  
+  #voltarModalContent:hover {
+    background-color: #212121;
+  }
+  
   /* Estilos para o ícone */
   .svgIcon {
-    cursor: pointer; /* Muda o cursor para parecer um botão */
+    cursor: pointer;
+    /* Muda o cursor para parecer um botão */
     padding: 0.3rem;
     border-radius: 1rem;
- 
   }
-
+  
   .nomemaquina {
     background: #1eff053e;
     border: solid 1px #6eec0790;
     color: #81ff1a;
     padding: 1rem;
     border-radius: 1rem;
-    width:fit-content;
+    width: fit-content;
     margin-bottom: 1rem;
+    font-size: 2rem;
   }
-
-
+  
   .card {
     border: none;
     padding: 10px;
@@ -385,54 +446,327 @@
     padding: 8px;
     margin: 5px 0 5px 20px;
     background-color: #191919;
-    display: none; /* Initially hidden */
+    display: none;
+    /* Initially hidden */
     border-radius: 0.7rem;
   }
   
   .card.expanded .subcard {
-    display: block; /* Show when the card is expanded */
+    display: block;
+    /* Show when the card is expanded */
     margin: 0;
     margin-top: 0.7rem;
+    font-size: 1.2rem;
   }
   
-#reservados {
-  width: 100%;
-  overflow-y:auto;
-  max-height: 48vh;
-  border-radius: 1rem;
+  #reservados {
+    width: 100%;
+    overflow-y: auto;
+    max-height: 40vh;
+    border-radius: 1rem;
+  }
   
-}
-
-h3 {
-  background-color: #4f27ff72;
-  padding: 0.5rem;
-  border-radius: 0.7rem;
-  border: solid 1px #9178ff;
-  color: #9178ff ;
-  width: fit-content;
-  margin: 0;
-}
-
+  h3 {
+    background-color: #4f27ff47;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    color: #9178ff;
+    width: fit-content;
+    margin: 0;
+    font-size: 1.4rem;
+  
+    align-content: centr;
+  }
+  
+  span.item-number {
+    display: flex;
+    background-color: #2f2f2f;
+    width: 3rem;
+    border-radius: 1rem;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    color: #929292;
+    border: solid 1px #444444;
+  }
+  
+  .item-container.dragging .item-card {
+    transform: scale(1.1);
+    transition: transform 0.005s; /* Reduzindo ainda mais a duração da transição */
+  }
+  
   .abrirModal:hover {
     background: #353535;
-
   }
-
-.conteudoInterno {
-  display: flex;
-  justify-content: flex-end;
-  background: #1e1e1e;
-  width: 15rem;
-  padding: 1rem;
-  border-radius: 2rem;
-  overflow-y: auto;
-  max-height: 24rem !important;
-  margin-left: 1.5rem;
-}
-
-.programMaquina {
-  flex: 1; /* Isso faz com que a div ocupe todo o espaço disponível */
-  height: 98%;
-  background: #1e1e1e;
-  border-radius: 2rem;
-}
+  
+  .conteudoInterno {
+    display: flex;
+    justify-content: flex-end;
+    background: #1e1e1e;
+    flex-grow: 1;
+    padding: 1rem;
+    border-radius: 2rem;
+    overflow-y: auto;
+  }
+  
+  #stagedArea {
+    flex: 30;
+    background: #1e1e1e;
+    border-radius: 2rem;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .stagedCard {
+    display: flex;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .addItem {
+    margin-top: 1rem;
+    margin-bottom: 0.2rem;
+    background: #191919;
+    border: none;
+    border-radius: 0.5rem;
+    height: 3rem;
+    color: #cacaca;
+    font-size: 1.5rem;
+  }
+  
+  .addItem:hover {
+    background: #282828;
+  }
+  
+  .subcard {
+    background: #212121;
+    padding: 1rem;
+  }
+  
+  #confirmButton {
+    background: #292929;
+    border: none;
+    font-size: 2rem;
+    border-radius: 1rem;
+    padding: 1rem;
+    color: #b8b8b8;
+  }
+  
+  #confirmButton:hover {
+    background: #2d2d2d;
+  }
+  
+  .removeButton {
+    display: flex;
+    top: 5px;
+    right: 5px;
+    background-color: #303030;
+    border: none;
+    border-radius: 1rem;
+    width: 3rem;
+    text-align: center;
+    line-height: 20px;
+    cursor: pointer;
+    margin-left: 0.5rem;
+    align-items: center;
+    font-size: 2rem;
+    justify-content: center;
+    color: #929292;
+    height: 3.5rem;
+  }
+  
+  .removeButton:hover {
+    background-color: #444444;
+  }
+  
+  .headerModal {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  
+  .botoesModalHeader {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  #confirmarOrdem,
+  #ListarFinalizados,
+  #proxiProcesso,
+  #MostrarProg {
+    padding: 1rem;
+    border-radius: 1rem;
+    width: fit-content;
+    margin-bottom: 1rem;
+    border: none;
+    background-color: #1c1c1c;
+    color: #b4b4b4;
+    font-size: 2rem;
+    margin: 0.5rem;
+  }
+  
+  #proxiProcesso:hover,
+  #MostrarProg:hover {
+    background: #212121;
+  }
+  
+  .imgButtonHeader {
+    width: 34px;
+    height: 34px;
+  }
+  
+  .status-produzindo {
+    background-color: rgba(255, 166, 0, 0.216);
+    padding: 1rem;
+    border-radius: 1rem;
+    color: orange;
+    font-weight: bold;
+    font-size: 0.8rem;
+  }
+  
+  p {
+    margin-bottom: 0;
+  }
+  
+  .status-finalizado {
+    background-color: rgba(0, 128, 0, 0.189);
+    padding: 1rem;
+    border-radius: 1rem;
+    color: rgb(0, 179, 0);
+    font-weight: bold;
+    font-weight: bold;
+  
+    font-size: 0.9rem;
+  }
+  
+  .item-card {
+    display: flex;
+    margin-bottom: 10px;
+    border-radius: 1rem;
+    background-color: #1d1d1d;
+    gap: 1rem;
+    flex-grow: 1;
+    padding: 10px;
+    margin-left: 10px; /* Espaço entre o ícone e o card */
+    width: fit-content;
+  }
+  
+  .item-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* Ajuste o espaço entre os cards conforme necessário */
+  }
+  
+  .drag-icon {
+    width: 34px;
+    height: 34px;
+    opacity: 0.1; /* Ajuste o valor conforme necessário */
+    cursor: pointer;
+  }
+  
+  .drag-icon:hover {
+    width: 34px;
+    height: 34px;
+    opacity: 1;
+  }
+  
+  #produzindoItemsList {
+    display: flex;
+    gap: 1rem;
+    border-radius: 1rem;
+    margin-bottom: 2rem;
+    flex-direction: column;
+    width: fit-content;
+  }
+  
+  #finalizadoItemsList {
+    display: flex;
+    gap: 1rem;
+    border-radius: 1rem;
+    margin-bottom: 2rem;
+    flex-direction: column;
+    width: fit-content;
+  }
+  
+  .itensContainerstatus {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    max-height: 80%;
+    border-radius: 1rem;
+  }
+  
+  .textoModal {
+    background-color: #2f2f2f;
+    width: fit-content;
+    padding: 0.5rem 1rem;
+  
+    margin-bottom: 3rem;
+    border-radius: 1rem;
+    color: #929292;
+    border: solid 1px #b3b3b341;
+    font-weight: bold;
+  }
+  
+  .inputPrazo,
+  .inputMedida,
+  .inputOrdem {
+    border-radius: 1rem;
+    border: none;
+    background-color: #262626;
+    text-align: center;
+    color: #9178ff;
+    font-size: 1.7rem;
+    height: 3.5rem;
+    max-width: fit-content !important;
+  }
+  
+  .inputPrazo:focus,
+  .inputMedida:focus,
+  .inputOrdem:focus {
+    outline: solid 1px #9178ff;
+  }
+  
+  .HeaderModal2 {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  input {
+    width: 10rem !important;
+  }
+  
+  .title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .arrow-icon {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .img-container {
+    background: #1e1e1e;
+    padding: 1rem;
+    border-radius: 1rem;
+  }
+  
+  .img-container:hover {
+    background: #212121;
+  }
+  
+  .item-position {
+    margin-right: 10px;
+    font-weight: bold;
+  }
+  
+  .item-id {
+    color: red;
+    font-weight: bold;
+  }

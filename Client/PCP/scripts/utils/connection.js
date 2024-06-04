@@ -1,4 +1,5 @@
-const PCP_URL = "http://localhost:3000/PCP";
+import BASE_URL from "../../../utils/config.js";
+const PCP_URL = `${BASE_URL}/PCP`;
 
 function handleError(error) {
   if (error.response) {
@@ -39,12 +40,12 @@ export async function reserveChapas(data) {
   }
 }
 
-export async function fetchItems(searchQuery = '') {
+export async function fetchItems(searchQuery = "") {
   try {
     const response = await axios.get(`${PCP_URL}/items`, {
       params: {
-        search: searchQuery
-      }
+        search: searchQuery,
+      },
     });
     return response.data;
   } catch (error) {

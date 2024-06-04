@@ -9,8 +9,12 @@
     "migrate": "prisma migrate dev",
     "generate": "prisma generate",
     "start": "nodemon .\\Server\\server.js",
+    "startUnix": "nodemon ./Server/server.js",
     "prisma": "npm run migrate && npm run generate && npm run start",
-    "studio": "npx prisma studio --port 2943"
+    "chapatest": "node ./Test/generators/gerar_chapas.cjs",
+    "start-and-test": "prisma migrate dev --name auto_migration && npm run generate && start-server-and-test startUnix http://localhost:3000 chapatest",
+    "studio": "npx prisma studio --port 2943",
+    "render": "npx prisma generate && nodemon server.js"
   },
   "keywords": [],
   "author": "",
@@ -27,10 +31,11 @@
     "typeorm": "^0.3.20"
   },
   "devDependencies": {
+    "eslint-plugin-node": "^11.1.0",
     "faker": "^5.5.3",
     "nodemon": "^3.1.0",
     "prettier": "^3.2.5",
     "prisma": "^5.14.0",
-    "serve": "^14.2.3"
+    "start-server-and-test": "^2.0.3"
   }
 }

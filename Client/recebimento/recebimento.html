@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Conversor de PDF para Texto</title>
+        <title>Recebimento</title>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script src="file-info.js"></script>
@@ -40,7 +40,8 @@
                         <th>Id_compra</th>
                         <th>Quantidade</th>
                         <th>Qualidade</th>
-                        <th>Medida</th>
+                        <th>Largura</th>
+                        <th>Comprimento</th>
                         <th>Onda</th>
                         <th>Vincos</th>
                         <th>Status</th>
@@ -63,7 +64,8 @@
                         <th>Id_compra</th>
                         <th>Quantidade</th>
                         <th>Qualidade</th>
-                        <th>Medida</th>
+                        <th>Largura</th>
+                        <th>Comprimento</th>
                         <th>Onda</th>
                         <th>Vincos</th>
                         <th>Status</th>
@@ -151,7 +153,7 @@
                                 chapa.valor_unitario = chapa.valor_unitario.replace(",", ".");
                                 chapa.valor_total = chapa.valor_total.replace(".", "").replace(",", ".");
                                 chapa.quantidade_recebida = chapa.quantidade_comprada;
-
+                                console.log(chapa.vincos);
                                 criarTable(tableb, chapa);
                             });
                         }
@@ -186,9 +188,10 @@
                     `<input type='text' value='${chapaData.id_compra}'>`,
                     `<input type='text' class='quantity' value='${chapaData.quantidade_recebida}'>`,
                     `<input type='text' value='${chapaData.qualidade}'>`,
-                    `<input type='text' value='${chapaData.medida}'>`,
+                    `<input type='text' value='${chapaData.largura}'>`,
+                    `<input type='text' value='${chapaData.comprimento}'>`,
                     `<select>${["E", "B", "C", "BB", "BC", ""].map((type) => `<option value="${type}" ${type === chapaData.onda ? "selected" : ""}>${type}</option>`).join("")}</select>`,
-                    `<select><option value="">Vazio</option><option value="Sim" ${"Sim" === chapaData.vincos ? "selected" : ""}>Sim</option><option value="Não" ${"Não" === chapaData.vincos ? "selected" : ""}>Não</option></select>`,
+                    `<select><option value="Sim" ${chapaData.vincos.toLowerCase() === "não" ? "" : "selected"}>Sim</option><option value="Não" ${chapaData.vincos.toLowerCase() === "não" ? "selected" : ""}>Não</option></select>`,
                     `<select style='width: 120px;'>${["Comprado", "Recebido", "Parcialmente", "Atrasado", "Cancelado"].map((status) => `<option ${status === chapaData.status ? "selected" : ""}>${status}</option>`).join("")}</select>`,
                 ];
 
@@ -220,11 +223,11 @@
                 const table = document.getElementById("recebimento");
                 const tbody = table.querySelector("tbody");
                 const row = tbody.insertRow(-1);
-                const fields = ["ID", "Fornecedor", "Id_compra", "Quantidade", "Qualidade", "Medida", "Onda", "Vincos", "Status", "Data_recebimento"];
+                const fields = ["ID", "Fornecedor", "Id_compra", "Quantidade", "Qualidade", "Largura", "Comprimento", "Onda", "Vincos", "Status", "Data_recebimento"];
 
                 fields.forEach((field, index) => {
                     const cell = row.insertCell(index);
-                    if (field === "Status" || field === "Onda" || field === "Vincos") {
+                    if (field === "Status" || field === "Onda" || field == "Vincos") {
                         // Adicionar dropdowns para campos específicos
                         let selectHTML = `<select>`;
                         if (field === "Status") {
@@ -232,7 +235,7 @@
                         } else if (field == "Onda") {
                             selectHTML += `<option>E</option><option>B</option><option>C</option><option>BB</option><option>BC</option>`;
                         } else {
-                            selectHTML += `<option>Vazio</option><option>Sim</option><option>Não</option>`;
+                            selectHTML += `<option>Sim</option><option>Não</option>`;
                         }
                         selectHTML += `</select>`;
                         cell.innerHTML = selectHTML;
@@ -323,7 +326,7 @@
                         let allMatch = true;
 
                         // Ajustado para comparar colunas específicas: 4-7 (0-indexado)
-                        for (let k = 4; k <= 7; k++) {
+                        for (let k = 4; k <= 8; k++) {
                             let cell1 = row1.cells[k].querySelector("input, select")
                                 ? row1.cells[k].querySelector("input, select").value.trim().toLowerCase()
                                 : row1.cells[k].textContent.trim().toLowerCase();
@@ -350,47 +353,29 @@
                         }
                     }
 
-                    if (!foundMatch) {
-                        console.log("Nenhuma linha correspondente encontrada para a linha " + (i + 1) + " da tabela de baixo.");
-                    }
+                    // if (!foundMatch) {
+                    //     console.log('Nenhuma linha correspondente encontrada para a linha ' + (i + 1) + ' da tabela de baixo.');
+                    // }
                 }
 
-                chapas_extras();
                 alert("Comparação e validação de status concluídas.");
             });
 
             function validar_status(rowBancoDados, rowRecebimento) {
-                const cellDataPrevista = rowBancoDados.cells[10].querySelector("input");
-                const cellDataRecebimento = rowRecebimento.cells[9].querySelector("input");
+                // const cellDataPrevista = rowBancoDados.cells[10].querySelector('input');
+                // const cellDataRecebimento = rowRecebimento.cells[9].querySelector('input');
+                // const dataPrevista = new Date(cellDataPrevista.value);
+                // const dataRecebimento = new Date(cellDataRecebimento.value);
 
-                const dataPrevista = new Date(cellDataPrevista.value);
-                const dataRecebimento = new Date(cellDataRecebimento.value);
                 const quantidadeBancoDados = parseInt(rowBancoDados.cells[3].querySelector("input").value, 10);
                 const quantidadeRecebimento = parseInt(rowRecebimento.cells[3].querySelector("input").value, 10);
 
-                if (dataRecebimento <= dataPrevista && quantidadeRecebimento >= quantidadeBancoDados) {
-                    rowRecebimento.cells[8].querySelector("select").value = "Recebido";
+                if (quantidadeRecebimento >= quantidadeBancoDados) {
+                    rowRecebimento.cells[9].querySelector("select").value = "Recebido";
                     console.log("Status mudado para Recebido");
-                } else if (dataRecebimento <= dataPrevista && quantidadeRecebimento < quantidadeBancoDados) {
-                    rowRecebimento.cells[8].querySelector("select").value = "Parcialmente";
+                } else if (quantidadeRecebimento < quantidadeBancoDados) {
+                    rowRecebimento.cells[9].querySelector("select").value = "Parcialmente";
                     console.log("Status mudado para Parcialmente");
-                }
-            }
-
-            function chapas_extras() {
-                const table1 = document.getElementById("bancoDados").getElementsByTagName("tbody")[0];
-                const table2 = document.getElementById("recebimento").getElementsByTagName("tbody")[0];
-
-                for (let i = 0; i < table2.rows.length; i++) {
-                    const row2 = table2.rows[i];
-                    for (let j = 0; j < table1.rows.length; j++) {
-                        const row1 = table1.rows[j];
-                        const status = row1.cells[10].querySelector("select").value;
-
-                        if (status === "Cancelado") {
-                            row2.cells[10].querySelector("select").value = status;
-                        }
-                    }
                 }
             }
 

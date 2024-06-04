@@ -1,4 +1,4 @@
-name: Format the code
+name: Code formatting and linting
 
 on:
   push:
@@ -20,10 +20,12 @@ jobs:
       - name: Install Dependencies
         run: npm install
       - name: Format Files
-        run: npx prettier --config .prettierrc --write 'Server/**/*.js' 'Client/**/*.html'
+        run: npx prettier --config .prettierrc --write '**/*.js' '**/*.cjs' 'Client/**/*.html'
+      - name: Run ESLint
+        run: npx eslint '**/*.js' '**/*.cjs'
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "style: format files"
+          commit_message: "Marvin: formatando arquivos"
           commit_user_name: "Marvin"
           commit_user_email: "marvin@bot.noreply"

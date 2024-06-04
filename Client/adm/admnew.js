@@ -3,14 +3,14 @@
 //============================================
 
 function handleDarkModeToggle() {
-  var darkModeToggle = document.getElementById("darkModeToggle");
-  var body = document.body;
+  const darkModeToggle = document.getElementById("darkModeToggle");
+  const body = document.body;
 
-  darkModeToggle.addEventListener("change", function () {
+  darkModeToggle.addEventListener("change", () => {
     body.classList.toggle("dark-mode", darkModeToggle.checked);
     localStorage.setItem("darkMode", darkModeToggle.checked ? "enabled" : "disabled");
 
-    var aside = document.getElementById("aside");
+    const aside = document.getElementById("aside");
     if (aside) {
       aside.classList.toggle("dark-mode-aside", darkModeToggle.checked);
     }
@@ -20,7 +20,7 @@ function handleDarkModeToggle() {
     darkModeToggle.checked = true;
     body.classList.add("dark-mode");
 
-    var aside = document.getElementById("aside");
+    const aside = document.getElementById("aside");
     if (aside) {
       aside.classList.add("dark-mode-aside");
     }
@@ -49,62 +49,60 @@ async function fetchMaquinas() {
 //============================================
 
 function createMaquinaCard(maquina) {
-  let allMaquina = document.getElementById("allMaquina");
-  let cardMaquina = document.createElement("div");
+  const allMaquina = document.getElementById("allMaquina");
+  const cardMaquina = document.createElement("div");
   cardMaquina.className = "cardMaquina";
 
-  let maquinaName = document.createElement("span");
+  const maquinaName = document.createElement("span");
   maquinaName.textContent = maquina.nome;
   cardMaquina.appendChild(maquinaName);
 
-  let svgIcon = document.createElement("img");
+  const svgIcon = document.createElement("img");
   svgIcon.src = "media/icons8-link-externo.svg";
   svgIcon.alt = "External link icon";
   svgIcon.classList.add("svgIcon", "abrirModal");
   cardMaquina.appendChild(svgIcon);
 
-  svgIcon.addEventListener("click", function () {
+  svgIcon.addEventListener("click", () => {
     openModal(maquinaName.textContent, maquina.id_maquina);
   });
 
   allMaquina.appendChild(cardMaquina);
 }
 
-//========================
-//modal
-//========================
+//============================================
+// Função para abrir o modal
+//============================================
+
+let currentMaquinaId;
 
 function openModal(maquinaName, maquinaId) {
-  var modal = document.getElementById("myModal");
+  currentMaquinaId = maquinaId;
+  const modal = document.getElementById("myModal");
   modal.style.display = "block";
 
-  var modalContent = modal.querySelector(".modal-content");
-  var span = modalContent.querySelector("span");
+  const modalContent = modal.querySelector(".modal-content");
+  const span = modalContent.querySelector("span");
   span.textContent = maquinaName;
 
   fetchitens(maquinaId);
 
   modal.addEventListener("click", closeModal);
-  modalContent.addEventListener("click", function (event) {
-    event.stopPropagation();                                                            
+  modalContent.addEventListener("click", (event) => {
+    event.stopPropagation();
   });
 }
 
 function closeModal() {
+  const modalContent2 = document.querySelector(".modal-content-2");
+
+  if (!modalContent2.classList.contains("d-none")) {
+    return;
+  }
+
   document.getElementById("myModal").style.display = "none";
 }
-//=================================================
-// Função para adicionar item
-//=================================================
 
-async function adicionarItem(itemId, maquinaId) {
-  try {
-    const response = await axios.post(`http://localhost:3000/adm/maquina/${maquinaId}/item/${itemId}/produzindo`);
-    console.log(response.data);
-  } catch (error) {
-    console.error("Erro ao adicionar item:", error);
-  }
-}
 //=================================================
 // Função para buscar e exibir os itens
 //=================================================
@@ -114,7 +112,7 @@ async function fetchitens(maquinaId) {
     const response = await axios.get("http://localhost:3000/adm/items/chapas");
     const itens = response.data;
 
-    let reservados = document.getElementById("reservados");
+    const reservados = document.getElementById("reservados");
     if (!reservados) {
       console.error("Elemento #reservados não encontrado");
       return;
@@ -124,66 +122,391 @@ async function fetchitens(maquinaId) {
     itens.forEach((item) => {
       createItemCard(item, maquinaId);
     });
-
-    console.log("Finalizou o processamento dos itens");
   } catch (error) {
     console.error("Erro ao recuperar os itens!", error);
   }
 }
 
 //=================================================
-// Função para criar um card de item
+// Função para adicionar item à área de "staged"
 //=================================================
 
-function createItemCard(item, maquinaId) {
-  let reservados = document.getElementById("reservados");
-  let card = document.createElement("div");
-  card.className = "card";
+function adicionarItemAoStaged(item, maquinaId) {
+  const stagedItems = document.getElementById("stagedItems");
 
-  let partNumberInfo = document.createElement("h3");
+  const card = document.createElement("div");
+  card.className = "stagedCard";
+
+  const partNumberInfo = document.createElement("h3");
   partNumberInfo.textContent = `${item.part_number}`;
   card.appendChild(partNumberInfo);
 
+  const prazoInput = document.createElement("input");
+  prazoInput.type = "text";
+  prazoInput.placeholder = "Prazo";
+  prazoInput.className = "inputPrazo";
+  card.appendChild(prazoInput);
+
+  const medidaInput = document.createElement("input");
+  medidaInput.type = "text";
+  medidaInput.placeholder = "corte";
+  medidaInput.className = "inputMedida";
+  card.appendChild(medidaInput);
+
+  const ordemInput = document.createElement("input");
+  ordemInput.type = "text";
+  ordemInput.placeholder = "Ordem";
+  ordemInput.className = "inputOrdem";
+  card.appendChild(ordemInput);
+
   item.chapas.forEach((chapa) => {
-    let subcard = document.createElement("div");
+    const subcard = document.createElement("div");
     subcard.className = "subcard";
 
-    let chapaInfo = document.createElement("p");
-    chapaInfo.innerHTML = `${chapa.medida}<br>${chapa.quantidade_comprada}`;
+    const chapaInfo = document.createElement("p");
+    chapaInfo.innerHTML = `${chapa.corte}<br>${chapa.quantidade_comprada}`;
     subcard.appendChild(chapaInfo);
 
     card.appendChild(subcard);
   });
 
-  let adicionarItemButton = document.createElement("button");
-  adicionarItemButton.textContent = "Adicionar Item";
-  card.appendChild(adicionarItemButton);
-  adicionarItemButton.dataset.id = item.id_item;
+  const removeButton = document.createElement("button");
+  removeButton.textContent = "x";
+  removeButton.className = "removeButton";
+  card.appendChild(removeButton);
 
-  card.addEventListener("click", () => {
-    card.classList.toggle("expanded");
+  removeButton.addEventListener("click", () => {
+    stagedItems.removeChild(card);
   });
 
-  adicionarItemButton.addEventListener("click", async (event) => {
-    event.preventDefault(); 
-    event.stopPropagation();
+  card.dataset.id = item.id_item;
+  card.dataset.maquinaId = maquinaId;
+  stagedItems.appendChild(card);
+}
+
+//============================================================
+// Função para confirmar os itens na área de "staged"
+//=============================================================
+
+async function confirmarItensStaged() {
+  const stagedItems = document.getElementById("stagedItems").children;
+
+  for (const itemCard of stagedItems) {
+    const itemId = itemCard.dataset.id;
+    const maquinaId = currentMaquinaId;
+
+    const prazo = itemCard.querySelector(".inputPrazo").value;
+    const corte = itemCard.querySelector(".inputMedida").value;
+    const ordem = itemCard.querySelector(".inputOrdem").value;
+
     try {
-      console.log("ID do item:", item.id_item);
-      console.log("ID da máquina:", maquinaId);
-      await adicionarItem(item.id_item, maquinaId);
+      await axios.post(`http://localhost:3000/adm/maquina/${maquinaId}/item/${itemId}/produzindo`, {
+        prazo: prazo,
+        corte: corte,
+        ordem: ordem,
+      });
     } catch (error) {
       console.error("Erro ao adicionar item:", error);
     }
+  }
+
+  document.getElementById("stagedItems").innerHTML = "";
+  alert("Itens confirmados com sucesso!");
+}
+
+document.getElementById("confirmButton").addEventListener("click", confirmarItensStaged);
+
+//=================================================
+// Função para criar o card de item
+//=================================================
+function createItemCard(item, maquinaId) {
+  const reservados = document.getElementById("reservados");
+  const card = document.createElement("div");
+  card.className = "card";
+
+  const titleContainer = document.createElement("div");
+  titleContainer.className = "title-container";
+
+  const partNumberInfo = document.createElement("h3");
+  partNumberInfo.textContent = `${item.part_number}`;
+  titleContainer.appendChild(partNumberInfo);
+
+  const imgContainer = document.createElement("div");
+  imgContainer.className = "img-container";
+
+  const arrowImage = document.createElement("img");
+  arrowImage.src = "media/seta-para-a-direita.png";
+  arrowImage.alt = "Seta para a direita";
+  arrowImage.classList.add("arrow-icon");
+  imgContainer.appendChild(arrowImage);
+
+  titleContainer.appendChild(imgContainer);
+  card.appendChild(titleContainer);
+
+  item.chapas.forEach((chapa) => {
+    const subcard = document.createElement("div");
+    subcard.className = "subcard";
+
+    const chapaInfo = document.createElement("p");
+    chapaInfo.innerHTML = `Chapa: ${chapa.medida}<br>Quant.: ${chapa.quantidade_comprada}`;
+    subcard.appendChild(chapaInfo);
+
+    card.appendChild(subcard);
+  });
+
+  const adicionarItemButton = document.createElement("button");
+  adicionarItemButton.textContent = "Adicionar";
+  adicionarItemButton.className = "addItem";
+  card.appendChild(adicionarItemButton);
+  adicionarItemButton.dataset.id = item.id_item;
+
+  titleContainer.addEventListener("click", () => {
+    card.classList.toggle("expanded");
+  });
+
+  adicionarItemButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    adicionarItemAoStaged(item, maquinaId);
   });
 
   reservados.appendChild(card);
 }
 
-//=================================================
-// Chama as funções necessárias ao carregar a página
-//=================================================
+//============================================================
+// Botão para abrir o modal com os itens e seus status
+//============================================================
 
-window.onload = function () {
+document.getElementById("MostrarProg").addEventListener("click", function () {
+  const modalContent2 = document.querySelector(".modal-content-2");
+  modalContent2.classList.remove("d-none");
+
+  const maquinaId = currentMaquinaId;
+
+  fetchAllItems(maquinaId);
+});
+
+//===============================================================================
+// Função para buscar e exibir todos os itens PRODUZINDO e FINALIZADO para a máquina específica
+//===============================================================================
+
+async function fetchAllItems(maquinaId) {
+  try {
+    const response = await axios.get(`http://localhost:3000/adm/maquina/${maquinaId}/item`);
+    const allItems = response.data;
+
+    const produzindoItemList = document.getElementById("produzindoItemsList");
+    const finalizadoItemList = document.getElementById("finalizadoItemsList");
+
+    if (!produzindoItemList || !finalizadoItemList) {
+      console.error("Elementos #produzindoItemsList ou #finalizadoItemsList não encontrados");
+      return;
+    }
+
+    produzindoItemList.innerHTML = "";
+    finalizadoItemList.innerHTML = "";
+
+    allItems.forEach((item) => {
+      createProduzindoItemCard(item);
+    });
+  } catch (error) {
+    console.error("Erro ao recuperar os itens!", error);
+  }
+}
+
+//===================================================
+// Função para criar o card de visualização de status de item de cada Maquina
+//===================================================
+
+document.addEventListener("DOMContentLoaded", () => {
   handleDarkModeToggle();
   fetchMaquinas();
-};
+});
+
+function createProduzindoItemCard(item) {
+  const itemContainer = document.createElement("div");
+  itemContainer.className = "item-container";
+  itemContainer.id = `container-${item.part_number}`; // Adiciona um ID único ao itemContainer
+  itemContainer.draggable = true;
+
+  const icon = document.createElement("img");
+  icon.src = "media/icons8-arraste-para-reordenar-50.png";
+  icon.className = "drag-icon";
+  itemContainer.appendChild(icon);
+
+  const itemCard = document.createElement("div");
+  itemCard.className = "item-card";
+  itemCard.id = `item-${item.part_number}`;
+
+  const partNumberElement = document.createElement("h3");
+  partNumberElement.textContent = `${item.part_number}`;
+  itemCard.appendChild(partNumberElement);
+
+  const statusElement = document.createElement("p");
+  statusElement.textContent = `${item.status}`;
+  statusElement.className = item.status === "PRODUZINDO" ? "status-produzindo" : "status-finalizado";
+  itemCard.appendChild(statusElement);
+
+  const idItemMaquinaElement = document.createElement("p");
+  idItemMaquinaElement.textContent = `ID: ${item.id_item_maquina}`;
+  itemCard.appendChild(idItemMaquinaElement);
+
+  const ordemElement = document.createElement("p");
+  ordemElement.textContent = `Ordem: ${item.ordem}`;
+  itemCard.appendChild(ordemElement);
+
+  itemContainer.appendChild(itemCard);
+
+  const listContainer = document.getElementById(item.status === "PRODUZINDO" ? "produzindoItemsList" : "finalizadoItemsList");
+
+  if (listContainer) {
+    const renumberItems = () => {
+      // Obter todos os itens na lista
+      const items = listContainer.querySelectorAll(".item-container");
+      // Renumerar todos os itens na lista
+      items.forEach((item, index) => {
+        item.querySelector(".item-number").textContent = `${index + 1} `;
+      });
+    };
+
+    itemContainer.addEventListener("dragstart", (event) => {
+      event.dataTransfer.setData("text/plain", itemContainer.id);
+      itemContainer.classList.add("dragging");
+    });
+
+    itemContainer.addEventListener("dragend", () => {
+      itemContainer.classList.remove("dragging");
+      renumberItems(); // Chama a função para renumerar os itens após a operação de arrastar e soltar
+    });
+
+    listContainer.addEventListener("dragover", (event) => {
+      event.preventDefault();
+      const afterElement = getDragAfterElement(listContainer, event.clientY);
+      const draggable = document.querySelector(".dragging");
+      if (afterElement == null) {
+        listContainer.appendChild(draggable);
+      } else {
+        listContainer.insertBefore(draggable, afterElement);
+      }
+    });
+
+    listContainer.addEventListener("drop", (event) => {
+      event.preventDefault();
+      const idItemContainerBeingDragged = event.dataTransfer.getData("text/plain");
+      const itemContainerBeingDragged = document.getElementById(idItemContainerBeingDragged);
+      if (itemContainerBeingDragged) {
+        const afterElement = getDragAfterElement(listContainer, event.clientY);
+        if (afterElement == null) {
+          listContainer.appendChild(itemContainerBeingDragged);
+        } else {
+          listContainer.insertBefore(itemContainerBeingDragged, afterElement);
+        }
+        renumberItems(); // Chama a função para renumerar os itens após a operação de arrastar e soltar
+      }
+    });
+
+    // Obter o número total de itens na lista atualmente
+    const itemCount = listContainer.querySelectorAll(".item-container").length + 1;
+
+    // Criar um elemento de texto para exibir o número do item
+    const itemNumberElement = document.createElement("span");
+    itemNumberElement.textContent = `${itemCount} `;
+    itemNumberElement.className = "item-number";
+    itemCard.insertBefore(itemNumberElement, partNumberElement);
+
+    listContainer.appendChild(itemContainer);
+  } else {
+    console.error("Elemento não encontrado ao criar cartão do item");
+  }
+}
+
+function getDragAfterElement(container, y) {
+  const draggableElements = [...container.querySelectorAll(".item-container:not(.dragging)")];
+
+  return draggableElements.reduce(
+    (closest, child) => {
+      const box = child.getBoundingClientRect();
+      const offset = y - box.top - box.height / 2;
+      if (offset < 0 && offset > closest.offset) {
+        return { offset: offset, element: child };
+      } else {
+        return closest;
+      }
+    },
+    { offset: Number.NEGATIVE_INFINITY },
+  ).element;
+}
+
+//=================================================
+// função para atualiar o valor da ordem
+//=================================================
+
+async function updateItemOrderInDatabase(maquinaId, itemIdMaquinaList) {
+  try {
+    const response = await axios.post(`http://localhost:3000/adm/maquina/${maquinaId}/atualizar-ordem`, { itemIdMaquinaList });
+    console.log(response.data.message);
+  } catch (error) {
+    console.error("Erro ao atualizar a ordem dos itens no banco de dados:", error);
+  }
+}
+
+
+//=================================================
+// Função para Abrir o modal de finalid=zados
+//=================================================
+
+// Seleciona o botão e o modal
+const listarFinalizadosButton = document.getElementById("ListarFinalizados");
+const modalContent = document.querySelector(".modal-content-3");
+const voltarButton = document.getElementById("voltarModalContent");
+
+// Adiciona um evento de clique para abrir o modal
+listarFinalizadosButton.addEventListener("click", () => {
+  modalContent.classList.add("show");
+});
+
+// Adiciona um evento de clique para fechar o modal
+voltarButton.addEventListener("click", () => {
+  modalContent.classList.remove("show");
+});
+
+//=================================================
+// função para fechar o modalcontent 2 e 3
+//=================================================
+
+// Adicionar event listeners para voltarModalContent
+const voltarButton1 = document.getElementById("voltarModalContent");
+const voltarButton2 = document.getElementById("voltarModalContent2");
+const modalContent2 = document.querySelector(".modal-content-2");
+const modalContent3 = document.querySelector(".modal-content-3");
+
+if (voltarButton1 && voltarButton2 && modalContent2 && modalContent3) {
+  console.log("Adicionando event listeners para os botões de voltar.");
+
+  voltarButton1.addEventListener("click", () => {
+    modalContent2.classList.add("d-none");
+    modalContent3.classList.add("d-none");
+    console.log("modal-content-2 e modal-content-3 escondidos");
+  });
+
+  voltarButton2.addEventListener("click", () => {
+    modalContent2.classList.remove("d-none");
+    modalContent3.classList.add("d-none");
+    console.log("modal-content-3 escondido, modal-content-2 mostrado");
+  });
+
+  document.getElementById("MostrarProg").addEventListener("click", function () {
+    modalContent2.classList.remove("d-none");
+    console.log("modal-content-2 mostrado");
+    fetchAllItems(currentMaquinaId);
+  });
+
+  listarFinalizadosButton.addEventListener("click", () => {
+    modalContent2.classList.add("d-none");
+    modalContent3.classList.remove("d-none");
+    console.log("modal-content-2 escondido, modal-content-3 mostrado");
+  });
+} else {
+  console.error("Não foi possível encontrar um ou mais elementos necessários para adicionar event listeners.");
+}
+

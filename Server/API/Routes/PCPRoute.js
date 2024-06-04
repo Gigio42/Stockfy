@@ -32,8 +32,13 @@ async function pcpRoute(fastify, options) {
     schema: createItemWithChapaSchema,
     handler: async (request, reply) => {
       try {
-        await pcpRouteController.createItemWithChapa(request.body);
-        reply.send({ message: "Data received and inserted into SQLite database successfully" });
+        const result = await pcpRouteController.createItemWithChapa(request.body);
+
+        if (result.error) {
+          reply.code(500).send({ message: "Error processing data", error: result.error });
+        } else {
+          reply.send({ message: "Data received and inserted into SQLite database successfully" });
+        }
       } catch (err) {
         console.log(err.message);
         reply.code(500).send({ message: "Error processing data", error: err.message });
