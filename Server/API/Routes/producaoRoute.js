@@ -16,19 +16,20 @@ async function producaoRoute(fastify, options) {
     },
   });
 
-  fastify.put("/item/:id/maquina/:maquinaName", {
+  fastify.put("/item/:id/maquina/:maquinaName/:executor", {
     handler: async (request, reply) => {
       try {
         const id = parseInt(request.params.id, 10);
         const maquinaName = request.params.maquinaName;
-        const result = await producaoController.markItemAsFinalizado(id, maquinaName);
+        const executor = request.params.executor; 
+        const result = await producaoController.markItemAsFinalizado(id, maquinaName, executor);
         reply.send(result);
       } catch (err) {
         console.log(err.message);
         reply.code(500).send({ message: "Error updating item status in SQLite database", error: err.message });
       }
     },
-  });
+});
 }
 
 export default producaoRoute;

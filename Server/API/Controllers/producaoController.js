@@ -93,7 +93,7 @@ class ProducaoController {
     return maquina;
   }
 
-  async markItemAsFinalizado(itemId, maquinaName) {
+  async markItemAsFinalizado(itemId, maquinaName, executor) {
     const maquina = await Maquina.findFirst({
       where: {
         nome: maquinaName,
@@ -134,6 +134,7 @@ class ProducaoController {
       },
       data: {
         finalizado: true,
+        executor: executor,
       },
     });
 
