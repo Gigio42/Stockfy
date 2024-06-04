@@ -47,10 +47,6 @@ async function admRoute(fastify, options) {
       reply.code(500).send({ message: "Internal Server Error" });
     }
   });
-
-  
-
-  
 }
 
 export default admRoute;

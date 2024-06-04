@@ -450,7 +450,6 @@ async function updateItemOrderInDatabase(maquinaId, itemIdMaquinaList) {
   }
 }
 
-
 //=================================================
 // Função para Abrir o modal de finalid=zados
 //=================================================
@@ -509,4 +508,3 @@ if (voltarButton1 && voltarButton2 && modalContent2 && modalContent3) {
 } else {
   console.error("Não foi possível encontrar um ou mais elementos necessários para adicionar event listeners.");
 }
-
