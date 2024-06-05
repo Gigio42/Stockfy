@@ -529,7 +529,7 @@ function logItemPositions(listContainer) {
 
 document.getElementById("confirmarOrdem").addEventListener("click", async () => {
   try {
-    await axios.post("http://localhost:3000/adm/item/atualizar-prioridade"); // Faz uma solicitação para a rota de atualização da prioridade
+    await axios.post("http://localhost:3000/adm/atualizar-prioridade"); // Faz uma solicitação para a rota de atualização da prioridade
     alert("Prioridades atualizadas com sucesso!");
   } catch (error) {
     console.error("Erro ao atualizar as prioridades:", error);

@@ -94,23 +94,27 @@ class AdmController {
       throw new Error("Erro ao buscar itens para a máquina: " + error.message);
     }
   }
-
-  // Novo método para atualizar a prioridade de um item
-  async updateItemPriority(itemId, newPriority) {
+  
+  async updateItemPriorities() {
     try {
-      // Atualiza a prioridade do item no banco de dados usando o Prisma
-      const updatedItem = await Item.update({
-        where: { id_item: itemId }, // Condição para encontrar o item pelo ID
-        data: { prioridade: newPriority }, // Dados a serem atualizados (nova prioridade)
-      });
-
-      return updatedItem; // Retorna o item atualizado
+      const allItems = await Item.findMany(); // Busca todos os itens
+      const sortedItems = allItems.sort((a, b) => a.prioridade - b.prioridade); // Ordena os itens por prioridade
+  
+      // Atualiza a prioridade de cada item com base na sua posição na lista ordenada
+      await Promise.all(sortedItems.map(async (item, index) => {
+        await Item.update({
+          where: { id_item: item.id_item },
+          data: { prioridade: index + 1 } // Define a prioridade como a posição + 1 (para começar em 1)
+        });
+      }));
+  
+      console.log("Prioridades dos itens atualizadas com sucesso");
     } catch (error) {
-      // Se ocorrer um erro, loga o erro e lança uma nova exceção com a mensagem de erro
-      console.error("Erro ao atualizar a prioridade do item:", error);
-      throw new Error("Erro ao atualizar a prioridade do item: " + error.message);
+      console.error("Erro ao atualizar as prioridades dos itens:", error);
+      throw new Error("Erro ao atualizar as prioridades dos itens: " + error.message);
     }
   }
+  
 }
 
 export default AdmController;
