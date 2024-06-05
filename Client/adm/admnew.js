@@ -462,19 +462,6 @@ function getDragAfterElement(container, y) {
 }
 
 //=================================================
-// função para atualizar o valor da ordem
-//=================================================
-
-async function updateItemOrderInDatabase(maquinaId, itemIdMaquinaList) {
-  try {
-    const response = await axios.post(`http://localhost:3000/adm/maquina/${maquinaId}/atualizar-ordem`, { itemIdMaquinaList });
-    console.log(response.data.message);
-  } catch (error) {
-    console.error("Erro ao atualizar a ordem dos itens no banco de dados:", error);
-  }
-}
-
-//=================================================
 // Função para Abrir o modal de finalizados
 //=================================================
 
@@ -538,6 +525,19 @@ function logItemPositions(listContainer) {
     console.log(`Posição: ${position}, Part Number: ${partNumber}`);
   });
 }
+
+
+document.getElementById("confirmarOrdem").addEventListener("click", async () => {
+  try {
+    await axios.post("http://localhost:3000/adm/item/atualizar-prioridade"); // Faz uma solicitação para a rota de atualização da prioridade
+    alert("Prioridades atualizadas com sucesso!");
+  } catch (error) {
+    console.error("Erro ao atualizar as prioridades:", error);
+    alert("Erro ao atualizar as prioridades. Verifique o console para mais detalhes.");
+  }
+});
+
+
 
 
 document.addEventListener("DOMContentLoaded", () => {
