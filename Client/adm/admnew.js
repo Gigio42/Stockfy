@@ -311,8 +311,6 @@ async function fetchAllItems(maquinaId) {
     allItems.forEach((item) => {
       createProduzindoItemCard(item);
     });
-
-
   } catch (error) {
     console.error("Erro ao recuperar os itens!", error);
   }
@@ -378,7 +376,6 @@ function createProduzindoItemCard(item) {
         item.querySelector(".item-number").textContent = `${index + 1} `;
       });
     };
-    
 
     itemContainer.addEventListener("dragstart", (event) => {
       event.dataTransfer.setData("text/plain", itemContainer.id);
@@ -402,7 +399,6 @@ function createProduzindoItemCard(item) {
         }
       }
     });
-    
 
     listContainer.addEventListener("drop", (event) => {
       event.preventDefault();
@@ -438,7 +434,7 @@ function getDragAfterElement(container, y) {
   const draggableElements = [...container.querySelectorAll(".item-container:not(.dragging)")];
 
   return draggableElements.reduce(
-    (closest, child)  => {
+    (closest, child) => {
       const box = child.getBoundingClientRect();
       const offset = y - box.top - box.height / 2;
       if (offset < 0 && offset > closest.offset) {
