@@ -27,7 +27,7 @@ export class Card {
         valueDiv.className += " card-status ";
         let status = value.toLowerCase();
         if (status === "recebido") {
-          valueDiv.className += " card-st atus-recebido";
+          valueDiv.className += " card-status-recebido";
         } else if (status === "comprado") {
           valueDiv.className += " card-status-comprado";
         }
