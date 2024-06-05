@@ -712,11 +712,30 @@ input[type="checkbox"]:checked::before {
 }
 
 .card-status-reservado {
+  background: #58f9ff23 !important;
+  color: #caffff;
+  border: solid 1px #bafcff3d;
+  border-radius: 0.3rem !important;
+  padding: 10px;
+}
+
+/* consulta item */
+.card-status-produzindo {
+  background: #ff6e2656 !important;
+  border: 1px solid #ff730098;
+  color: #ffcaa4;
+  border-radius: 0.3rem !important;
+  padding: 10px;
+}
+
+.card-status-finalizado {
   background: #6cff5823 !important;
   color: #d0ffca;
   border: solid 1px #c2ffba3d;
+  border-radius: 0.3rem !important;
   padding: 10px;
 }
+
 .card-status-reservado:hover {
   color: #d0ffca !important;
 }
