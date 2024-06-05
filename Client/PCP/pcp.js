@@ -56,15 +56,15 @@ if (localStorage.getItem("darkMode") === "enabled") {
 }
 
 function highlightCurrentPage() {
-  var currentPage = window.location.pathname.split("/").pop(); 
-  $("ul.list-unstyled li").removeClass("active"); 
+  var currentPage = window.location.pathname.split("/").pop();
+  $("ul.list-unstyled li").removeClass("active");
   $("ul.list-unstyled li a[href='" + currentPage + "']")
     .parent()
-    .addClass("active"); 
+    .addClass("active");
 }
 
 $(document).ready(function () {
-  highlightCurrentPage(); 
+  highlightCurrentPage();
 });
 
 document.getElementById("optionsButton").addEventListener("click", function () {
