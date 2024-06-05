@@ -462,7 +462,7 @@
   #reservados {
     width: 100%;
     overflow-y: auto;
-    max-height: 40vh;
+    max-height: 65vh;
     border-radius: 1rem;
   }
   

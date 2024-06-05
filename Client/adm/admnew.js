@@ -303,20 +303,20 @@ async function fetchAllItems(maquinaId) {
       return;
     }
 
+    // Limpar as listas antes de adicionar novos itens
     produzindoItemList.innerHTML = "";
     finalizadoItemList.innerHTML = "";
 
+    // Adicionar novos itens às listas
     allItems.forEach((item) => {
       createProduzindoItemCard(item);
     });
+
+
   } catch (error) {
     console.error("Erro ao recuperar os itens!", error);
   }
 }
-
-//===================================================
-// Função para criar o card de visualização de status de item de cada Maquina
-//===================================================
 
 document.addEventListener("DOMContentLoaded", () => {
   handleDarkModeToggle();
@@ -324,9 +324,19 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function createProduzindoItemCard(item) {
+  // Gerar um ID único para o contêiner do item com base em uma combinação única dos valores dos campos do item
+  const containerId = `container-${item.id_item_maquina}-${item.part_number}-${item.status}`;
+
+  // Verificar se o contêiner com o ID gerado já existe na lista
+  const existingItem = document.getElementById(containerId);
+  if (existingItem) {
+    console.log(`Item ID: ${existingItem.id} já existe na lista. Ignorando adição.`);
+    return; // Se o item já existe na lista, não faz nada
+  }
+
   const itemContainer = document.createElement("div");
   itemContainer.className = "item-container";
-  itemContainer.id = `container-${item.part_number}`; // Adiciona um ID único ao itemContainer
+  itemContainer.id = containerId; // Adiciona o ID único ao itemContainer
   itemContainer.draggable = true;
 
   const icon = document.createElement("img");
@@ -368,6 +378,7 @@ function createProduzindoItemCard(item) {
         item.querySelector(".item-number").textContent = `${index + 1} `;
       });
     };
+    
 
     itemContainer.addEventListener("dragstart", (event) => {
       event.dataTransfer.setData("text/plain", itemContainer.id);
@@ -376,19 +387,22 @@ function createProduzindoItemCard(item) {
 
     itemContainer.addEventListener("dragend", () => {
       itemContainer.classList.remove("dragging");
-      renumberItems(); // Chama a função para renumerar os itens após a operação de arrastar e soltar
+      // Não é necessário chamar renumberItems() aqui, pois já é chamado no evento 'drop'
     });
 
     listContainer.addEventListener("dragover", (event) => {
       event.preventDefault();
       const afterElement = getDragAfterElement(listContainer, event.clientY);
       const draggable = document.querySelector(".dragging");
-      if (afterElement == null) {
-        listContainer.appendChild(draggable);
-      } else {
-        listContainer.insertBefore(draggable, afterElement);
+      if (afterElement !== draggable.nextElementSibling && afterElement !== draggable) {
+        if (afterElement == null) {
+          listContainer.appendChild(draggable);
+        } else {
+          listContainer.insertBefore(draggable, afterElement);
+        }
       }
     });
+    
 
     listContainer.addEventListener("drop", (event) => {
       event.preventDefault();
@@ -424,7 +438,7 @@ function getDragAfterElement(container, y) {
   const draggableElements = [...container.querySelectorAll(".item-container:not(.dragging)")];
 
   return draggableElements.reduce(
-    (closest, child) => {
+    (closest, child)  => {
       const box = child.getBoundingClientRect();
       const offset = y - box.top - box.height / 2;
       if (offset < 0 && offset > closest.offset) {
