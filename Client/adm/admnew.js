@@ -128,7 +128,6 @@ async function fetchitens(maquinaId) {
   }
 }
 
-
 function adicionarItemAoStaged(item, maquinaId) {
   const stagedItems = document.getElementById("stagedItems");
 
@@ -273,11 +272,10 @@ function createItemCard(item, maquinaId) {
 
   adicionarItemButton.removeEventListener("click", adicionarItemAoStaged); // Remova o evento anterior
   adicionarItemButton.addEventListener("click", (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      adicionarItemAoStaged(item, maquinaId);
+    event.preventDefault();
+    event.stopPropagation();
+    adicionarItemAoStaged(item, maquinaId);
   });
-  
 
   reservados.appendChild(card);
 
@@ -296,12 +294,12 @@ document.getElementById("MostrarProg").addEventListener("click", function () {
 
   const maquinaId = currentMaquinaId;
 
-  if (!itensRecuperados) { // Verificar se os itens já foram recuperados
+  if (!itensRecuperados) {
+    // Verificar se os itens já foram recuperados
     fetchAllItems(maquinaId);
     itensRecuperados = true; // Definir a variável para true para indicar que os itens foram recuperados
   }
 });
-
 
 //===============================================================================
 // Função para buscar e exibir todos os itens PRODUZINDO e FINALIZADO para a máquina específica
@@ -338,7 +336,6 @@ async function fetchAllItems(maquinaId) {
     console.error("Erro ao recuperar os itens!", error);
   }
 }
-
 
 function createProduzindoItemCard(item) {
   // Gerar um ID único para o contêiner do item com base em uma combinação única dos valores dos campos do item
@@ -438,7 +435,6 @@ function createProduzindoItemCard(item) {
     itemCard.insertBefore(itemNumberElement, partNumberElement);
 
     listContainer.appendChild(itemContainer);
-   
   } else {
     console.error("Elemento não encontrado ao criar cartão do item");
   }
@@ -457,7 +453,7 @@ function getDragAfterElement(container, y) {
         return closest;
       }
     },
-    { offset: Number.NEGATIVE_INFINITY }
+    { offset: Number.NEGATIVE_INFINITY },
   ).element;
 }
 
@@ -504,17 +500,14 @@ const modalContent2 = document.querySelector(".modal-content-2");
 const modalContent3 = document.querySelector(".modal-content-3");
 
 if (voltarButton1 && voltarButton2 && modalContent2 && modalContent3) {
-
   voltarButton1.addEventListener("click", () => {
     modalContent2.classList.add("d-none");
     modalContent3.classList.add("d-none");
-    
   });
 
   voltarButton2.addEventListener("click", () => {
     modalContent2.classList.remove("d-none");
     modalContent3.classList.add("d-none");
-   
   });
 
   listarFinalizadosButton.addEventListener("click", () => {
@@ -538,7 +531,6 @@ function logItemPositions(listContainer) {
     console.log(`Posição: ${position}, Part Number: ${partNumber}`);
   });
 }
-
 
 document.addEventListener("DOMContentLoaded", () => {
   handleDarkModeToggle();
