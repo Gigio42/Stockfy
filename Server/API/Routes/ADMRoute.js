@@ -58,7 +58,6 @@ async function admRoute(fastify, options) {
       reply.code(500).send({ message: "Erro ao atualizar as prioridades" });
     }
   });
-  
 }
 
 export default admRoute;
