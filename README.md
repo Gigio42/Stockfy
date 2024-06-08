@@ -1,5 +1,8 @@
 # Sistema de Gerenciamento de Estoque
 
+
+
+
 Para começar, se quiserem fazer alterações nesse documento, existem 2 formas:
 
 Todas elas começam tendo que clonar o repositório para ter na sua maquina:
