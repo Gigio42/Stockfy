@@ -11,9 +11,9 @@ document.addEventListener("DOMContentLoaded", function () {
   itemModal.initialize();
 });
 
-export function setUserInfo(name) {
-  document.getElementById("user-name").textContent = localStorage.getItem("nome") || "UserName";
-}
+
+document.getElementById("user-name").textContent = localStorage.getItem("nome") || "UserName";
+
 
 var darkModeToggle = document.getElementById("darkModeToggle");
 var body = document.body;
