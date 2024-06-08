@@ -21,7 +21,7 @@ body {
     overflow: hidden; /* Remove a barra de rolagem se não for necessário */
 }
 
-body, table, #button-container, td, th, input[type="text"], input[type="date"], select{
+body, table, #button-container, th, input[type="text"], input[type="date"], select{
     background-color: var(--background-color);
     color: var(--text-color);
 }
@@ -65,7 +65,7 @@ table {
     box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Sombra leve ao redor da tabela para melhor definição */
 }
 
-th, td {
+th {
     
     text-align: center; /* Centraliza texto em cabeçalhos e células */
     padding: 8px 10px; /* Espaço adequado dentro das células */
@@ -128,7 +128,7 @@ button:hover {
         min-width: 100%; /* Garante mínimo de largura conforme a largura do dispositivo */
     }
     
-    th, td {
+    th {
         padding: 8px;
         min-width: 60px; /* Define uma largura mínima para cada célula */
         white-space: nowrap; /* Mantém o conteúdo na mesma linha */

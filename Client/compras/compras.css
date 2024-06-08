@@ -78,20 +78,6 @@ html, body {
     overflow-y: auto; /* Adiciona rolagem vertical quando necessário */
 }
 
-.precontainer {
-    max-height: 80vh;
-    overflow-y: auto; /* Adiciona rolagem vertical quando necessário */
-}
-
-
-.table td {
-    align-content: center;
-    text-align: center;
-    font-size: 1.5rem;
-    justify-content: center;
-    height: 5rem;
-}
-
 
 .btninferior {
     position: fixed;
@@ -141,43 +127,6 @@ html, body {
 #expectedDate.invalid-date {
     animation: blink 1s infinite;
 }
-
-    .flatpickr-calendar {
-        background: #f8f9fa;
-        border: 1px solid #198cff;
-        border-radius: 1rem !important;
-        color: #495057;
-        font-size: 12px !important;
-        background-color: #a2a2a257 !important;
-        backdrop-filter: blur(5px) !important;
-
-    }
-    .flatpickr-day.today {
-        background: #3999ff;
-        color: white;
-        border: none;
-    }
-    .flatpickr-day.selected {
-        background: #28a745 !important;
-        border: none !important;
-        color: white;
-    }
-
-    .flatpickr-day:hover{
-        background: #a9a9a97e !important;
-    }
-
-    .flatpickr-current-month .flatpickr-monthDropdown-months {
-        border-radius: 0.5rem !important;
-        color: #131313 !important;
-        padding: 0.2rem !important;
-    }
-
-    .flatpickr-current-month .flatpickr-monthDropdown-months .flatpickr-monthDropdown-month {
-        color: #232323 !important;
-        background: #7979793a !important;
-        border: none !important;
-    }
 
 
 
@@ -376,18 +325,12 @@ body button.edit.disabled {
 }
 
 /* Centraliza o conteúdo das células da tabela */
-td, th {
+ th {
     text-align: center;
     vertical-align: middle;
 }
 
 /* Define o estilo do input para ocupar 100% da altura da célula e estar centralizado */
-td input {
-    width: 90%; /* Pode ajustar conforme necessário */
-    height: 100%; /* Define a altura do input igual à altura da célula */
-    box-sizing: border-box; /* Garante que o padding não adicione largura extra */
-    text-align: center; /* Centraliza o texto dentro do input */
-}
 
 /* Classe para bordas arredondadas nas linhas da tabela */
 .rounded-rows {
@@ -395,18 +338,10 @@ td input {
 }
 
 /* CSS para centralizar o input dentro do td */
-td, th {
+ th {
     position: relative;
     text-align: center;
     vertical-align: middle;
-}
-
-td .centered-input {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    margin: 0;
 }
 
 #purchaseForm {
@@ -510,10 +445,6 @@ border-radius: 2rem;
 
 #supplier::placeholder {
   color:  #ff8f32;
-}
-
-.input-error {
-    border: 1px solid rgb(255, 50, 50);
 }
 
 .expand-icon {
