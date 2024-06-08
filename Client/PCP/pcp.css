@@ -349,17 +349,17 @@ button:hover {
 
 @media (max-width: 600px) {
   .modal-content {
-    width: 95%; 
-    padding: 5px; 
+    width: 95%;
+    padding: 5px;
     font-size: 0.8em;
   }
   .modal-content input {
-    font-size: 0.8em; 
+    font-size: 0.8em;
   }
   .preview {
     display: none;
   }
-  .card{
+  .card {
     width: 120%;
   }
 }
@@ -595,7 +595,11 @@ input[type="checkbox"] {
 }
 
 .card-status-recebido {
-  background-color: #28a745;
+  background: #5cff2656 !important;
+  border: 1px solid #2bff0098;
+  color: #adffa4;
+  border-radius: 0.7rem !important;
+  padding: 10px;
 }
 
 .card-status-comprado {
