@@ -84,7 +84,7 @@ h1 {
 }
 
 .logo {
-  width: 7rem;
+  width: 10rem;
 }
 
 .logo-container {
@@ -735,6 +735,7 @@ input[type="checkbox"]:checked::before {
   .card {
     margin-bottom: 5px;
     margin-top: 1px;
+    width: 100%;
   }
 
   .card-div {
@@ -922,3 +923,6 @@ input[type="checkbox"]:checked::before {
   border: solid 1px #8a8a8a3d;
   padding: 10px;
 }
+
+
+
