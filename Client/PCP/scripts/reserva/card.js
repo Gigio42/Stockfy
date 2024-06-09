@@ -77,10 +77,10 @@ export class Card {
     infoButton.innerHTML = '<i class="fas fa-chevron-down"></i>';
 
     let infoModal = new InfoModal();
-    infoModal.initialize();
 
     infoButton.addEventListener("click", async (event) => {
       event.preventDefault();
+      infoModal.initialize(); // Move this line here
       infoModal.items = [this.chapa];
       await infoModal.openModal(this.chapa);
     });
