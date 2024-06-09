@@ -11,6 +11,12 @@ export function handleShowSelectedButtonClick(getSelectedSubcards) {
   closeModal.onclick = () => {
     popupContainer.style.display = "none";
   };
+
+  window.onclick = (event) => {
+    if (event.target == popupContainer) {
+      popupContainer.style.display = "none";
+    }
+  };
 }
 
 function removeExistingListener(element) {
@@ -28,7 +34,7 @@ function createModalHandler(modalContent, closeModal, getSelectedSubcards, popup
     contentWrapper.style.maxHeight = "50vh";
     contentWrapper.style.overflowY = "auto";
 
-    const keys = ["id_chapa", "largura", "fornecedor", "qualidade", "quantidade_comprada", "quantidade_estoque"];
+    const keys = ["id_chapa", "largura", "fornecedor", "qualidade", "quantidade_disponivel"];
 
     const selectedSubcards = getSelectedSubcards();
     selectedSubcards.forEach((chapa) => {
@@ -136,6 +142,9 @@ function createPartNumberForm() {
   input.id = "partNumberInput";
   input.placeholder = "PART NUMBER";
   form.appendChild(input);
+
+  $(input).mask("9999.9999");
+
   return form;
 }
 

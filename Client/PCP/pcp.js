@@ -11,9 +11,9 @@ document.addEventListener("DOMContentLoaded", function () {
   itemModal.initialize();
 });
 
-export function setUserInfo(name) {
-  document.getElementById("user-name").textContent = localStorage.getItem("nome") || "UserName";
-}
+
+document.getElementById("user-name").textContent = localStorage.getItem("nome") || "UserName";
+
 
 var darkModeToggle = document.getElementById("darkModeToggle");
 var body = document.body;
@@ -54,6 +54,7 @@ if (localStorage.getItem("darkMode") === "enabled") {
     aside.classList.remove("dark-mode-aside");
   }
 }
+
 
 function highlightCurrentPage() {
   var currentPage = window.location.pathname.split("/").pop();

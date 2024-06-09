@@ -44,9 +44,11 @@ export class ItemModal {
         this.searchButton.click();
       }
     });
+
+    $(searchBar).mask("9999.9999");
+
     return searchBar;
   }
-
   createSearchButton() {
     const searchButton = document.createElement("button");
     searchButton.textContent = "Search";

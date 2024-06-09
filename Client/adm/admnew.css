@@ -13,11 +13,6 @@
     border-radius: 0 !important;
   }
   
-  .cardfora {
-    background: #191919;
-    border: none !important;
-  }
-  
   h1 {
     color: #0f0f0f;
     font-size: 2rem;
@@ -140,11 +135,6 @@
     /* Remove o sublinhado */
   }
   
-  .icon-home {
-    fill: red;
-    /* Altere "red" para a cor desejada */
-  }
-  
   li {
     color: #ffffff;
     padding: 1rem;
@@ -186,11 +176,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-  
-  .col-md-12 {
-    padding: 0;
-    margin-right: 2rem;
   }
   
   .row {
@@ -759,14 +744,4 @@
   
   .img-container:hover {
     background: #212121;
-  }
-  
-  .item-position {
-    margin-right: 10px;
-    font-weight: bold;
-  }
-  
-  .item-id {
-    color: red;
-    font-weight: bold;
   }

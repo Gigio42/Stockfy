@@ -1,4 +1,3 @@
-// utils/modalUtil.js
 export function createModalContent(modalContent, closeModal, contentGenerator) {
   return () => {
     modalContent.innerHTML = "";
