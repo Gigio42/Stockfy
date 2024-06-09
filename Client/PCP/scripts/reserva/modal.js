@@ -136,8 +136,13 @@ function createPartNumberForm() {
   input.id = "partNumberInput";
   input.placeholder = "PART NUMBER";
   form.appendChild(input);
+
+  $(input).mask("9999.9999");
+
   return form;
 }
+
+
 
 function createReserveButton(selectedSubcards) {
   const reserveButton = document.createElement("button");

@@ -55,6 +55,7 @@ if (localStorage.getItem("darkMode") === "enabled") {
   }
 }
 
+
 function highlightCurrentPage() {
   var currentPage = window.location.pathname.split("/").pop();
   $("ul.list-unstyled li").removeClass("active");

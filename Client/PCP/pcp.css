@@ -447,16 +447,14 @@ formulário
 }
 
 .mobileOptions {
-  background: #a0a0a0;
-  color: white;
+  background: #262626;
   border: none;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 0 5px; /* Adjusted margin */
-  transition: all 0.3s ease;
+  border-radius: 1rem;
+  color: #fff;
+  padding: 10px 10px;
+  transition: background 0.3s ease;
+  font-size: 1em;
+  grid-column: span 2;
   cursor: pointer;
 }
 
@@ -663,8 +661,8 @@ input[type="checkbox"]:checked::before {
 
 /* consulta item */
 .card-status-produzindo {
-  background: #ff6e2656 !important;
-  border: 1px solid #ff730098;
+  background: #fff12656 !important;
+  border: 1px solid #ffd00098;
   color: #ffcaa4;
   border-radius: 0.3rem !important;
   padding: 10px;
