@@ -62,7 +62,7 @@ export class InfoModal {
       cardBody.appendChild(cardTitle);
 
       const cardText = document.createElement("p");
-      cardText.className = "card-text";
+      cardText.className = "card-title"; //todo preguiça de arrumar isso ainda
       cardText.textContent = JSON.stringify(value, null, 2);
       cardBody.appendChild(cardText);
     });
