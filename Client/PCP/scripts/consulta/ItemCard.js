@@ -61,8 +61,12 @@ export class ItemCard {
     const status = this.item.status.toLowerCase();
     if (status === "reservado") {
       statusDiv.className += " card-status-reservado";
+    } else if (status === "produzindo") {
+      statusDiv.className += " card-status-produzindo";
+    } else if (status === "finalizado") {
+      statusDiv.className += " card-status-finalizado";
     } else {
-      statusDiv.className += " bg-secondary";
+      statusDiv.className += " bg-danger";
     }
     return statusDiv;
   }

@@ -124,10 +124,6 @@
     text-decoration: none; /* Remove o sublinhado */
   }
   
-  .icon-home {
-    fill: red; /* Altere "red" para a cor desejada */
-  }
-  
   
   li {
     color: #ffffff;

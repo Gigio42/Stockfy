@@ -25,7 +25,16 @@ function validaUsuario() {
       if (data.exists) {
         const nome = document.getElementById("username").value;
         localStorage.setItem("nome", nome);
-        window.location.href = "../home.html";
+
+        const maquina = document.getElementById("selectMaquina").value;
+        localStorage.setItem("maquina", maquina);
+
+        const isProducaoChecked = document.getElementById("toggleProducao").checked;
+        if (isProducaoChecked) {
+          window.location.href = "../produção/producao.html";
+        } else {
+          window.location.href = "../home.html";
+        }
       } else {
         alert("Usuário ou senha inválidos!");
       }
@@ -83,6 +92,7 @@ function carregarMaquinas() {
       const select = document.getElementById("selectMaquina");
       // Limpa opções existentes
       select.innerHTML = '<option value="">Máquina</option>';
+      console.log();
 
       // Adiciona novas opções baseadas na resposta
       data.forEach((maquina) => {

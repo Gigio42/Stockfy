@@ -1,4 +1,5 @@
 import { createElementWithClass } from "../utils/dom.js";
+import { InfoModal } from "./infoModal.js";
 
 export class Card {
   constructor(chapa, keys, index, sortKey, onSubcardSelectionChange, isChecked = false) {
@@ -27,7 +28,7 @@ export class Card {
         valueDiv.className += " card-status ";
         let status = value.toLowerCase();
         if (status === "recebido") {
-          valueDiv.className += " card-st atus-recebido";
+          valueDiv.className += " card-status-recebido";
         } else if (status === "comprado") {
           valueDiv.className += " card-status-comprado";
         }
@@ -74,9 +75,16 @@ export class Card {
   createInfoButton() {
     let infoButton = createElementWithClass("button", "btn btn-sm ml-2 card-info-button");
     infoButton.innerHTML = '<i class="fas fa-chevron-down"></i>';
-    infoButton.addEventListener("click", () => {
-      alert(JSON.stringify(this.chapa, null, 2));
+
+    let infoModal = new InfoModal();
+    infoModal.initialize();
+
+    infoButton.addEventListener("click", async (event) => {
+      event.preventDefault();
+      infoModal.items = [this.chapa];
+      await infoModal.openModal(this.chapa);
     });
+
     return infoButton;
   }
 

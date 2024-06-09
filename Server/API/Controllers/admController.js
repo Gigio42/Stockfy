@@ -81,9 +81,34 @@ class AdmController {
         },
       });
 
-      return items.map((item_maquina) => item_maquina.Item);
+      // Mapeia os itens e inclui o id_item_maquina e a ordem de cada item
+      return items.map((item_maquina) => {
+        const item = item_maquina.Item;
+        return {
+          ...item,
+          id_item_maquina: item_maquina.id_item_maquina,
+          ordem: item_maquina.ordem, // Inclui a coluna "ordem"
+        };
+      });
     } catch (error) {
       throw new Error("Erro ao buscar itens para a máquina: " + error.message);
+    }
+  }
+
+  // Novo método para atualizar a prioridade de um item
+  async updateItemPriority(itemId, newPriority) {
+    try {
+      // Atualiza a prioridade do item no banco de dados usando o Prisma
+      const updatedItem = await Item.update({
+        where: { id_item: itemId }, // Condição para encontrar o item pelo ID
+        data: { prioridade: newPriority }, // Dados a serem atualizados (nova prioridade)
+      });
+
+      return updatedItem; // Retorna o item atualizado
+    } catch (error) {
+      // Se ocorrer um erro, loga o erro e lança uma nova exceção com a mensagem de erro
+      console.error("Erro ao atualizar a prioridade do item:", error);
+      throw new Error("Erro ao atualizar a prioridade do item: " + error.message);
     }
   }
 }

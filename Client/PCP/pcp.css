@@ -13,11 +13,6 @@
   border-radius: 0 !important;
 }
 
-.cardfora {
-  background: #191919;
-  border: none !important;
-}
-
 h1 {
   color: #0f0f0f;
   font-size: 2rem;
@@ -84,7 +79,7 @@ h1 {
 }
 
 .logo {
-  width: 7rem;
+  width: 10rem;
 }
 
 .logo-container {
@@ -150,11 +145,6 @@ a:hover {
   /* Remove o sublinhado */
 }
 
-.icon-home {
-  fill: red;
-  /* Altere "red" para a cor desejada */
-}
-
 li {
   color: #ffffff;
   padding: 1rem;
@@ -196,11 +186,6 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.col-md-12 {
-  padding: 0;
-  margin-right: 2rem;
 }
 
 .row {
@@ -349,17 +334,17 @@ button:hover {
 
 @media (max-width: 600px) {
   .modal-content {
-    width: 95%; 
-    padding: 5px; 
+    width: 95%;
+    padding: 5px;
     font-size: 0.8em;
   }
   .modal-content input {
-    font-size: 0.8em; 
+    font-size: 0.8em;
   }
   .preview {
     display: none;
   }
-  .card{
+  .card {
     width: 120%;
   }
 }
@@ -422,18 +407,6 @@ formulário
   grid-column: span 2;
 }
 
-.updade {
-  background: #1d2b3a;
-  color: #96c9ff;
-  border: solid 1px #96c9ff84;
-}
-
-.updade:hover {
-  background: #26394d;
-  color: #96c9ff;
-  border: solid 1px #96c9ff84;
-}
-
 #sortOrder {
   width: 50px;
   height: 38px;
@@ -442,16 +415,6 @@ formulário
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.checkbox-container {
-  display: flex;
-  padding: 0%;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
 }
 
 .checkbox-button {
@@ -476,10 +439,6 @@ formulário
   height: 3rem;
 }
 
-.text-left {
-  padding-bottom: 0 !important;
-}
-
 .header-custom {
   display: flex;
   justify-content: space-between;
@@ -488,16 +447,14 @@ formulário
 }
 
 .mobileOptions {
-  background: #a0a0a0;
-  color: white;
+  background: #262626;
   border: none;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 0 5px; /* Adjusted margin */
-  transition: all 0.3s ease;
+  border-radius: 1rem;
+  color: #fff;
+  padding: 10px 10px;
+  transition: background 0.3s ease;
+  font-size: 1em;
+  grid-column: span 2;
   cursor: pointer;
 }
 
@@ -530,23 +487,6 @@ formulário
   margin-bottom: 10px;
   margin-top: 15px;
   border: none;
-}
-
-.card-div {
-  border-radius: 1.5rem !important;
-  padding: 0px;
-  margin-bottom: 10px;
-  margin-top: 15px;
-  background-color: rgb(34, 34, 34);
-  height: 70px;
-}
-
-.card-value-row {
-  display: flex;
-  overflow: auto;
-  background-color: #007bff00;
-  color: white;
-  font-size: 1rem;
 }
 
 input[type="checkbox"] {
@@ -595,7 +535,11 @@ input[type="checkbox"] {
 }
 
 .card-status-recebido {
-  background-color: #28a745;
+  background: #5cff2656 !important;
+  border: 1px solid #2bff0098;
+  color: #adffa4;
+  border-radius: 0.7rem !important;
+  padding: 10px;
 }
 
 .card-status-comprado {
@@ -708,19 +652,34 @@ input[type="checkbox"]:checked::before {
 }
 
 .card-status-reservado {
+  background: #58f9ff23 !important;
+  color: #caffff;
+  border: solid 1px #bafcff3d;
+  border-radius: 0.3rem !important;
+  padding: 10px;
+}
+
+/* consulta item */
+.card-status-produzindo {
+  background: #fff12656 !important;
+  border: 1px solid #ffd00098;
+  color: #ffcaa4;
+  border-radius: 0.3rem !important;
+  padding: 10px;
+}
+
+.card-status-finalizado {
   background: #6cff5823 !important;
   color: #d0ffca;
   border: solid 1px #c2ffba3d;
+  border-radius: 0.3rem !important;
   padding: 10px;
 }
+
 .card-status-reservado:hover {
   color: #d0ffca !important;
 }
 /* botão de fade pro card item pra n clicar em deletar */
-.card-disabled-button {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
 
 /* ======================================
    media mode do card Styles
@@ -731,14 +690,7 @@ input[type="checkbox"]:checked::before {
   .card {
     margin-bottom: 5px;
     margin-top: 1px;
-  }
-
-  .card-div {
-    height: auto;
-  }
-
-  .card-value-row {
-    font-size: 0.1rem;
+    width: 100%;
   }
 
   .value-row {
@@ -780,13 +732,6 @@ input[type="checkbox"]:checked::before {
 }
 
 /* LUGHTMODE CARD Montei por graça pode tirar se quiser */
-.light-mode .card-div {
-  background-color: #ffffff;
-}
-
-.light-mode .card-value-row {
-  color: #bdb8b8;
-}
 
 .light-mode .card-body {
   background-color: #efefef;
@@ -831,22 +776,6 @@ input[type="checkbox"]:checked::before {
   background: #e0e0e0;
 }
 
-.light-mode .bg-warning {
-  background: #fff3cd !important;
-  border: 1px solid #ffcc00;
-  color: #333;
-}
-
-.light-mode .bg-primary {
-  background: #d4edda !important;
-  color: #333;
-  border: solid 1px #c3e6cb;
-}
-
-.light-mode .bg-primary:hover {
-  color: #333 !important;
-}
-
 .light-mode input[type="checkbox"] {
   background-color: #e0e0e0;
   border: 2px solid #ccc;
@@ -888,17 +817,6 @@ input[type="checkbox"]:checked::before {
   color: #333;
 }
 
-.light-mode .updade {
-  background: #d4edda;
-  color: #333;
-  border: solid 1px #c3e6cb;
-}
-
-.light-mode .updade:hover {
-  background: #c3e6cb;
-  color: #333;
-}
-
 .light-mode .checkbox-button {
   background: #e0e0e0;
   border: 1px solid #ccc;
@@ -918,3 +836,6 @@ input[type="checkbox"]:checked::before {
   border: solid 1px #8a8a8a3d;
   padding: 10px;
 }
+
+
+
