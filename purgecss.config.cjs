@@ -1,4 +1,4 @@
 module.exports = {
-  content: ['./Client/**/*.html', './Client/**/*.js'],
-  css: ['./Client/**/*.css']
-}
+  content: ["./Client/**/*.html", "./Client/**/*.js"],
+  css: ["./Client/**/*.css"],
+};
