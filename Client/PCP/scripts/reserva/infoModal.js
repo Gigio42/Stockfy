@@ -4,7 +4,7 @@ export class InfoModal {
   constructor() {
     this.modal = document.getElementById("infoModal");
     this.modalContent = document.getElementById("infoContainer");
-    this.closeModalButton = document.getElementById("closeItemModal");
+    this.closeModalButton = document.getElementById("closeInfoModal");
   }
 
   initialize() {
