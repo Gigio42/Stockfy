@@ -205,7 +205,7 @@
         function fetchChapas(xPed) {
             clearTable(); // Limpa as tabelas antes de buscar e adicionar novos dados
             axios
-            .get(`https://stockfysite.onrender.com/recebimento/${xPed}`) // Altera o ID para puxar as chapas
+            .get(`https://stockfy.onrender.com/recebimento/${xPed}`) // Altera o ID para puxar as chapas
             .then((response) => {
                 const data = response.data;
                 if (data && data.length > 0) {
