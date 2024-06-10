@@ -95,16 +95,25 @@ class AdmController {
     }
   }
   
-  async updateItemPriorities() {
+  async updateItemPriorities(newPriorities) {
     try {
-      const allItems = await Item.findMany(); // Busca todos os itens
-      const sortedItems = allItems.sort((a, b) => a.prioridade - b.prioridade); // Ordena os itens por prioridade
+      console.log("Recebido para atualização de prioridades:", newPriorities);
   
-      // Atualiza a prioridade de cada item com base na sua posição na lista ordenada
-      await Promise.all(sortedItems.map(async (item, index) => {
+      // Verificar se todos os itens existem antes de atualizar
+      for (const { id_item } of newPriorities) {
+        const itemExists = await Item.findUnique({
+          where: { id_item: id_item },
+        });
+  
+        if (!itemExists) {
+          throw new Error(`Item com id ${id_item} não encontrado`);
+        }
+      }
+  
+      await Promise.all(newPriorities.map(async ({ id_item, prioridade }) => {
         await Item.update({
-          where: { id_item: item.id_item },
-          data: { prioridade: index + 1 } // Define a prioridade como a posição + 1 (para começar em 1)
+          where: { id_item: id_item },
+          data: { prioridade: prioridade }
         });
       }));
   
@@ -114,6 +123,7 @@ class AdmController {
       throw new Error("Erro ao atualizar as prioridades dos itens: " + error.message);
     }
   }
+  
   
 }
 

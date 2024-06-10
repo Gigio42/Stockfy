@@ -20,7 +20,7 @@
   
   h1 {
     color: #0f0f0f;
-    font-size: 2rem;
+    font-size: 180%;
   }
   
   /* ======================================
@@ -166,7 +166,7 @@
   }
   
   .imgicon {
-    width: 1.5rem;
+    width: 3rem;
     border-radius: 0 !important;
   }
   
@@ -295,14 +295,41 @@
   }
   
   .cardMaquina {
+    display: flex;
     padding: 2rem;
-    border-radius: 2rem;
+    border-radius: 1rem;
     background-color: #2d2d2d;
     font-size: 1.5rem;
-    display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
+    height: 2rem;
+    padding-right: 0.5rem;
+  }
+
+  #allMaquina {
+    overflow-y: auto;
+    max-height: calc(100vh - 50px); /* Ajuste 50px para o tamanho da barra de navegação ou outro elemento */
+
+    box-sizing: border-box;
+}
+
+#optionsButton {
+  display: flex;
+line-height: 1;
+padding: 0;
+padding-left: 0.5rem;
+}
+
+
+
+.textButtonli {
+  display: flex;
+  width: 75%;
+}
+
+  .maquinaName {
+    font-size: 90%
   }
   
   .svgIcon {
@@ -390,6 +417,22 @@
     z-index: 999;
     height: 95vh;
     display: none;
+  }
+
+  .modal-content-4 {
+      padding: 20px;
+      width: 95vw;
+      border: none;
+      border-radius: 1.5rem;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #141414;
+      z-index: 999;
+      height: 95vh;
+      display: none;
   }
   
   .modal-content-3.show {
@@ -593,6 +636,10 @@
     display: flex;
     gap: 1rem;
   }
+
+  .ButtonsModal2 button {
+    margin-right: 10px; /* Ajuste conforme necessário */
+  }
   
   #confirmarOrdem,
   #ListarFinalizados,
@@ -606,9 +653,10 @@
     background-color: #1c1c1c;
     color: #b4b4b4;
     font-size: 2rem;
-    margin: 0.5rem;
   }
   
+  #confirmarOrdem:hover,
+  #ListarFinalizados:hover,
   #proxiProcesso:hover,
   #MostrarProg:hover {
     background: #212121;
@@ -704,8 +752,8 @@
     background-color: #2f2f2f;
     width: fit-content;
     padding: 0.5rem 1rem;
-  
     margin-bottom: 3rem;
+    margin-top: 1rem;
     border-radius: 1rem;
     color: #929292;
     border: solid 1px #b3b3b341;
