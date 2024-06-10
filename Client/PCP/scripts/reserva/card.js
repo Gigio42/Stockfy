@@ -9,10 +9,11 @@ export class Card {
     this.sortKey = sortKey;
     this.onSubcardSelectionChange = onSubcardSelectionChange;
     this.isChecked = isChecked;
+    this.cards = [];
   }
 
   createValueDiv(key, value) {
-    let valueDiv = createElementWithClass("div", `card-value-div col text-center value align-items-center justify-content-center rounded`);
+    let valueDiv = createElementWithClass("div", `card-value-div col text-center value d-flex align-items-center justify-content-center rounded`);
 
     if (value === null) {
       valueDiv.textContent = "N/A";

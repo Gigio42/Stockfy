@@ -1,19 +1,33 @@
 import { reserveChapas } from "../utils/connection.js";
 
-export function handleShowSelectedButtonClick(getSelectedSubcards) {
+export function handleShowSelectedButtonClick(getSelectedChapas) {
   const showSelectedButton = document.getElementById("showSelectedButton");
   const modalContent = document.getElementById("modalContent");
   const closeModal = document.getElementById("closeModal");
   const popupContainer = document.getElementById("popupContainer");
 
   removeExistingListener(showSelectedButton);
-  showSelectedButton.onclick = createModalHandler(modalContent, closeModal, getSelectedSubcards, popupContainer);
+  showSelectedButton.onclick = () => {
+    const selectedChapas = getSelectedChapas();
+    if (selectedChapas.length > 0) {
+      const modalHandler = createModalHandler(modalContent, closeModal, () => selectedChapas, popupContainer);
+      modalHandler();
+    } else {
+      alert("Precisa selecionar pelomenos 1 chapa!");
+    }
+  };
   closeModal.onclick = () => {
     popupContainer.style.display = "none";
   };
 
   window.onclick = (event) => {
     if (event.target == popupContainer) {
+      popupContainer.style.display = "none";
+    }
+  };
+
+  document.onkeydown = (event) => {
+    if (event.key === "Escape") {
       popupContainer.style.display = "none";
     }
   };
@@ -162,13 +176,19 @@ function createReserveButton(selectedSubcards) {
       keepRemaining: document.getElementById(`recycleCheckbox-${subcard.id_chapa}`).checked,
     }));
 
+    const loadingSpinner = document.getElementById("loadingSpinner");
+    loadingSpinner.style.display = "block"; 
+
     try {
       const reservedBy = localStorage.getItem("nome");
-      console.log("reservedBy:", reservedBy); // Add this line
+      console.log("reservedBy:", reservedBy);
       const response = await reserveChapas({ partNumber, chapas, reservedBy });
       console.log(response);
+      location.reload();
     } catch (error) {
       alert(error.message);
+    } finally {
+      loadingSpinner.style.display = "none"; 
     }
   };
   return reserveButton;
