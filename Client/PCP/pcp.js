@@ -1,8 +1,8 @@
 import { ItemModal } from "./scripts/consulta/mainConsulta.js";
 import { Reservar } from "./scripts/reserva/mainForm.js";
 
-if (localStorage.getItem('isLoggedIn') !== 'true') {
-  window.location.href = '../login/login.html';
+if (localStorage.getItem("isLoggedIn") !== "true") {
+  window.location.href = "../login/login.html";
 }
 
 document.addEventListener("DOMContentLoaded", function () {
