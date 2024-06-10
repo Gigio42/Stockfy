@@ -48,9 +48,11 @@ async function admRoute(fastify, options) {
     }
   });
 
-  fastify.post("/atualizar-prioridade", async (request, reply) => {
+  fastify.post("/atualizar-prioridades", async (request, reply) => {
     try {
-      await admController.updateItemPriorities(); // Chama o método no controlador para atualizar as prioridades
+      const newPriorities = request.body;
+      console.log("Dados recebidos na rota /atualizar-prioridades:", newPriorities);
+      await admController.updateItemPriorities(newPriorities);
       reply.send({ message: "Prioridades atualizadas com sucesso" });
       console.log("Prioridades atualizadas com sucesso");
     } catch (err) {
