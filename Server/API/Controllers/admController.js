@@ -123,7 +123,20 @@ class AdmController {
       throw new Error("Erro ao atualizar as prioridades dos itens: " + error.message);
     }
   }
-  
+
+  async getAllItemMaquina() {
+    try {
+      const itemMaquinas = await Item_Maquina.findMany({
+        include: {
+          maquina: true,
+          Item: true,
+        },
+      });
+      return itemMaquinas;
+    } catch (error) {
+      throw new Error("Erro ao buscar todos os Item_Maquina: " + error.message);
+    }
+  }
   
 }
 

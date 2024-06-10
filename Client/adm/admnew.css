@@ -430,7 +430,7 @@ padding-left: 0.5rem;
       right: 0;
       bottom: 0;
       background-color: #141414;
-      z-index: 999;
+      z-index: 9999;
       height: 95vh;
       display: none;
   }

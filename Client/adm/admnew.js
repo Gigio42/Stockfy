@@ -480,6 +480,7 @@ const voltarButton2 = document.getElementById("voltarModalContent2");
 const modalContent2 = document.querySelector(".modal-content-2");
 const modalContent3 = document.querySelector(".modal-content-3");
 
+
 if (voltarButton1 && voltarButton2 && modalContent2 && modalContent3) {
   voltarButton1.addEventListener("click", () => {
     modalContent2.classList.add("d-none");
@@ -509,6 +510,70 @@ function logItemPositions(listContainer) {
     console.log(`Posição: ${position}, Part Number: ${partNumber}`);
   });
 }
+
+//=================================================
+// função para abrir e fechar o nextProcessModal
+//=================================================
+
+
+// Adicione essa função ao seu arquivo JavaScript existente (admnew.js)
+$(document).ready(function(){
+  // Quando o botão "próximo processo" for clicado, exiba o modal
+  $('#optionsButton').click(function(){
+      $('#nextProcessModal').css('display', 'block');
+  });
+
+  // Quando o usuário clicar fora do modal, feche o modal
+  $(window).click(function(event) {
+      if (event.target == $('#nextProcessModal')[0]) {
+          $('#nextProcessModal').css('display', 'none');
+      }
+  });
+
+  // Quando o usuário clicar no botão de fechar no modal, feche o modal
+  $('.close').click(function(){
+      $('#nextProcessModal').css('display', 'none');
+  });
+});
+
+// Dentro do seu arquivo JavaScript do frontend (admnew.js)
+
+// Função para buscar e exibir os part-numbers e suas máquinas dentro do modal
+async function showPartNumbersAndMachines() {
+  try {
+      const response = await axios.get('http://localhost:3000/adm/item_maquina'); // Rota para buscar os Item_Maquina
+
+      // Limpar o conteúdo do modal antes de adicionar novas informações
+      const modalContent = document.querySelector('#nextProcessModal .modal-content');
+      modalContent.innerHTML = '';
+
+      // Criar uma lista para exibir os part-numbers e suas máquinas
+      const list = document.createElement('ul');
+
+      // Iterar sobre os dados recebidos e adicionar cada part-number e sua máquina à lista
+      response.data.forEach(itemMaquina => {
+          const listItem = document.createElement('li');
+          listItem.textContent = `Part-Number: ${itemMaquina.Item.part_number} - Máquina: ${itemMaquina.maquina.nome}`;
+          list.appendChild(listItem);
+      });
+
+      // Adicionar a lista ao conteúdo do modal
+      modalContent.appendChild(list);
+
+  } catch (error) {
+      console.error('Erro ao buscar os part-numbers e máquinas:', error);
+      // Tratar o erro conforme necessário
+  }
+}
+
+// Adicione um evento de clique ao botão para chamar a função quando o modal for aberto
+document.addEventListener('DOMContentLoaded', function () {
+  const optionsButton = document.getElementById('optionsButton');
+  optionsButton.addEventListener('click', showPartNumbersAndMachines);
+});
+
+
+
 
 //=================================================
 // função para CONFIRMAR prioridade

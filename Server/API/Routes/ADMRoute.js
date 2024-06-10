@@ -60,6 +60,16 @@ async function admRoute(fastify, options) {
       reply.code(500).send({ message: "Erro ao atualizar as prioridades" });
     }
   });
+
+  fastify.get("/item_maquina", async (request, reply) => {
+    try {
+      const itemMaquinas = await admController.getAllItemMaquina(); // Nova função no controlador para buscar todos os Item_Maquina
+      reply.send(itemMaquinas);
+    } catch (err) {
+      reply.code(500).send({ message: "Internal Server Error" });
+    }
+  });
+  
 }
 
 export default admRoute;
