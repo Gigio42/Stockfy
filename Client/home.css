@@ -53,7 +53,12 @@ nav ul li:hover {
 
 nav ul li a {
     color: var(--text-color);
-    text-decoration: none;
+    text-decoration: none !important;
+}
+
+nav ul li a:hover {
+    color: var(--text-color);
+    text-decoration: none !important;
 }
 
 .theme-switch-wrapper {

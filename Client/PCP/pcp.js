@@ -5,6 +5,11 @@ if (localStorage.getItem("isLoggedIn") !== "true") {
   window.location.href = "../login/login.html";
 }
 
+logoutButton.addEventListener("click", function () {
+  localStorage.clear();
+  window.location.href = "../login/login.html";
+});
+
 document.addEventListener("DOMContentLoaded", function () {
   const reservar = new Reservar();
   reservar.initialize();
@@ -16,6 +21,14 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.getElementById("user-name").textContent = localStorage.getItem("nome") || "UserName";
+var name = localStorage.getItem("nome");
+var profilePic = document.getElementById("profilePic");
+profilePic.src = "https://api.dicebear.com/8.x/shapes/svg?seed=" + name;
+
+profilePic.onerror = function() {
+    this.onerror = null; 
+    this.src = './media/pfpImg.jpg';
+};
 
 var darkModeToggle = document.getElementById("darkModeToggle");
 var body = document.body;

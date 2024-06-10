@@ -1,3 +1,5 @@
+
+
 /* ======================================
    Header Styles
    ====================================== */
@@ -277,6 +279,12 @@ body {
 
 .dark-mode a {
   color: #b3b3b3;
+}
+
+@media (prefers-color-scheme: dark) {
+  .icon {
+      color: white; /* or any color for dark mode */
+  }
 }
 
 /* ======================================
@@ -633,6 +641,14 @@ input[type="checkbox"]:checked::before {
 .card-info-button:active {
   background: #3b3b3b !important;
   box-shadow: none !important;
+}
+
+.fas.fa-chevron-down {
+  transition: transform 0.3s ease-in-out;
+}
+
+.rotate-icon {
+  transform: rotate(180deg);
 }
 
 .card-part-number {
