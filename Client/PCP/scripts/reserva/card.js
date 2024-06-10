@@ -80,7 +80,7 @@ export class Card {
 
     infoButton.addEventListener("click", async (event) => {
       event.preventDefault();
-      infoModal.initialize(); 
+      infoModal.initialize();
       infoModal.items = [this.chapa];
       await infoModal.openModal(this.chapa);
     });
