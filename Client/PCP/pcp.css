@@ -279,30 +279,53 @@ body {
   color: #b3b3b3;
 }
 
+@media (prefers-color-scheme: dark) {
+  .icon {
+    color: white; /* or any color for dark mode */
+  }
+}
+
 /* ======================================
    Modal Styles
    ====================================== */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background-color: #00000066;
-  z-index: 3;
-}
-
-.modal-content {
-  background-color: #252525;
-  margin: 10% auto;
-  padding: 20px;
-  border: none !important;
-  width: 80%;
-  overflow: auto;
-}
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #00000066;
+    z-index: 3;
+    backdrop-filter: blur(1px);
+  }
+  
+  .modal.open {
+    display: block;
+  }
+  
+  .modal-content {
+    background-color: #252525;
+    margin: 10% auto;
+    padding: 20px;
+    border: none !important;
+    width: 80%;
+    overflow: auto;
+    animation: slide-up 0.5s ease-out;
+  }
+  
+  @keyframes slide-up {
+    0% {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
 
 .modal-content input {
   display: flex;
@@ -347,6 +370,49 @@ button:hover {
   .card {
     width: 120%;
   }
+}
+
+#loadingSpinner {
+  position: fixed;
+  z-index: 999;
+  height: 2em;
+  width: 2em;
+  overflow: show;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+#loadingSpinner:before {
+  content: '';
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.3);
+  backdrop-filter: blur(1px); 
+}
+
+.spinner {
+  height: 100%;
+  width: 100%;
+  animation: rotate 0.8s infinite linear;
+  border: 12px solid #ffffff;
+  border-right-color: #9b4dca;
+  border-radius: 50%;
+}
+
+.sk-cube-grid .sk-cube {
+  background-color: #333;
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 /*
@@ -635,6 +701,14 @@ input[type="checkbox"]:checked::before {
   box-shadow: none !important;
 }
 
+.fas.fa-chevron-down {
+  transition: transform 0.3s ease-in-out;
+}
+
+.rotate-icon {
+  transform: rotate(180deg);
+}
+
 .card-part-number {
   background: #ab58ff23 !important;
   color: #8a3eee;
@@ -836,6 +910,3 @@ input[type="checkbox"]:checked::before {
   border: solid 1px #8a8a8a3d;
   padding: 10px;
 }
-
-
-

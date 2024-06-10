@@ -4,19 +4,25 @@ export class InfoModal {
   constructor() {
     this.modal = document.getElementById("infoModal");
     this.modalContent = document.getElementById("infoContainer");
-    this.closeModalButton = document.getElementById("closeInfoModal");
+    this.closeInfoModalButton = document.getElementById("closeInfoModal");
   }
 
   initialize() {
-    this.closeModalButton.addEventListener("click", this.closeModal.bind(this));
+    this.closeInfoModalButton.addEventListener("click", this.closeModal.bind(this));
     this.modal.addEventListener("click", this.closeModal.bind(this));
     this.modalContent.addEventListener("click", (event) => event.stopPropagation());
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        this.closeModal();
+      }
+    });
   }
 
   openModal(item) {
     this.modal.style.display = "block";
     const contentGenerator = () => this.generateContent(item);
-    const createContent = createModalContent(this.modalContent, this.closeModalButton, contentGenerator);
+    const createContent = createModalContent(this.modalContent, this.closeInfoModalButton, contentGenerator);
     createContent();
   }
 

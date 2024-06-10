@@ -110,12 +110,14 @@ export class ItemCard {
   createDropdownButton(chapasContainer) {
     const dropdownButton = document.createElement("button");
     dropdownButton.className = "btn btn-sm ml-2 card-info-button";
-    dropdownButton.innerHTML = 'Chapas <i class="fas fa-chevron-down"></i>';
+    dropdownButton.innerHTML = '<span style="font-size: 0.8em;">mostrar chapas</span> <i class="fas fa-chevron-down" style="font-size: 1.2em;"></i>';
+    const chevronIcon = dropdownButton.querySelector('i');
     dropdownButton.addEventListener("click", function () {
-      chapasContainer.style.display = chapasContainer.style.display === "none" ? "block" : "none";
+        chapasContainer.style.display = chapasContainer.style.display === "none" ? "block" : "none";
+        chevronIcon.classList.toggle('rotate-icon');
     });
     return dropdownButton;
-  }
+}
 
   createDeleteButton() {
     const deleteButton = createElementWithClass("button", "btn btn-danger ml-2 card-item-delete-button");

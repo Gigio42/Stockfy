@@ -79,10 +79,6 @@
         </div>
 
         <script>
-            if (localStorage.getItem("isLoggedIn") !== "true") {
-                window.location.href = "../login/login.html";
-            }
-
             pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js";
 
             const dropZone = document.getElementById("drop-zone");
