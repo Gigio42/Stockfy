@@ -78,12 +78,6 @@ function cadastrarUsuario() {
     });
 }
 
-function alterarTema() {
-  const toggle = document.getElementById("darkModeToggle");
-  const body = document.body;
-  body.classList.toggle("body-light-mode", !toggle.checked);
-  localStorage.setItem("theme", toggle.checked ? "dark" : "light");
-}
 
 function carregarMaquinas() {
   fetch(`${BASE_URL}/adm/maquina`)
@@ -116,3 +110,10 @@ document.addEventListener("DOMContentLoaded", () => {
   toggle.checked = savedTheme !== "light"; // Default is dark mode
   alterarTema();
 });
+
+function alterarTema() {
+  const toggle = document.getElementById("darkModeToggle");
+  const body = document.body;
+  body.classList.toggle("body-light-mode", !toggle.checked);
+  localStorage.setItem("theme", toggle.checked ? "dark" : "light");
+}

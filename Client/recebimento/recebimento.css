@@ -1,12 +1,22 @@
 :root {
-    --background-color: #1e1e1e;     /* Cor de fundo para o tema escuro */
-    --text-color: #ccc;     /* Cor de texto para o tema claro */
+    --header-color: #0f0f0f;  /* Cor do cabeçalho para o tema escuro */
+    --background-color: #1e1e1e;
+    --text-color: #ccc;
+    --aside-color: #333333;
+    --button-color: #404040;
+    --button2-color: #335c30; /* Cor de fundo do aside para o tema escuro */
 }
 
 [data-theme="light"] {
-    --background-color: #f5f5f5;  /* Cor de fundo para o tema claro */
-    --text-color: #1e1e1e;         /* Cor de texto para o tema escuro */
+    --header-color: #ccc;     /* Cor do cabeçalho para o tema claro */
+    --background-color: #f5f5f5;
+    --text-color: #1e1e1e;
+    --aside-color: #eeeeee;
+    --button-color: #d5d5d5;
+    --button2-color: #335c30;    /* Cor de fundo do aside para o tema claro */
 }
+
+
 
 
 
@@ -15,50 +25,163 @@ body {
     margin: 0;
     padding: 0;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
     height: 100vh; /* Faz o corpo da página ocupar toda a altura da tela */
-    overflow: hidden; /* Remove a barra de rolagem se não for necessário */
+    overflow-x: hidden; /* Remove a barra de rolagem se não for necessário */
 }
 
-body, table, #button-container, td, th, input[type="text"], input[type="date"], select{
+body, table, td, th, input[type="text"], input[type="date"], select{
     background-color: var(--background-color);
     color: var(--text-color);
 }
 
-
-#button-container {
-    width: 100%;
-    padding: 10px 0;
-    text-align: left;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    position: fixed;
+header{
+    margin-left: 18%; /* Empurra o block1 para começar após o aside */
+    flex-grow: 1;
+    background-color: var(--header-color);
+    color: var(--text-color);
     display: flex;
-    justify-content: space-between; /* Fixa o contêiner no topo */
-    top: 0; /* Posição no topo */
-    left: 0; /* Alinha à esquerda */
-    z-index: 1000; /* Garante que fique sobre outros elementos */
+    height: 10vh;
 }
 
-#drop-zone {
+.logo-container{
+    background-color: var(--header-color);
+    display: absolute;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 11vh;
+    border-bottom: solid 1px #6a6a6a45;
+}
+
+aside {
+    position: fixed; /* Fixa o aside na posição, fazendo-o não rolar com o resto da página */
+    top: 0; /* Posiciona o topo do aside no topo da viewport */
+    left: 0; /* Posiciona o lado esquerdo do aside na lateral esquerda da viewport */
+    height: 100vh; /* Faz o aside ocupar toda a altura da viewport */
+    width: 18%; /* Define uma largura fixa para o aside */
+    background-color: var(--aside-color);
+    color: var(--text-color);
+    border: solid 1px #6a6a6a45; /* Adiciona uma borda apenas no lado direito */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1000; /* Assegura que o aside fique sobre outros elementos */
+}
+
+aside button{
+    width: 100%;
+    font-size: 1.6rem;
+    background-color: transparent;
+    color: var(--text-color);
+    border: none;
+    border-radius: 5%;
+    padding: 5%;
+    margin: 1%;
+}
+
+
+aside button:hover{
+    cursor: pointer;
+    background-color: var(--button-color);
+    color: var(--text-color);
+}
+
+.buscar{
+    display: flex;
+    flex-direction: row;
+}
+
+#id_compra{
+    text-align: center;
+    color: var(--text-color);
+    background-color: transparent !important;
+    border: none;
+    display: flex;
+    width: 40%;
+}
+
+#buscarChapa{
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    width: 60%;
+}
+
+
+
+
+.buttonsBlock{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+main{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.block1 {
+    margin-left: 18%; /* Empurra o block1 para começar após o aside */
+    flex-grow: 1;  /* Permite que o block1 use o espaço restante */
+    height: 100vh;  /* Ocupa a altura total da viewport */
+    overflow: auto; /* Adiciona rolagem se o conteúdo exceder a altura da tela */
+}
+
+.text-content{
+    margin: 2%;
+    width: 100%;
+    font-size: 200%;
+    display: flex;
+    justify-content: center;
+}
+
+
+
+.block2{
+    height: 100%;
+}
+
+.drop-zone {
+    width: 100%;
+    height: 80%;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    
+}
+
+#drop-zoneText {
     width: 80%;
-    height: 300px;
+    height: 50%;
     border: 2px dashed #ccc;
     border-radius: 10px;
     display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
-    margin-top: 10%;
+}
+
+.titulo{
+    width: 100%;
+    display: flex; 
+    justify-content: center;
 }
 
 #tables {
     width: 100%;
-    height: calc(100% - 50px); /* Ajusta a altura considerando o espaço para o botão */
-    overflow: auto; /* Permite a rolagem dentro das tabelas se necessário */
     margin-top: 40px; /* Espaço para o contêiner do botão */
 }
 
 table {
+    min-width: 60px;
     width: 100%;
     border-collapse: collapse; /* Colapsa as bordas das células para uma borda única */
     background-color: #f5f5f5; /* Fundo claro para a tabela */
@@ -66,9 +189,10 @@ table {
 }
 
 th, td {
-    
-    text-align: center; /* Centraliza texto em cabeçalhos e células */
-    padding: 8px 10px; /* Espaço adequado dentro das células */
+    white-space: nowrap; /* Evita que o texto quebre para a próxima linha */
+    padding: 8px; /* Mantém um padding uniforme */
+    min-width: 60px; /* Define uma largura mínima para cada célula */
+    text-align: center; /* Centraliza texto em cabeçalhos e células */   
 }
 
 input[type="text"], input[type="date"], select {
@@ -80,9 +204,10 @@ input[type="text"], input[type="date"], select {
     box-sizing: border-box; /* Inclui padding no cálculo de width */
 }
 
-button {
+
+.block2 button {
     padding: 10px 20px;
-    background-color: #335c30;
+    background-color: var(--button2-color);
     color: white;
     border: none;
     border-radius: 5px;
@@ -90,7 +215,7 @@ button {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-button:hover {
+.block2 button:hover {
     background-color: #2b4d28;
 }
 
@@ -98,20 +223,118 @@ button:hover {
     display: block;
     margin: auto;
 }
-/* Estilos existentes */
+
+
+.dark-mode-toggle label {
+    top: 10%;
+    right: 10%;
+    display: block;
+    width: 60px;
+    height: 34px;
+    background-color: #6eec07; /* Green for active state */
+    border-radius: 50px;
+    position: relative;
+    cursor: pointer;
+}
+
+.dark-mode-toggle label:after {
+    content: "";
+    display: block;
+    width: 26px;
+    height: 26px;
+    background-color: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.dark-mode-toggle input[type="checkbox"]:not(:checked) + label {
+    background-color: #ddd;
+}
+
+.dark-mode-toggle input[type="checkbox"]:not(:checked) + label:after {
+    transform: translateX(0);
+}
+
+.dark-mode-toggle input[type="checkbox"]:checked + label:after {
+    transform: translateX(26px);
+}
+
+.dark-mode-toggle input[type="checkbox"]:checked ~ #button-container .logo img {
+    filter: invert(100%);
+}
+
+#darkModeToggle{
+    display: none;
+}
+
+
 
 @media (max-width: 768px) {
-    #button-container {
-        position: relative; /* Alterado de fixed para relative */
-        width: 100%;
-        flex-direction: column;
-        align-items: center;
-        padding: 10px 0; /* Aumenta o padding para melhor toque em dispositivos móveis */
+    
+    :root {
+        --aside-color: #1e1e1e;
+        --button-color: #292929; /* Cor de fundo do aside para o tema escuro */
     }
     
-    button {
-        width: 90%; /* Ajuste na largura para melhor toque */
-        margin: 5px 0; /* Reduz o espaçamento para otimizar o espaço */
+    [data-theme="light"] {
+        --aside-color: #f5f5f5;
+        --button-color: #e3e3e3;   /* Cor de fundo do aside para o tema claro */
+    }
+    
+    main{
+        
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    header {
+        margin-left: 0;
+        width: 100%; /* Ajusta a largura para cobrir toda a tela */
+        height: 10vh;
+        position: static; /* Mudança para 'static' para se ajustar ao fluxo normal */
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .logo-container{
+        border: none;
+        display: flex;
+    }
+    
+    aside {
+        width: 100%; /* Ajusta a largura para cobrir toda a tela */
+        /* O aside vem após o header e logo */
+        position: static; /* Mudança para 'static' para alinhar corretamente */
+        flex-direction: column;
+        align-items: center;
+        height: auto; /* Altura automática para conter todos os botões */
+        border: none; /* Remove a borda que não é mais necessária */
+    }
+    
+    aside button{
+        font-size: 1rem;
+        background-color: var(--button-color);
+        padding: 5%;
+        margin: 1%;
+    }
+    
+    
+    .dark-mode-toggle{
+        z-index: 2;
+    }
+    
+    .block1 {
+        margin-left: 0; /* Remove a margem esquerda */
+        width: 100%; /* Ajusta a largura para cobrir toda a tela */
+    }
+    
+    .block2 {
+        
+        padding-top: 10px; /* Adiciona um espaço entre o header e o conteúdo */
     }
     
     #tables {
@@ -119,18 +342,15 @@ button:hover {
         margin-top: 20px; /* Ajuste para garantir que a tabela não seja coberta */
     }
     
-    .scrollable-table {
-        overflow-x: auto;
-    }
-    
-    table {
-        width: auto; /* Permite que a tabela expanda conforme necessário */
-        min-width: 100%; /* Garante mínimo de largura conforme a largura do dispositivo */
-    }
     
     th, td {
-        padding: 8px;
+        white-space: nowrap; /* Evita que o texto quebre para a próxima linha */
+        padding: 8px; /* Mantém um padding uniforme */
         min-width: 60px; /* Define uma largura mínima para cada célula */
-        white-space: nowrap; /* Mantém o conteúdo na mesma linha */
+    }
+    
+    .scrollable-table {
+        overflow-x: auto; /* Permite rolagem horizontal */
+        overflow-y: hidden; /* Evita rolagem vertical dentro da tabela */
     }
 }
