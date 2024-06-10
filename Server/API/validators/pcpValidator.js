@@ -21,7 +21,7 @@ export const getItemsSchema = {
 export const createItemWithChapaSchema = {
   body: {
     type: "object",
-    required: ["partNumber", "chapas"],
+    required: ["partNumber", "chapas", "reservedBy"],  // Add "reservedBy" here if it's required
     properties: {
       partNumber: {
         type: "string",
@@ -44,6 +44,7 @@ export const createItemWithChapaSchema = {
           },
         },
       },
+      reservedBy: { type: "string" },  // Add this line
     },
   },
 };
