@@ -338,11 +338,6 @@ async function fetchAllItems(maquinaId) {
   }
 }
 
-//===============================================================================
-// Função para criar os cards de status de cada item maquina
-//===============================================================================
-
-
 function createProduzindoItemCard(item) {
   const containerId = `container-${item.id_item}-${item.part_number}-${item.status}`;
 
@@ -432,7 +427,6 @@ function createProduzindoItemCard(item) {
     itemCard.insertBefore(itemNumberElement, partNumberElement);
 
     listContainer.appendChild(itemContainer);
-
   } else {
     console.error("Elemento não encontrado ao criar cartão do item");
   }
@@ -543,9 +537,6 @@ document.getElementById("confirmarOrdem").addEventListener("click", async () => 
     alert("Erro ao atualizar as prioridades. Verifique o console para mais detalhes.");
   }
 });
-
-
-
 
 document.addEventListener("DOMContentLoaded", () => {
   handleDarkModeToggle();
