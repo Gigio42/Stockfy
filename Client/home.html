@@ -29,6 +29,10 @@
             </nav>
         </div>
         <script>
+            if (localStorage.getItem("isLoggedIn") !== "true") {
+                window.location.href = "./login/login.html";
+            }
+
             const checkbox = document.getElementById("checkbox");
             checkbox.addEventListener("change", () => {
                 document.body.classList.toggle("light-mode");

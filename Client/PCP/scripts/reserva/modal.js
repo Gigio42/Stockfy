@@ -163,7 +163,9 @@ function createReserveButton(selectedSubcards) {
     }));
 
     try {
-      const response = await reserveChapas({ partNumber, chapas });
+      const reservedBy = localStorage.getItem("nome");
+      console.log("reservedBy:", reservedBy); // Add this line
+      const response = await reserveChapas({ partNumber, chapas, reservedBy } );
       console.log(response);
     } catch (error) {
       alert(error.message);
