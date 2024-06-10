@@ -76,10 +76,12 @@ export class Reservar {
         }
       };
 
-      this.containerElement.innerHTML = "";
+      this.cards = []; 
+
       items.forEach((chapa, index) => {
         const keys = ["largura", "vincos", "qualidade", "onda", "quantidade_disponivel", "data_prevista", "status"];
         const card = new Card(chapa, keys, index, sortKey, onSubcardSelectionChange, this.selectedChapas.has(chapa.id_chapa));
+        this.cards.push(card); // Add this line to store the Card instance
         this.containerElement.appendChild(card.createCard());
       });
 

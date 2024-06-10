@@ -1,4 +1,5 @@
 import { createElementWithClass } from "../utils/dom.js";
+import { InfoModal } from "./infoModal.js";
 
 export class Card {
   constructor(chapa, keys, index, sortKey, onSubcardSelectionChange, isChecked = false) {
@@ -8,10 +9,11 @@ export class Card {
     this.sortKey = sortKey;
     this.onSubcardSelectionChange = onSubcardSelectionChange;
     this.isChecked = isChecked;
+    this.cards = [];
   }
 
   createValueDiv(key, value) {
-    let valueDiv = createElementWithClass("div", `card-value-div col text-center value align-items-center justify-content-center rounded`);
+    let valueDiv = createElementWithClass("div", `card-value-div col text-center value d-flex align-items-center justify-content-center rounded`);
 
     if (value === null) {
       valueDiv.textContent = "N/A";
@@ -74,9 +76,16 @@ export class Card {
   createInfoButton() {
     let infoButton = createElementWithClass("button", "btn btn-sm ml-2 card-info-button");
     infoButton.innerHTML = '<i class="fas fa-chevron-down"></i>';
-    infoButton.addEventListener("click", () => {
-      alert(JSON.stringify(this.chapa, null, 2));
+
+    let infoModal = new InfoModal();
+
+    infoButton.addEventListener("click", async (event) => {
+      event.preventDefault();
+      infoModal.initialize();
+      infoModal.items = [this.chapa];
+      await infoModal.openModal(this.chapa);
     });
+
     return infoButton;
   }
 

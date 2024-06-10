@@ -28,6 +28,14 @@ async function pcpRoute(fastify, options) {
     }
   });
 
+  fastify.setErrorHandler((error, request, reply) => {
+    if (error.validation) {
+      reply.status(400).send(error.validation[0].message);
+    } else {
+      reply.send(error);
+    }
+  });
+
   fastify.post("/", {
     schema: createItemWithChapaSchema,
     handler: async (request, reply) => {
@@ -35,13 +43,13 @@ async function pcpRoute(fastify, options) {
         const result = await pcpRouteController.createItemWithChapa(request.body);
 
         if (result.error) {
-          reply.code(500).send({ message: "Error processing data", error: result.error });
+          reply.code(500).send({ message: "Erro de processamento", error: result.error });
         } else {
           reply.send({ message: "Data received and inserted into SQLite database successfully" });
         }
       } catch (err) {
         console.log(err.message);
-        reply.code(500).send({ message: "Error processing data", error: err.message });
+        reply.code(500).send({ message: "Erro de processamento", error: err.message });
       }
     },
   });

@@ -29,6 +29,7 @@ function validaUsuario() {
         const maquina = document.getElementById("selectMaquina").value;
         localStorage.setItem("maquina", maquina);
 
+        localStorage.setItem("isLoggedIn", "true"); //var q vai ser usada para verif se o usuario ta logado
         const isProducaoChecked = document.getElementById("toggleProducao").checked;
         if (isProducaoChecked) {
           window.location.href = "../produção/producao.html";
