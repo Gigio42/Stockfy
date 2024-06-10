@@ -3,16 +3,20 @@ const PCP_URL = `${BASE_URL}/PCP`;
 
 function handleError(error) {
   if (error.response) {
-    console.error(error.response.data);
-    console.error(error.response.status);
-    console.error(error.response.headers);
-    throw new Error(`Error: ${error.response.data.error}`);
+    console.error("Response data:", error.response.data);
+    console.error("Response status:", error.response.status);
+    console.error("Response headers:", error.response.headers);
+    if (error.response.data.message && error.response.data.error) {
+      throw new Error(`${error.response.data.message}: ${error.response.data.error}`);
+    } else {
+      throw new Error(JSON.stringify(error.response.data));
+    }
   } else if (error.request) {
-    console.error(error.request);
+    console.error("Request:", error.request);
     throw new Error("Error: No response from server");
   } else {
-    console.error("Error", error.message);
-    throw new Error(`Error: ${error.message}`);
+    console.error("Error message:", error.message);
+    throw new Error(error.message);
   }
 }
 

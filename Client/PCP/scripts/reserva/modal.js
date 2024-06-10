@@ -13,7 +13,11 @@ export function handleShowSelectedButtonClick(getSelectedChapas) {
       const modalHandler = createModalHandler(modalContent, closeModal, () => selectedChapas, popupContainer);
       modalHandler();
     } else {
-      alert("Precisa selecionar pelomenos 1 chapa!");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Precisa selecionar pelomenos 1 chapa!",
+      });
     }
   };
   closeModal.onclick = () => {
@@ -177,18 +181,23 @@ function createReserveButton(selectedSubcards) {
     }));
 
     const loadingSpinner = document.getElementById("loadingSpinner");
-    loadingSpinner.style.display = "block"; 
+    loadingSpinner.style.display = "block";
 
     try {
-      const reservedBy = localStorage.getItem("nome");
-      console.log("reservedBy:", reservedBy);
-      const response = await reserveChapas({ partNumber, chapas, reservedBy });
-      console.log(response);
-      location.reload();
-    } catch (error) {
-      alert(error.message);
-    } finally {
-      loadingSpinner.style.display = "none"; 
+  const reservedBy = localStorage.getItem("nome");
+  console.log("reservedBy:", reservedBy);
+  const response = await reserveChapas({ partNumber, chapas, reservedBy });
+  console.log("this is the response:", response);
+  location.reload();
+} catch (error) {
+  console.error("This is the error response:", error); // Log the error object
+  Swal.fire({
+    icon: "error",
+    title: "Oops...",
+    text: error.message, // Display the error message from error.response.data
+  });
+} finally {
+      loadingSpinner.style.display = "none";
     }
   };
   return reserveButton;
