@@ -94,23 +94,50 @@ class AdmController {
       throw new Error("Erro ao buscar itens para a máquina: " + error.message);
     }
   }
-
-  // Novo método para atualizar a prioridade de um item
-  async updateItemPriority(itemId, newPriority) {
+  
+  async updateItemPriorities(newPriorities) {
     try {
-      // Atualiza a prioridade do item no banco de dados usando o Prisma
-      const updatedItem = await Item.update({
-        where: { id_item: itemId }, // Condição para encontrar o item pelo ID
-        data: { prioridade: newPriority }, // Dados a serem atualizados (nova prioridade)
-      });
-
-      return updatedItem; // Retorna o item atualizado
+      console.log("Recebido para atualização de prioridades:", newPriorities);
+  
+      // Verificar se todos os itens existem antes de atualizar
+      for (const { id_item } of newPriorities) {
+        const itemExists = await Item.findUnique({
+          where: { id_item: id_item },
+        });
+  
+        if (!itemExists) {
+          throw new Error(`Item com id ${id_item} não encontrado`);
+        }
+      }
+  
+      await Promise.all(newPriorities.map(async ({ id_item, prioridade }) => {
+        await Item.update({
+          where: { id_item: id_item },
+          data: { prioridade: prioridade }
+        });
+      }));
+  
+      console.log("Prioridades dos itens atualizadas com sucesso");
     } catch (error) {
-      // Se ocorrer um erro, loga o erro e lança uma nova exceção com a mensagem de erro
-      console.error("Erro ao atualizar a prioridade do item:", error);
-      throw new Error("Erro ao atualizar a prioridade do item: " + error.message);
+      console.error("Erro ao atualizar as prioridades dos itens:", error);
+      throw new Error("Erro ao atualizar as prioridades dos itens: " + error.message);
     }
   }
+
+  async getAllItemMaquina() {
+    try {
+      const itemMaquinas = await Item_Maquina.findMany({
+        include: {
+          maquina: true,
+          Item: true,
+        },
+      });
+      return itemMaquinas;
+    } catch (error) {
+      throw new Error("Erro ao buscar todos os Item_Maquina: " + error.message);
+    }
+  }
+  
 }
 
 export default AdmController;
