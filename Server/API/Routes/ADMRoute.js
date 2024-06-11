@@ -48,20 +48,28 @@ async function admRoute(fastify, options) {
     }
   });
 
-  // Nova rota para atualizar a prioridade de um item
-  fastify.patch("/item/:itemId/prioridade", async (request, reply) => {
+  fastify.post("/atualizar-prioridades", async (request, reply) => {
     try {
-      const itemId = parseInt(request.params.itemId, 10); // Captura e converte o ID do item da URL para um número inteiro
-      const newPriority = request.body.prioridade; // Extrai o valor de prioridade do corpo da solicitação
-      const updatedItem = await admController.updateItemPriority(itemId, newPriority); // Chama a função no controlador para atualizar a prioridade
-      reply.send({ message: "Prioridade do item atualizada com sucesso", item: updatedItem }); // Envia a resposta com o item atualizado
-      console.log(`Solicitação PATCH para /item/${itemId}/prioridade realizada com sucesso`); // Loga o sucesso da operação
+      const newPriorities = request.body;
+      console.log("Dados recebidos na rota /atualizar-prioridades:", newPriorities);
+      await admController.updateItemPriorities(newPriorities);
+      reply.send({ message: "Prioridades atualizadas com sucesso" });
+      console.log("Prioridades atualizadas com sucesso");
     } catch (err) {
-      // Se ocorrer um erro, loga o erro e envia uma resposta de erro ao cliente
-      console.error("Erro ao processar a solicitação PATCH para /item/:itemId/prioridade:", err);
+      console.error("Erro ao atualizar as prioridades:", err);
+      reply.code(500).send({ message: "Erro ao atualizar as prioridades" });
+    }
+  });
+
+  fastify.get("/item_maquina", async (request, reply) => {
+    try {
+      const itemMaquinas = await admController.getAllItemMaquina(); // Nova função no controlador para buscar todos os Item_Maquina
+      reply.send(itemMaquinas);
+    } catch (err) {
       reply.code(500).send({ message: "Internal Server Error" });
     }
   });
+  
 }
 
 export default admRoute;
