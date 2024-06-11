@@ -26,8 +26,8 @@
                         <li class="icon-li mb-2">
                             <a id="optionsButton">
                                 <div class="textButtonli">
-                                próximo processo
-                            </div>
+                                    próximo processo
+                                </div>
                                 <img class="imgicon" src="media/icons8-direita-3-96.png" alt="Dashboard Icon" />
                             </a>
                         </li>
@@ -50,11 +50,17 @@
                 <div id="allMaquina" class="cards w-100"></div>
 
                 <div id="nextProcessModal" class="modal">
+                
                     <div class="modal-content">
-                        <h2>Próximo Processo</h2>
+                        <!-- Adicione este container onde deseja exibir os cards -->
+                    <div id="partNumberCardsContainer"></div>
+                        <!-- O conteúdo dos cards será adicionado aqui -->
+                        <div id="machineCardsContainer"></div>
                     </div>
                 </div>
-                
+
+
+
 
                 <div id="myModal" class="modal">
                     <div class="modal-content">
@@ -80,12 +86,13 @@
                             <h2 class="textoModal">Itens finalizados</h2>
                             <div id="finalizadoItemsList"></div>
                         </div>
-        
+
                         <div class="headerModal">
                             <span class="nomemaquina"></span>
                             <div class="botoesModalHeader">
                                 <button id="MostrarProg">
-                                    <img class="imgButtonHeader" src="media/icons8-lista-64.png" alt="Mostrar Programa" />
+                                    <img class="imgButtonHeader" src="media/icons8-lista-64.png"
+                                        alt="Mostrar Programa" />
                                 </button>
                             </div>
                         </div>
@@ -99,7 +106,7 @@
                             </div>
                         </div>
                     </div>
-                </div>                
+                </div>
             </div>
         </div>
     </div>

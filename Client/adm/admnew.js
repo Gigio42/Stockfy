@@ -48,28 +48,41 @@ async function fetchMaquinas() {
 // Função para criar um card de máquina
 //============================================
 
-function createMaquinaCard(maquina) {
+function createMaquinaCard(maquina, isInModal = false) {
+  const machineCardsContainer = document.getElementById("machineCardsContainer");
   const allMaquina = document.getElementById("allMaquina");
+
   const cardMaquina = document.createElement("div");
   cardMaquina.className = "cardMaquina";
 
   const maquinaName = document.createElement("span");
   maquinaName.textContent = maquina.nome;
-  maquinaName.className ="maquinaName"
+  maquinaName.className = "maquinaName";
   cardMaquina.appendChild(maquinaName);
 
-  const svgIcon = document.createElement("img");
-  svgIcon.src = "media/icons8-link-externo.svg";
-  svgIcon.alt = "External link icon";
-  svgIcon.classList.add("svgIcon", "abrirModal");
-  cardMaquina.appendChild(svgIcon);
+  if (!isInModal) {
+    const svgIcon = document.createElement("img");
+    svgIcon.src = "media/icons8-link-externo.svg";
+    svgIcon.alt = "External link icon";
+    svgIcon.classList.add("svgIcon", "abrirModal");
+    cardMaquina.appendChild(svgIcon);
 
-  svgIcon.addEventListener("click", () => {
-    openModal(maquinaName.textContent, maquina.id_maquina);
-  });
+    svgIcon.addEventListener("click", () => {
+      openModal(maquinaName.textContent, maquina.id_maquina);
+    });
+  }
 
+  if (isInModal) {
+    cardMaquina.classList.add("inModal");
+  }
+
+  if (!isInModal) {
+    machineCardsContainer.appendChild(cardMaquina.cloneNode(true));
+  }
+  
   allMaquina.appendChild(cardMaquina);
 }
+
 
 //============================================
 // Função para abrir o modal
@@ -183,10 +196,6 @@ function adicionarItemAoStaged(item, maquinaId) {
 
   console.log("Item adicionado à área de staged:", item);
 }
-
-//============================================================
-// Função para confirmar os itens na área de "staged"
-//=============================================================
 
 //============================================================
 // Função para confirmar os itens na área de "staged"
@@ -432,8 +441,6 @@ function createProduzindoItemCard(item) {
   }
 }
 
-
-
 function getDragAfterElement(container, y) {
   const draggableElements = [...container.querySelectorAll(".item-container:not(.dragging)")];
 
@@ -480,7 +487,6 @@ const voltarButton2 = document.getElementById("voltarModalContent2");
 const modalContent2 = document.querySelector(".modal-content-2");
 const modalContent3 = document.querySelector(".modal-content-3");
 
-
 if (voltarButton1 && voltarButton2 && modalContent2 && modalContent3) {
   voltarButton1.addEventListener("click", () => {
     modalContent2.classList.add("d-none");
@@ -496,8 +502,7 @@ if (voltarButton1 && voltarButton2 && modalContent2 && modalContent3) {
     modalContent2.classList.add("d-none");
     modalContent3.classList.remove("d-none");
     console.log("modal-content-2 escondido, modal-content-3 mostrado");
-  })
-
+  });
 } else {
   console.error("Não foi possível encontrar um ou mais elementos necessários para adicionar event listeners.");
 }
@@ -515,63 +520,72 @@ function logItemPositions(listContainer) {
 // função para abrir e fechar o nextProcessModal
 //=================================================
 
-
 // Adicione essa função ao seu arquivo JavaScript existente (admnew.js)
-$(document).ready(function(){
+$(document).ready(function () {
   // Quando o botão "próximo processo" for clicado, exiba o modal
-  $('#optionsButton').click(function(){
-      $('#nextProcessModal').css('display', 'block');
+  $("#optionsButton").click(function () {
+    $("#nextProcessModal").css("display", "block");
   });
 
   // Quando o usuário clicar fora do modal, feche o modal
-  $(window).click(function(event) {
-      if (event.target == $('#nextProcessModal')[0]) {
-          $('#nextProcessModal').css('display', 'none');
-      }
+  $(window).click(function (event) {
+    if (event.target == $("#nextProcessModal")[0]) {
+      $("#nextProcessModal").css("display", "none");
+    }
   });
 
   // Quando o usuário clicar no botão de fechar no modal, feche o modal
-  $('.close').click(function(){
-      $('#nextProcessModal').css('display', 'none');
+  $(".close").click(function () {
+    $("#nextProcessModal").css("display", "none");
   });
 });
 
-// Dentro do seu arquivo JavaScript do frontend (admnew.js)
+//==============================================================================
+// função para criar os cards com cada item e suas maquinas referentes
+//===============================================================================
 
 // Função para buscar e exibir os part-numbers e suas máquinas dentro do modal
 async function showPartNumbersAndMachines() {
   try {
-      const response = await axios.get('http://localhost:3000/adm/item_maquina'); // Rota para buscar os Item_Maquina
+    const response = await axios.get("http://localhost:3000/adm/item_maquina");
 
-      // Limpar o conteúdo do modal antes de adicionar novas informações
-      const modalContent = document.querySelector('#nextProcessModal .modal-content');
-      modalContent.innerHTML = '';
+    // Limpar o conteúdo do container antes de adicionar novos cards
+    const cardContainer = document.getElementById("partNumberCardsContainer");
+    cardContainer.innerHTML = "";
 
-      // Criar uma lista para exibir os part-numbers e suas máquinas
-      const list = document.createElement('ul');
+    // Iterar sobre os dados recebidos e adicionar cada part-number e sua máquina em um card
+    response.data.forEach(itemMaquina => {
+        const card = document.createElement('div');
+        card.className = 'card';
 
-      // Iterar sobre os dados recebidos e adicionar cada part-number e sua máquina à lista
-      response.data.forEach(itemMaquina => {
-          const listItem = document.createElement('li');
-          listItem.textContent = `Part-Number: ${itemMaquina.Item.part_number} - Máquina: ${itemMaquina.maquina.nome}`;
-          list.appendChild(listItem);
-      });
-
-      // Adicionar a lista ao conteúdo do modal
-      modalContent.appendChild(list);
-
+        const partNumber = itemMaquina.Item.part_number.replace('::maker', '');
+        
+        const cardContent = `
+            <div class="card-header"> ${partNumber}</div>
+            <div class="card-body"> ${itemMaquina.maquina.nome}</div>
+        `;
+        card.innerHTML = cardContent;
+        cardContainer.appendChild(card);
+    });
+    
   } catch (error) {
-      console.error('Erro ao buscar os part-numbers e máquinas:', error);
-      // Tratar o erro conforme necessário
+    console.error("Erro ao buscar os part-numbers e máquinas:", error);
+    // Tratar o erro conforme necessário
   }
 }
 
-// Adicione um evento de clique ao botão para chamar a função quando o modal for aberto
-document.addEventListener('DOMContentLoaded', function () {
-  const optionsButton = document.getElementById('optionsButton');
-  optionsButton.addEventListener('click', showPartNumbersAndMachines);
-});
 
+
+
+// Adicione um evento de clique ao botão para chamar a função quando o modal for aberto
+document.addEventListener("DOMContentLoaded", function () {
+  const optionsButton = document.getElementById("optionsButton");
+  if (!optionsButton) {
+    console.error("Botão optionsButton não encontrado.");
+    return;
+  }
+  optionsButton.addEventListener("click", showPartNumbersAndMachines);
+});
 
 
 
@@ -589,7 +603,7 @@ document.getElementById("confirmarOrdem").addEventListener("click", async () => 
 
       return {
         id_item: id_item,
-        prioridade: index + 1
+        prioridade: index + 1,
       };
     });
 
