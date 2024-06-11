@@ -548,89 +548,79 @@ $(document).ready(function () {
 //==============================================================================
 // função para criar os cards com cada item e suas maquinas referentes
 //===============================================================================
-// Função para buscar e exibir os part-numbers e suas máquinas dentro do modal
 async function showPartNumbersAndMachines() {
   try {
-      const response = await axios.get("http://localhost:3000/adm/item_maquina");
+    const response = await axios.get("http://localhost:3000/adm/item_maquina");
 
-      // Limpar o conteúdo do container antes de adicionar novos cards
-      const cardContainer = document.getElementById("partNumberCardsContainer");
-      cardContainer.innerHTML = "";
+    const cardContainer = document.getElementById("partNumberCardsContainer");
+    cardContainer.innerHTML = "";
 
-      // Iterar sobre os dados recebidos e adicionar cada part-number e sua máquina em um card
-      response.data.forEach(itemMaquina => {
-          const cardWrapper = document.createElement('div');
-          cardWrapper.className = 'card-wrapper';
+    response.data.forEach(itemMaquina => {
+      const cardWrapper = document.createElement('div');
+      cardWrapper.className = 'card-wrapper';
 
-          const card = document.createElement('div');
-          card.className = 'card';
+      const partNumber = itemMaquina.Item.part_number.replace('::maker', '');
 
-          // Armazenar o id_item_maquina como um atributo de dados HTML
-          card.dataset.idItemMaquina = itemMaquina.id_item_maquina;
+      const cardContent = `
+          <div class="card-header"> ${partNumber}</div>
+          <div class="card-body"> ${itemMaquina.maquina.nome}</div>
+      `;
 
-          const partNumber = itemMaquina.Item.part_number.replace('::maker', '');
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = cardContent;
+      cardWrapper.appendChild(card);
 
-          const cardContent = `
-              <div class="card-header"> ${partNumber}</div>
-              <div class="card-body"> ${itemMaquina.maquina.nome}</div>
-          `;
-          card.innerHTML = cardContent;
-          cardWrapper.appendChild(card);
+      const addButton = document.createElement('button');
+      addButton.className = 'add-button';
+      addButton.textContent = '+';
+      addButton.style.display = 'none';
+      card.appendChild(addButton);
 
-          const addButton = document.createElement('button');
-          addButton.className = 'add-button';
-          addButton.textContent = '+';
-          addButton.style.display = 'none'; // Oculta o botão inicialmente
-          card.appendChild(addButton);
+      addButton.addEventListener('click', async () => {
+        const emptyCard = document.createElement('div');
+        emptyCard.className = 'empty-card';
+        emptyCard.textContent = 'Selecione';
+        cardWrapper.appendChild(emptyCard);
 
-          // Adicionar evento de clique para criar o card vazio ao lado do card atual
-          addButton.addEventListener('click', async () => {
-              const emptyCard = document.createElement('div');
-              emptyCard.className = 'empty-card';
-              emptyCard.textContent = 'Selecione uma máquina';
-              cardWrapper.appendChild(emptyCard);
+        emptyCard.addEventListener('click', async () => {
+          try {
+            const machinesResponse = await axios.get("http://localhost:3000/adm/maquina");
+            const machines = machinesResponse.data;
 
-              // Adicionar evento de clique ao card vazio para mostrar a lista de máquinas disponíveis
-              emptyCard.addEventListener('click', async () => {
-                  try {
-                      const machinesResponse = await axios.get("http://localhost:3000/adm/maquina");
-                      const machines = machinesResponse.data;
+            const machineList = document.createElement('ul');
+            machineList.className = 'machine-list';
 
-                      const machineList = document.createElement('ul');
-                      machineList.className = 'machine-list';
+            machines.forEach(machine => {
+              const machineCard = document.createElement('div');
+              machineCard.className = 'machine-card';
+              machineCard.textContent = machine.nome;
+              machineList.appendChild(machineCard);
+            });
 
-                      machines.forEach(machine => {
-                          const listItem = document.createElement('li');
-                          listItem.textContent = machine.nome;
-                          machineList.appendChild(listItem);
-                      });
-
-                      // Posicionar a lista de máquinas logo abaixo do card vazio
-                      emptyCard.appendChild(machineList);
-                  } catch (error) {
-                      console.error("Erro ao buscar os nomes das máquinas:", error);
-                  }
-              });
-          });
-
-          // Adicionar evento de mouseover para mostrar o botão de adição
-          card.addEventListener('mouseover', () => {
-              addButton.style.display = 'block';
-          });
-
-          // Adicionar evento de mouseout para esconder o botão de adição
-          card.addEventListener('mouseout', () => {
-              addButton.style.display = 'none';
-          });
-
-          cardContainer.appendChild(cardWrapper);
+            emptyCard.appendChild(machineList);
+          } catch (error) {
+            console.error("Erro ao buscar os nomes das máquinas:", error);
+          }
+        });
       });
 
+      card.addEventListener('mouseover', () => {
+        addButton.style.display = 'block';
+      });
+
+      card.addEventListener('mouseout', () => {
+        addButton.style.display = 'none';
+      });
+
+      cardContainer.appendChild(cardWrapper);
+    });
+
   } catch (error) {
-      console.error("Erro ao buscar os part-numbers e máquinas:", error);
-      // Tratar o erro conforme necessário
+    console.error("Erro ao buscar os part-numbers e máquinas:", error);
   }
 }
+
 
 
 

@@ -426,7 +426,8 @@ body {
   padding: 20px;
   width: 95vw;
   justify-content: space-between;
-  flex-direction: row;
+  flex-direction: column;
+  display: flex;
 }
 
 .modal-content-3.show {
@@ -512,7 +513,7 @@ h3 {
   margin: 0;
   font-size: 1.4rem;
 
-  align-content: centr;
+  align-content: center;
 }
 
 span.item-number {
@@ -912,16 +913,47 @@ border: none !important;
 
 .machine-list {
   position: absolute;
-  margin-top: 50rem;
+  margin-top: 35rem;
+  background: #1d1d1d;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: center;
+  width: fit-content;
+  padding: 2rem;
+  gap: 1rem;
+  overflow-y: auto;
+  max-height:27rem ;
 }
-
 .empty-card {
-  background: #007bff;
-  height: 4rem;
+  background: #232323;
+  height: 4.5rem;
   border-radius: 1rem;
   margin-left: 1rem;
   display: flex;
   text-align: center;
   justify-content: center;
   align-items: center;
+  padding: 1rem;
+  font-size: calc(1vw + 15px);
+  color: #929292;
+}
+
+
+li::marker {
+  visibility: hidden !important;
+  opacity: 1 !important;
+}
+
+.machine-card {
+  background-color: #5fff8228;
+  padding: 0.5rem;
+  border-radius: 1rem;
+  color: #5fff82;
+  width: fit-content;
+  margin: 0;
+  font-size: 1.4rem;
+
+  align-content: center;
 }
