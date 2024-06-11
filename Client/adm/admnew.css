@@ -376,15 +376,6 @@ body {
   max-height: 32vh;
 }
 
-.modal-content {
-  background-color: #141414;
-  margin: 1% auto;
-  padding: 20px;
-  width: 95vw;
-  border: none;
-  border-radius: 1.5rem;
-  height: 95vh;
-}
 
 .modal-content-2 {
   padding: 20px;
@@ -418,6 +409,7 @@ body {
 }
 
 .modal-content {
+  display: flex;
   padding: 3rem !important;
   width: 95vw;
   border: none;
@@ -430,7 +422,12 @@ body {
   background-color: #141414;
   z-index: 9999;
   height: 95vh;
-
+  background-color: #141414;
+  margin: 1% auto;
+  padding: 20px;
+  width: 95vw;
+  justify-content: space-between;
+  flex-direction: row;
 }
 
 .modal-content-3.show {
@@ -473,7 +470,7 @@ body {
   font-size: 2rem;
 }
 
-.card {
+.cardItem {
   border: none;
   padding: 10px;
   margin: 10px 0;
@@ -492,7 +489,7 @@ body {
   border-radius: 0.7rem;
 }
 
-.card.expanded .subcard {
+.cardItem.expanded .subcard {
   display: block;
   /* Show when the card is expanded */
   margin: 0;
@@ -825,11 +822,20 @@ input {
 }
 
 .card {
+  margin-bottom: 1rem;
+  gap: 1rem;
   border-radius: 8px;
   background-color: #232323;
   width: fit-content;
   border-radius: 1rem !important;
   flex-direction: row;
+  padding: 0;
+  padding-right: 1rem;
+  width: fit-content;
+  min-width: 250px;
+  font-size: calc(1vw + 15px);
+  align-items: center;
+
 }
 
 .card-header {
@@ -839,19 +845,62 @@ input {
   border-radius: 1rem;
   color: #9178ff;
   margin: 0;
-  font-size: 1.4rem;
   border-radius: 1rem !important;
   justify-content: center;
-  padding: 0.7rem;
+  padding: 1rem;
   align-items: center;
+  font-size: 80%;
 }
+
 
 .card-body {
   color: #cccccc;
-  font-size: 1.4rem;
+  padding: 0;
+
 }
 
 #machineCardsContainer {
 display: flex;
 flex-wrap: wrap;
+background-color: #232323;
+height: fit-content !important;
+border-radius: 1rem;
+gap: 1REM;
+padding: 1rem;
+overflow-y: auto;
+max-height: 100%;
+width: 20%;
+
+}
+
+.nomeCard {
+  padding: 1rem;
+  background: #35ff782e;
+  border-radius:1REM;
+
+  color: #35ff78;
+  font-size: calc(1vw + 10px);
+  display: flex;
+padding: 1rem;
+
+}
+
+.add-button {
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  border: none;
+background: #232323;
+color: #9178ff;
+border: none !important;
+}
+
+.add-button:hover {
+  background: #313131;
+  box-shadow: 0 0 30px 1px #876cff;
+  color: #9178ff;
+}
+
+.add-button:focus {
+  outline: none; /* Remove a borda ao clicar */
 }

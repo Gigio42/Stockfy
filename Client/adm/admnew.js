@@ -36,6 +36,16 @@ async function fetchMaquinas() {
     const response = await axios.get("http://localhost:3000/adm/maquina");
     const maquinas = response.data;
 
+    // Limpa o container antes de adicionar os novos nomes
+    const container = document.getElementById("machineCardsContainer");
+    container.innerHTML = '';
+
+    // Percorre as máquinas e adiciona os nomes ao container
+    maquinas.forEach((maquina) => {
+      createNomeCard(maquina);
+    });
+
+    // Adiciona os cards completos das máquinas
     maquinas.forEach((maquina) => {
       createMaquinaCard(maquina);
     });
@@ -48,10 +58,8 @@ async function fetchMaquinas() {
 // Função para criar um card de máquina
 //============================================
 
-function createMaquinaCard(maquina, isInModal = false) {
-  const machineCardsContainer = document.getElementById("machineCardsContainer");
+function createMaquinaCard(maquina) {
   const allMaquina = document.getElementById("allMaquina");
-
   const cardMaquina = document.createElement("div");
   cardMaquina.className = "cardMaquina";
 
@@ -60,29 +68,35 @@ function createMaquinaCard(maquina, isInModal = false) {
   maquinaName.className = "maquinaName";
   cardMaquina.appendChild(maquinaName);
 
-  if (!isInModal) {
-    const svgIcon = document.createElement("img");
-    svgIcon.src = "media/icons8-link-externo.svg";
-    svgIcon.alt = "External link icon";
-    svgIcon.classList.add("svgIcon", "abrirModal");
-    cardMaquina.appendChild(svgIcon);
+  const svgIcon = document.createElement("img");
+  svgIcon.src = "media/icons8-link-externo.svg";
+  svgIcon.alt = "External link icon";
+  svgIcon.classList.add("svgIcon", "abrirModal");
+  cardMaquina.appendChild(svgIcon);
 
-    svgIcon.addEventListener("click", () => {
-      openModal(maquinaName.textContent, maquina.id_maquina);
-    });
-  }
+  svgIcon.addEventListener("click", () => {
+    openModal(maquinaName.textContent, maquina.id_maquina);
+  });
 
-  if (isInModal) {
-    cardMaquina.classList.add("inModal");
-  }
-
-  if (!isInModal) {
-    machineCardsContainer.appendChild(cardMaquina.cloneNode(true));
-  }
-  
   allMaquina.appendChild(cardMaquina);
 }
 
+//============================================
+// Função para criar um card com o nome da máquina
+//============================================
+
+function createNomeCard(maquina) {
+  const container = document.getElementById("machineCardsContainer");
+  const card = document.createElement("div");
+  card.className = "nomeCard";
+
+  const nome = document.createElement("span");
+  nome.textContent = maquina.nome;
+  nome.className = "nomeMaquina";
+  
+  card.appendChild(nome);
+  container.appendChild(card);
+}
 
 //============================================
 // Função para abrir o modal
@@ -238,7 +252,7 @@ document.getElementById("confirmButton").addEventListener("click", confirmarIten
 function createItemCard(item, maquinaId) {
   const reservados = document.getElementById("reservados");
   const card = document.createElement("div");
-  card.className = "card";
+  card.className = "cardItem";
 
   const titleContainer = document.createElement("div");
   titleContainer.className = "title-container";
@@ -543,7 +557,6 @@ $(document).ready(function () {
 //==============================================================================
 // função para criar os cards com cada item e suas maquinas referentes
 //===============================================================================
-
 // Função para buscar e exibir os part-numbers e suas máquinas dentro do modal
 async function showPartNumbersAndMachines() {
   try {
@@ -557,6 +570,9 @@ async function showPartNumbersAndMachines() {
     response.data.forEach(itemMaquina => {
         const card = document.createElement('div');
         card.className = 'card';
+        
+        // Armazenar o id_item_maquina como um atributo de dados HTML
+        card.dataset.idItemMaquina = itemMaquina.id_item_maquina;
 
         const partNumber = itemMaquina.Item.part_number.replace('::maker', '');
         
@@ -566,6 +582,22 @@ async function showPartNumbersAndMachines() {
         `;
         card.innerHTML = cardContent;
         cardContainer.appendChild(card);
+
+        const addButton = document.createElement('button');
+        addButton.className = 'add-button';
+        addButton.textContent = '+';
+        addButton.style.display = 'none'; // Oculta o botão inicialmente
+        card.appendChild(addButton);
+
+        // Adicionar evento de mouseover para mostrar o botão de adição
+        card.addEventListener('mouseover', () => {
+          addButton.style.display = 'block';
+        });
+
+        // Adicionar evento de mouseout para esconder o botão de adição
+        card.addEventListener('mouseout', () => {
+          addButton.style.display = 'none';
+        });
     });
     
   } catch (error) {
@@ -573,6 +605,8 @@ async function showPartNumbersAndMachines() {
     // Tratar o erro conforme necessário
   }
 }
+
+
 
 
 
