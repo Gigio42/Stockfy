@@ -409,7 +409,6 @@ body {
 }
 
 .modal-content {
-  display: flex;
   padding: 3rem !important;
   width: 95vw;
   border: none;
@@ -903,4 +902,26 @@ border: none !important;
 
 .add-button:focus {
   outline: none; /* Remove a borda ao clicar */
+}
+
+
+.card-wrapper {
+  display: flex;
+
+}
+
+.machine-list {
+  position: absolute;
+  margin-top: 50rem;
+}
+
+.empty-card {
+  background: #007bff;
+  height: 4rem;
+  border-radius: 1rem;
+  margin-left: 1rem;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
 }
