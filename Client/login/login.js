@@ -29,6 +29,7 @@ function validaUsuario() {
         const maquina = document.getElementById("selectMaquina").value;
         localStorage.setItem("maquina", maquina);
 
+        localStorage.setItem("isLoggedIn", "true"); //var q vai ser usada para verif se o usuario ta logado
         const isProducaoChecked = document.getElementById("toggleProducao").checked;
         if (isProducaoChecked) {
           window.location.href = "../produção/producao.html";
@@ -78,12 +79,6 @@ function cadastrarUsuario() {
     });
 }
 
-function alterarTema() {
-  const toggle = document.getElementById("darkModeToggle");
-  const body = document.body;
-  body.classList.toggle("body-light-mode", !toggle.checked);
-  localStorage.setItem("theme", toggle.checked ? "dark" : "light");
-}
 
 function carregarMaquinas() {
   fetch(`${BASE_URL}/adm/maquina`)
@@ -116,3 +111,10 @@ document.addEventListener("DOMContentLoaded", () => {
   toggle.checked = savedTheme !== "light"; // Default is dark mode
   alterarTema();
 });
+
+function alterarTema() {
+  const toggle = document.getElementById("darkModeToggle");
+  const body = document.body;
+  body.classList.toggle("body-light-mode", !toggle.checked);
+  localStorage.setItem("theme", toggle.checked ? "dark" : "light");
+}

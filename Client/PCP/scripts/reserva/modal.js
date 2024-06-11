@@ -1,15 +1,39 @@
 import { reserveChapas } from "../utils/connection.js";
 
-export function handleShowSelectedButtonClick(getSelectedSubcards) {
+export function handleShowSelectedButtonClick(getSelectedChapas) {
   const showSelectedButton = document.getElementById("showSelectedButton");
   const modalContent = document.getElementById("modalContent");
   const closeModal = document.getElementById("closeModal");
   const popupContainer = document.getElementById("popupContainer");
 
   removeExistingListener(showSelectedButton);
-  showSelectedButton.onclick = createModalHandler(modalContent, closeModal, getSelectedSubcards, popupContainer);
+  showSelectedButton.onclick = () => {
+    const selectedChapas = getSelectedChapas();
+    if (selectedChapas.length > 0) {
+      const modalHandler = createModalHandler(modalContent, closeModal, () => selectedChapas, popupContainer);
+      modalHandler();
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Precisa selecionar pelomenos 1 chapa!",
+      });
+    }
+  };
   closeModal.onclick = () => {
     popupContainer.style.display = "none";
+  };
+
+  window.onclick = (event) => {
+    if (event.target == popupContainer) {
+      popupContainer.style.display = "none";
+    }
+  };
+
+  document.onkeydown = (event) => {
+    if (event.key === "Escape") {
+      popupContainer.style.display = "none";
+    }
   };
 }
 
@@ -28,7 +52,7 @@ function createModalHandler(modalContent, closeModal, getSelectedSubcards, popup
     contentWrapper.style.maxHeight = "50vh";
     contentWrapper.style.overflowY = "auto";
 
-    const keys = ["id_chapa", "largura", "fornecedor", "qualidade", "quantidade_comprada", "quantidade_estoque"];
+    const keys = ["id_chapa", "largura", "fornecedor", "qualidade", "quantidade_disponivel"];
 
     const selectedSubcards = getSelectedSubcards();
     selectedSubcards.forEach((chapa) => {
@@ -136,6 +160,9 @@ function createPartNumberForm() {
   input.id = "partNumberInput";
   input.placeholder = "PART NUMBER";
   form.appendChild(input);
+
+  $(input).mask("9999.9999");
+
   return form;
 }
 
@@ -153,11 +180,24 @@ function createReserveButton(selectedSubcards) {
       keepRemaining: document.getElementById(`recycleCheckbox-${subcard.id_chapa}`).checked,
     }));
 
+    const loadingSpinner = document.getElementById("loadingSpinner");
+    loadingSpinner.style.display = "block";
+
     try {
-      const response = await reserveChapas({ partNumber, chapas });
-      console.log(response);
-    } catch (error) {
-      alert(error.message);
+  const reservedBy = localStorage.getItem("nome");
+  console.log("reservedBy:", reservedBy);
+  const response = await reserveChapas({ partNumber, chapas, reservedBy });
+  console.log("this is the response:", response);
+  location.reload();
+} catch (error) {
+  console.error("This is the error response:", error); // Log the error object
+  Swal.fire({
+    icon: "error",
+    title: "Oops...",
+    text: error.message, // Display the error message from error.response.data
+  });
+} finally {
+      loadingSpinner.style.display = "none";
     }
   };
   return reserveButton;

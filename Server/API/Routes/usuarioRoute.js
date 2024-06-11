@@ -19,7 +19,6 @@ async function usuarioRoutes(fastify, options) {
     try {
       console.log(name, password);
       const newUser = await usuarioController.addUsuario({ name, password });
-      console.log("test");
       reply.send({ success: true });
     } catch (error) {
       reply.status(500).send({ success: false, error: "Erro ao adicionar o usuário" });

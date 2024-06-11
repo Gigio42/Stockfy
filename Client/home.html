@@ -8,13 +8,14 @@
         <link rel="stylesheet" href="home.css" />
     </head>
     <body>
-        <div class="container">
-            <div class="theme-switch-wrapper">
+        <div class="d-flex justify-content-end p-2">
+            <div class="theme-switch-wrapper ml-2">
                 <label class="theme-switch" for="checkbox">
                     <input type="checkbox" id="checkbox" />
                     <div class="slider round"></div>
                 </label>
             </div>
+        </div>
 
             <nav>
                 <div>
@@ -25,10 +26,22 @@
                     <li class="mb-2"><a href="./recebimento/recebimento.html">Recebimento</a></li>
                     <li class="mb-2"><a href="./PCP/pcp.html">Controle de Produção</a></li>
                     <li class="mb-2"><a href="./adm/admnew.html">Administração</a></li>
+                    <li class="mb-2 logout-item"><a id="logoutButton" href="#" class="logout-link">Logout</a></li>
+                    </li>
                 </ul>
             </nav>
         </div>
+
         <script>
+            if (localStorage.getItem("isLoggedIn") !== "true") {
+                window.location.href = "./login/login.html";
+            }
+
+            document.getElementById("logoutButton").addEventListener("click", function () {
+                localStorage.clear();
+                window.location.href = "./login/login.html"; 
+            });
+
             const checkbox = document.getElementById("checkbox");
             checkbox.addEventListener("change", () => {
                 document.body.classList.toggle("light-mode");

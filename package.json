@@ -14,7 +14,7 @@
     "chapatest": "node ./Test/generators/gerar_chapas.cjs",
     "start-and-test": "prisma migrate dev --name auto_migration && npm run generate && start-server-and-test startUnix http://localhost:3000 chapatest",
     "studio": "npx prisma studio --port 2943",
-    "render": "npx prisma generate && nodemon server.js"
+    "render": "npm run migrate && npm run generate && node ./server.js"
   },
   "keywords": [],
   "author": "",
@@ -22,20 +22,25 @@
   "dependencies": {
     "@fastify/cors": "^9.0.1",
     "@prisma/client": "^5.14.0",
+    "ajv": "^8.16.0",
+    "ajv-errors": "^3.0.0",
+    "ajv-formats": "^3.0.1",
     "axios": "^1.6.8",
     "dotenv": "^16.4.5",
     "fastify": "^4.27.0",
-    "pino-pretty": "^11.0.0",
-    "qrcode": "^1.5.3",
-    "sqlite3": "^5.1.7",
     "typeorm": "^0.3.20"
   },
   "devDependencies": {
     "eslint-plugin-node": "^11.1.0",
     "faker": "^5.5.3",
     "nodemon": "^3.1.0",
+    "pino-pretty": "^11.0.0",
     "prettier": "^3.2.5",
     "prisma": "^5.14.0",
+    "purgecss": "^6.0.0",
+    "qrcode": "^1.5.3",
+    "selenium-webdriver": "^4.21.0",
+    "sqlite3": "^5.1.7",
     "start-server-and-test": "^2.0.3"
   }
 }

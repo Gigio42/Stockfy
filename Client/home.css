@@ -43,9 +43,22 @@ nav ul li:hover {
     background: var(--nav-hover);
 }
 
+.logout-item {
+    background-color: rgba(0, 68, 255, 0.356) !important;
+}
+
+.logout-item:hover {
+    background-color: rgba(0, 0, 139, 0.438) !important;
+}
+
 nav ul li a {
     color: var(--text-color);
-    text-decoration: none;
+    text-decoration: none !important;
+}
+
+nav ul li a:hover {
+    color: var(--text-color);
+    text-decoration: none !important;
 }
 
 .theme-switch-wrapper {

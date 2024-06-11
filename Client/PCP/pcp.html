@@ -7,15 +7,21 @@
         <title>Controle de Produção</title>
         <link id="theme" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spinkit/1.2.5/spinkit.min.css" />
         <link rel="stylesheet" href="pcp.css" />
+        <link rel="icon" type="image/png" sizes="16x16" href="./media/Web/icons8-cardboard-basic-outline-16.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="./media/Web/icons8-cardboard-basic-outline-32.png" />
+        <link rel="icon" type="image/png" sizes="96x96" href="./media/Web/icons8-cardboard-basic-outline-96.png" />
     </head>
 
     <body class="body">
         <div class="container-fluid">
             <div class="row">
                 <!-- Aside -->
-                <aside id="aside" class="aside col-md-3 navbar-lateral d-none d-md-block">
-                    <div class="logo-container"></div>
+                <aside id="aside" class="aside col-md-2 navbar-lateral d-none d-md-block">
+                    <div class="logo-container">
+                        <img class="logo" src="./media/logoTransparente.png" alt="Logo" class="logoImg" />
+                    </div>
                     <div class="p-2 navbar">
                         <ul class="list-unstyled">
                             <li class="icon-li mb-2">
@@ -35,23 +41,40 @@
                 </aside>
 
                 <!-- Header -->
-                <div class="col-md-9 header">
+                <div class="col-md-10 header">
                     <div class="header-custom text-light d-flex justify-content-between align-items-center">
-                        <div class="navbar-header">
-                            <a id="user-name" class="navbar-brand" href="#"></a>
-                        </div>
                         <div class="d-flex align-items-center">
                             <h1 class="m-0 hide-on-mobile">Gerenciamento PCP</h1>
                         </div>
-                        <div>
-                            <button id="mobileOptionsButton" class="mobileOptions">RESERVAR</button>
+                        <div class="navbar-header">
+                            <div class="media hide-on-mobile">
+                                <img
+                                    class="mr-3 align-self-center"
+                                    alt="Profile Pic"
+                                    id="profilePic"
+                                    style="width: 50px; height: 50px; border-radius: 50%"
+                                />
+                                <div class="media-body">
+                                    <h5 class="mt-0 mb-0" id="user-name">Username</h5>
+                                    <p class="mb-0 text-muted" id="role">Administrador</p>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <button id="mobileOpenModalLink" class="mobileOptions">CONSULTAR</button>
-                        </div>
-                        <div class="dark-mode-toggle">
-                            <input type="checkbox" id="darkModeToggle" />
-                            <label for="darkModeToggle"></label>
+                        
+                        <div class="d-flex justify-content-around align-items-center" style="min-height: 70px">
+                            <div class="mx-sm-1 mx-0 my-1 align-self-center">
+                                <button id="mobileOptionsButton" class="mobileOptions px-sm-3 px-2">RESERVAR</button>
+                            </div>
+                            <div class="mx-sm-1 mx-0 my-1 align-self-center">
+                                <button id="mobileOpenModalLink" class="mobileOptions px-sm-3 px-2">CONSULTAR</button>
+                            </div>
+                            <div class="dark-mode-toggle mx-sm-1 mx-0 my-1 align-self-center px-sm-3 px-2">
+                                <input type="checkbox" id="darkModeToggle" />
+                                <label for="darkModeToggle"></label>
+                            </div>
+                            <div class="mx-sm-1 mx-0 my-1 align-self-center">
+                                <button id="logoutButton" class="btn btn-primary px-sm-3 px-2">Logout</button>
+                            </div>
                         </div>
                     </div>
 
@@ -126,19 +149,47 @@
                 </div>
 
                 <!-- item modal -->
-                <div id="itemModal" class="modal" style="display: none">
+                <div id="itemModal" class="modal">
                     <div id="itemContainer" class="modal-content">
                         <span class="close" id="closeItemModal">&times;</span>
                         <input type="search" id="searchBar" placeholder="Procurar PART NUMBER" />
                     </div>
                 </div>
+
+                <!-- Chapa Info modal -->
+                <div id="infoModal" class="modal" style="display: none">
+                    <div id="infoContainer" class="modal-content">
+                        <span class="close" id="closeInfoModal">&times;</span>
+                    </div>
+                </div>
+
+                <!-- Loading Spinner -->
+                <div id="loadingSpinner" class="sk-cube-grid" style="display: none;">
+                    <div class="sk-cube sk-cube1"></div>
+                    <div class="sk-cube sk-cube2"></div>
+                    <div class="sk-cube sk-cube3"></div>
+                    <div class="sk-cube sk-cube4"></div>
+                    <div class="sk-cube sk-cube5"></div>
+                    <div class="sk-cube sk-cube6"></div>
+                    <div class="sk-cube sk-cube7"></div>
+                    <div class="sk-cube sk-cube8"></div>
+                    <div class="sk-cube sk-cube9"></div>
+                  </div>
             </div>
         </div>
 
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <!-- jQuery library -->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <!-- Popper.js library -->
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <!-- Bootstrap library -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+        <!-- jQuery Mask plugin -->
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <!-- Axios library -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.9/dist/sweetalert2.all.min.js"></script>
+        <!-- sweetAlert -->
 
         <script type="module" src="pcp.js"></script>
     </body>

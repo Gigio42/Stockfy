@@ -3,8 +3,26 @@ import cors from "@fastify/cors";
 import { PrismaClient } from "@prisma/client";
 import log from "./logger.js";
 import registerRoutes from "./API/Routes/index.js";
+import Ajv from 'ajv';
+import addFormats from 'ajv-formats';
+import AjvErrors from 'ajv-errors';
 
 const fastify = Fastify({ logger: log });
+
+const ajv = new Ajv({
+  allErrors: true,
+  removeAdditional: true,
+  useDefaults: true,
+  coerceTypes: 'array'
+});
+
+addFormats(ajv);
+AjvErrors(ajv);
+
+fastify.setValidatorCompiler(({ schema, method, url, httpPart }) => {
+  return ajv.compile(schema);
+});
+
 fastify.register(cors);
 const port = process.env.PORT || 3000;
 const host = process.env.HOST || "localhost";
@@ -12,8 +30,6 @@ const host = process.env.HOST || "localhost";
 fastify.get("/", async () => {
   return { text: "Hello, World!" };
 });
-
-console.log();
 
 const prisma = new PrismaClient();
 
@@ -30,6 +46,7 @@ prisma
         process.exit(1);
       }
       fastify.log.info(`Server running on ${address}`);
+      console.log("acesse esse link:https://stockfysite.onrender.com/login/login.html ");
     });
   })
   .catch((err) => {

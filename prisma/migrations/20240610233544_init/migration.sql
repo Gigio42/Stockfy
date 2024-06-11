@@ -2,6 +2,7 @@
 CREATE TABLE "Conjugacoes" (
     "id_conjugacoes" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "medida" TEXT NOT NULL,
+    "usado" BOOLEAN NOT NULL DEFAULT false,
     "chapaId" INTEGER NOT NULL,
     CONSTRAINT "Conjugacoes_chapaId_fkey" FOREIGN KEY ("chapaId") REFERENCES "Chapas" ("id_chapa") ON DELETE RESTRICT ON UPDATE CASCADE
 );
@@ -9,22 +10,26 @@ CREATE TABLE "Conjugacoes" (
 -- CreateTable
 CREATE TABLE "Chapas" (
     "id_chapa" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "id_compra" INTEGER NOT NULL,
-    "numero_cliente" INTEGER NOT NULL,
+    "id_compra" INTEGER NOT NULL DEFAULT 0,
+    "numero_cliente" INTEGER NOT NULL DEFAULT 0,
     "fornecedor" TEXT,
+    "comprador" TEXT,
     "unidade" TEXT,
     "qualidade" TEXT NOT NULL,
     "medida" TEXT,
-    "quantidade_comprada" REAL,
-    "quantidade_recebida" REAL,
-    "quantidade_estoque" REAL,
+    "largura" INTEGER,
+    "comprimento" INTEGER,
+    "quantidade_comprada" INTEGER DEFAULT 0,
+    "quantidade_recebida" INTEGER DEFAULT 0,
+    "quantidade_estoque" INTEGER DEFAULT 0,
+    "quantidade_disponivel" INTEGER DEFAULT 0,
     "onda" TEXT,
     "coluna" REAL,
     "vincos" TEXT,
     "gramatura" REAL,
     "peso_total" REAL,
-    "valor_unitario" DECIMAL,
-    "valor_total" DECIMAL,
+    "valor_unitario" TEXT,
+    "valor_total" TEXT,
     "status" TEXT,
     "data_compra" TEXT,
     "data_prevista" TEXT,
@@ -35,6 +40,7 @@ CREATE TABLE "Chapas" (
 CREATE TABLE "Chapa_Item" (
     "id_chapa_item" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "quantidade" INTEGER NOT NULL DEFAULT 0,
+    "terminado" BOOLEAN NOT NULL DEFAULT false,
     "chapaId" INTEGER NOT NULL,
     "itemId" INTEGER NOT NULL,
     CONSTRAINT "Chapa_Item_chapaId_fkey" FOREIGN KEY ("chapaId") REFERENCES "Chapas" ("id_chapa") ON DELETE RESTRICT ON UPDATE CASCADE,
@@ -45,27 +51,29 @@ CREATE TABLE "Chapa_Item" (
 CREATE TABLE "Item" (
     "id_item" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "part_number" TEXT NOT NULL DEFAULT '0',
-    "status" TEXT NOT NULL DEFAULT ''
+    "prioridade" INTEGER,
+    "status" TEXT NOT NULL DEFAULT '',
+    "reservado_por" TEXT
 );
 
 -- CreateTable
-CREATE TABLE "Chapa_Item_Maquina" (
-    "id_chapa_item_maquina" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+CREATE TABLE "Item_Maquina" (
+    "id_item_maquina" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "prazo" TEXT,
     "ordem" INTEGER,
-    "prazo" DATETIME,
-    "status" TEXT,
-    "itemId" INTEGER NOT NULL,
+    "executor" TEXT,
+    "finalizado" BOOLEAN NOT NULL DEFAULT false,
+    "corte" TEXT,
     "maquinaId" INTEGER NOT NULL,
-    "chapaItemId" INTEGER NOT NULL,
-    CONSTRAINT "Chapa_Item_Maquina_itemId_fkey" FOREIGN KEY ("itemId") REFERENCES "Item" ("id_item") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "Chapa_Item_Maquina_maquinaId_fkey" FOREIGN KEY ("maquinaId") REFERENCES "Maquina" ("id_maquina") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "Chapa_Item_Maquina_chapaItemId_fkey" FOREIGN KEY ("chapaItemId") REFERENCES "Chapa_Item" ("id_chapa_item") ON DELETE RESTRICT ON UPDATE CASCADE
+    "itemId" INTEGER NOT NULL,
+    CONSTRAINT "Item_Maquina_maquinaId_fkey" FOREIGN KEY ("maquinaId") REFERENCES "Maquina" ("id_maquina") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "Item_Maquina_itemId_fkey" FOREIGN KEY ("itemId") REFERENCES "Item" ("id_item") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateTable
 CREATE TABLE "Maquina" (
     "id_maquina" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "name" TEXT NOT NULL
+    "nome" TEXT NOT NULL DEFAULT ''
 );
 
 -- CreateTable
@@ -88,6 +96,9 @@ CREATE INDEX "Conjugacoes_chapaId_idx" ON "Conjugacoes"("chapaId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Chapas_id_chapa_id_compra_key" ON "Chapas"("id_chapa", "id_compra");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Item_part_number_key" ON "Item"("part_number");
 
 -- CreateIndex
 CREATE INDEX "Usuarios_id_usuario_idx" ON "Usuarios"("id_usuario");
