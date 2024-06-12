@@ -35,15 +35,6 @@ body, table, td, th, input[type="text"], input[type="date"], select{
     color: var(--text-color);
 }
 
-header{
-    margin-left: 18%; /* Empurra o block1 para começar após o aside */
-    flex-grow: 1;
-    background-color: var(--header-color);
-    color: var(--text-color);
-    display: flex;
-    height: 10vh;
-}
-
 .logo-container{
     background-color: var(--header-color);
     display: absolute;
@@ -53,7 +44,9 @@ header{
     width: 100%;
     height: 11vh;
     border-bottom: solid 1px #6a6a6a45;
+    align-items: center;
 }
+
 
 aside {
     position: fixed; /* Fixa o aside na posição, fazendo-o não rolar com o resto da página */
@@ -133,16 +126,6 @@ main{
     height: 100vh;  /* Ocupa a altura total da viewport */
     overflow: auto; /* Adiciona rolagem se o conteúdo exceder a altura da tela */
 }
-
-.text-content{
-    margin: 2%;
-    width: 100%;
-    font-size: 200%;
-    display: flex;
-    justify-content: center;
-}
-
-
 
 .block2{
     height: 100%;
@@ -224,10 +207,51 @@ input[type="text"], input[type="date"], select {
     margin: auto;
 }
 
+header{
+    margin-left: 18%; /* Empurra o block1 para começar após o aside */
+    background-color: var(--header-color);
+    color: var(--text-color);
+    display: flex;
+    height: 10vh;
+}
+
+.text-content{
+    padding: 1% ;
+    top: 20%;
+    right: 0.5%;
+    width: 100%;
+    font-size: 200%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.userBlock{
+    display: flex;
+    flex-direction: row;
+    padding-right:15%;
+}
+
+.user-name{
+    
+}
+
+.logout{
+    position: relative;
+    top: 20%;
+    right: 0.5%;
+    display: block;
+    width: 60px;
+    height: 34px;
+    border-radius: 5%;
+    color: var(--text-color);
+    border: none;
+    background-color: var(--button2-color);
+    cursor: pointer;
+}
 
 .dark-mode-toggle label {
-    top: 10%;
-    right: 10%;
+    top: 20%;
+    right: 15%;
     display: block;
     width: 60px;
     height: 34px;
@@ -300,9 +324,17 @@ input[type="text"], input[type="date"], select {
         justify-content: space-between;
     }
     
+    .userBlock{
+        padding-right: 20%;
+    }
+
     .logo-container{
         border: none;
         display: flex;
+    }
+
+    .logout{
+        top: 0%;
     }
     
     aside {
@@ -320,11 +352,6 @@ input[type="text"], input[type="date"], select {
         background-color: var(--button-color);
         padding: 5%;
         margin: 1%;
-    }
-    
-    
-    .dark-mode-toggle{
-        z-index: 2;
     }
     
     .block1 {
@@ -353,4 +380,11 @@ input[type="text"], input[type="date"], select {
         overflow-x: auto; /* Permite rolagem horizontal */
         overflow-y: hidden; /* Evita rolagem vertical dentro da tabela */
     }
+}
+
+@media (max-width: 460px) {
+    .text-content{
+        font-size: 1.2rem;
+    }
+
 }

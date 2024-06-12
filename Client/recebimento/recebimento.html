@@ -6,11 +6,12 @@
     <title>Recebimento</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="file-info.js"></script>
     <script src="atualizar.js"></script>
     <link rel="stylesheet" href="recebimento.css" />
     <style>
-
+        
     </style>
 </head>
 <body>
@@ -18,11 +19,21 @@
     <main>
         
         <header> 
-            <div class="text-content">Recebimento</div>
+            <div class="text-content">
+                <div>
+                    Recebimento
+                </div>
+                <div class="userBlock">
+                    <img src="" alt="" id="profilePic">
+                    <div class="user-name" id="user-name">username</div>
+                </div>
+            </div>
+            
             <div class="dark-mode-toggle">
                 <input type="checkbox" id="darkModeToggle" checked />
                 <label for="darkModeToggle"></label>
             </div>
+            <button class="logout" onclick="logout()">Logout</button>
         </header>
         
         <aside  id="button-container">
@@ -116,8 +127,27 @@
     </main>
     
     
-    
+    <script type="module">
+        import BASE_URL from "../utils/config.js";
+        window.url =BASE_URL;
+    </script>
     <script>
+        var url = window.url;
+        
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+            window.location.href = "../login/login.html";
+        }
+        
+        function logout() {
+            localStorage.clear();
+            window.location.href = "../login/login.html";
+        }
+        
+        $("#user-name").text(localStorage.getItem("nome") || "UserName");
+        var name = localStorage.getItem("nome");
+        var profilePic = $("#profilePic");
+        profilePic.attr("src", "https://api.dicebear.com/8.x/shapes/svg?seed=" + name);
+        
         pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js";
         
         document.getElementById('fileInput').addEventListener('change', function(event) {
@@ -205,7 +235,7 @@
         function fetchChapas(xPed) {
             clearTable(); // Limpa as tabelas antes de buscar e adicionar novos dados
             axios
-            .get(`https://stockfy.onrender.com/recebimento/${xPed}`) // Altera o ID para puxar as chapas
+            .get(`${url}/recebimento/${xPed}`) // Altera o ID para puxar as chapas
             .then((response) => {
                 const data = response.data;
                 if (data && data.length > 0) {
