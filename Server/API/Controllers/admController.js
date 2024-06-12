@@ -137,7 +137,38 @@ class AdmController {
       throw new Error("Erro ao buscar todos os Item_Maquina: " + error.message);
     }
   }
-  
+
+  async createItemMaquina(itemId, maquinaId) {
+    try {
+      const item = await Item_Maquina.findUnique({
+        where: { id_item: itemId },
+        include: { maquinas: true }, // Garante que o item esteja relacionado à máquina correta
+      });
+
+      if (!item) {
+        throw new Error(`Item com ID ${itemId} não encontrado.`);
+      }
+
+      // Cria um novo Item_Maquina com os dados do item e a máquina selecionada
+      await Item_Maquina.create({
+        data: {
+          prazo: item.prazo,
+          ordem: item.ordem,
+          executor: item.executor,
+          finalizado: item.finalizado,
+          corte: item.corte,
+          maquinaId: maquinaId, // Substitui o maquinaId pelo ID da máquina selecionada
+          itemId: itemId,
+        },
+      });
+
+      console.log(`Item_Maquina criado com sucesso para o item ${itemId} e a máquina ${maquinaId}.`);
+    } catch (error) {
+      console.error("Erro ao criar Item_Maquina:", error);
+      throw new Error("Erro ao criar Item_Maquina: " + error.message);
+    }
+  }
 }
+
 
 export default AdmController;

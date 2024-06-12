@@ -893,12 +893,14 @@ padding: 1rem;
 background: #232323;
 color: #9178ff;
 border: none !important;
+margin-left: 1rem;
 }
 
 .add-button:hover {
   background: #313131;
   box-shadow: 0 0 30px 1px #876cff;
   color: #9178ff;
+  margin-left: 1rem;
 }
 
 .add-button:focus {
@@ -926,18 +928,19 @@ border: none !important;
   overflow-y: auto;
   max-height:27rem ;
 }
+
 .empty-card {
   background: #232323;
-  height: 4.5rem;
+  height: 4rem;
   border-radius: 1rem;
   margin-left: 1rem;
-  display: flex;
   text-align: center;
   justify-content: center;
   align-items: center;
   padding: 1rem;
   font-size: calc(1vw + 15px);
   color: #929292;
+  display: flex;
 }
 
 
@@ -954,6 +957,6 @@ li::marker {
   width: fit-content;
   margin: 0;
   font-size: 1.4rem;
-
+border: none;
   align-content: center;
 }

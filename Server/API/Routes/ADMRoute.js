@@ -69,6 +69,27 @@ async function admRoute(fastify, options) {
       reply.code(500).send({ message: "Internal Server Error" });
     }
   });
+
+  async function admRoute(fastify, options) {
+    const admController = new AdmController(options.db);
+  
+    // Outros endpoints existentes...
+  
+    fastify.post("/item_maquina/:itemId/selecionar-maquina/:maquinaId", async (request, reply) => {
+      try {
+        const itemId = parseInt(request.params.itemId, 10);
+        const maquinaId = parseInt(request.params.maquinaId, 10);
+  
+        await admController.createItemMaquina(itemId, maquinaId);
+        
+        reply.send({ message: "Item_Maquina criado com sucesso." });
+      } catch (err) {
+        console.error("Erro ao criar Item_Maquina:", err);
+        reply.code(500).send({ message: "Erro ao criar Item_Maquina." });
+      }
+    });
+  }
+  
   
 }
 

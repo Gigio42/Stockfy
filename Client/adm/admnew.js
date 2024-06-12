@@ -84,7 +84,7 @@ function createNomeCard(maquina) {
   const nome = document.createElement("span");
   nome.textContent = maquina.nome;
   nome.className = "nomeMaquina";
-  
+
   card.appendChild(nome);
   container.appendChild(card);
 }
@@ -545,9 +545,74 @@ $(document).ready(function () {
   });
 });
 
-//==============================================================================
-// função para criar os cards com cada item e suas maquinas referentes
-//===============================================================================
+async function createEmptyCard(cardWrapper) {
+  const emptyCard = document.createElement("div");
+  emptyCard.className = "empty-card";
+  emptyCard.textContent = "Selecione";
+  cardWrapper.appendChild(emptyCard);
+
+  addAddButton(emptyCard, cardWrapper);
+
+  emptyCard.addEventListener("click", async (event) => {
+    // Verifica se a lista de máquinas já está presente
+    const existingMachineList = emptyCard.querySelector(".machine-list");
+    if (existingMachineList) {
+      // Se o clique foi dentro da lista de máquinas, não fecha a lista
+      if (!event.target.classList.contains("machine-list") && !event.target.classList.contains("machine-card")) {
+        emptyCard.removeChild(existingMachineList);
+        emptyCard.removeChild(emptyCard.querySelector(".add-button"));
+      }
+      return;
+    }
+
+    try {
+      const machinesResponse = await axios.get("http://localhost:3000/adm/maquina");
+      const machines = machinesResponse.data;
+
+      const machineList = document.createElement("ul");
+      machineList.className = "machine-list";
+
+      machines.forEach((machine) => {
+        const machineButton = document.createElement("button");
+        machineButton.className = "machine-card";
+        machineButton.textContent = machine.nome;
+
+        // Adicionar evento de clique ao botão da máquina
+machineButton.addEventListener('click', () => {
+  emptyCard.textContent = machine.nome;
+  emptyCard.classList.add('add-processo'); // Adiciona a classe 'add-processo'
+  console.log("Máquina selecionada:", machine.nome);
+  console.log("ID da Máquina selecionada:", machine.id_maquina);
+  console.log("Classe 'add-processo' adicionada ao card:", emptyCard.classList.contains('add-processo')); // Verifica se a classe foi adicionada corretamente
+  // Remover a lista de máquinas ao selecionar uma
+  addAddButton(emptyCard, cardWrapper);
+});
+
+
+        machineList.appendChild(machineButton);
+      });
+
+      emptyCard.appendChild(machineList);
+    } catch (error) {
+      console.error("Erro ao buscar os nomes das máquinas:", error);
+    }
+  });
+}
+
+// Função para adicionar o botão "+" ao card
+function addAddButton(emptyCard, cardWrapper) {
+  const addButton = document.createElement("button");
+  addButton.className = "add-button";
+  addButton.textContent = "+";
+  addButton.style.display = "none";
+  emptyCard.appendChild(addButton);
+
+  addButton.addEventListener("click", () => createEmptyCard(cardWrapper));
+
+  emptyCard.addEventListener("mouseover", () => (addButton.style.display = "block"));
+  emptyCard.addEventListener("mouseout", () => (addButton.style.display = "none"));
+}
+
 async function showPartNumbersAndMachines() {
   try {
     const response = await axios.get("http://localhost:3000/adm/item_maquina");
@@ -561,56 +626,41 @@ async function showPartNumbersAndMachines() {
 
       const partNumber = itemMaquina.Item.part_number.replace('::maker', '');
 
-      const cardContent = `
-          <div class="card-header"> ${partNumber}</div>
-          <div class="card-body"> ${itemMaquina.maquina.nome}</div>
-      `;
-
       const card = document.createElement('div');
       card.className = 'card';
+
+      // Definindo os atributos de dados HTML
+      card.dataset.idItemMaquina = itemMaquina.id_item_maquina;
+      card.dataset.prazo = itemMaquina.prazo;
+      card.dataset.ordem = itemMaquina.ordem;
+      card.dataset.executor = itemMaquina.executor;
+      card.dataset.finalizado = itemMaquina.finalizado;
+      card.dataset.corte = itemMaquina.corte;
+      card.dataset.maquinaId = itemMaquina.maquinaId; // Verifique se maquinaId está correto
+      card.dataset.itemId = itemMaquina.itemId;
+
+      const cardContent = `
+          <div class="card-header">${partNumber}</div>
+          <div class="card-body">${itemMaquina.maquina.nome}</div>
+      `;
+
       card.innerHTML = cardContent;
       cardWrapper.appendChild(card);
 
-      const addButton = document.createElement('button');
-      addButton.className = 'add-button';
-      addButton.textContent = '+';
-      addButton.style.display = 'none';
-      card.appendChild(addButton);
+      addAddButton(card, cardWrapper);
 
-      addButton.addEventListener('click', async () => {
-        const emptyCard = document.createElement('div');
-        emptyCard.className = 'empty-card';
-        emptyCard.textContent = 'Selecione';
-        cardWrapper.appendChild(emptyCard);
-
-        emptyCard.addEventListener('click', async () => {
-          try {
-            const machinesResponse = await axios.get("http://localhost:3000/adm/maquina");
-            const machines = machinesResponse.data;
-
-            const machineList = document.createElement('ul');
-            machineList.className = 'machine-list';
-
-            machines.forEach(machine => {
-              const machineCard = document.createElement('div');
-              machineCard.className = 'machine-card';
-              machineCard.textContent = machine.nome;
-              machineList.appendChild(machineCard);
-            });
-
-            emptyCard.appendChild(machineList);
-          } catch (error) {
-            console.error("Erro ao buscar os nomes das máquinas:", error);
-          }
+      // Adicionar evento de clique para mostrar os valores no console
+      card.addEventListener('click', () => {
+        console.log({
+          id_item_maquina: card.dataset.idItemMaquina,
+          prazo: card.dataset.prazo,
+          ordem: card.dataset.ordem,
+          executor: card.dataset.executor,
+          finalizado: card.dataset.finalizado,
+          corte: card.dataset.corte,
+          maquinaId: card.dataset.maquinaId,
+          itemId: card.dataset.itemId
         });
-      });
-
-      card.addEventListener('mouseover', () => {
-        addButton.style.display = 'block';
-      });
-
-      card.addEventListener('mouseout', () => {
-        addButton.style.display = 'none';
       });
 
       cardContainer.appendChild(cardWrapper);
@@ -621,11 +671,9 @@ async function showPartNumbersAndMachines() {
   }
 }
 
-
-
-
-
-// Adicione um evento de clique ao botão para chamar a função quando o modal for aberto
+//==============================================================================
+// Evento de clique no botão para chamar a função quando o modal for aberto
+//==============================================================================
 document.addEventListener("DOMContentLoaded", function () {
   const optionsButton = document.getElementById("optionsButton");
   if (!optionsButton) {
@@ -635,6 +683,36 @@ document.addEventListener("DOMContentLoaded", function () {
   optionsButton.addEventListener("click", showPartNumbersAndMachines);
 });
 
+
+document.addEventListener("DOMContentLoaded", function () {
+  const confirmarProcessoButton = document.getElementById("confirmarProcesso");
+  if (!confirmarProcessoButton) {
+    console.error("Botão confirmarProcesso não encontrado.");
+    return;
+  }
+  confirmarProcessoButton.addEventListener("click", async () => {
+    const addProcessoCards = document.querySelectorAll('.add-processo');
+    if (!addProcessoCards.length) {
+      console.log("Nenhum processo para confirmar.");
+      return;
+    }
+    
+    addProcessoCards.forEach(async card => {
+      const idItemMaquina = card.dataset.idItemMaquina;
+      const maquinaId = card.dataset.maquinaId;
+      
+      try {
+        // Fazer a requisição POST para criar um novo Item_Maquina com o idMaquina atualizado
+        await axios.post(`http://localhost:3000/item_maquina/${idItemMaquina}/selecionar-maquina/${maquinaId}`);
+        
+        // Limpar a classe 'add-processo' após criar o Item_Maquina
+        card.classList.remove('add-processo');
+      } catch (error) {
+        console.error("Erro ao criar Item_Maquina:", error);
+      }
+    });
+  });
+});
 
 
 //=================================================
