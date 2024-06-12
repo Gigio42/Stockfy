@@ -825,7 +825,7 @@ input {
   margin-bottom: 1rem;
   gap: 1rem;
   border-radius: 8px;
-  background-color: #232323;
+  background-color: #1d1d1d;
   width: fit-content;
   border-radius: 1rem !important;
   flex-direction: row;
@@ -850,13 +850,25 @@ input {
   padding: 1rem;
   align-items: center;
   font-size: 80%;
+  height: 100% !important;
 }
 
 
-.card-body {
+div.card-body {
+  display: flex;
   color: #cccccc;
   padding: 0;
+flex-wrap: wrap;
+background: #1d1d1d;
+gap: 1rem;
+padding: 1rem;
+}
 
+.maquina-div {
+  padding: 1rem;
+  background: #5fff8228;
+  color: #5fff82;
+border-radius: 1rem;
 }
 
 #machineCardsContainer {
