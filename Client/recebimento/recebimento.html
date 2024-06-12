@@ -129,10 +129,10 @@
     
     <script type="module">
         import BASE_URL from "../utils/config.js";
-        window.url =BASE_URL;
+        window.urlr =BASE_URL;
     </script>
     <script>
-        var url = window.url;
+        var urlr = window.url;
         
         if (localStorage.getItem("isLoggedIn") !== "true") {
             window.location.href = "../login/login.html";
@@ -235,7 +235,7 @@
         function fetchChapas(xPed) {
             clearTable(); // Limpa as tabelas antes de buscar e adicionar novos dados
             axios
-            .get(`${url}/recebimento/${xPed}`) // Altera o ID para puxar as chapas
+            .get(`${urlr}/recebimento/${xPed}`) // Altera o ID para puxar as chapas
             .then((response) => {
                 const data = response.data;
                 if (data && data.length > 0) {

@@ -6,14 +6,14 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-var url = window.url;
+var urlr = window.url;
 
 
 async function sendDataToServer() {
   try {
     var data = tableObj();
     console.log(data); // Log para depuração
-    const response = await axios.put(`${url}/recebimento`, data);
+    const response = await axios.put(`${urlr}/recebimento`, data);
     alert("Dados atualizados com sucesso!");
   } catch (error) {
     console.error("Erro ao enviar dados: ", error);
