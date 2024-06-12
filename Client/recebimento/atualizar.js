@@ -6,10 +6,10 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+var url = window.url;
 
 
 async function sendDataToServer() {
-  console.log(url)
   try {
     var data = tableObj();
     console.log(data); // Log para depuração
