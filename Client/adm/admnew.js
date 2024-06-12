@@ -84,7 +84,7 @@ function createNomeCard(maquina) {
   const nome = document.createElement("span");
   nome.textContent = maquina.nome;
   nome.className = "nomeMaquina";
-  
+
   card.appendChild(nome);
   container.appendChild(card);
 }
@@ -545,97 +545,152 @@ $(document).ready(function () {
   });
 });
 
-//==============================================================================
-// função para criar os cards com cada item e suas maquinas referentes
-//===============================================================================
-// Função para buscar e exibir os part-numbers e suas máquinas dentro do modal
-async function showPartNumbersAndMachines() {
-  try {
-      const response = await axios.get("http://localhost:3000/adm/item_maquina");
+async function createEmptyCard(cardWrapper) {
+  const emptyCard = document.createElement("div");
+  emptyCard.className = "empty-card";
+  emptyCard.textContent = "Selecione";
+  cardWrapper.appendChild(emptyCard);
 
-      // Limpar o conteúdo do container antes de adicionar novos cards
-      const cardContainer = document.getElementById("partNumberCardsContainer");
-      cardContainer.innerHTML = "";
+  addAddButton(emptyCard, cardWrapper);
 
-      // Iterar sobre os dados recebidos e adicionar cada part-number e sua máquina em um card
-      response.data.forEach(itemMaquina => {
-          const cardWrapper = document.createElement('div');
-          cardWrapper.className = 'card-wrapper';
+  emptyCard.addEventListener("click", async (event) => {
+    // Verifica se a lista de máquinas já está presente
+    const existingMachineList = emptyCard.querySelector(".machine-list");
+    if (existingMachineList) {
+      // Se o clique foi dentro da lista de máquinas, não fecha a lista
+      if (!event.target.classList.contains("machine-list") && !event.target.classList.contains("machine-card")) {
+        existingMachineList.remove();
+        const addButton = emptyCard.querySelector(".add-button");
+        if (addButton) addButton.remove();
+      }
+      return;
+    }
 
-          const card = document.createElement('div');
-          card.className = 'card';
+    try {
+      const machinesResponse = await axios.get("http://localhost:3000/adm/maquina");
+      const machines = machinesResponse.data;
 
-          // Armazenar o id_item_maquina como um atributo de dados HTML
-          card.dataset.idItemMaquina = itemMaquina.id_item_maquina;
+      const machineList = document.createElement("ul");
+      machineList.className = "machine-list";
 
-          const partNumber = itemMaquina.Item.part_number.replace('::maker', '');
+      machines.forEach((machine) => {
+        const machineButton = document.createElement("button");
+        machineButton.className = "machine-card";
+        machineButton.textContent = machine.nome;
+// Dentro do evento de clique do botão da máquina
+machineButton.addEventListener("click", () => {
+  emptyCard.textContent = machine.nome;
+  emptyCard.classList.add("add-processo");
+  emptyCard.dataset.maquinaId = machine.id_maquina; // Adiciona o id da máquina ao dataset
 
-          const cardContent = `
-              <div class="card-header"> ${partNumber}</div>
-              <div class="card-body"> ${itemMaquina.maquina.nome}</div>
-          `;
-          card.innerHTML = cardContent;
-          cardWrapper.appendChild(card);
+  const card = cardWrapper.querySelector(".card");
+  if (card) {
+    const ordem = parseInt(card.dataset.ordem) + 1; // Incrementa a ordem em 1
+    const updatedData = {
+      id_item_maquina: card.dataset.idItemMaquina,
+      prazo: card.dataset.prazo,
+      ordem: ordem, // Atualiza a ordem incrementada
+      executor: card.dataset.executor,
+      finalizado: card.dataset.finalizado === "true",
+      corte: card.dataset.corte,
+      maquinaId: machine.id_maquina,
+      itemId: card.dataset.itemId,
+    };
 
-          const addButton = document.createElement('button');
-          addButton.className = 'add-button';
-          addButton.textContent = '+';
-          addButton.style.display = 'none'; // Oculta o botão inicialmente
-          card.appendChild(addButton);
+    console.log("JSON atualizado:", updatedData);
+  } else {
+    console.error("Card não encontrado para atualizar os dados.");
+  }
 
-          // Adicionar evento de clique para criar o card vazio ao lado do card atual
-          addButton.addEventListener('click', async () => {
-              const emptyCard = document.createElement('div');
-              emptyCard.className = 'empty-card';
-              emptyCard.textContent = 'Selecione uma máquina';
-              cardWrapper.appendChild(emptyCard);
+  machineList.remove();
+  addAddButton(emptyCard, cardWrapper);
+});
 
-              // Adicionar evento de clique ao card vazio para mostrar a lista de máquinas disponíveis
-              emptyCard.addEventListener('click', async () => {
-                  try {
-                      const machinesResponse = await axios.get("http://localhost:3000/adm/maquina");
-                      const machines = machinesResponse.data;
 
-                      const machineList = document.createElement('ul');
-                      machineList.className = 'machine-list';
-
-                      machines.forEach(machine => {
-                          const listItem = document.createElement('li');
-                          listItem.textContent = machine.nome;
-                          machineList.appendChild(listItem);
-                      });
-
-                      // Posicionar a lista de máquinas logo abaixo do card vazio
-                      emptyCard.appendChild(machineList);
-                  } catch (error) {
-                      console.error("Erro ao buscar os nomes das máquinas:", error);
-                  }
-              });
-          });
-
-          // Adicionar evento de mouseover para mostrar o botão de adição
-          card.addEventListener('mouseover', () => {
-              addButton.style.display = 'block';
-          });
-
-          // Adicionar evento de mouseout para esconder o botão de adição
-          card.addEventListener('mouseout', () => {
-              addButton.style.display = 'none';
-          });
-
-          cardContainer.appendChild(cardWrapper);
+        machineList.appendChild(machineButton);
       });
 
+      emptyCard.appendChild(machineList);
+    } catch (error) {
+      console.error("Erro ao buscar os nomes das máquinas:", error);
+    }
+  });
+}
+
+// Função para adicionar o botão "+" ao card
+function addAddButton(emptyCard, cardWrapper) {
+  const addButton = document.createElement("button");
+  addButton.className = "add-button";
+  addButton.textContent = "+";
+  addButton.style.display = "none";
+  emptyCard.appendChild(addButton);
+
+  addButton.addEventListener("click", () => createEmptyCard(cardWrapper));
+
+  emptyCard.addEventListener("mouseover", () => (addButton.style.display = "block"));
+  emptyCard.addEventListener("mouseout", () => (addButton.style.display = "none"));
+}
+
+async function showPartNumbersAndMachines() {
+  try {
+    const response = await axios.get("http://localhost:3000/adm/item_maquina");
+
+    const cardContainer = document.getElementById("partNumberCardsContainer");
+    cardContainer.innerHTML = "";
+
+    response.data.forEach((itemMaquina) => {
+      const cardWrapper = document.createElement("div");
+      cardWrapper.className = "card-wrapper";
+
+      const partNumber = itemMaquina.Item.part_number.replace("::maker", "");
+
+      const card = document.createElement("div");
+      card.className = "card";
+
+      // Definindo os atributos de dados HTML
+      card.dataset.idItemMaquina = itemMaquina.id_item_maquina;
+      card.dataset.prazo = itemMaquina.prazo;
+      card.dataset.ordem = itemMaquina.ordem;
+      card.dataset.executor = itemMaquina.executor;
+      card.dataset.finalizado = itemMaquina.finalizado;
+      card.dataset.corte = itemMaquina.corte;
+      card.dataset.maquinaId = itemMaquina.maquinaId;
+      card.dataset.itemId = itemMaquina.itemId;
+
+      const cardContent = `
+          <div class="card-header">${partNumber}</div>
+          <div class="card-body">${itemMaquina.maquina.nome}</div>
+      `;
+
+      card.innerHTML = cardContent;
+      cardWrapper.appendChild(card);
+
+      addAddButton(card, cardWrapper);
+
+      // Adicionar evento de clique para mostrar os valores no console
+      card.addEventListener("click", () => {
+        console.log({
+          id_item_maquina: card.dataset.idItemMaquina,
+          prazo: card.dataset.prazo,
+          ordem: card.dataset.ordem,
+          executor: card.dataset.executor,
+          finalizado: card.dataset.finalizado,
+          corte: card.dataset.corte,
+          maquinaId: card.dataset.maquinaId,
+          itemId: card.dataset.itemId,
+        });
+      });
+
+      cardContainer.appendChild(cardWrapper);
+    });
   } catch (error) {
-      console.error("Erro ao buscar os part-numbers e máquinas:", error);
-      // Tratar o erro conforme necessário
+    console.error("Erro ao buscar os part-numbers e máquinas:", error);
   }
 }
 
-
-
-
-// Adicione um evento de clique ao botão para chamar a função quando o modal for aberto
+//==============================================================================
+// Evento de clique no botão para chamar a função quando o modal for aberto
+//==============================================================================
 document.addEventListener("DOMContentLoaded", function () {
   const optionsButton = document.getElementById("optionsButton");
   if (!optionsButton) {
@@ -645,6 +700,37 @@ document.addEventListener("DOMContentLoaded", function () {
   optionsButton.addEventListener("click", showPartNumbersAndMachines);
 });
 
+document.getElementById("confirmarProcesso").addEventListener("click", async () => {
+  const cards = document.querySelectorAll(".card");
+  const items = [];
+
+  cards.forEach((card) => {
+    const emptyCard = card.closest(".card-wrapper").querySelector(".empty-card");
+    const maquinaId = emptyCard?.dataset.maquinaId;
+    if (maquinaId) {
+      const ordem = parseInt(card.dataset.ordem) + 1;
+
+      items.push({
+        itemId: parseInt(card.dataset.itemId),
+        maquinaId: parseInt(maquinaId),
+        ordem: ordem,
+      });
+    }
+  });
+
+  if (items.length === 0) {
+    console.warn("Nenhum item selecionado.");
+    return;
+  }
+
+  try {
+    // Incluir a ordem atualizada nos dados enviados para o servidor
+    const response = await axios.post("http://localhost:3000/adm/item_maquina/selecionar-maquinas", items);
+    console.log(response.data.message);
+  } catch (error) {
+    console.error("Erro ao confirmar processos:", error);
+  }
+});
 
 
 //=================================================
