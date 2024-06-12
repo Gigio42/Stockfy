@@ -127,12 +127,7 @@
     </main>
     
     
-    <script type="module">
-        import BASE_URL from "../utils/config.js";
-        window.urlr =BASE_URL;
-    </script>
     <script>
-        var urlr = window.url;
         
         if (localStorage.getItem("isLoggedIn") !== "true") {
             window.location.href = "../login/login.html";
@@ -230,12 +225,11 @@
             fetchChapas(idCompra);
         }
         
-        //criar tabelasconst tableb = document.getElementById('bancoDados').getElementsByTagName('tbody')[0];
-        
+
         function fetchChapas(xPed) {
             clearTable(); // Limpa as tabelas antes de buscar e adicionar novos dados
             axios
-            .get(`${urlr}/recebimento/${xPed}`) // Altera o ID para puxar as chapas
+            .get(`http://localhost:3000/recebimento/${xPed}`) // Altera o ID para puxar as chapas
             .then((response) => {
                 const data = response.data;
                 if (data && data.length > 0) {
@@ -258,6 +252,9 @@
                 console.error("Erro ao buscar dados: ", error);
             });
         }
+        //criar tabelasconst tableb = document.getElementById('bancoDados').getElementsByTagName('tbody')[0];
+        
+
         
         function clearTable() {
             clearRows(document.getElementById("tableBody")); // Limpa o tbody de bancoDados
