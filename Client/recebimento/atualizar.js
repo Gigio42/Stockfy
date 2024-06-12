@@ -6,11 +6,12 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+
 async function sendDataToServer() {
   try {
     var data = tableObj();
     console.log(data); // Log para depuração
-    const response = await axios.put("https://stockfysite.onrender.com/recebimento", data);
+    const response = await axios.put(`http://localhost:3000/recebimento`, data);
     alert("Dados atualizados com sucesso!");
   } catch (error) {
     console.error("Erro ao enviar dados: ", error);
