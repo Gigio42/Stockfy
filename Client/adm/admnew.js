@@ -551,63 +551,63 @@ async function createEmptyCard(cardWrapper) {
   addAddButton(emptyCard, cardWrapper);
 
   emptyCard.addEventListener("click", async (event) => {
-    const existingMachineList = emptyCard.querySelector(".machine-list");
-    if (existingMachineList) {
-      if (!event.target.classList.contains("machine-list") && !event.target.classList.contains("machine-card")) {
-        existingMachineList.remove();
-        const addButton = emptyCard.querySelector(".add-button");
-        if (addButton) addButton.remove();
-      }
-      return;
-    }
-
-    try {
-      const machinesResponse = await axios.get("http://localhost:3000/adm/maquina");
-      const machines = machinesResponse.data;
-
-      const machineList = document.createElement("ul");
-      machineList.className = "machine-list";
-
-      machines.forEach((machine) => {
-        const machineButton = document.createElement("button");
-        machineButton.className = "machine-card";
-        machineButton.textContent = machine.nome;
-
-        machineButton.addEventListener("click", () => {
-          emptyCard.textContent = machine.nome;
-          emptyCard.classList.add("add-processo");
-          emptyCard.dataset.maquinaId = machine.id_maquina;
-
-          const card = cardWrapper.querySelector(".card");
-          if (card) {
-            const ordem = parseInt(card.dataset.ordem) + 1;
-            const updatedData = {
-              id_item_maquina: card.dataset.idItemMaquina,
-              prazo: card.dataset.prazo,
-              ordem: ordem,
-              executor: card.dataset.executor,
-              finalizado: card.dataset.finalizado === "true",
-              corte: card.dataset.corte,
-              maquinaId: machine.id_maquina,
-              itemId: card.dataset.itemId,
-            };
-
-            console.log("JSON atualizado:", updatedData);
-          } else {
-            console.error("Card não encontrado para atualizar os dados.");
+      const existingMachineList = emptyCard.querySelector(".machine-list");
+      if (existingMachineList) {
+          if (!event.target.classList.contains("machine-list") && !event.target.classList.contains("machine-card")) {
+              existingMachineList.remove();
+              const addButton = emptyCard.querySelector(".add-button");
+              if (addButton) addButton.remove();
           }
+          return;
+      }
 
-          machineList.remove();
-          addAddButton(emptyCard, cardWrapper);
-        });
+      try {
+          const machinesResponse = await axios.get("http://localhost:3000/adm/maquina");
+          const machines = machinesResponse.data;
 
-        machineList.appendChild(machineButton);
-      });
+          const machineList = document.createElement("ul");
+          machineList.className = "machine-list";
 
-      emptyCard.appendChild(machineList);
-    } catch (error) {
-      console.error("Erro ao buscar os nomes das máquinas:", error);
-    }
+          machines.forEach((machine) => {
+              const machineButton = document.createElement("button");
+              machineButton.className = "machine-card";
+              machineButton.textContent = machine.nome;
+
+              machineButton.addEventListener("click", () => {
+                  emptyCard.textContent = machine.nome;
+                  emptyCard.classList.add("add-processo");
+                  emptyCard.dataset.maquinaId = machine.id_maquina;
+
+                  const card = cardWrapper.querySelector(".card");
+                  if (card) {
+                      const ordem = parseInt(card.dataset.ordem) + 1;
+                      const updatedData = {
+                          id_item_maquina: card.dataset.idItemMaquina,
+                          prazo: card.dataset.prazo,
+                          ordem: ordem,
+                          executor: card.dataset.executor,
+                          finalizado: card.dataset.finalizado === "true",
+                          corte: card.dataset.corte,
+                          maquinaId: machine.id_maquina,
+                          itemId: card.dataset.itemId,
+                      };
+
+                      console.log("JSON atualizado:", updatedData);
+                  } else {
+                      console.error("Card não encontrado para atualizar os dados.");
+                  }
+
+                  machineList.remove();
+                  addAddButton(emptyCard, cardWrapper);
+              });
+
+              machineList.appendChild(machineButton);
+          });
+
+          emptyCard.appendChild(machineList);
+      } catch (error) {
+          console.error("Erro ao buscar os nomes das máquinas:", error);
+      }
   });
 }
 
@@ -624,79 +624,79 @@ function addAddButton(emptyCard, cardWrapper) {
   emptyCard.addEventListener("mouseout", () => (addButton.style.display = "none"));
 }
 
+
 async function showPartNumbersAndMachines() {
   try {
-    const response = await axios.get("http://localhost:3000/adm/item_maquina");
+      const response = await axios.get("http://localhost:3000/adm/item_maquina");
 
-    const cardContainer = document.getElementById("partNumberCardsContainer");
-    cardContainer.innerHTML = "";
+      const cardContainer = document.getElementById("partNumberCardsContainer");
+      cardContainer.innerHTML = "";
 
-    const partNumberMap = {};
+      const partNumberMap = {};
 
-    response.data.forEach((itemMaquina) => {
-      const partNumber = itemMaquina.Item.part_number.replace("::maker", "");
+      response.data.forEach((itemMaquina) => {
+          const partNumber = itemMaquina.Item.part_number.replace("::maker", "");
 
-      if (!partNumberMap[partNumber]) {
-        partNumberMap[partNumber] = {
-          maquinas: [],
-          itemId: itemMaquina.itemId,
-          prazo: itemMaquina.prazo,
-          executor: itemMaquina.executor,
-          finalizado: itemMaquina.finalizado,
-          corte: itemMaquina.corte,
-        };
+          if (!partNumberMap[partNumber]) {
+              partNumberMap[partNumber] = {
+                  maquinas: [],
+                  itemId: itemMaquina.itemId,
+                  prazo: itemMaquina.prazo,
+                  executor: itemMaquina.executor,
+                  finalizado: itemMaquina.finalizado,
+                  corte: itemMaquina.corte,
+              };
+          }
+
+          partNumberMap[partNumber].maquinas.push(itemMaquina.maquina.nome);
+      });
+
+      for (const [partNumber, data] of Object.entries(partNumberMap)) {
+          const cardWrapper = document.createElement("div");
+          cardWrapper.className = "card-wrapper";
+
+          const card = document.createElement("div");
+          card.className = "card";
+
+          card.dataset.itemId = data.itemId;
+          card.dataset.prazo = data.prazo;
+          card.dataset.executor = data.executor;
+          card.dataset.finalizado = data.finalizado;
+          card.dataset.corte = data.corte;
+
+          const cardContent = `
+              <div class="card-header d-flex justify-content-between align-items-center">
+                  <span>${partNumber}</span>
+                  <span class="toggle-arrow" style="cursor: pointer;">&#9660;</span>
+              </div>
+              <div class="card-body d-none">
+                  ${data.maquinas.map(maquina => `<div class="maquina-div">${maquina}</div>`).join('')}
+              </div>
+          `;
+
+          card.innerHTML = cardContent;
+
+          const cardHeader = card.querySelector(".card-header");
+          const cardBody = card.querySelector(".card-body");
+          const toggleArrow = card.querySelector(".toggle-arrow");
+
+          cardHeader.addEventListener("click", () => {
+              cardBody.classList.toggle("d-none");
+              toggleArrow.innerHTML = cardBody.classList.contains("d-none") ? "&#9660;" : "&#9650;";
+          });
+
+          cardWrapper.appendChild(card);
+          addAddButton(card, cardWrapper);
+
+          cardContainer.appendChild(cardWrapper);
       }
-
-      partNumberMap[partNumber].maquinas.push(itemMaquina.maquina.nome);
-    });
-
-    for (const [partNumber, data] of Object.entries(partNumberMap)) {
-      const cardWrapper = document.createElement("div");
-      cardWrapper.className = "card-wrapper";
-
-      const card = document.createElement("div");
-      card.className = "card";
-
-      card.dataset.itemId = data.itemId;
-      card.dataset.prazo = data.prazo;
-      card.dataset.executor = data.executor;
-      card.dataset.finalizado = data.finalizado;
-      card.dataset.corte = data.corte;
-
-      const cardContent = `
-          <div class="card-header">${partNumber}</div>
-          <div class="card-body"></div>
-      `;
-
-      card.innerHTML = cardContent;
-
-      const cardBody = card.querySelector(".card-body");
-      data.maquinas.forEach(maquina => {
-        const maquinaDiv = document.createElement("div");
-        maquinaDiv.className = "maquina-div";
-        maquinaDiv.textContent = maquina;
-        cardBody.appendChild(maquinaDiv);
-      });
-
-      cardWrapper.appendChild(card);
-      addAddButton(card, cardWrapper);
-
-      card.addEventListener("click", () => {
-        console.log({
-          itemId: card.dataset.itemId,
-          prazo: card.dataset.prazo,
-          executor: card.dataset.executor,
-          finalizado: card.dataset.finalizado,
-          corte: card.dataset.corte,
-        });
-      });
-
-      cardContainer.appendChild(cardWrapper);
-    }
   } catch (error) {
-    console.error("Erro ao buscar os part-numbers e máquinas:", error);
+      console.error("Erro ao buscar os part-numbers e máquinas:", error);
   }
 }
+
+
+
 
 document.addEventListener("DOMContentLoaded", function () {
   const optionsButton = document.getElementById("optionsButton");

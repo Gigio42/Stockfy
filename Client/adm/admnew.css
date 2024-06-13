@@ -75,6 +75,31 @@ h1 {
   /* Permite rolagem se o conteúdo for maior do que a altura da página */
   padding: 0;
   border-radius: 0 !important;
+  
+}
+
+@media (max-width: 767.98px) {
+  #aside {
+      order: 2;
+  }
+
+  .header {
+      order: 1;
+      width: 100%;
+  }
+
+  .aside-container {
+      display: flex;
+      flex-direction: column;
+  }
+}
+
+#mobileButtonContainer {
+  display: flex;
+  background: #212121;
+  width: 100vw;
+  height: 5rem;
+padding: 1rem;
 }
 
 .logo {
@@ -99,6 +124,15 @@ h1 {
   margin-top: 4rem;
   justify-content: center;
 }
+
+.list-unstyled:hover {
+background: #333333;
+padding: 1rem;
+}
+
+.list-unstyled {
+  padding: 1rem;
+  }
 
 /* ======================================
        Active Link Styles
@@ -167,6 +201,7 @@ li:hover {
 
 .imgicon {
   width: 3rem;
+  height: 3rem;
   border-radius: 0 !important;
 }
 
@@ -319,6 +354,7 @@ body {
   line-height: 1;
   padding: 0;
   padding-left: 0.5rem;
+  width: 10rem;
 }
 
 .textButtonli {
@@ -389,7 +425,7 @@ body {
   bottom: 0;
   background-color: #141414;
   z-index: 999;
-  height: 95vh;
+  height: 95%;
 }
 
 .modal-content-3 {
@@ -463,11 +499,11 @@ body {
   background: #1eff053e;
   border: solid 1px #6eec0790;
   color: #81ff1a;
-  padding: 1rem;
+  padding: 0.5rem;
   border-radius: 1rem;
   width: fit-content;
-  margin-bottom: 1rem;
-  font-size: 2rem;
+  height: fit-content;
+  font-size: 1.5rem;
 }
 
 .cardItem {
@@ -588,7 +624,7 @@ span.item-number {
 #confirmButton {
   background: #292929;
   border: none;
-  font-size: 2rem;
+  font-size: 1.5rem;
   border-radius: 1rem;
   padding: 1rem;
   color: #b8b8b8;
@@ -639,7 +675,7 @@ span.item-number {
 #ListarFinalizados,
 #proxiProcesso,
 #MostrarProg {
-  padding: 1rem;
+  padding: 0.3rem 0.5rem 0.3rem 0.5rem;
   border-radius: 1rem;
   width: fit-content;
   margin-bottom: 1rem;
@@ -756,6 +792,10 @@ p {
   font-weight: bold;
 }
 
+h2 {
+  font-size: 2rem;
+}
+
 .inputPrazo,
 .inputMedida,
 .inputOrdem {
@@ -764,9 +804,11 @@ p {
   background-color: #262626;
   text-align: center;
   color: #9178ff;
-  font-size: 1.7rem;
+  font-size: 1rem;
   height: 3.5rem;
-  max-width: fit-content !important;
+  width: 30% !important;
+  max-width: 200px;
+
 }
 
 .inputPrazo:focus,
@@ -786,9 +828,6 @@ p {
     justify-content: space-between;
 }
 
-input {
-  width: 10rem !important;
-}
 
 .title-container {
   display: flex;
@@ -838,11 +877,25 @@ input {
   border-radius: 1rem !important;
   flex-direction: row;
   padding: 0;
-  padding-right: 1rem;
   width: fit-content;
-  min-width: 250px;
+  min-width: 170px;
   font-size: calc(1vw + 15px);
   align-items: center;
+display: flex;
+}
+
+/* Responsividade para tela menor que 902px */
+@media (max-width: 902px) {
+  .card {
+    width: 40% !important;
+    flex-direction: column !important;
+    height: fit-content;
+  }
+
+  .card-header {
+    width: 100%;
+  }
+
 
 }
 
@@ -879,6 +932,7 @@ flex-wrap: wrap;
 background: #1d1d1d;
 gap: 1rem;
 padding: 1rem;
+border-radius: 1rem;
 }
 
 .maquina-div {
@@ -923,6 +977,7 @@ background: #232323;
 color: #9178ff;
 border: none !important;
 margin-left: 1rem;
+margin-bottom: 1rem;
 }
 
 .add-button:hover {
@@ -936,9 +991,14 @@ margin-left: 1rem;
   outline: none; /* Remove a borda ao clicar */
 }
 
+#partNumberCardsContainer{
+  overflow-y: auto;
+  max-height: 60vh;
+}
 
 .card-wrapper {
   display: flex;
+gap: 1rem;
 
 }
 
@@ -951,11 +1011,12 @@ margin-left: 1rem;
   flex-direction: column;
   flex-wrap: nowrap;
   align-items: center;
-  width: fit-content;
-  padding: 2rem;
+
+  padding: 1rem;
   gap: 1rem;
   overflow-y: auto;
   max-height:27rem ;
+  box-shadow: 0 0 30px 1px #ffffff14
 }
 
 .empty-card {
@@ -985,7 +1046,7 @@ li::marker {
   color: #5fff82;
   width: fit-content;
   margin: 0;
-  font-size: 1.4rem;
+  font-size: 1rem;
 border: none;
   align-content: center;
 }
