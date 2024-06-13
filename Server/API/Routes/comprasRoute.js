@@ -8,7 +8,6 @@ async function comprasRoutes(fastify, options) {
     schema: compraSchema,
     handler: async (request, reply) => {
       console.log(request.body);
-
       try {
         await comprasController.createCompra(request.body);
         reply.send({ message: "Data received and inserted into SQLite database successfully" });
