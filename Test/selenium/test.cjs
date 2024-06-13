@@ -5,8 +5,8 @@ async function example() {
   let driver = await new Builder().forBrowser("firefox").build();
   try {
     await driver.get("https://stockfysite.onrender.com/login/login.html");
-    await driver.findElement(By.id("username")).sendKeys("fulano");
-    await driver.findElement(By.id("password")).sendKeys("fulano");
+    await driver.findElement(By.id("username")).sendKeys("SeleniumTestUser");
+    await driver.findElement(By.id("password")).sendKeys("SeleTestUser123");
     await driver.findElement(By.id("login")).click();
     await driver.wait(until.elementLocated(By.linkText("Compras")), 10000);
     await driver.findElement(By.linkText("Compras")).click();
@@ -31,8 +31,6 @@ async function example() {
     await driver.findElement(By.id("purchaseID")).sendKeys(Math.floor(100000 + Math.random() * 900000));
     await driver.findElement(By.id("addPlateButton")).click();
     await driver.findElement(By.id("expectedDateManual")).sendKeys(faker.date.future().toLocaleDateString("pt-BR"));
-    await driver.findElement(By.id("sendbutton")).click();
-    await driver.findElement(By.id("sendbutton")).click();
     await driver.findElement(By.id("sendbutton")).click();
   } finally {
     await driver.quit();
