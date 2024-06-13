@@ -140,28 +140,24 @@ class AdmController {
 
   async createItemMaquina(itemId, maquinaId) {
     try {
-        const item = await Item_Maquina.findFirst({
+        const lastItem = await Item_Maquina.findFirst({
             where: { itemId: itemId },
-            include: { maquina: true }, // Inclui o relacionamento correto
-            orderBy: { ordem: "desc" }, // Ordena pelo maior valor de ordem
+            orderBy: { ordem: "desc" },
         });
 
-        let ordem = 1; // Valor padrão se não houver itens existentes
-
-        if (item) {
-            // Se houver itens existentes, incrementa a ordem
-            ordem = item.ordem + 1;
+        let ordem = 1;
+        if (lastItem) {
+            ordem = lastItem.ordem + 1;
         }
 
-        // Cria um novo Item_Maquina com os dados do item e a máquina selecionada
         await Item_Maquina.create({
             data: {
-                prazo: item.prazo,
-                ordem: ordem, // Define a ordem autoincrementada
-                executor: item.executor,
-                finalizado: item.finalizado,
-                corte: item.corte,
-                maquinaId: maquinaId, // Substitui o maquinaId pelo ID da máquina selecionada
+                prazo: lastItem ? lastItem.prazo : null,
+                ordem: ordem,
+                executor: lastItem ? lastItem.executor : null,
+                finalizado: lastItem ? lastItem.finalizado : false,
+                corte: lastItem ? lastItem.corte : null,
+                maquinaId: maquinaId,
                 itemId: itemId,
             },
         });
@@ -172,6 +168,7 @@ class AdmController {
         throw new Error("Erro ao criar Item_Maquina: " + error.message);
     }
 }
+
 
   
 

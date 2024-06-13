@@ -72,6 +72,15 @@ async function admRoute(fastify, options) {
 
   fastify.post("/item_maquina/selecionar-maquinas", async (request, reply) => {
     try {
+<<<<<<< HEAD
+        const items = request.body;
+
+        for (const { itemId, maquinaId, ordem } of items) {
+            await admController.createItemMaquina(itemId, maquinaId, ordem);
+        }
+
+        reply.send({ message: "Itens_Maquina criados com sucesso." });
+=======
       const items = request.body; // Espera que o corpo da requisição seja uma lista de objetos com itemId e maquinaId
 
       for (const { itemId, maquinaId } of items) {
@@ -79,11 +88,23 @@ async function admRoute(fastify, options) {
       }
 
       reply.send({ message: "Itens_Maquina criados com sucesso." });
+>>>>>>> c00d5fc42614d4b4e38d5c0e75940b4b903c561b
     } catch (err) {
-      console.error("Erro ao criar Itens_Maquina:", err);
-      reply.code(500).send({ message: "Erro ao criar Itens_Maquina." });
+        console.error("Erro ao criar Itens_Maquina:", err);
+        reply.code(500).send({ message: "Erro ao criar Itens_Maquina." });
     }
+<<<<<<< HEAD
+});
+
+  
+  
+  
+  }
+  
+  
+=======
   });
 }
+>>>>>>> c00d5fc42614d4b4e38d5c0e75940b4b903c561b
 
 export default admRoute;
