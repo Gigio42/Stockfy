@@ -379,10 +379,6 @@ function createProduzindoItemCard(item) {
   statusElement.className = item.status === "PRODUZINDO" ? "status-produzindo" : "status-finalizado";
   itemCard.appendChild(statusElement);
 
-  const ordemElement = document.createElement("p");
-  ordemElement.textContent = `Ordem: ${item.ordem}`;
-  itemCard.appendChild(ordemElement);
-
   itemContainer.appendChild(itemCard);
 
   const listContainer = document.getElementById(item.status === "PRODUZINDO" ? "produzindoItemsList" : "finalizadoItemsList");

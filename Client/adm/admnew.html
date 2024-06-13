@@ -39,7 +39,7 @@
             <div class="col-md-10 header">
                 <div class="header-custom text-light d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center">
-                        <h1 class="m-0">Gerenciamento PCP</h1>
+                        <h1 class="m-0">Lider de produção</h1>
                     </div>
                     <div class="dark-mode-toggle">
                         <input type="checkbox" id="darkModeToggle" />
@@ -70,16 +70,21 @@
                             <div class="HeaderModal2">
                                 <button id="voltarModalContent">Voltar</button>
                                 <div class="ButtonsModal2">
-                                    <button id="confirmarOrdem">Cofirmar Prioridades</button>
+                                    
                                     <button id="ListarFinalizados">
                                         <img class="imgButtonHeader" src="media/icons8-tarefa-concluída-48.png" />
                                     </button>
+                                    
                                 </div>
+                                
                             </div>
+                            <div class="divConfirm d-flex">
                             <div class="itensContainerstatus">
                                 <h2 class="textoModal">Itens em processo de produção</h2>
                                 <div id="produzindoItemsList"></div>
                             </div>
+                            <button id="confirmarOrdem">Confirmar prioridade</button>
+                        </div>
                         </div>
                         <!-- Modal Content -->
                         <div class="modal-content-3 d-none">

@@ -667,7 +667,7 @@ span.item-number {
   border-radius: 1rem;
   color: orange;
   font-weight: bold;
-  font-size: 0.8rem;
+  font-size: 1rem;
 }
 
 p {
@@ -694,13 +694,15 @@ p {
   flex-grow: 1;
   padding: 10px;
   margin-left: 10px; /* Espaço entre o ícone e o card */
-  width: fit-content;
+
+  flex-wrap: wrap;
 }
 
 .item-container {
   display: flex;
   align-items: center;
   margin-bottom: 10px; /* Ajuste o espaço entre os cards conforme necessário */
+ 
 }
 
 .drag-icon {
@@ -778,6 +780,12 @@ p {
   justify-content: space-between;
 }
 
+.divConfirm {
+  height:90%;
+  flex-direction: column;
+    justify-content: space-between;
+}
+
 input {
   width: 10rem !important;
 }
@@ -853,6 +861,15 @@ input {
   height: 100% !important;
 }
 
+
+#confirmarProcesso {
+  padding: 1rem;
+  border: none;
+  border-radius: 1rem;
+  font-size: 150%;
+  color: #b8b8b8;
+  background: #292929;
+}
 
 div.card-body {
   display: flex;
