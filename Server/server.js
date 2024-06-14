@@ -3,9 +3,9 @@ import cors from "@fastify/cors";
 import { PrismaClient } from "@prisma/client";
 import log from "./logger.js";
 import registerRoutes from "./API/Routes/index.js";
-import Ajv from 'ajv';
-import addFormats from 'ajv-formats';
-import AjvErrors from 'ajv-errors';
+import Ajv from "ajv";
+import addFormats from "ajv-formats";
+import AjvErrors from "ajv-errors";
 
 const fastify = Fastify({ logger: log });
 
@@ -13,7 +13,7 @@ const ajv = new Ajv({
   allErrors: true,
   removeAdditional: true,
   useDefaults: true,
-  coerceTypes: 'array'
+  coerceTypes: "array",
 });
 
 addFormats(ajv);

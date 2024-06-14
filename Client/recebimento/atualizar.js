@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-
 async function sendDataToServer() {
   try {
     var data = tableObj();
