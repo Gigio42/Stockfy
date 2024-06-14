@@ -75,6 +75,31 @@ h1 {
   /* Permite rolagem se o conteúdo for maior do que a altura da página */
   padding: 0;
   border-radius: 0 !important;
+  
+}
+
+@media (max-width: 767.98px) {
+  #aside {
+      order: 2;
+  }
+
+  .header {
+      order: 1;
+      width: 100%;
+  }
+
+  .aside-container {
+      display: flex;
+      flex-direction: column;
+  }
+}
+
+#mobileButtonContainer {
+  display: flex;
+  background: #212121;
+  width: 100vw;
+  height: 5rem;
+padding: 1rem;
 }
 
 .logo {
@@ -99,6 +124,16 @@ h1 {
   margin-top: 4rem;
   justify-content: center;
 }
+
+.list-unstyled:hover {
+background: #333333;
+padding: 1rem;
+}
+
+.list-unstyled {
+  padding: 1rem;
+  border-radius: 1rem;
+  }
 
 /* ======================================
        Active Link Styles
@@ -167,6 +202,7 @@ li:hover {
 
 .imgicon {
   width: 3rem;
+  height: 3rem;
   border-radius: 0 !important;
 }
 
@@ -319,6 +355,7 @@ body {
   line-height: 1;
   padding: 0;
   padding-left: 0.5rem;
+  width: 10rem;
 }
 
 .textButtonli {
@@ -353,7 +390,7 @@ body {
   top: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
+max-height: 100%;
   background-color: rgba(52, 52, 52, 0.324);
   backdrop-filter: blur(5px);
   flex-direction: column;
@@ -365,21 +402,22 @@ body {
   gap: 1rem;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+
   height: 100%;
+
 }
 
 #stagedItems {
-  padding: 1rem;
   border-radius: 1rem;
   overflow-y: auto;
-  max-height: 32vh;
+  height: fit-content;
+  max-height: 64vh;
+  margin-bottom: 1rem;
 }
 
 
 .modal-content-2 {
-  padding: 20px;
-  width: 95vw;
+  padding: 1.5REM;
   border: none;
   border-radius: 1.5rem;
   position: absolute;
@@ -389,12 +427,11 @@ body {
   bottom: 0;
   background-color: #141414;
   z-index: 999;
-  height: 95vh;
+
 }
 
 .modal-content-3 {
-  padding: 20px;
-  width: 95vw;
+  padding: 1.5rem;
   border: none;
   border-radius: 1.5rem;
   position: absolute;
@@ -404,15 +441,14 @@ body {
   bottom: 0;
   background-color: #141414;
   z-index: 999;
-  height: 95vh;
   display: none;
 }
 
-.modal-content {
-  padding: 3rem !important;
-  width: 95vw;
+.modal-content, 
+.modal-content1 {
+  padding: 2rem !important;
+  width: 100vw;
   border: none;
-  border-radius: 1.5rem;
   position: absolute;
   top: 0;
   left: 0;
@@ -420,11 +456,9 @@ body {
   bottom: 0;
   background-color: #141414;
   z-index: 9999;
-  height: 95vh;
+  height: 100vh;
   background-color: #141414;
-  margin: 1% auto;
   padding: 20px;
-  width: 95vw;
   justify-content: space-between;
   flex-direction: column;
   display: flex;
@@ -435,8 +469,14 @@ body {
   /* Adicione outros estilos conforme necessário */
 }
 
+.sair {
+  width:30px ;
+}
+
+#voltarModalContentnext,
 #voltarModalContent2,
-#voltarModalContent {
+#voltarModalContent,
+#voltarModalContent5 {
   padding: 1rem;
   border-radius: 1rem;
   width: fit-content;
@@ -444,7 +484,7 @@ body {
   border: none;
   background-color: #1c1c1c;
   color: #b4b4b4;
-  font-size: 2rem;
+  font-size: 1rem;
 }
 
 #voltarModalContent:hover {
@@ -463,11 +503,11 @@ body {
   background: #1eff053e;
   border: solid 1px #6eec0790;
   color: #81ff1a;
-  padding: 1rem;
+  padding: 0.5rem;
   border-radius: 1rem;
   width: fit-content;
-  margin-bottom: 1rem;
-  font-size: 2rem;
+  height: fit-content;
+  font-size: 1.5rem;
 }
 
 .cardItem {
@@ -546,17 +586,37 @@ span.item-number {
   padding: 1rem;
   border-radius: 2rem;
   overflow-y: auto;
+  
 }
 
 #stagedArea {
   flex: 30;
   background: #1e1e1e;
   border-radius: 2rem;
-  padding: 2rem;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  max-height:77vh;
 }
+
+@media (max-width: 902px) {
+  #stagedArea {
+    justify-content: space-between;
+    height: 49%;
+    max-height:35vh ;
+  } 
+
+  .conteudoInterno {
+
+    overflow-y: auto;
+    max-height: 4778%;
+    margin-bottom: 0.5rem;
+  }
+  
+}
+
+
 
 .stagedCard {
   display: flex;
@@ -588,8 +648,8 @@ span.item-number {
 #confirmButton {
   background: #292929;
   border: none;
-  font-size: 2rem;
-  border-radius: 1rem;
+  font-size: 1.5rem;
+  border-radius: 1.5rem;
   padding: 1rem;
   color: #b8b8b8;
 }
@@ -639,7 +699,7 @@ span.item-number {
 #ListarFinalizados,
 #proxiProcesso,
 #MostrarProg {
-  padding: 1rem;
+  padding: 0.4rem 0.8rem 0.4rem 0.8rem;
   border-radius: 1rem;
   width: fit-content;
   margin-bottom: 1rem;
@@ -667,7 +727,7 @@ span.item-number {
   border-radius: 1rem;
   color: orange;
   font-weight: bold;
-  font-size: 0.8rem;
+  font-size: 1rem;
 }
 
 p {
@@ -694,13 +754,15 @@ p {
   flex-grow: 1;
   padding: 10px;
   margin-left: 10px; /* Espaço entre o ícone e o card */
-  width: fit-content;
+
+  flex-wrap: wrap;
 }
 
 .item-container {
   display: flex;
   align-items: center;
   margin-bottom: 10px; /* Ajuste o espaço entre os cards conforme necessário */
+ 
 }
 
 .drag-icon {
@@ -754,6 +816,10 @@ p {
   font-weight: bold;
 }
 
+h2 {
+  font-size: 2rem;
+}
+
 .inputPrazo,
 .inputMedida,
 .inputOrdem {
@@ -762,9 +828,11 @@ p {
   background-color: #262626;
   text-align: center;
   color: #9178ff;
-  font-size: 1.7rem;
+  font-size: 1rem;
   height: 3.5rem;
-  max-width: fit-content !important;
+  width: 30% !important;
+  max-width: 200px;
+
 }
 
 .inputPrazo:focus,
@@ -778,9 +846,12 @@ p {
   justify-content: space-between;
 }
 
-input {
-  width: 10rem !important;
+.divConfirm {
+  height:90%;
+  flex-direction: column;
+    justify-content: space-between;
 }
+
 
 .title-container {
   display: flex;
@@ -825,17 +896,39 @@ input {
   margin-bottom: 1rem;
   gap: 1rem;
   border-radius: 8px;
-  background-color: #232323;
+  background-color: #1d1d1d;
   width: fit-content;
   border-radius: 1rem !important;
   flex-direction: row;
   padding: 0;
-  padding-right: 1rem;
   width: fit-content;
-  min-width: 250px;
+  min-width: 170px;
   font-size: calc(1vw + 15px);
   align-items: center;
+display: flex;
+}
 
+/* Responsividade para tela menor que 902px */
+@media (max-width: 902px) {
+  .card {
+    width: 40% !important;
+    flex-direction: column !important;
+    height: fit-content;
+  }
+
+  .card-header {
+    width: 100%;
+  }
+
+
+}
+
+.toggle-arrow {
+  margin-left: 1rem;
+}
+
+.button-container {
+  display: flex;
 }
 
 .card-header {
@@ -850,13 +943,35 @@ input {
   padding: 1rem;
   align-items: center;
   font-size: 80%;
+  height: 100% !important;
 }
 
 
-.card-body {
+#confirmarProcesso {
+  padding: 1rem;
+  border: none;
+  border-radius: 1rem;
+  font-size: 150%;
+  color: #b8b8b8;
+  background: #292929;
+}
+
+div.card-body {
+  display: flex;
   color: #cccccc;
   padding: 0;
+flex-wrap: wrap;
+background: #1d1d1d;
+gap: 1rem;
+padding: 1rem;
+border-radius: 1rem;
+}
 
+.maquina-div {
+  padding: 1rem;
+  background: #5fff8228;
+  color: #5fff82;
+border-radius: 1rem;
 }
 
 #machineCardsContainer {
@@ -893,8 +1008,18 @@ padding: 1rem;
 background: #232323;
 color: #9178ff;
 border: none !important;
-margin-left: 1rem;
+margin-right: 1rem;
+
 }
+
+@media (max-width: 902px) {
+  .add-button {
+    margin-bottom: 1REM;
+    margin-right: 0;
+  }
+}
+
+
 
 .add-button:hover {
   background: #313131;
@@ -907,26 +1032,35 @@ margin-left: 1rem;
   outline: none; /* Remove a borda ao clicar */
 }
 
+#partNumberCardsContainer{
+  overflow-y: auto;
+  max-height: 60vh;
+}
 
 .card-wrapper {
   display: flex;
+gap: 1rem;
+}
 
+.OI {
+  flex-direction: column;
+                        align-items: flex-start;
 }
 
 .machine-list {
   position: absolute;
-  margin-top: 35rem;
+  margin-top: 30rem;
   background: #1d1d1d;
   border-radius: 1rem;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
   align-items: center;
-  width: fit-content;
-  padding: 2rem;
+  padding: 1rem;
   gap: 1rem;
   overflow-y: auto;
-  max-height:27rem ;
+  max-height:20rem ;
+
 }
 
 .empty-card {
@@ -956,7 +1090,7 @@ li::marker {
   color: #5fff82;
   width: fit-content;
   margin: 0;
-  font-size: 1.4rem;
+  font-size: 1rem;
 border: none;
   align-content: center;
 }
