@@ -19,7 +19,7 @@ export class Card {
       valueDiv.textContent = "N/A";
     } else {
       if (key.startsWith("data")) {
-        let [day, month] = value.split("/");
+        let [day, month] = value.split(/\/|-/);
         valueDiv.textContent = `${day}/${month}`;
       } else {
         valueDiv.textContent = value;
@@ -29,10 +29,14 @@ export class Card {
         valueDiv.className += " card-status ";
         let status = value.toLowerCase();
         if (status === "recebido") {
-          valueDiv.className += " card-status-recebido";
+          valueDiv.className += "card-status-recebido";
         } else if (status === "comprado") {
-          valueDiv.className += " card-status-comprado";
+          valueDiv.className += "card-status-comprado";
+        } else if (status === "parcial" || status === "parcialmente") {
+          valueDiv.className += "card-status-parcial";
         }
+
+        valueDiv.textContent = value.toUpperCase();
       }
 
       if (key === "quantidade_disponivel") {

@@ -601,21 +601,7 @@ input[type="checkbox"] {
   font-weight: bold;
 }
 
-.card-status-reservado {
-  background-color: #007bff;
-}
 
-.card-status-recebido {
-  background: #5cff2656 !important;
-  border: 1px solid #2bff0098;
-  color: #adffa4;
-  border-radius: 0.7rem !important;
-  padding: 10px;
-}
-
-.card-status-comprado {
-  background-color: #007bff;
-}
 
 /* chrome, safari e opera */
 .card-value-div::-webkit-scrollbar {
@@ -730,6 +716,30 @@ input[type="checkbox"]:checked::before {
   padding: 10px;
 }
 
+.card-status-recebido {
+  background: #5cff2656 !important;
+  border: 1px solid #2bff0098;
+  color: #adffa4;
+  border-radius: 0.7rem !important;
+  padding: 10px;
+}
+
+.card-status-parcial {
+  background: #f1ff2656 !important;
+  border: 1px solid #eeff0098;
+  color: #f9ffa4;
+  border-radius: 0.7rem !important;
+  padding: 10px;
+}
+
+.card-status-usado {
+  background: #21723756 !important;
+    border: 1px solid #1b582b98;
+    color: #87cca4;
+    border-radius: 0.7rem !important;
+    padding: 10px;
+}
+
 .card-status-reservado {
   background: #58f9ff23 !important;
   color: #caffff;
@@ -804,6 +814,7 @@ input[type="checkbox"]:checked::before {
 
   .card-part-number,
   .card-status-comprado,
+  .card-status-parcial,
   .card-status-reservado {
     padding: 5px;
     margin-right: 5px;
@@ -912,7 +923,7 @@ input[type="checkbox"]:checked::before {
 /* mudar nome da classe, isso na vdd cuida do preview div do consulta */
 .dark-background {
   background: #5c5c5c23 !important;
-
+  border-radius: 5px;
   border: solid 1px #8a8a8a3d;
   padding: 10px;
 }
