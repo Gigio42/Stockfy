@@ -56,10 +56,19 @@
 
                 <div id="nextProcessModal" class="modal">
                 
-                    <div class="modal-content">
+                    <div class="modal-content1">
+                        <DIV class=" OI d-flex">
+                        <header>
+                            <button id="voltarModalContentnext">
+                                <img class="sair" src="media/sair (1).png" alt="Sair icon" />
+                            </button>
+                        </header>
                        <div class="cardsMaquina"> <!-- Adicione este container onde deseja exibir os cards -->
                         <div id="partNumberCardsContainer" class="cards-container"></div>
                     </div>
+                </div>
+                    
+
                         <!-- O conteúdo dos cards será adicionado aqui -->
                         <button id="confirmarProcesso">Cofirmar Processos</button>
                     </div>
@@ -73,8 +82,11 @@
                         <!-- Modal Content 2 -->
                         <div class="modal-content-2 d-none">
                             <div class="HeaderModal2">
-                                <button id="voltarModalContent">Voltar</button>
+                                <button id="voltarModalContent">
+                                    <img class="sair" src="media/sair (1).png" alt="Sair icon" />
+                                </button>
                                 <div class="ButtonsModal2">
+                                    
                                     
                                     <button id="ListarFinalizados">
                                         <img class="imgButtonHeader" src="media/icons8-tarefa-concluída-48.png" />
@@ -93,7 +105,9 @@
                         </div>
                         <!-- Modal Content -->
                         <div class="modal-content-3 d-none">
-                            <button id="voltarModalContent2">Voltar</button>
+                            <button id="voltarModalContent2">
+                                <img class="sair" src="media/sair (1).png" alt="Sair icon" />
+                            </button>
                             <h2 class="textoModal">Itens finalizados</h2>
                             <div id="finalizadoItemsList"></div>
                         </div>
@@ -101,6 +115,9 @@
                         <div class="headerModal">
                             <span class="nomemaquina"></span>
                             <div class="botoesModalHeader">
+                                <button id="voltarModalContent5">
+                                    <img class="sair" src="media/sair (1).png" alt="Sair icon" />
+                                </button>
                                 <button id="MostrarProg">
                                     <img class="imgButtonHeader" src="media/icons8-lista-64.png"
                                         alt="Mostrar Programa" />
@@ -155,6 +172,12 @@
             // Check on window resize
             window.addEventListener('resize', moveButton);
         });
+
+
+    // Função para fechar o modal ao clicar no botão de sair
+    document.getElementById('voltarModalContentnext').addEventListener('click', function() {
+        document.getElementById('nextProcessModal').style.display = 'none';
+    });
     </script>
     
 </body>

@@ -110,17 +110,25 @@ function openModal(maquinaName, maquinaId) {
   modalContent.addEventListener("click", (event) => {
     event.stopPropagation();
   });
+
+  // Adiciona o listener de clique ao botão
+  document.getElementById("voltarModalContent5", "voltarModalContentnext").addEventListener("click", closeModal);
 }
 
 function closeModal() {
   const modalContent2 = document.querySelector(".modal-content-2");
 
+  // Verifica se modalContent2 tem a classe "d-none"
   if (!modalContent2.classList.contains("d-none")) {
     return;
   }
 
-  document.getElementById("myModal").style.display = "none";
+  // Esconde o modal e o botão de volta
+  const modal = document.getElementById("myModal");
+  modal.style.display = "none";
 }
+
+
 
 //=================================================
 // Função para buscar e exibir os itens
@@ -612,11 +620,16 @@ async function createEmptyCard(cardWrapper) {
 }
 
 function addAddButton(emptyCard, cardWrapper) {
+  const buttonContainer = document.createElement("div");
+  buttonContainer.className = "button-container";
+
   const addButton = document.createElement("button");
   addButton.className = "add-button";
   addButton.textContent = "+";
   addButton.style.display = "none";
-  emptyCard.appendChild(addButton);
+
+  buttonContainer.appendChild(addButton);
+  emptyCard.appendChild(buttonContainer);
 
   addButton.addEventListener("click", () => createEmptyCard(cardWrapper));
 
@@ -667,7 +680,7 @@ async function showPartNumbersAndMachines() {
           const cardContent = `
               <div class="card-header d-flex justify-content-between align-items-center">
                   <span>${partNumber}</span>
-                  <span class="toggle-arrow" style="cursor: pointer;">&#9660;</span>
+                  <img class="toggle-arrow" src="media/seta.png" style="cursor: pointer; transform: rotate(0deg);">
               </div>
               <div class="card-body d-none">
                   ${data.maquinas.map(maquina => `<div class="maquina-div">${maquina}</div>`).join('')}
@@ -682,7 +695,11 @@ async function showPartNumbersAndMachines() {
 
           cardHeader.addEventListener("click", () => {
               cardBody.classList.toggle("d-none");
-              toggleArrow.innerHTML = cardBody.classList.contains("d-none") ? "&#9660;" : "&#9650;";
+              if (cardBody.classList.contains("d-none")) {
+                  toggleArrow.style.transform = "rotate(0deg)"; // Seta para a direita
+              } else {
+                  toggleArrow.style.transform = "rotate(180deg)"; // Seta para baixo
+              }
           });
 
           cardWrapper.appendChild(card);
@@ -694,6 +711,7 @@ async function showPartNumbersAndMachines() {
       console.error("Erro ao buscar os part-numbers e máquinas:", error);
   }
 }
+
 
 
 
