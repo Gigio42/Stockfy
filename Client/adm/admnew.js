@@ -1,3 +1,5 @@
+import BASE_URL from "../utils/config.js";
+
 //============================================
 // Função para lidar com a lógica do Dark Mode
 //============================================
@@ -33,7 +35,7 @@ function handleDarkModeToggle() {
 
 async function fetchMaquinas() {
   try {
-    const response = await axios.get("http://localhost:3000/adm/maquina");
+    const response = await axios.get(`${BASE_URL}/adm/maquina`);
     const maquinas = response.data;
 
     // Adiciona os cards completos das máquinas
@@ -136,7 +138,7 @@ function closeModal() {
 
 async function fetchitens(maquinaId) {
   try {
-    const response = await axios.get("http://localhost:3000/adm/items/chapas");
+    const response = await axios.get(`${BASE_URL}/adm/items/chapas`);
     const itens = response.data;
     console.log("Itens recuperados:", itens);
 
@@ -227,7 +229,7 @@ async function confirmarItensStaged(event) {
     const ordem = itemCard.querySelector(".inputOrdem").value;
 
     try {
-      const response = await axios.post(`http://localhost:3000/adm/maquina/${maquinaId}/item/${itemId}/produzindo`, {
+      const response = await axios.post(`${BASE_URL}/adm/maquina/${maquinaId}/item/${itemId}/produzindo`, {
         prazo: prazo,
         corte: corte,
         ordem: ordem,
@@ -330,7 +332,7 @@ document.getElementById("MostrarProg").addEventListener("click", function () {
 
 async function fetchAllItems(maquinaId) {
   try {
-    const response = await axios.get(`http://localhost:3000/adm/maquina/${maquinaId}/item`);
+    const response = await axios.get(`${BASE_URL}/adm/maquina/${maquinaId}/item`);
     const allItems = response.data;
 
     console.log("Itens encontrados/listados:", allItems); // Log com todos os itens encontrados/listados
@@ -570,7 +572,7 @@ async function createEmptyCard(cardWrapper) {
       }
 
       try {
-          const machinesResponse = await axios.get("http://localhost:3000/adm/maquina");
+          const machinesResponse = await axios.get(`${BASE_URL}/adm/maquina`);
           const machines = machinesResponse.data;
 
           const machineList = document.createElement("ul");
@@ -640,7 +642,7 @@ function addAddButton(emptyCard, cardWrapper) {
 
 async function showPartNumbersAndMachines() {
   try {
-      const response = await axios.get("http://localhost:3000/adm/item_maquina");
+      const response = await axios.get(`${BASE_URL}/adm/item_maquina`);
 
       const cardContainer = document.getElementById("partNumberCardsContainer");
       cardContainer.innerHTML = "";
@@ -749,7 +751,7 @@ document.getElementById("confirmarProcesso").addEventListener("click", async () 
   }
 
   try {
-    const response = await axios.post("http://localhost:3000/adm/item_maquina/selecionar-maquinas", items);
+    const response = await axios.post(`${BASE_URL}/adm/item_maquina/selecionar-maquinas`, items);
     console.log(response.data.message);
   } catch (error) {
     console.error("Erro ao confirmar processos:", error);
@@ -779,7 +781,7 @@ document.getElementById("confirmarOrdem").addEventListener("click", async () => 
 
     console.log("Dados enviados para atualização de prioridades:", newPriorities);
 
-    await axios.post("http://localhost:3000/adm/atualizar-prioridades", newPriorities);
+    await axios.post(`${BASE_URL}/adm/atualizar-prioridades`, newPriorities);
     alert("Prioridades atualizadas com sucesso!");
   } catch (error) {
     console.error("Erro ao atualizar as prioridades:", error);
