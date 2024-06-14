@@ -555,6 +555,11 @@ formulário
   border: none;
 }
 
+.selected {
+  border: 1px solid green;
+  background-color: #20ff3315;
+}
+
 input[type="checkbox"] {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -814,6 +819,7 @@ input[type="checkbox"]:checked::before {
   background-color: #f0f0f0;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
+
 /* o treco principal do card */
 .light-mode .body-div {
   background-color: #efefef;
