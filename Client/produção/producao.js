@@ -5,7 +5,7 @@ if (localStorage.getItem("isLoggedIn") !== "true") {
   window.location.href = "../login/login.html";
 }
 
-document.getElementById("logoutLink").addEventListener("click", function(event) {
+document.getElementById("logoutLink").addEventListener("click", function (event) {
   localStorage.clear();
 });
 

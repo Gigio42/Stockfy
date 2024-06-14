@@ -17,18 +17,18 @@
             </div>
         </div>
 
-            <nav>
-                <div>
-                    <span id="nomeUsuario"></span>
-                </div>
-                <ul class="list-unstyled text-center">
-                    <li class="mb-2"><a href="./compras/compras.html">Compras</a></li>
-                    <li class="mb-2"><a href="./recebimento/recebimento.html">Recebimento</a></li>
-                    <li class="mb-2"><a href="./PCP/pcp.html">Controle de Produção</a></li>
-                    <li class="mb-2"><a href="./adm/admnew.html">Administração</a></li>
-                    <li class="mb-2 logout-item"><a id="logoutButton" href="#" class="logout-link">Logout</a></li>
-                </ul>
-            </nav>
+        <nav>
+            <div>
+                <span id="nomeUsuario"></span>
+            </div>
+            <ul class="list-unstyled text-center">
+                <li class="mb-2"><a href="./compras/compras.html">Compras</a></li>
+                <li class="mb-2"><a href="./recebimento/recebimento.html">Recebimento</a></li>
+                <li class="mb-2"><a href="./PCP/pcp.html">Controle de Produção</a></li>
+                <li class="mb-2"><a href="./adm/admnew.html">Administração</a></li>
+                <li class="mb-2 logout-item"><a id="logoutButton" href="#" class="logout-link">Logout</a></li>
+            </ul>
+        </nav>
 
         <script>
             if (localStorage.getItem("isLoggedIn") !== "true") {
@@ -37,7 +37,7 @@
 
             document.getElementById("logoutButton").addEventListener("click", function () {
                 localStorage.clear();
-                window.location.href = "./login/login.html"; 
+                window.location.href = "./login/login.html";
             });
 
             const checkbox = document.getElementById("checkbox");

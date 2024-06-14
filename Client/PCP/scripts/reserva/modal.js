@@ -184,19 +184,19 @@ function createReserveButton(selectedSubcards) {
     loadingSpinner.style.display = "block";
 
     try {
-  const reservedBy = localStorage.getItem("nome");
-  console.log("reservedBy:", reservedBy);
-  const response = await reserveChapas({ partNumber, chapas, reservedBy });
-  console.log("this is the response:", response);
-  location.reload();
-} catch (error) {
-  console.error("This is the error response:", error); // Log the error object
-  Swal.fire({
-    icon: "error",
-    title: "Oops...",
-    text: error.message, // Display the error message from error.response.data
-  });
-} finally {
+      const reservedBy = localStorage.getItem("nome");
+      console.log("reservedBy:", reservedBy);
+      const response = await reserveChapas({ partNumber, chapas, reservedBy });
+      console.log("this is the response:", response);
+      location.reload();
+    } catch (error) {
+      console.error("This is the error response:", error); // Log the error object
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: error.message, // Display the error message from error.response.data
+      });
+    } finally {
       loadingSpinner.style.display = "none";
     }
   };
