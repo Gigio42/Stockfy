@@ -18,22 +18,28 @@ export class ChapaCard {
     }
 
     if (key === "status") {
-      valueDiv.className += " card-status d-flex align-items-center justify-content-center";
+      valueDiv.className += " card-status ";
       let status = value.toLowerCase();
       if (status === "recebido") {
-        valueDiv.className += " card-status-recebido ";
+        valueDiv.className += "card-status-recebido";
       } else if (status === "comprado") {
-        valueDiv.className += " card-status-comprado ";
+        valueDiv.className += "card-status-comprado";
+      } else if (status === "parcial" || status === "parcialmente") {
+        valueDiv.className += "card-status-parcial";
+      } else if (status === "usado") {
+        valueDiv.className += "card-status-usado";
       }
-    }
 
-    if (key === "largura") {
+      valueDiv.textContent = value.toUpperCase();
+    } else if (key === "largura") {
       let largura = this.chapa.largura;
       let comprimento = this.chapa.comprimento;
       value = `${largura} x ${comprimento}`;
+      valueDiv.textContent = value;
+    } else {
+      valueDiv.textContent = value;
     }
 
-    valueDiv.textContent = value;
     return valueDiv;
   }
 
