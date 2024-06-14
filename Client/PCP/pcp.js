@@ -1,5 +1,6 @@
 import { ItemModal } from "./scripts/consulta/mainConsulta.js";
 import { Reservar } from "./scripts/reserva/mainForm.js";
+import { InfoModal } from "./scripts/reserva/infoModal.js";
 
 if (localStorage.getItem("isLoggedIn") !== "true") {
   window.location.href = "../login/login.html";
@@ -13,11 +14,12 @@ logoutButton.addEventListener("click", function () {
 document.addEventListener("DOMContentLoaded", function () {
   const reservar = new Reservar();
   reservar.initialize();
-});
 
-document.addEventListener("DOMContentLoaded", function () {
   const itemModal = new ItemModal();
   itemModal.initialize();
+
+  const infoModal = new InfoModal();
+  infoModal.initialize();
 });
 
 document.getElementById("user-name").textContent = localStorage.getItem("nome") || "UserName";
