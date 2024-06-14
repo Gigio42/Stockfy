@@ -27,9 +27,9 @@ var name = localStorage.getItem("nome");
 var profilePic = document.getElementById("profilePic");
 profilePic.src = "https://api.dicebear.com/8.x/shapes/svg?seed=" + name;
 
-profilePic.onerror = function() {
-    this.onerror = null; 
-    this.src = './media/pfpImg.jpg';
+profilePic.onerror = function () {
+  this.onerror = null;
+  this.src = "./media/pfpImg.jpg";
 };
 
 var darkModeToggle = document.getElementById("darkModeToggle");

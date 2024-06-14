@@ -1,185 +1,165 @@
 <!doctype html>
 <html lang="pt-br">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="author" content="Seu Nome" />
+        <title>Controle de Produção</title>
+        <!-- Bootstrap CSS -->
+        <link id="theme" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css" rel="stylesheet" />
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+        <!-- CSS Personalizado -->
+        <link rel="stylesheet" href="admnew.css" />
+    </head>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="author" content="Seu Nome" />
-    <title>Controle de Produção</title>
-    <!-- Bootstrap CSS -->
-    <link id="theme" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css"
-        rel="stylesheet" />
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
-    <!-- CSS Personalizado -->
-    <link rel="stylesheet" href="admnew.css" />
-</head>
-
-<body class="body">
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Aside -->
-            <aside id="aside" class="aside col-md-2 navbar-lateral d-none d-md-block">
-                <div class="logo-container"></div>
-                <div class="p-2 navbar">
-                    <ul class="list-unstyled">
-
+    <body class="body">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Aside -->
+                <aside id="aside" class="aside col-md-2 navbar-lateral d-none d-md-block">
+                    <div class="logo-container"></div>
+                    <div class="p-2 navbar">
+                        <ul class="list-unstyled">
                             <a id="optionsButton">
-                                <div class="textButtonli">
-                                    próximo processo
-                                </div>
+                                <div class="textButtonli">próximo processo</div>
                                 <img class="imgicon" src="media/icons8-direita-3-96.png" alt="Dashboard Icon" />
                             </a>
-
-                    </ul>
-                </div>
-            </aside>
-
-            <!-- Main Content -->
-            <div class="col-md-10 header">
-                <div class="header-custom text-light d-flex justify-content-between align-items-center">
-                    <div class="d-flex align-items-center">
-                        <h1 class="m-0">Lider de produção</h1>
+                        </ul>
                     </div>
-                    <div class="dark-mode-toggle">
-                        <input type="checkbox" id="darkModeToggle" />
-                        <label for="darkModeToggle"></label>
+                </aside>
+
+                <!-- Main Content -->
+                <div class="col-md-10 header">
+                    <div class="header-custom text-light d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <h1 class="m-0">Lider de produção</h1>
+                        </div>
+                        <div class="dark-mode-toggle">
+                            <input type="checkbox" id="darkModeToggle" />
+                            <label for="darkModeToggle"></label>
+                        </div>
                     </div>
-                </div>
 
-              
-                <!-- Div para o botão em mobile -->
-                <div id="mobileButtonContainer" class="d-md-none"></div>
+                    <!-- Div para o botão em mobile -->
+                    <div id="mobileButtonContainer" class="d-md-none"></div>
 
-                <div id="allMaquina" class="cards w-100"></div>
+                    <div id="allMaquina" class="cards w-100"></div>
 
-
-                <div id="nextProcessModal" class="modal">
-                
-                    <div class="modal-content1">
-                        <DIV class=" OI d-flex">
-                        <header>
-                            <button id="voltarModalContentnext">
-                                <img class="sair" src="media/sair (1).png" alt="Sair icon" />
-                            </button>
-                        </header>
-                       <div class="cardsMaquina"> <!-- Adicione este container onde deseja exibir os cards -->
-                        <div id="partNumberCardsContainer" class="cards-container"></div>
-                    </div>
-                </div>
-                    
-
-                        <!-- O conteúdo dos cards será adicionado aqui -->
-                        <button id="confirmarProcesso">Cofirmar Processos</button>
-                    </div>
-                </div>
-
-
-
-
-                <div id="myModal" class="modal">
-                    <div class="modal-content">
-                        <!-- Modal Content 2 -->
-                        <div class="modal-content-2 d-none">
-                            <div class="HeaderModal2">
-                                <button id="voltarModalContent">
-                                    <img class="sair" src="media/sair (1).png" alt="Sair icon" />
-                                </button>
-                                <div class="ButtonsModal2">
-                                    
-                                    
-                                    <button id="ListarFinalizados">
-                                        <img class="imgButtonHeader" src="media/icons8-tarefa-concluída-48.png" />
+                    <div id="nextProcessModal" class="modal">
+                        <div class="modal-content1">
+                            <div class="OI d-flex">
+                                <header>
+                                    <button id="voltarModalContentnext">
+                                        <img class="sair" src="media/sair (1).png" alt="Sair icon" />
                                     </button>
-                                    
+                                </header>
+                                <div class="cardsMaquina">
+                                    <!-- Adicione este container onde deseja exibir os cards -->
+                                    <div id="partNumberCardsContainer" class="cards-container"></div>
                                 </div>
-                                
                             </div>
-                            <div class="divConfirm d-flex">
-                            <div class="itensContainerstatus">
-                                <h2 class="textoModal">Itens em processo de produção</h2>
-                                <div id="produzindoItemsList"></div>
-                            </div>
-                            <button id="confirmarOrdem">Confirmar prioridade</button>
-                        </div>
-                        </div>
-                        <!-- Modal Content -->
-                        <div class="modal-content-3 d-none">
-                            <button id="voltarModalContent2">
-                                <img class="sair" src="media/sair (1).png" alt="Sair icon" />
-                            </button>
-                            <h2 class="textoModal">Itens finalizados</h2>
-                            <div id="finalizadoItemsList"></div>
-                        </div>
 
-                        <div class="headerModal">
-                            <span class="nomemaquina"></span>
-                            <div class="botoesModalHeader">
-                                <button id="voltarModalContent5">
+                            <!-- O conteúdo dos cards será adicionado aqui -->
+                            <button id="confirmarProcesso">Cofirmar Processos</button>
+                        </div>
+                    </div>
+
+                    <div id="myModal" class="modal">
+                        <div class="modal-content">
+                            <!-- Modal Content 2 -->
+                            <div class="modal-content-2 d-none">
+                                <div class="HeaderModal2">
+                                    <button id="voltarModalContent">
+                                        <img class="sair" src="media/sair (1).png" alt="Sair icon" />
+                                    </button>
+                                    <div class="ButtonsModal2">
+                                        <button id="ListarFinalizados">
+                                            <img class="imgButtonHeader" src="media/icons8-tarefa-concluída-48.png" />
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="divConfirm d-flex">
+                                    <div class="itensContainerstatus">
+                                        <h2 class="textoModal">Itens em processo de produção</h2>
+                                        <div id="produzindoItemsList"></div>
+                                    </div>
+                                    <button id="confirmarOrdem">Confirmar prioridade</button>
+                                </div>
+                            </div>
+                            <!-- Modal Content -->
+                            <div class="modal-content-3 d-none">
+                                <button id="voltarModalContent2">
                                     <img class="sair" src="media/sair (1).png" alt="Sair icon" />
                                 </button>
-                                <button id="MostrarProg">
-                                    <img class="imgButtonHeader" src="media/icons8-lista-64.png"
-                                        alt="Mostrar Programa" />
-                                </button>
+                                <h2 class="textoModal">Itens finalizados</h2>
+                                <div id="finalizadoItemsList"></div>
                             </div>
-                        </div>
-                        <div class="containerReserv">
-                            <div id="stagedArea">
-                                <div id="stagedItems"></div>
-                                <button id="confirmButton">Confirmar Itens</button>
+
+                            <div class="headerModal">
+                                <span class="nomemaquina"></span>
+                                <div class="botoesModalHeader">
+                                    <button id="voltarModalContent5">
+                                        <img class="sair" src="media/sair (1).png" alt="Sair icon" />
+                                    </button>
+                                    <button id="MostrarProg">
+                                        <img class="imgButtonHeader" src="media/icons8-lista-64.png" alt="Mostrar Programa" />
+                                    </button>
+                                </div>
                             </div>
-                            <div class="conteudoInterno">
-                                <div id="reservados"></div>
+                            <div class="containerReserv">
+                                <div id="stagedArea">
+                                    <div id="stagedItems"></div>
+                                    <button id="confirmButton">Confirmar Itens</button>
+                                </div>
+                                <div class="conteudoInterno">
+                                    <div id="reservados"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Bootstrap JS e JavaScript personalizado -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script type="module" src="admnew.js"></script>
+        <!-- Bootstrap JS e JavaScript personalizado -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script type="module" src="admnew.js"></script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const optionsButton = document.getElementById('optionsButton');
-            const aside = document.getElementById('aside');
-            const mobileButtonContainer = document.getElementById('mobileButtonContainer');
-    
-            function moveButton() {
-                if (window.innerWidth < 768) {
-                    // Move the button to the mobile container
-                    if (!mobileButtonContainer.contains(optionsButton)) {
-                        mobileButtonContainer.appendChild(optionsButton);
-                    }
-                } else {
-                    // Move the button back to the aside
-                    if (!aside.contains(optionsButton)) {
-                        aside.querySelector('.navbar ul').appendChild(optionsButton);
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const optionsButton = document.getElementById("optionsButton");
+                const aside = document.getElementById("aside");
+                const mobileButtonContainer = document.getElementById("mobileButtonContainer");
+
+                function moveButton() {
+                    if (window.innerWidth < 768) {
+                        // Move the button to the mobile container
+                        if (!mobileButtonContainer.contains(optionsButton)) {
+                            mobileButtonContainer.appendChild(optionsButton);
+                        }
+                    } else {
+                        // Move the button back to the aside
+                        if (!aside.contains(optionsButton)) {
+                            aside.querySelector(".navbar ul").appendChild(optionsButton);
+                        }
                     }
                 }
-            }
-    
-            // Initial check
-            moveButton();
-    
-            // Check on window resize
-            window.addEventListener('resize', moveButton);
-        });
 
+                // Initial check
+                moveButton();
 
-    // Função para fechar o modal ao clicar no botão de sair
-    document.getElementById('voltarModalContentnext').addEventListener('click', function() {
-        document.getElementById('nextProcessModal').style.display = 'none';
-    });
-    </script>
-    
-</body>
+                // Check on window resize
+                window.addEventListener("resize", moveButton);
+            });
 
+            // Função para fechar o modal ao clicar no botão de sair
+            document.getElementById("voltarModalContentnext").addEventListener("click", function () {
+                document.getElementById("nextProcessModal").style.display = "none";
+            });
+        </script>
+    </body>
 </html>
