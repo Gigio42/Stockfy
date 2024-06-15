@@ -78,7 +78,26 @@
                         <div class="row h-50">
                             <div class="col-md-6">
                                 <div class="w-100 p-3">
-                                    <canvas id="myChart"></canvas>
+                                    <div id="chartCarousel" class="carousel slide" data-ride="carousel">
+                                        <!-- Slides -->
+                                        <div class="carousel-inner">
+                                            <div class="carousel-item active">
+                                                <canvas id="myChart1"></canvas>
+                                            </div>
+                                            <div class="carousel-item">
+                                                <canvas id="myChart2"></canvas>
+                                            </div>
+                                            <div class="carousel-item">
+                                                <canvas id="myChart3"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Indicators -->
+                                    <ol class="carousel-indicators">
+                                        <li data-target="#chartCarousel" data-slide-to="0" class="active"></li>
+                                        <li data-target="#chartCarousel" data-slide-to="1"></li>
+                                        <li data-target="#chartCarousel" data-slide-to="2"></li>
+                                    </ol>
                                 </div>
                             </div>
 

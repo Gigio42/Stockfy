@@ -1,19 +1,23 @@
 // main.js
-import { createChart } from "./script/chart.js";
+import { createCharts } from "./script/chart.js";
 import { items, items2 } from "./script/tables.js";
 
-var myChart = createChart();
-
 $(document).ready(function () {
+  var ctx1 = document.getElementById("myChart1").getContext("2d");
+  var ctx2 = document.getElementById("myChart2").getContext("2d");
+  var ctx3 = document.getElementById("myChart3").getContext("2d");
+
+  createCharts(ctx1, ctx2, ctx3);
+
   $("#myTable").DataTable({
-    retrieve: true, 
+    retrieve: true,
     responsive: true,
     data: items,
     columns: [{ data: "qualidade" }, { data: "medida" }, { data: "quantidade" }, { data: "dataComprada" }],
   });
 
   $("#myTable2").DataTable({
-    retrieve: true, 
+    retrieve: true,
     responsive: true,
     scrollY: "30vh",
     scrollCollapse: true,

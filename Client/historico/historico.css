@@ -102,34 +102,6 @@ h1 {
 }
 
 /* ======================================
-     Active Link Styles
-     ====================================== */
-.active {
-  background-color: #007bff;
-  /* Cor de fundo do link ativo */
-}
-
-.active img.imgicon {
-  filter: brightness(0) invert(1);
-}
-
-.active a {
-  color: #ffffff;
-}
-
-.active:hover {
-  background-color: #007bff;
-  /* Mantém a cor de fundo do link ativo */
-  cursor: default;
-  /* Define o cursor como padrão */
-}
-
-.active:hover a {
-  color: #ffffff;
-  /* Mantém a cor do texto do link ativo */
-}
-
-/* ======================================
      General Link Styles
      ====================================== */
 a {
@@ -423,3 +395,28 @@ body.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button {
 .scrollable-table {
   overflow-y: auto;
 }
+
+.carousel-indicators {
+  position: relative; /* Make the indicators positioned relative to their container */
+  bottom: 0; /* Reset the bottom position */
+  display: flex; /* Make the indicators display in a row */
+  justify-content: center; /* Center the indicators horizontally */
+  list-style: none; /* Remove the default list styles */
+  padding-left: 0; /* Remove the default padding */
+}
+
+.carousel-indicators li {
+    width: 50px;
+    height: 0.1em; 
+    border-radius: 0;
+    margin-right: 5px;
+    margin-left: 5px;
+    cursor: pointer;
+    background-color: #ccc; 
+}
+
+.carousel-indicators .active {
+  background-color: #333; 
+}
+
+
