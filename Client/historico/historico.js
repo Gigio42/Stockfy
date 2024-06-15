@@ -1,3 +1,27 @@
+// main.js
+import { createChart } from "./script/chart.js";
+import { items, items2 } from "./script/tables.js";
+
+var myChart = createChart();
+
+$(document).ready(function () {
+  $("#myTable").DataTable({
+    retrieve: true, 
+    responsive: true,
+    data: items,
+    columns: [{ data: "qualidade" }, { data: "medida" }, { data: "quantidade" }, { data: "dataComprada" }],
+  });
+
+  $("#myTable2").DataTable({
+    retrieve: true, 
+    responsive: true,
+    scrollY: "30vh",
+    scrollCollapse: true,
+    paging: true,
+    data: items2,
+    columns: [{ data: "column1" }, { data: "column2" }, { data: "column3" }, { data: "column4" }],
+  });
+});
 
 if (localStorage.getItem("isLoggedIn") !== "true") {
   window.location.href = "../login/login.html";
@@ -57,7 +81,6 @@ if (localStorage.getItem("darkMode") === "enabled") {
     aside.classList.remove("dark-mode-aside");
   }
 }
-
 
 function highlightCurrentPage() {
   var currentPage = window.location.pathname.split("/").pop();
