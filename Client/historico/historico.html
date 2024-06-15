@@ -4,59 +4,209 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="author" content="Seu Nome" />
-        <title>Estoque</title>
-        <!-- Bootstrap CSS -->
+        <title>Histórico</title>
         <link id="theme" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css" rel="stylesheet" />
-        <!-- Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
-        <!-- CSS Personalizado -->
-        <link rel="stylesheet" href="pcp.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spinkit/1.2.5/spinkit.min.css" />
+        <link rel="stylesheet" href="historico.css" />
+        <link rel="icon" type="image/png" sizes="16x16" href="./media/Web/icons8-cardboard-basic-outline-16.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="./media/Web/icons8-cardboard-basic-outline-32.png" />
+        <link rel="icon" type="image/png" sizes="96x96" href="./media/Web/icons8-cardboard-basic-outline-96.png" />
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css" />
+        <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css" />
+        <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
     </head>
 
     <body class="body">
         <div class="container-fluid">
             <div class="row">
-                <!-- Header -->
-                <aside id="aside" class="aside col-md-3 navbar-lateral d-none d-md-block">
-                    <div class="logo-container"></div>
-                    <div class="p-2 navbar">
-                        <ul class="list-unstyled">
-                            <li class="icon-li mb-2">
-                                <a href="dashboard.html">
-                                    <img class="imgicon" src="media/bandeira (1).png" alt="Dashboard Icon" />
-                                    Reservar Chapa
-                                </a>
+                <!-- Aside -->
+                <aside id="aside" class="col-md-2 d-none d-md-block sidebar">
+                    <div class="sidebar-sticky">
+                        <div class="logo-container">
+                            <img class="logo" src="./media/logoTransparente.png" alt="Logo" class="logoImg" />
+                        </div>
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#"> Chapas </a>
                             </li>
-                            <li class="mb-2 active">
-                                <a href="pedidos.html">
-                                    <img class="imgicon" src="media/relatorio.png" alt="Pedidos Icon" />
-                                    Relatório
-                                </a>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#"> Items </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#"> Máquinas </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#"> Usuários </a>
                             </li>
                         </ul>
                     </div>
                 </aside>
 
-                <div class="col-md-9 header-custom text-light d-flex justify-content-between align-items-center">
-                    <div class="d-flex align-items-center">
-                        <h1 class="m-0">Gerenciamento PCP</h1>
+                <!-- Header -->
+                <div class="col-md-10 header">
+                    <div class="header-custom text-light d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <h1 class="m-0 hide-on-mobile">Histórico</h1>
+                        </div>
+                        <div class="navbar-header">
+                            <div class="media hide-on-mobile">
+                                <img class="mr-3 align-self-center" alt="Profile Pic" id="profilePic" style="width: 50px; height: 50px; border-radius: 50%" />
+                                <div class="media-body">
+                                    <h5 class="mt-0 mb-0" id="user-name">Username</h5>
+                                    <p class="mb-0 text-muted" id="role">Administrador</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-around align-items-center" style="min-height: 70px">
+                            <div class="dark-mode-toggle mx-sm-1 mx-0 my-1 align-self-center px-sm-3 px-2">
+                                <input type="checkbox" id="darkModeToggle" />
+                                <label for="darkModeToggle"></label>
+                            </div>
+                            <div class="mx-sm-1 mx-0 my-1 align-self-center">
+                                <button id="logoutButton" class="btn btn-primary px-sm-3 px-2">Logout</button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="dark-mode-toggle">
-                        <input type="checkbox" id="darkModeToggle" />
-                        <label for="darkModeToggle"></label>
+
+                    <!-- 1 seção -->
+                    <div class="container-fluid h-100">
+                        <div class="row h-50">
+                            <div class="col-md-6">
+                                <div class="w-100 p-3">
+                                    <canvas id="myChart"></canvas>
+                                    <!-- script temp p/ testar o chart -->
+                                    <script>
+                                        var ctx = document.getElementById("myChart").getContext("2d");
+                                        var myChart = new Chart(ctx, {
+                                            type: "line",
+                                            data: {
+                                                labels: ["January", "February", "March", "April", "May", "June", "July"],
+                                                datasets: [
+                                                    {
+                                                        label: "My First Dataset",
+                                                        data: [65, 59, 80, 81, 56, 55, 40],
+                                                        fill: false,
+                                                        borderColor: "rgb(75, 192, 192)",
+                                                        tension: 0.1,
+                                                    },
+                                                ],
+                                            },
+                                        });
+                                    </script>
+                                </div>
+                            </div>
+
+                            <!-- 2 seção -->
+                            <div class="col-md-6">
+                                <div class="w-100 p-3">
+                                    <h2 class="table-header">Chapas recentes</h2>
+                                    <table id="myTable" class="display">
+                                        <thead>
+                                            <tr>
+                                                <th>Qualidade</th>
+                                                <th>Medida</th>
+                                                <th>Quantidade</th>
+                                                <th>Data Comprada</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+
+                                    <script>
+                                        var items = [
+                                            { qualidade: "Alta", medida: "10cm", quantidade: 5, dataComprada: "2022-01-01" },
+                                            { qualidade: "Média", medida: "15cm", quantidade: 10, dataComprada: "2022-01-02" },
+                                            { qualidade: "Baixa", medida: "20cm", quantidade: 15, dataComprada: "2022-01-03" },
+                                            { qualidade: "Alta", medida: "25cm", quantidade: 20, dataComprada: "2022-01-04" },
+                                            { qualidade: "Média", medida: "30cm", quantidade: 25, dataComprada: "2022-01-05" },
+                                        ];
+
+                                        $(document).ready(function () {
+                                            $("#myTable").DataTable({
+                                                responsive: true,
+                                                data: items,
+                                                columns: [{ data: "qualidade" }, { data: "medida" }, { data: "quantidade" }, { data: "dataComprada" }],
+                                            });
+                                        });
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 3 Seção -->
+                        <div class="row h-50 dark-mode">
+                            <div class="col-md-12">
+                                <div class="w-100 p-3">
+                                    <div class="scrollable-table">
+                                        <table id="myTable2" class="display" style="width: 100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Column 1</th>
+                                                    <th>Column 2</th>
+                                                    <th>Column 3</th>
+                                                    <th>Column 4</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+
+                                    <script>
+                                        var items2 = [
+                                            { column1: "Data 1", column2: "Data 2", column3: "Data 3", column4: "Data 4" },
+                                            { column1: "Data 1", column2: "Data 2", column3: "Data 3", column4: "Data 4" },
+                                            { column1: "Data 1", column2: "Data 2", column3: "Data 3", column4: "Data 4" },
+                                            { column1: "Data 1", column2: "Data 2", column3: "Data 3", column4: "Data 4" },
+                                            { column1: "Data 1", column2: "Data 2", column3: "Data 3", column4: "Data 4" },
+                                            { column1: "Data 1", column2: "Data 2", column3: "Data 3", column4: "Data 4" },
+                                            { column1: "Data 1", column2: "Data 2", column3: "Data 3", column4: "Data 4" },
+                                            { column1: "Data 1", column2: "Data 2", column3: "Data 3", column4: "Data 4" },
+                                            { column1: "Data 1", column2: "Data 2", column3: "Data 3", column4: "Data 4" },
+                                            { column1: "Data 1", column2: "Data 2", column3: "Data 3", column4: "Data 4" },
+                                            { column1: "Data 1", column2: "Data 2", column3: "Data 3", column4: "Data 4" },
+                                            { column1: "Data 1", column2: "Data 2", column3: "Data 3", column4: "Data 4" },
+                                            { column1: "Data 1", column2: "Data 2", column3: "Data 3", column4: "Data 4" },
+                                            { column1: "Data 1", column2: "Data 2", column3: "Data 3", column4: "Data 4" },
+                                            { column1: "Data 1", column2: "Data 2", column3: "Data 3", column4: "Data 4" },
+                                            { column1: "Data 1", column2: "Data 2", column3: "Data 3", column4: "Data 4" },
+                                            { column1: "Data 1", column2: "Data 2", column3: "Data 3", column4: "Data 4" },
+                                        ];
+
+                                        $(document).ready(function () {
+                                            $("#myTable2").DataTable({
+                                                responsive: true,
+                                                scrollY: "30vh",
+                                                scrollCollapse: true,
+                                                paging: true,
+                                                data: items2,
+                                                columns: [{ data: "column1" }, { data: "column2" }, { data: "column3" }, { data: "column4" }],
+                                            });
+                                        });
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-                <!-- Conteúdo principal -->
-                <div class="col-md-19 content-wrapper"><!-- Adicione a classe content-wrapper e remova o padding --></div>
             </div>
         </div>
 
-        <!-- Bootstrap JS e JavaScript personalizado -->
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <!-- Popper.js library -->
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <script src="pcp.js"></script>
-        <!-- Seu script personalizado -->
+        <!-- Bootstrap library -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+        <!-- jQuery Mask plugin -->
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <!-- Axios library -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.9/dist/sweetalert2.all.min.js"></script>
+        <!-- sweetAlert -->
+
+        <script type="module" src="historico.js"></script>
     </body>
 </html>
