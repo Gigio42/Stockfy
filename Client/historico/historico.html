@@ -5,18 +5,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="author" content="Seu Nome" />
         <title>Histórico</title>
+        
+        <!-- CSS -->
         <link id="theme" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spinkit/1.2.5/spinkit.min.css" />
         <link rel="stylesheet" href="historico.css" />
-        <link rel="icon" type="image/png" sizes="16x16" href="./media/Web/icons8-cardboard-basic-outline-16.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="./media/Web/icons8-cardboard-basic-outline-32.png" />
-        <link rel="icon" type="image/png" sizes="96x96" href="./media/Web/icons8-cardboard-basic-outline-96.png" />
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css" />
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css" />
+
+        <!-- JS -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
         <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
-        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css" />
         <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
     </head>
 
@@ -74,11 +76,13 @@
                     </div>
 
                     <!-- 1 seção -->
-                    <div class="container-fluid h-100">
-                        <div class="row h-50">
-                            <div class="col-md-6">
-                                <div class="w-100 p-3">
-                                    <div id="chartCarousel" class="carousel slide" data-ride="carousel">
+                    <div class="container-fluid d-flex flex-column vh-100">
+                        <div class="row flex-grow-1 overflow-hidden">
+                            <div class="col-lg-6 col-md-12 d-flex flex-column">
+                                <div class="flex-grow-1 p-3 position-relative">
+                                    <!-- Remove overflow-auto here -->
+                                    <div id="chartCarousel" class="carousel slide h-100 overflow-auto" data-ride="carousel">
+                                        <!-- Add overflow-auto here -->
                                         <!-- Slides -->
                                         <div class="carousel-inner">
                                             <div class="carousel-item active">
@@ -93,7 +97,7 @@
                                         </div>
                                     </div>
                                     <!-- Indicators -->
-                                    <ol class="carousel-indicators">
+                                    <ol class="carousel-indicators position-absolute bottom-0 start-50 translate-middle-x">
                                         <li data-target="#chartCarousel" data-slide-to="0" class="active"></li>
                                         <li data-target="#chartCarousel" data-slide-to="1"></li>
                                         <li data-target="#chartCarousel" data-slide-to="2"></li>
@@ -102,18 +106,12 @@
                             </div>
 
                             <!-- 2 seção -->
-                            <div class="col-md-6">
-                                <div class="w-100 p-3">
+                            <div class="col-lg-6 col-md-12 d-flex flex-column">
+                                <!-- Change col-md-6 to col-lg-6 and add col-md-12 -->
+                                <div class="flex-grow-1 overflow-auto p-3">
                                     <h2 class="table-header">Chapas recentes</h2>
                                     <table id="myTable" class="display">
-                                        <thead>
-                                            <tr>
-                                                <th>Qualidade</th>
-                                                <th>Medida</th>
-                                                <th>Quantidade</th>
-                                                <th>Data Comprada</th>
-                                            </tr>
-                                        </thead>
+                                        <thead></thead>
                                         <tbody></tbody>
                                     </table>
                                 </div>
@@ -121,22 +119,13 @@
                         </div>
 
                         <!-- 3 Seção -->
-                        <div class="row h-50 dark-mode">
-                            <div class="col-md-12">
-                                <div class="w-100 p-3">
-                                    <div class="scrollable-table">
-                                        <table id="myTable2" class="display" style="width: 100%">
-                                            <thead>
-                                                <tr>
-                                                    <th>Column 1</th>
-                                                    <th>Column 2</th>
-                                                    <th>Column 3</th>
-                                                    <th>Column 4</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>
-                                    </div>
+                        <div class="row flex-grow-1 overflow-hidden dark-mode">
+                            <div class="col-md-12 d-flex flex-column">
+                                <div class="flex-grow-1 overflow-auto p-3">
+                                    <table id="myTable2" class="display w-100">
+                                        <thead></thead>
+                                        <tbody></tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>

@@ -396,13 +396,20 @@ body.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button {
   overflow-y: auto;
 }
 
+.flex-grow-1 {
+  max-height: 50vh; /* Adjust this value as needed */
+}
+
+#chartCarousel {
+  max-height: 50vh; /* Adjust this value as needed */
+}
 .carousel-indicators {
-  position: relative; /* Make the indicators positioned relative to their container */
-  bottom: 0; /* Reset the bottom position */
-  display: flex; /* Make the indicators display in a row */
-  justify-content: center; /* Center the indicators horizontally */
-  list-style: none; /* Remove the default list styles */
-  padding-left: 0; /* Remove the default padding */
+  position: relative; 
+  bottom: 0;
+  display: flex;
+  justify-content: center; 
+  list-style: none; 
+  padding-left: 0; 
 }
 
 .carousel-indicators li {
