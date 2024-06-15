@@ -16,7 +16,7 @@ export class InfoModal {
     if (this.closeInfoModalButton) {
       this.closeInfoModalButton.addEventListener("click", this.closeModal.bind(this));
     }
-    
+
     this.modal.addEventListener("click", this.closeModal.bind(this));
     this.modalContent.addEventListener("click", (event) => event.stopPropagation());
 
@@ -30,19 +30,23 @@ export class InfoModal {
   }
 
   openModal(item) {
-    this.initialize(); // Certificar-se de que os listeners estão configurados
-    this.modal.style.display = "block";
+    this.initialize();
+    this.modal.classList.add("open");
+    this.modalContent.style.maxHeight = "70vh"; 
+    this.modalContent.style.overflowY = "auto"; 
     this.generateContent(item);
   }
 
   closeModal() {
-    this.modal.style.display = "none";
+    this.modal.classList.remove("open");
     while (this.modalContent.firstChild) {
       this.modalContent.removeChild(this.modalContent.firstChild);
     }
   }
 
   generateContent(item) {
+    this.modalContent.innerHTML = "";
+
     const container = document.createElement("div");
     container.className = "container-fluid";
 
@@ -77,7 +81,7 @@ export class InfoModal {
       cardBody.appendChild(cardTitle);
 
       const cardText = document.createElement("p");
-      cardText.className = "card-title";
+      cardText.className = "card-text";
       cardText.textContent = JSON.stringify(value, null, 2);
       cardBody.appendChild(cardText);
     });
