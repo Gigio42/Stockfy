@@ -1,4 +1,3 @@
-
 if (localStorage.getItem("isLoggedIn") !== "true") {
   window.location.href = "../login/login.html";
 }
@@ -57,7 +56,6 @@ if (localStorage.getItem("darkMode") === "enabled") {
     aside.classList.remove("dark-mode-aside");
   }
 }
-
 
 function highlightCurrentPage() {
   var currentPage = window.location.pathname.split("/").pop();
