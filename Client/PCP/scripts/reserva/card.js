@@ -10,6 +10,7 @@ export class Card {
     this.onSubcardSelectionChange = onSubcardSelectionChange;
     this.isChecked = isChecked;
     this.cards = [];
+    this.infoModal = new InfoModal();
   }
 
   createValueDiv(key, value) {
@@ -73,15 +74,10 @@ export class Card {
     let infoButton = createElementWithClass("button", "btn btn-sm ml-2 card-info-button");
     infoButton.innerHTML = '<i class="fas fa-chevron-down"></i>';
 
-    let infoModal = new InfoModal();
-
-    infoButton.addEventListener("click", async (event) => {
+    infoButton.addEventListener("click", (event) => {
       event.stopPropagation();
-
       event.preventDefault();
-      infoModal.initialize();
-      infoModal.items = [this.chapa];
-      await infoModal.openModal(this.chapa);
+      this.infoModal.openModal(this.chapa);
     });
 
     return infoButton;

@@ -132,13 +132,20 @@
 
                     <!-- reservar chapas modal -->
                     <div id="popupContainer" class="modal" style="display: none">
-                        <div class="modal-content" id="modalContent">
+                        <div id="modalContent" class="modal-content">
                             <span class="close" id="closeModal">&times;</span>
                             <form id="partNumberForm">
                                 <label for="partNumber">Part Number:</label>
                                 <input type="text" id="partNumber" name="partNumber" />
                                 <button id="reserveButton">Reserve</button>
                             </form>
+                        </div>
+                    </div>
+
+                    <!-- Chapa Info modal -->
+                    <div id="infoModal" class="modal">
+                        <div id="infoContainer" class="modal-content">
+                            <span class="close" id="closeInfoModal">&times;</span>
                         </div>
                     </div>
                 </div>
@@ -148,13 +155,6 @@
                     <div id="itemContainer" class="modal-content">
                         <span class="close" id="closeItemModal">&times;</span>
                         <input type="search" id="searchBar" placeholder="Procurar PART NUMBER" />
-                    </div>
-                </div>
-
-                <!-- Chapa Info modal -->
-                <div id="infoModal" class="modal" style="display: none">
-                    <div id="infoContainer" class="modal-content">
-                        <span class="close" id="closeInfoModal">&times;</span>
                     </div>
                 </div>
 

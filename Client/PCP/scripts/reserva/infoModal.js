@@ -1,14 +1,22 @@
-import { createModalContent } from "../utils/modalUtil.js";
-
 export class InfoModal {
   constructor() {
     this.modal = document.getElementById("infoModal");
     this.modalContent = document.getElementById("infoContainer");
     this.closeInfoModalButton = document.getElementById("closeInfoModal");
+    this.initialized = false;
   }
 
   initialize() {
-    this.closeInfoModalButton.addEventListener("click", this.closeModal.bind(this));
+    if (this.initialized) return; // Garantir que a inicialização só ocorra uma vez
+
+    if (!this.closeInfoModalButton) {
+      this.closeInfoModalButton = document.getElementById("closeInfoModal");
+    }
+
+    if (this.closeInfoModalButton) {
+      this.closeInfoModalButton.addEventListener("click", this.closeModal.bind(this));
+    }
+    
     this.modal.addEventListener("click", this.closeModal.bind(this));
     this.modalContent.addEventListener("click", (event) => event.stopPropagation());
 
@@ -17,13 +25,14 @@ export class InfoModal {
         this.closeModal();
       }
     });
+
+    this.initialized = true;
   }
 
   openModal(item) {
+    this.initialize(); // Certificar-se de que os listeners estão configurados
     this.modal.style.display = "block";
-    const contentGenerator = () => this.generateContent(item);
-    const createContent = createModalContent(this.modalContent, this.closeInfoModalButton, contentGenerator);
-    createContent();
+    this.generateContent(item);
   }
 
   closeModal() {
@@ -68,11 +77,11 @@ export class InfoModal {
       cardBody.appendChild(cardTitle);
 
       const cardText = document.createElement("p");
-      cardText.className = "card-title"; //todo preguiça de arrumar isso ainda
+      cardText.className = "card-title";
       cardText.textContent = JSON.stringify(value, null, 2);
       cardBody.appendChild(cardText);
     });
 
-    return container;
+    this.modalContent.appendChild(container);
   }
 }
