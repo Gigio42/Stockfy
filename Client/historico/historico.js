@@ -8,10 +8,10 @@ $(document).ready(function () {
 
   loadChapasData(ctx1, ctx2, ctx3);
 
-  $('#chartCarousel').on('slid.bs.carousel', function () {
-    var currentIndex = $('.carousel-item.active').index();
-    $('.carousel-indicators li').removeClass('active');
-    $('.carousel-indicators li').eq(currentIndex).addClass('active');
+  $("#chartCarousel").on("slid.bs.carousel", function () {
+    var currentIndex = $(".carousel-item.active").index();
+    $(".carousel-indicators li").removeClass("active");
+    $(".carousel-indicators li").eq(currentIndex).addClass("active");
   });
 });
 

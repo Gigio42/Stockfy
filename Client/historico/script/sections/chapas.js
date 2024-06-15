@@ -54,8 +54,8 @@ function createChapasCharts(ctx1, ctx2, ctx3, data) {
         {
           label: "Quantidade por Fornecedor",
           data: supplierData.map((item) => item.quantidade_recebida),
-          backgroundColor: "rgba(173, 216, 230, 0.2)", 
-          borderColor: "rgba(70, 130, 180, 1)", 
+          backgroundColor: "rgba(173, 216, 230, 0.2)",
+          borderColor: "rgba(70, 130, 180, 1)",
         },
       ],
     },

@@ -13,5 +13,5 @@ export default function (fastify) {
   fastify.register(admRoute, { prefix: "/adm" });
   fastify.register(producaoRoute, { prefix: "/producao" });
   fastify.register(usuarioRoute, { prefix: "/user" });
-  fastify.register(historicoRoute, { prefix: "/historico" })
+  fastify.register(historicoRoute, { prefix: "/historico" });
 }
