@@ -32,8 +32,8 @@ export class InfoModal {
   openModal(item) {
     this.initialize();
     this.modal.classList.add("open");
-    this.modalContent.style.maxHeight = "70vh"; 
-    this.modalContent.style.overflowY = "auto"; 
+    this.modalContent.style.maxHeight = "70vh";
+    this.modalContent.style.overflowY = "auto";
     this.generateContent(item);
   }
 
