@@ -6,14 +6,14 @@ var myChart = createChart();
 
 $(document).ready(function () {
   $("#myTable").DataTable({
-    retrieve: true, 
+    retrieve: true,
     responsive: true,
     data: items,
     columns: [{ data: "qualidade" }, { data: "medida" }, { data: "quantidade" }, { data: "dataComprada" }],
   });
 
   $("#myTable2").DataTable({
-    retrieve: true, 
+    retrieve: true,
     responsive: true,
     scrollY: "30vh",
     scrollCollapse: true,
