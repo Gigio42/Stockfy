@@ -68,7 +68,6 @@ function createModalHandler(modalContent, closeModal, getSelectedSubcards, popup
       }
     });
 
-
     modalContent.appendChild(newContent);
 
     popupContainer.style.display = "block";
