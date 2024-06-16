@@ -173,7 +173,7 @@ export function createChapasCharts(ctx1, ctx2, ctx3, data) {
               }
               if (context.parsed !== null) {
                 label += context.parsed;
-                label += " (" + Math.round((context.parsed / statusData.reduce((a, b) => a + b.count, 0)) * 100) + "%)"; 
+                label += " (" + Math.round((context.parsed / statusData.reduce((a, b) => a + b.count, 0)) * 100) + "%)";
               }
               return label;
             },

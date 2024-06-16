@@ -17,11 +17,11 @@ $(document).ready(function () {
   });
 
   $("#myChart1, #myChart2, #myChart3").mouseenter(function () {
-    $("#chartCarousel").carousel('pause');
+    $("#chartCarousel").carousel("pause");
   });
 
   $("#myChart1, #myChart2, #myChart3").mouseleave(function () {
-    $("#chartCarousel").carousel('cycle');
+    $("#chartCarousel").carousel("cycle");
   });
 });
 
