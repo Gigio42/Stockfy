@@ -897,21 +897,18 @@ h2 {
   gap: 1rem;
   border-radius: 8px;
   background-color: #1d1d1d;
-  width: fit-content;
   border-radius: 1rem !important;
   flex-direction: row;
   padding: 0;
-  width: fit-content;
-  min-width: 170px;
-  font-size: calc(1vw + 15px);
+  font-size: calc(1vw + 10px);
   align-items: center;
 display: flex;
+
 }
 
 /* Responsividade para tela menor que 902px */
 @media (max-width: 902px) {
   .card {
-    width: 40% !important;
     flex-direction: column !important;
     height: fit-content;
   }
@@ -963,12 +960,14 @@ div.card-body {
 flex-wrap: wrap;
 background: #1d1d1d;
 gap: 1rem;
-padding: 1rem;
 border-radius: 1rem;
+
+
 }
 
 .maquina-div {
-  padding: 1rem;
+  padding: 0.2rem 1rem;
+
   background: #5fff8228;
   color: #5fff82;
 border-radius: 1rem;
@@ -1078,7 +1077,8 @@ gap: 1rem;
   background: #232323;
   height: 4rem;
   border-radius: 1rem;
-  margin-left: 1rem;
+  margin: 1rem;
+  margin-top: 0;
   text-align: center;
   justify-content: center;
   align-items: center;
