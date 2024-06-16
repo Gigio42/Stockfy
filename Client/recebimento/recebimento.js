@@ -887,7 +887,7 @@ function prod_Penha(product) {
         vincada: /VINCADA/.test(xProd) ? "Sim" : "Não",
     };
 }
-import BASE_URL from "../utils/config.js";
+
 
 document.addEventListener("DOMContentLoaded", function () {
     document.body.addEventListener("click", function (event) {
