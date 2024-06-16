@@ -911,6 +911,7 @@ display: flex;
   .card {
     flex-direction: column !important;
     height: fit-content;
+    max-width: 10em;
   }
 
   .card-header {
@@ -956,7 +957,7 @@ display: flex;
 div.card-body {
   display: flex;
   color: #cccccc;
-  padding: 0;
+  padding: 0.5rem;
 flex-wrap: wrap;
 background: #1d1d1d;
 gap: 1rem;
@@ -966,7 +967,8 @@ border-radius: 1rem;
 }
 
 .maquina-div {
-  padding: 0.2rem 1rem;
+  display: flex;
+  padding: 0.5rem 1rem;
 
   background: #5fff8228;
   color: #5fff82;
