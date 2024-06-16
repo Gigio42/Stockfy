@@ -1,18 +1,20 @@
-// chapas.js
-import { fetchChapas } from "../connections.js";
+import { fetchChapas, fetchItems } from "../connections.js";
 import { createChapasCharts } from "./chapasChart.js";
 
 export async function loadChapasData(ctx1, ctx2, ctx3) {
   const chapasData = await fetchChapas();
+  const itemsData = await fetchItems();
+
   createChapasCharts(ctx1, ctx2, ctx3, chapasData);
 
-  var columns = Object.keys(chapasData[0]);
+  var chapasColumns = Object.keys(chapasData[0]);
+  var itemsColumns = Object.keys(itemsData[0]);
 
-  generateTableHeaders("myTable", columns);
-  generateTableHeaders("myTable2", columns);
+  generateTableHeaders("myTable", itemsColumns);
+  generateTableHeaders("myTable2", chapasColumns);
 
-  populateTableWithDatatables("myTable", chapasData, columns);
-  populateTableWithDatatables("myTable2", chapasData, columns);
+  populateTableWithDatatables("myTable", itemsData, itemsColumns);
+  populateTableWithDatatables("myTable2", chapasData, chapasColumns);
 }
 
 function generateTableHeaders(tableId, columns) {
@@ -30,7 +32,7 @@ function populateTableWithDatatables(tableId, data, columns) {
   $("#" + tableId).DataTable({
     retrieve: true,
     responsive: true,
-    scrollY: "25vh", // Apply scrollY to all tables
+    scrollY: "25vh",
     scrollCollapse: true,
     paging: true,
     data: data,

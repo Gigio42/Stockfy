@@ -14,3 +14,12 @@ export async function fetchChapas() {
     handleError(error);
   }
 }
+
+export async function fetchItems() {
+  try {
+    const response = await axios.get(`${HISTORICO_URL}/items`);
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+}

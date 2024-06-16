@@ -6,8 +6,13 @@ class HistoricoController {
   constructor() {}
 
   async getChapas() {
-    const chapas = await prisma.chapas.findMany();
+    const chapas = await prisma.Chapas.findMany();
     return chapas;
+  }
+
+  async getItems() {
+    const items = await prisma.Item.findMany();
+    return items;
   }
 }
 

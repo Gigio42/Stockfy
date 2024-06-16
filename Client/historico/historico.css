@@ -118,12 +118,8 @@ a:hover {
 }
 
 li {
-  color: #ffffff;
-  padding: 1rem;
   font-size: 1.1rem;
-  border-radius: 1.2rem;
   text-decoration: none;
-  /* Remove o sublinhado */
 }
 
 li:hover {
@@ -414,7 +410,7 @@ body.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button {
 
 .carousel-indicators li {
     width: 50px;
-    height: 0.1em; 
+    height: 0.5em; 
     border-radius: 0;
     margin-right: 5px;
     margin-left: 5px;
