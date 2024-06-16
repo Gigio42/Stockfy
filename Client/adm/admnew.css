@@ -87,11 +87,6 @@ h1 {
       order: 1;
       width: 100%;
   }
-
-  .aside-container {
-      display: flex;
-      flex-direction: column;
-  }
 }
 
 #mobileButtonContainer {
@@ -173,11 +168,6 @@ a:hover {
   color: #535353;
   text-decoration: none;
   /* Remove o sublinhado */
-}
-
-.icon-home {
-  fill: red;
-  /* Altere "red" para a cor desejada */
 }
 
 li {
@@ -697,7 +687,6 @@ span.item-number {
 
 #confirmarOrdem,
 #ListarFinalizados,
-#proxiProcesso,
 #MostrarProg {
   padding: 0.4rem 0.8rem 0.4rem 0.8rem;
   border-radius: 1rem;
@@ -711,7 +700,6 @@ span.item-number {
 
 #confirmarOrdem:hover,
 #ListarFinalizados:hover,
-#proxiProcesso:hover,
 #MostrarProg:hover {
   background: #212121;
 }
@@ -872,16 +860,6 @@ h2 {
 
 .img-container:hover {
   background: #212121;
-}
-
-.item-position {
-  margin-right: 10px;
-  font-weight: bold;
-}
-
-.item-id {
-  color: red;
-  font-weight: bold;
 }
 
 .card-container {
