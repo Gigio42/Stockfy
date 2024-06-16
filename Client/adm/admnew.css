@@ -600,7 +600,8 @@ span.item-number {
   .conteudoInterno {
     overflow-y: auto;
     max-height: 50%;
-    margin-bottom: 0.5rem;
+    height: 40%;
+    margin-bottom: 6REM;
   }
   
 }
@@ -787,15 +788,16 @@ p {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  max-height: 70%;
+  max-height: 73%;
   border-radius: 1rem;
+  border-radius: 2REM;
 }
 
 .textoModal {
   background-color: #2f2f2f;
   width: fit-content;
   padding: 0.5rem 1rem;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
   margin-top: 1rem;
   border-radius: 1rem;
   color: #929292;
