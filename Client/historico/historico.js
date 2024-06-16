@@ -13,8 +13,15 @@ $(document).ready(function () {
     $(".carousel-indicators li").removeClass("active");
     $(".carousel-indicators li").eq(currentIndex).addClass("active");
   });
-});
 
+  $("#myChart1, #myChart2, #myChart3").mouseenter(function () {
+    $("#chartCarousel").carousel('pause');
+  });
+
+  $("#myChart1, #myChart2, #myChart3").mouseleave(function () {
+    $("#chartCarousel").carousel('cycle');
+  });
+});
 if (localStorage.getItem("isLoggedIn") !== "true") {
   window.location.href = "../login/login.html";
 }
