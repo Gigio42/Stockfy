@@ -101,6 +101,7 @@ h1 {
   justify-content: center;
 }
 
+
 /* ======================================
      General Link Styles
      ====================================== */
@@ -379,15 +380,29 @@ body.dark-mode .dataTables_wrapper .dataTables_filter input {
   border: 1px solid #555;
 }
 
-/* Dark mode */
 body.dark-mode .dtr-control,
 body.dark-mode .sorting_1 {
   background-color: #1c1c1c !important;
 }
 
-/* Dark mode */
 body.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button {
   color: #ffffff !important;
+}
+
+body.light-mode .theme-button {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  color: #333;
+  padding: 0.5em 1em;
+  font-size: 0.8em;
+}
+
+body.dark-mode .theme-button {
+  background-color: #333;
+  border: 1px solid #444;
+  color: #e0e0e0;
+  padding: 0.5em 1em;
+  font-size: 0.8em;
 }
 
 /* Estilo adicional para responsividade e scroll */

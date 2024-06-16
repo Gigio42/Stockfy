@@ -60,26 +60,25 @@ function populateTableWithDatatables(tableId, data, columns, scrollHeight = "25v
   const domString = isTable2 ? "<'row'<'col-sm-4'l><'col-sm-4'B><'col-sm-4'f>>rtip" : "lfrtip";
 
   const buttons = isTable2
-    ? [
-        {
-          text: "Expand",
-          attr: { id: "expandButton" },
-          className: "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",
-          action: function (e, dt, node, config) {
-            var tableWrapper = document.getElementById("tableWrapper");
-            if (tableWrapper.classList.contains("expanded")) {
-              tableWrapper.classList.remove("expanded");
-              node.textContent = "Expand";
-              reinitializeTable(tableId, data, columns, "25vh", 5);
-            } else {
-              tableWrapper.classList.add("expanded");
-              node.textContent = "Collapse";
-              reinitializeTable(tableId, data, columns, "60vh", 20);
-            }
-          },
+  ? [
+      {
+        text: "Expandir",
+        attr: { id: "expandButton", class: "theme-button" },
+        action: function (e, dt, node, config) {
+          var tableWrapper = document.getElementById("tableWrapper");
+          if (tableWrapper.classList.contains("expanded")) {
+            tableWrapper.classList.remove("expanded");
+            node.textContent = "Expand";
+            reinitializeTable(tableId, data, columns, "25vh", 5);
+          } else {
+            tableWrapper.classList.add("expanded");
+            node.textContent = "Collapse";
+            reinitializeTable(tableId, data, columns, "60vh", 20);
+          }
         },
-      ]
-    : [];
+      },
+    ]
+  : [];
 
   $("#" + tableId).DataTable({
     retrieve: true,
@@ -97,7 +96,7 @@ function populateTableWithDatatables(tableId, data, columns, scrollHeight = "25v
       if (isTable2) {
         addEventListeners(tableId, data, columns);
       }
-      adjustColumns(tableId); // Adjust columns on init
+      adjustColumns(tableId);
     },
   });
 }
@@ -105,7 +104,7 @@ function populateTableWithDatatables(tableId, data, columns, scrollHeight = "25v
 function reinitializeTable(tableId, data, columns, scrollHeight, pageLength) {
   $("#" + tableId).DataTable().destroy();
   populateTableWithDatatables(tableId, data, columns, scrollHeight, pageLength);
-  adjustColumns(tableId); // Adjust columns after reinitialization
+  adjustColumns(tableId); 
 }
 
 function adjustColumns(tableId) {
