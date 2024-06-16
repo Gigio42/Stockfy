@@ -94,29 +94,31 @@ class AdmController {
       throw new Error("Erro ao buscar itens para a máquina: " + error.message);
     }
   }
-  
+
   async updateItemPriorities(newPriorities) {
     try {
       console.log("Recebido para atualização de prioridades:", newPriorities);
-  
+
       // Verificar se todos os itens existem antes de atualizar
       for (const { id_item } of newPriorities) {
         const itemExists = await Item.findUnique({
           where: { id_item: id_item },
         });
-  
+
         if (!itemExists) {
           throw new Error(`Item com id ${id_item} não encontrado`);
         }
       }
-  
-      await Promise.all(newPriorities.map(async ({ id_item, prioridade }) => {
-        await Item.update({
-          where: { id_item: id_item },
-          data: { prioridade: prioridade }
-        });
-      }));
-  
+
+      await Promise.all(
+        newPriorities.map(async ({ id_item, prioridade }) => {
+          await Item.update({
+            where: { id_item: id_item },
+            data: { prioridade: prioridade },
+          });
+        }),
+      );
+
       console.log("Prioridades dos itens atualizadas com sucesso");
     } catch (error) {
       console.error("Erro ao atualizar as prioridades dos itens:", error);
@@ -140,44 +142,34 @@ class AdmController {
 
   async createItemMaquina(itemId, maquinaId) {
     try {
-        const item = await Item_Maquina.findFirst({
-            where: { itemId: itemId },
-            include: { maquina: true }, // Inclui o relacionamento correto
-            orderBy: { ordem: "desc" }, // Ordena pelo maior valor de ordem
-        });
+      const lastItem = await Item_Maquina.findFirst({
+        where: { itemId: itemId },
+        orderBy: { ordem: "desc" },
+      });
 
-        let ordem = 1; // Valor padrão se não houver itens existentes
+      let ordem = 1;
+      if (lastItem) {
+        ordem = lastItem.ordem + 1;
+      }
 
-        if (item) {
-            // Se houver itens existentes, incrementa a ordem
-            ordem = item.ordem + 1;
-        }
+      await Item_Maquina.create({
+        data: {
+          prazo: lastItem ? lastItem.prazo : null,
+          ordem: ordem,
+          executor: lastItem ? lastItem.executor : null,
+          finalizado: lastItem ? lastItem.finalizado : false,
+          corte: lastItem ? lastItem.corte : null,
+          maquinaId: maquinaId,
+          itemId: itemId,
+        },
+      });
 
-        // Cria um novo Item_Maquina com os dados do item e a máquina selecionada
-        await Item_Maquina.create({
-            data: {
-                prazo: item.prazo,
-                ordem: ordem, // Define a ordem autoincrementada
-                executor: item.executor,
-                finalizado: item.finalizado,
-                corte: item.corte,
-                maquinaId: maquinaId, // Substitui o maquinaId pelo ID da máquina selecionada
-                itemId: itemId,
-            },
-        });
-
-        console.log(`Item_Maquina criado com sucesso para o item ${itemId} e a máquina ${maquinaId}.`);
+      console.log(`Item_Maquina criado com sucesso para o item ${itemId} e a máquina ${maquinaId}.`);
     } catch (error) {
-        console.error("Erro ao criar Item_Maquina:", error);
-        throw new Error("Erro ao criar Item_Maquina: " + error.message);
+      console.error("Erro ao criar Item_Maquina:", error);
+      throw new Error("Erro ao criar Item_Maquina: " + error.message);
     }
+  }
 }
-
-  
-
-}
-  
-
-
 
 export default AdmController;

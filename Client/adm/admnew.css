@@ -75,6 +75,26 @@ h1 {
   /* Permite rolagem se o conteúdo for maior do que a altura da página */
   padding: 0;
   border-radius: 0 !important;
+  
+}
+
+@media (max-width: 767.98px) {
+  #aside {
+      order: 2;
+  }
+
+  .header {
+      order: 1;
+      width: 100%;
+  }
+}
+
+#mobileButtonContainer {
+  display: flex;
+  background: #212121;
+  width: 100vw;
+  height: 5rem;
+padding: 1rem;
 }
 
 .logo {
@@ -99,6 +119,16 @@ h1 {
   margin-top: 4rem;
   justify-content: center;
 }
+
+.list-unstyled:hover {
+background: #333333;
+padding: 1rem;
+}
+
+.list-unstyled {
+  padding: 1rem;
+  border-radius: 1rem;
+  }
 
 /* ======================================
        Active Link Styles
@@ -140,11 +170,6 @@ a:hover {
   /* Remove o sublinhado */
 }
 
-.icon-home {
-  fill: red;
-  /* Altere "red" para a cor desejada */
-}
-
 li {
   color: #ffffff;
   padding: 1rem;
@@ -167,6 +192,7 @@ li:hover {
 
 .imgicon {
   width: 3rem;
+  height: 3rem;
   border-radius: 0 !important;
 }
 
@@ -319,6 +345,7 @@ body {
   line-height: 1;
   padding: 0;
   padding-left: 0.5rem;
+  width: 10rem;
 }
 
 .textButtonli {
@@ -353,7 +380,7 @@ body {
   top: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
+max-height: 100%;
   background-color: rgba(52, 52, 52, 0.324);
   backdrop-filter: blur(5px);
   flex-direction: column;
@@ -365,21 +392,22 @@ body {
   gap: 1rem;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  height: 100%;
+
+  height: 90%;
+
 }
 
 #stagedItems {
-  padding: 1rem;
   border-radius: 1rem;
   overflow-y: auto;
-  max-height: 32vh;
+  height: fit-content;
+  max-height: 64vh;
+  margin-bottom: 1rem;
 }
 
 
 .modal-content-2 {
-  padding: 20px;
-  width: 95vw;
+  padding: 1.5REM;
   border: none;
   border-radius: 1.5rem;
   position: absolute;
@@ -389,12 +417,11 @@ body {
   bottom: 0;
   background-color: #141414;
   z-index: 999;
-  height: 95vh;
+  width: 100%;
 }
 
 .modal-content-3 {
-  padding: 20px;
-  width: 95vw;
+  padding: 1.5rem;
   border: none;
   border-radius: 1.5rem;
   position: absolute;
@@ -404,15 +431,14 @@ body {
   bottom: 0;
   background-color: #141414;
   z-index: 999;
-  height: 95vh;
   display: none;
 }
 
-.modal-content {
-  padding: 3rem !important;
-  width: 95vw;
+.modal-content, 
+.modal-content1 {
+  padding: 2rem !important;
+  width: 100vw;
   border: none;
-  border-radius: 1.5rem;
   position: absolute;
   top: 0;
   left: 0;
@@ -420,11 +446,9 @@ body {
   bottom: 0;
   background-color: #141414;
   z-index: 9999;
-  height: 95vh;
+  height: 100vh;
   background-color: #141414;
-  margin: 1% auto;
   padding: 20px;
-  width: 95vw;
   justify-content: space-between;
   flex-direction: column;
   display: flex;
@@ -435,8 +459,14 @@ body {
   /* Adicione outros estilos conforme necessário */
 }
 
+.sair {
+  width:30px ;
+}
+
+#voltarModalContentnext,
 #voltarModalContent2,
-#voltarModalContent {
+#voltarModalContent,
+#voltarModalContent5 {
   padding: 1rem;
   border-radius: 1rem;
   width: fit-content;
@@ -444,7 +474,7 @@ body {
   border: none;
   background-color: #1c1c1c;
   color: #b4b4b4;
-  font-size: 2rem;
+  font-size: 1rem;
 }
 
 #voltarModalContent:hover {
@@ -463,11 +493,11 @@ body {
   background: #1eff053e;
   border: solid 1px #6eec0790;
   color: #81ff1a;
-  padding: 1rem;
+  padding: 0.5rem;
   border-radius: 1rem;
   width: fit-content;
-  margin-bottom: 1rem;
-  font-size: 2rem;
+  height: fit-content;
+  font-size: 1.5rem;
 }
 
 .cardItem {
@@ -546,17 +576,37 @@ span.item-number {
   padding: 1rem;
   border-radius: 2rem;
   overflow-y: auto;
+  
 }
 
 #stagedArea {
   flex: 30;
   background: #1e1e1e;
   border-radius: 2rem;
-  padding: 2rem;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  max-height:77vh;
 }
+
+@media (max-width: 902px) {
+  #stagedArea {
+    justify-content: space-between;
+    height: 49%;
+    max-height:35vh ;
+  } 
+
+  .conteudoInterno {
+    overflow-y: auto;
+    max-height: 50%;
+    height: 40%;
+    margin-bottom: 7REM;
+  }
+  
+}
+
+
 
 .stagedCard {
   display: flex;
@@ -588,8 +638,8 @@ span.item-number {
 #confirmButton {
   background: #292929;
   border: none;
-  font-size: 2rem;
-  border-radius: 1rem;
+  font-size: 1.5rem;
+  border-radius: 1.5rem;
   padding: 1rem;
   color: #b8b8b8;
 }
@@ -637,9 +687,8 @@ span.item-number {
 
 #confirmarOrdem,
 #ListarFinalizados,
-#proxiProcesso,
 #MostrarProg {
-  padding: 1rem;
+  padding: 0.4rem 0.8rem 0.4rem 0.8rem;
   border-radius: 1rem;
   width: fit-content;
   margin-bottom: 1rem;
@@ -651,7 +700,6 @@ span.item-number {
 
 #confirmarOrdem:hover,
 #ListarFinalizados:hover,
-#proxiProcesso:hover,
 #MostrarProg:hover {
   background: #212121;
 }
@@ -667,7 +715,7 @@ span.item-number {
   border-radius: 1rem;
   color: orange;
   font-weight: bold;
-  font-size: 0.8rem;
+  font-size: 1rem;
 }
 
 p {
@@ -694,13 +742,15 @@ p {
   flex-grow: 1;
   padding: 10px;
   margin-left: 10px; /* Espaço entre o ícone e o card */
-  width: fit-content;
+
+  flex-wrap: wrap;
 }
 
 .item-container {
   display: flex;
   align-items: center;
   margin-bottom: 10px; /* Ajuste o espaço entre os cards conforme necessário */
+ width: fit-content;
 }
 
 .drag-icon {
@@ -720,9 +770,10 @@ p {
   display: flex;
   gap: 1rem;
   border-radius: 1rem;
-  margin-bottom: 2rem;
   flex-direction: column;
-  width: fit-content;
+  width: 100%;
+  overflow-y: auto;
+  max-height: 80%;
 }
 
 #finalizadoItemsList {
@@ -737,21 +788,25 @@ p {
 .itensContainerstatus {
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  max-height: 80%;
+
   border-radius: 1rem;
+  border-radius: 2REM;
 }
 
 .textoModal {
   background-color: #2f2f2f;
   width: fit-content;
   padding: 0.5rem 1rem;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
   margin-top: 1rem;
   border-radius: 1rem;
   color: #929292;
   border: solid 1px #b3b3b341;
   font-weight: bold;
+}
+
+h2 {
+  font-size: 2rem;
 }
 
 .inputPrazo,
@@ -762,9 +817,11 @@ p {
   background-color: #262626;
   text-align: center;
   color: #9178ff;
-  font-size: 1.7rem;
+  font-size: 1rem;
   height: 3.5rem;
-  max-width: fit-content !important;
+  width: 30% !important;
+  max-width: 200px;
+
 }
 
 .inputPrazo:focus,
@@ -778,9 +835,12 @@ p {
   justify-content: space-between;
 }
 
-input {
-  width: 10rem !important;
+.divConfirm {
+  height:90%;
+  flex-direction: column;
+    justify-content: space-between;
 }
+
 
 .title-container {
   display: flex;
@@ -803,16 +863,6 @@ input {
   background: #212121;
 }
 
-.item-position {
-  margin-right: 10px;
-  font-weight: bold;
-}
-
-.item-id {
-  color: red;
-  font-weight: bold;
-}
-
 .card-container {
   display: flex;
   flex-wrap: wrap;
@@ -825,17 +875,68 @@ input {
   margin-bottom: 1rem;
   gap: 1rem;
   border-radius: 8px;
-  background-color: #232323;
-  width: fit-content;
+  background-color: #1d1d1d;
   border-radius: 1rem !important;
   flex-direction: row;
   padding: 0;
-  padding-right: 1rem;
-  width: fit-content;
-  min-width: 250px;
-  font-size: calc(1vw + 15px);
+  font-size: calc(1vw + 10px);
   align-items: center;
+display: flex;
 
+}
+
+/* Responsividade para tela menor que 902px */
+@media (max-width: 902px) {
+  .card {
+    flex-direction: column !important;
+    height: fit-content;
+    max-width: 10em;
+  }
+
+  .card-header {
+    width: 100%;
+  }
+
+  #confirmarOrdem {
+    font-size: 1.9rem;
+    margin-bottom: 9rem !important;
+  }
+
+  .drag-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  span.item-number {
+    font-size: 1rem;
+    padding: 0.2rem;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.5rem;
+  }
+
+  .item-card {
+    flex-direction: column;
+    width: 10REM;
+  }
+
+  .status-produzindo {
+    padding: 0.7rem;
+    width: fit-content;
+  }
+
+  #produzindoItemsList {
+    max-height: 70%;
+  }
+
+}
+
+.toggle-arrow {
+  margin-left: 1rem;
+}
+
+.button-container {
+  display: flex;
 }
 
 .card-header {
@@ -850,13 +951,39 @@ input {
   padding: 1rem;
   align-items: center;
   font-size: 80%;
+  height: 100% !important;
 }
 
 
-.card-body {
-  color: #cccccc;
-  padding: 0;
+#confirmarProcesso {
+  padding: 1rem;
+  border: none;
+  border-radius: 1rem;
+  font-size: 150%;
+  color: #b8b8b8;
+  background: #292929;
+  margin-bottom: 2rem;
+}
 
+div.card-body {
+  display: flex;
+  color: #cccccc;
+  padding: 0.5rem;
+flex-wrap: wrap;
+background: #1d1d1d;
+gap: 1rem;
+border-radius: 1rem;
+
+
+}
+
+.maquina-div {
+  display: flex;
+  padding: 0.5rem 1rem;
+
+  background: #5fff8228;
+  color: #5fff82;
+border-radius: 1rem;
 }
 
 #machineCardsContainer {
@@ -893,8 +1020,18 @@ padding: 1rem;
 background: #232323;
 color: #9178ff;
 border: none !important;
-margin-left: 1rem;
+margin-right: 1rem;
+
 }
+
+@media (max-width: 902px) {
+  .add-button {
+    margin-bottom: 1REM;
+    margin-right: 0;
+  }
+}
+
+
 
 .add-button:hover {
   background: #313131;
@@ -907,38 +1044,59 @@ margin-left: 1rem;
   outline: none; /* Remove a borda ao clicar */
 }
 
+#partNumberCardsContainer {
+  overflow-y: auto;
+  max-height: 60vh;
+}
+
+#partNumberCardsContainer::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* opcional: faz a barra de rolagem ficar invisível */
+}
+
+#partNumberCardsContainer {
+  -ms-overflow-style: none;  /* IE 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+
 
 .card-wrapper {
   display: flex;
+gap: 1rem;
+}
 
+.OI {
+  flex-direction: column;
+                        align-items: flex-start;
 }
 
 .machine-list {
   position: absolute;
-  margin-top: 35rem;
+  margin-top: 30rem;
   background: #1d1d1d;
   border-radius: 1rem;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
   align-items: center;
-  width: fit-content;
-  padding: 2rem;
+  padding: 1rem;
   gap: 1rem;
   overflow-y: auto;
-  max-height:27rem ;
+  max-height:20rem ;
+
 }
 
 .empty-card {
   background: #232323;
   height: 4rem;
   border-radius: 1rem;
-  margin-left: 1rem;
+  margin: 1rem;
+  margin-top: 0;
   text-align: center;
   justify-content: center;
   align-items: center;
   padding: 1rem;
-  font-size: calc(1vw + 15px);
+  font-size: calc(1vw + 10px);
   color: #929292;
   display: flex;
 }
@@ -956,7 +1114,7 @@ li::marker {
   color: #5fff82;
   width: fit-content;
   margin: 0;
-  font-size: 1.4rem;
+  font-size: 1rem;
 border: none;
   align-content: center;
 }

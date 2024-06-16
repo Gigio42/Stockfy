@@ -1,5 +1,5 @@
 const { Builder, By, Key, until } = require("selenium-webdriver");
-const faker = require('faker');
+const faker = require("faker");
 
 async function example() {
   let driver = await new Builder().forBrowser("firefox").build();

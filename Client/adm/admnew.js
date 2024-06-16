@@ -1,3 +1,5 @@
+import BASE_URL from "../utils/config.js";
+
 //============================================
 // Função para lidar com a lógica do Dark Mode
 //============================================
@@ -33,7 +35,7 @@ function handleDarkModeToggle() {
 
 async function fetchMaquinas() {
   try {
-    const response = await axios.get("http://localhost:3000/adm/maquina");
+    const response = await axios.get(`${BASE_URL}/adm/maquina`);
     const maquinas = response.data;
 
     // Adiciona os cards completos das máquinas
@@ -110,16 +112,22 @@ function openModal(maquinaName, maquinaId) {
   modalContent.addEventListener("click", (event) => {
     event.stopPropagation();
   });
+
+  // Adiciona o listener de clique ao botão
+  document.getElementById("voltarModalContent5", "voltarModalContentnext").addEventListener("click", closeModal);
 }
 
 function closeModal() {
   const modalContent2 = document.querySelector(".modal-content-2");
 
+  // Verifica se modalContent2 tem a classe "d-none"
   if (!modalContent2.classList.contains("d-none")) {
     return;
   }
 
-  document.getElementById("myModal").style.display = "none";
+  // Esconde o modal e o botão de volta
+  const modal = document.getElementById("myModal");
+  modal.style.display = "none";
 }
 
 //=================================================
@@ -128,7 +136,7 @@ function closeModal() {
 
 async function fetchitens(maquinaId) {
   try {
-    const response = await axios.get("http://localhost:3000/adm/items/chapas");
+    const response = await axios.get(`${BASE_URL}/adm/items/chapas`);
     const itens = response.data;
     console.log("Itens recuperados:", itens);
 
@@ -219,7 +227,7 @@ async function confirmarItensStaged(event) {
     const ordem = itemCard.querySelector(".inputOrdem").value;
 
     try {
-      const response = await axios.post(`http://localhost:3000/adm/maquina/${maquinaId}/item/${itemId}/produzindo`, {
+      const response = await axios.post(`${BASE_URL}/adm/maquina/${maquinaId}/item/${itemId}/produzindo`, {
         prazo: prazo,
         corte: corte,
         ordem: ordem,
@@ -322,7 +330,7 @@ document.getElementById("MostrarProg").addEventListener("click", function () {
 
 async function fetchAllItems(maquinaId) {
   try {
-    const response = await axios.get(`http://localhost:3000/adm/maquina/${maquinaId}/item`);
+    const response = await axios.get(`${BASE_URL}/adm/maquina/${maquinaId}/item`);
     const allItems = response.data;
 
     console.log("Itens encontrados/listados:", allItems); // Log com todos os itens encontrados/listados
@@ -378,10 +386,6 @@ function createProduzindoItemCard(item) {
   statusElement.textContent = `${item.status}`;
   statusElement.className = item.status === "PRODUZINDO" ? "status-produzindo" : "status-finalizado";
   itemCard.appendChild(statusElement);
-
-  const ordemElement = document.createElement("p");
-  ordemElement.textContent = `Ordem: ${item.ordem}`;
-  itemCard.appendChild(ordemElement);
 
   itemContainer.appendChild(itemCard);
 
@@ -554,10 +558,8 @@ async function createEmptyCard(cardWrapper) {
   addAddButton(emptyCard, cardWrapper);
 
   emptyCard.addEventListener("click", async (event) => {
-    // Verifica se a lista de máquinas já está presente
     const existingMachineList = emptyCard.querySelector(".machine-list");
     if (existingMachineList) {
-      // Se o clique foi dentro da lista de máquinas, não fecha a lista
       if (!event.target.classList.contains("machine-list") && !event.target.classList.contains("machine-card")) {
         existingMachineList.remove();
         const addButton = emptyCard.querySelector(".add-button");
@@ -567,7 +569,7 @@ async function createEmptyCard(cardWrapper) {
     }
 
     try {
-      const machinesResponse = await axios.get("http://localhost:3000/adm/maquina");
+      const machinesResponse = await axios.get(`${BASE_URL}/adm/maquina`);
       const machines = machinesResponse.data;
 
       const machineList = document.createElement("ul");
@@ -577,35 +579,34 @@ async function createEmptyCard(cardWrapper) {
         const machineButton = document.createElement("button");
         machineButton.className = "machine-card";
         machineButton.textContent = machine.nome;
-// Dentro do evento de clique do botão da máquina
-machineButton.addEventListener("click", () => {
-  emptyCard.textContent = machine.nome;
-  emptyCard.classList.add("add-processo");
-  emptyCard.dataset.maquinaId = machine.id_maquina; // Adiciona o id da máquina ao dataset
 
-  const card = cardWrapper.querySelector(".card");
-  if (card) {
-    const ordem = parseInt(card.dataset.ordem) + 1; // Incrementa a ordem em 1
-    const updatedData = {
-      id_item_maquina: card.dataset.idItemMaquina,
-      prazo: card.dataset.prazo,
-      ordem: ordem, // Atualiza a ordem incrementada
-      executor: card.dataset.executor,
-      finalizado: card.dataset.finalizado === "true",
-      corte: card.dataset.corte,
-      maquinaId: machine.id_maquina,
-      itemId: card.dataset.itemId,
-    };
+        machineButton.addEventListener("click", () => {
+          emptyCard.textContent = machine.nome;
+          emptyCard.classList.add("add-processo");
+          emptyCard.dataset.maquinaId = machine.id_maquina;
 
-    console.log("JSON atualizado:", updatedData);
-  } else {
-    console.error("Card não encontrado para atualizar os dados.");
-  }
+          const card = cardWrapper.querySelector(".card");
+          if (card) {
+            const ordem = parseInt(card.dataset.ordem) + 1;
+            const updatedData = {
+              id_item_maquina: card.dataset.idItemMaquina,
+              prazo: card.dataset.prazo,
+              ordem: ordem,
+              executor: card.dataset.executor,
+              finalizado: card.dataset.finalizado === "true",
+              corte: card.dataset.corte,
+              maquinaId: machine.id_maquina,
+              itemId: card.dataset.itemId,
+            };
 
-  machineList.remove();
-  addAddButton(emptyCard, cardWrapper);
-});
+            console.log("JSON atualizado:", updatedData);
+          } else {
+            console.error("Card não encontrado para atualizar os dados.");
+          }
 
+          machineList.remove();
+          addAddButton(emptyCard, cardWrapper);
+        });
 
         machineList.appendChild(machineButton);
       });
@@ -617,13 +618,17 @@ machineButton.addEventListener("click", () => {
   });
 }
 
-// Função para adicionar o botão "+" ao card
 function addAddButton(emptyCard, cardWrapper) {
+  const buttonContainer = document.createElement("div");
+  buttonContainer.className = "button-container";
+
   const addButton = document.createElement("button");
   addButton.className = "add-button";
   addButton.textContent = "+";
   addButton.style.display = "none";
-  emptyCard.appendChild(addButton);
+
+  buttonContainer.appendChild(addButton);
+  emptyCard.appendChild(buttonContainer);
 
   addButton.addEventListener("click", () => createEmptyCard(cardWrapper));
 
@@ -633,64 +638,78 @@ function addAddButton(emptyCard, cardWrapper) {
 
 async function showPartNumbersAndMachines() {
   try {
-    const response = await axios.get("http://localhost:3000/adm/item_maquina");
+    const response = await axios.get(`${BASE_URL}/adm/item_maquina`);
 
     const cardContainer = document.getElementById("partNumberCardsContainer");
     cardContainer.innerHTML = "";
 
+    const partNumberMap = {};
+
     response.data.forEach((itemMaquina) => {
+      const partNumber = itemMaquina.Item.part_number.replace("::maker", "");
+
+      if (!partNumberMap[partNumber]) {
+        partNumberMap[partNumber] = {
+          maquinas: [],
+          itemId: itemMaquina.itemId,
+          prazo: itemMaquina.prazo,
+          executor: itemMaquina.executor,
+          finalizado: itemMaquina.finalizado,
+          corte: itemMaquina.corte,
+        };
+      }
+
+      partNumberMap[partNumber].maquinas.push(itemMaquina.maquina.nome);
+    });
+
+    for (const [partNumber, data] of Object.entries(partNumberMap)) {
       const cardWrapper = document.createElement("div");
       cardWrapper.className = "card-wrapper";
-
-      const partNumber = itemMaquina.Item.part_number.replace("::maker", "");
 
       const card = document.createElement("div");
       card.className = "card";
 
-      // Definindo os atributos de dados HTML
-      card.dataset.idItemMaquina = itemMaquina.id_item_maquina;
-      card.dataset.prazo = itemMaquina.prazo;
-      card.dataset.ordem = itemMaquina.ordem;
-      card.dataset.executor = itemMaquina.executor;
-      card.dataset.finalizado = itemMaquina.finalizado;
-      card.dataset.corte = itemMaquina.corte;
-      card.dataset.maquinaId = itemMaquina.maquinaId;
-      card.dataset.itemId = itemMaquina.itemId;
+      card.dataset.itemId = data.itemId;
+      card.dataset.prazo = data.prazo;
+      card.dataset.executor = data.executor;
+      card.dataset.finalizado = data.finalizado;
+      card.dataset.corte = data.corte;
 
       const cardContent = `
-          <div class="card-header">${partNumber}</div>
-          <div class="card-body">${itemMaquina.maquina.nome}</div>
-      `;
+              <div class="card-header d-flex justify-content-between align-items-center">
+                  <span>${partNumber}</span>
+                  <img class="toggle-arrow" src="media/seta.png" style="cursor: pointer; transform: rotate(0deg);">
+              </div>
+              <div class="card-body d-none">
+                  ${data.maquinas.map((maquina) => `<div class="maquina-div">${maquina}</div>`).join("")}
+              </div>
+          `;
 
       card.innerHTML = cardContent;
-      cardWrapper.appendChild(card);
 
-      addAddButton(card, cardWrapper);
+      const cardHeader = card.querySelector(".card-header");
+      const cardBody = card.querySelector(".card-body");
+      const toggleArrow = card.querySelector(".toggle-arrow");
 
-      // Adicionar evento de clique para mostrar os valores no console
-      card.addEventListener("click", () => {
-        console.log({
-          id_item_maquina: card.dataset.idItemMaquina,
-          prazo: card.dataset.prazo,
-          ordem: card.dataset.ordem,
-          executor: card.dataset.executor,
-          finalizado: card.dataset.finalizado,
-          corte: card.dataset.corte,
-          maquinaId: card.dataset.maquinaId,
-          itemId: card.dataset.itemId,
-        });
+      cardHeader.addEventListener("click", () => {
+        cardBody.classList.toggle("d-none");
+        if (cardBody.classList.contains("d-none")) {
+          toggleArrow.style.transform = "rotate(0deg)"; // Seta para a direita
+        } else {
+          toggleArrow.style.transform = "rotate(180deg)"; // Seta para baixo
+        }
       });
 
+      cardWrapper.appendChild(card);
+      addAddButton(card, cardWrapper);
+
       cardContainer.appendChild(cardWrapper);
-    });
+    }
   } catch (error) {
     console.error("Erro ao buscar os part-numbers e máquinas:", error);
   }
 }
 
-//==============================================================================
-// Evento de clique no botão para chamar a função quando o modal for aberto
-//==============================================================================
 document.addEventListener("DOMContentLoaded", function () {
   const optionsButton = document.getElementById("optionsButton");
   if (!optionsButton) {
@@ -724,14 +743,12 @@ document.getElementById("confirmarProcesso").addEventListener("click", async () 
   }
 
   try {
-    // Incluir a ordem atualizada nos dados enviados para o servidor
-    const response = await axios.post("http://localhost:3000/adm/item_maquina/selecionar-maquinas", items);
+    const response = await axios.post(`${BASE_URL}/adm/item_maquina/selecionar-maquinas`, items);
     console.log(response.data.message);
   } catch (error) {
     console.error("Erro ao confirmar processos:", error);
   }
 });
-
 
 //=================================================
 // função para CONFIRMAR prioridade
@@ -753,7 +770,7 @@ document.getElementById("confirmarOrdem").addEventListener("click", async () => 
 
     console.log("Dados enviados para atualização de prioridades:", newPriorities);
 
-    await axios.post("http://localhost:3000/adm/atualizar-prioridades", newPriorities);
+    await axios.post(`${BASE_URL}/adm/atualizar-prioridades`, newPriorities);
     alert("Prioridades atualizadas com sucesso!");
   } catch (error) {
     console.error("Erro ao atualizar as prioridades:", error);

@@ -208,6 +208,7 @@ body {
   padding-bottom: 0 !important;
 }
 
+
 /* ======================================
    Scrollbar Styles
    ====================================== */
@@ -288,7 +289,10 @@ body {
 /* ======================================
    Modal Styles
    ====================================== */
-  .modal {
+/* ======================================
+   Modal Styles
+   ====================================== */
+   .modal {
     display: none;
     position: fixed;
     z-index: 1;
@@ -312,26 +316,37 @@ body {
     padding: 20px;
     border: none !important;
     width: 80%;
-    overflow: auto;
+    max-height: 80vh; /* Altura máxima do modal */
+    display: flex;
+    flex-direction: column;
     animation: slide-up 0.5s ease-out;
   }
   
-  @keyframes slide-up {
-    0% {
-      transform: translateY(100%);
-      opacity: 0;
-    }
-    100% {
-      transform: translateY(0);
-      opacity: 1;
-    }
+  .modal-content .close {
+    align-self: flex-end; /* Alinha o botão de fechar à direita */
+    cursor: pointer;
+    font-size: 1.5em;
+    color: #ffffff;
+  }
+  
+  .modal-content .close:hover {
+    color: #bbbbbb;
+  }
+  
+  .modal-content .container-fluid {
+    flex: 1;
+    overflow-y: auto; /* Habilita o scrolling no conteúdo */
   }
 
-.modal-content input {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  box-sizing: border-box;
+@keyframes slide-up {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 input[type="checkbox"] {
@@ -414,6 +429,7 @@ button:hover {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
 
 /*
 ==================
@@ -555,6 +571,11 @@ formulário
   border: none;
 }
 
+.selected {
+  border: 1px solid green;
+  background-color: #20ff3315;
+}
+
 input[type="checkbox"] {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -596,21 +617,7 @@ input[type="checkbox"] {
   font-weight: bold;
 }
 
-.card-status-reservado {
-  background-color: #007bff;
-}
 
-.card-status-recebido {
-  background: #5cff2656 !important;
-  border: 1px solid #2bff0098;
-  color: #adffa4;
-  border-radius: 0.7rem !important;
-  padding: 10px;
-}
-
-.card-status-comprado {
-  background-color: #007bff;
-}
 
 /* chrome, safari e opera */
 .card-value-div::-webkit-scrollbar {
@@ -725,6 +732,30 @@ input[type="checkbox"]:checked::before {
   padding: 10px;
 }
 
+.card-status-recebido {
+  background: #5cff2656 !important;
+  border: 1px solid #2bff0098;
+  color: #adffa4;
+  border-radius: 0.7rem !important;
+  padding: 10px;
+}
+
+.card-status-parcial {
+  background: #f1ff2656 !important;
+  border: 1px solid #eeff0098;
+  color: #f9ffa4;
+  border-radius: 0.7rem !important;
+  padding: 10px;
+}
+
+.card-status-usado {
+  background: #21723756 !important;
+    border: 1px solid #1b582b98;
+    color: #87cca4;
+    border-radius: 0.7rem !important;
+    padding: 10px;
+}
+
 .card-status-reservado {
   background: #58f9ff23 !important;
   color: #caffff;
@@ -799,6 +830,7 @@ input[type="checkbox"]:checked::before {
 
   .card-part-number,
   .card-status-comprado,
+  .card-status-parcial,
   .card-status-reservado {
     padding: 5px;
     margin-right: 5px;
@@ -814,6 +846,7 @@ input[type="checkbox"]:checked::before {
   background-color: #f0f0f0;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
+
 /* o treco principal do card */
 .light-mode .body-div {
   background-color: #efefef;
@@ -906,7 +939,7 @@ input[type="checkbox"]:checked::before {
 /* mudar nome da classe, isso na vdd cuida do preview div do consulta */
 .dark-background {
   background: #5c5c5c23 !important;
-
+  border-radius: 5px;
   border: solid 1px #8a8a8a3d;
   padding: 10px;
 }

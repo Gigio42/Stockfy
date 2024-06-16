@@ -24,17 +24,17 @@ export function handleShowSelectedButtonClick(getSelectedChapas) {
     popupContainer.style.display = "none";
   };
 
-  window.onclick = (event) => {
+  window.addEventListener("click", (event) => {
     if (event.target == popupContainer) {
       popupContainer.style.display = "none";
     }
-  };
+  });
 
-  document.onkeydown = (event) => {
+  document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
       popupContainer.style.display = "none";
     }
-  };
+  });
 }
 
 function removeExistingListener(element) {
@@ -45,8 +45,7 @@ function removeExistingListener(element) {
 
 function createModalHandler(modalContent, closeModal, getSelectedSubcards, popupContainer) {
   return () => {
-    modalContent.innerHTML = "";
-    modalContent.appendChild(closeModal);
+    const newContent = document.createElement("div");
 
     const contentWrapper = document.createElement("div");
     contentWrapper.style.maxHeight = "50vh";
@@ -61,7 +60,16 @@ function createModalHandler(modalContent, closeModal, getSelectedSubcards, popup
 
     contentWrapper.appendChild(createButtonFormContainer(selectedSubcards));
 
-    modalContent.appendChild(contentWrapper);
+    newContent.appendChild(contentWrapper);
+
+    Array.from(modalContent.childNodes).forEach((child) => {
+      if (child !== closeModal) {
+        modalContent.removeChild(child);
+      }
+    });
+
+    modalContent.appendChild(newContent);
+
     popupContainer.style.display = "block";
   };
 }
@@ -184,21 +192,44 @@ function createReserveButton(selectedSubcards) {
     loadingSpinner.style.display = "block";
 
     try {
-  const reservedBy = localStorage.getItem("nome");
-  console.log("reservedBy:", reservedBy);
-  const response = await reserveChapas({ partNumber, chapas, reservedBy });
-  console.log("this is the response:", response);
-  location.reload();
-} catch (error) {
-  console.error("This is the error response:", error); // Log the error object
-  Swal.fire({
-    icon: "error",
-    title: "Oops...",
-    text: error.message, // Display the error message from error.response.data
-  });
-} finally {
+      const reservedBy = localStorage.getItem("nome");
+      console.log("reservedBy:", reservedBy);
+      const response = await reserveChapas({ partNumber, chapas, reservedBy });
+      console.log("this is the response:", response);
+      location.reload();
+    } catch (error) {
+      console.error("This is the error response:", error); // Log the error object
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: error.message, // Display the error message from error.response.data
+      });
+    } finally {
       loadingSpinner.style.display = "none";
     }
   };
   return reserveButton;
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const showSwal = localStorage.getItem("showSwal");
+  const partNumber = localStorage.getItem("partNumber");
+  if (showSwal === "true") {
+    Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 5000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
+      },
+    }).fire({
+      icon: "success",
+      title: `Item ${partNumber} reservado.`,
+    });
+    localStorage.removeItem("showSwal");
+    localStorage.removeItem("partNumber");
+  }
+});

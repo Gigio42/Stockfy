@@ -94,3 +94,8 @@ export class Reservar {
     }
   }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const reservar = new Reservar();
+  reservar.initialize();
+});

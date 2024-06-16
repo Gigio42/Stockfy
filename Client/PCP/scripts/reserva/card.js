@@ -10,6 +10,7 @@ export class Card {
     this.onSubcardSelectionChange = onSubcardSelectionChange;
     this.isChecked = isChecked;
     this.cards = [];
+    this.infoModal = new InfoModal();
   }
 
   createValueDiv(key, value) {
@@ -19,7 +20,7 @@ export class Card {
       valueDiv.textContent = "N/A";
     } else {
       if (key.startsWith("data")) {
-        let [day, month] = value.split("/");
+        let [day, month] = value.split(/\/|-/);
         valueDiv.textContent = `${day}/${month}`;
       } else {
         valueDiv.textContent = value;
@@ -29,10 +30,14 @@ export class Card {
         valueDiv.className += " card-status ";
         let status = value.toLowerCase();
         if (status === "recebido") {
-          valueDiv.className += " card-status-recebido";
+          valueDiv.className += "card-status-recebido";
         } else if (status === "comprado") {
-          valueDiv.className += " card-status-comprado";
+          valueDiv.className += "card-status-comprado";
+        } else if (status === "parcial" || status === "parcialmente") {
+          valueDiv.className += "card-status-parcial";
         }
+
+        valueDiv.textContent = value.toUpperCase();
       }
 
       if (key === "quantidade_disponivel") {
@@ -65,25 +70,14 @@ export class Card {
     return valueRow;
   }
 
-  createCheckbox() {
-    let checkbox = createElementWithClass("input", "card-checkbox  mr-3");
-    checkbox.type = "checkbox";
-    checkbox.checked = this.isChecked;
-    checkbox.addEventListener("change", () => this.onSubcardSelectionChange(this.chapa, checkbox.checked));
-    return checkbox;
-  }
-
   createInfoButton() {
     let infoButton = createElementWithClass("button", "btn btn-sm ml-2 card-info-button");
     infoButton.innerHTML = '<i class="fas fa-chevron-down"></i>';
 
-    let infoModal = new InfoModal();
-
-    infoButton.addEventListener("click", async (event) => {
+    infoButton.addEventListener("click", (event) => {
+      event.stopPropagation();
       event.preventDefault();
-      infoModal.initialize();
-      infoModal.items = [this.chapa];
-      await infoModal.openModal(this.chapa);
+      this.infoModal.openModal(this.chapa);
     });
 
     return infoButton;
@@ -91,7 +85,6 @@ export class Card {
 
   createCardBody() {
     let cardBody = createElementWithClass("div", "body-div card-body rounded d-flex align-items-center");
-    cardBody.appendChild(this.createCheckbox());
     cardBody.appendChild(this.createValueRow());
     cardBody.appendChild(this.createInfoButton());
     return cardBody;
@@ -100,6 +93,24 @@ export class Card {
   createCard() {
     let card = createElementWithClass("div", "card mb-3 shadow-sm");
     card.appendChild(this.createCardBody());
+
+    if (this.isChecked) {
+      card.classList.add("selected");
+    }
+
+    card.addEventListener("click", (event) => {
+      if (event.target !== this.createInfoButton()) {
+        this.onSubcardSelectionChange(this.chapa, !this.isChecked);
+        this.isChecked = !this.isChecked;
+
+        if (this.isChecked) {
+          card.classList.add("selected");
+        } else {
+          card.classList.remove("selected");
+        }
+      }
+    });
+
     return card;
   }
 }
