@@ -171,7 +171,7 @@ table {
     box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Sombra leve ao redor da tabela para melhor definição */
 }
 
-th, td {
+th {
     white-space: nowrap; /* Evita que o texto quebre para a próxima linha */
     padding: 8px; /* Mantém um padding uniforme */
     min-width: 60px; /* Define uma largura mínima para cada célula */
@@ -366,7 +366,7 @@ header{
     }
     
     
-    th, td {
+    th {
         white-space: nowrap; /* Evita que o texto quebre para a próxima linha */
         padding: 8px; /* Mantém um padding uniforme */
         min-width: 60px; /* Define uma largura mínima para cada célula */

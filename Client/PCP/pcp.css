@@ -208,6 +208,7 @@ body {
   padding-bottom: 0 !important;
 }
 
+
 /* ======================================
    Scrollbar Styles
    ====================================== */
@@ -288,7 +289,10 @@ body {
 /* ======================================
    Modal Styles
    ====================================== */
-  .modal {
+/* ======================================
+   Modal Styles
+   ====================================== */
+   .modal {
     display: none;
     position: fixed;
     z-index: 1;
@@ -312,26 +316,37 @@ body {
     padding: 20px;
     border: none !important;
     width: 80%;
-    overflow: auto;
+    max-height: 80vh; /* Altura máxima do modal */
+    display: flex;
+    flex-direction: column;
     animation: slide-up 0.5s ease-out;
   }
   
-  @keyframes slide-up {
-    0% {
-      transform: translateY(100%);
-      opacity: 0;
-    }
-    100% {
-      transform: translateY(0);
-      opacity: 1;
-    }
+  .modal-content .close {
+    align-self: flex-end; /* Alinha o botão de fechar à direita */
+    cursor: pointer;
+    font-size: 1.5em;
+    color: #ffffff;
+  }
+  
+  .modal-content .close:hover {
+    color: #bbbbbb;
+  }
+  
+  .modal-content .container-fluid {
+    flex: 1;
+    overflow-y: auto; /* Habilita o scrolling no conteúdo */
   }
 
-.modal-content input {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  box-sizing: border-box;
+@keyframes slide-up {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 input[type="checkbox"] {
@@ -414,6 +429,7 @@ button:hover {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
 
 /*
 ==================
