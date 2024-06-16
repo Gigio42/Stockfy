@@ -4,76 +4,76 @@ export function createChapasCharts(ctx1, ctx2, ctx3, data) {
     "Chart 1 data:",
     data.map((item) => item.quantidade_recebida),
   );
-  
-  // Sort data by 'data_prevista'
-data.sort((a, b) => new Date(a.data_prevista) - new Date(b.data_prevista));
 
-// Create chart
-new Chart(ctx1, {
-  type: "line",
-  data: {
-    labels: data.map((item) => item.data_prevista),
-    datasets: [
-      {
-        label: "Chapas compradas",
-        data: data.map((item) => Number(item.quantidade_comprada)),
-        fill: false,
-        borderColor: "rgb(75, 192, 192)",
-        tension: 0.1,
-      },
-      {
-        label: "Chapas recebidas",
-        data: data.map((item) => Number(item.quantidade_recebida)),
-        fill: false,
-        borderColor: "rgb(192, 75, 75)",
-        tension: 0.1,
-      },
-      {
-        label: "Chapas em estoque",
-        data: data.map((item) => Number(item.quantidade_estoque)),
-        fill: false,
-        borderColor: "rgb(75, 75, 192)",
-        tension: 0.1,
-      },
-      {
-        label: "Chapas disponíveis",
-        data: data.map((item) => Number(item.quantidade_disponivel)),
-        fill: false,
-        borderColor: "rgb(192, 192, 75)",
-        tension: 0.1,
-      },
-    ],
-  },
-  options: {
-    responsive: true,
-    plugins: {
-      title: {
-        display: true,
-        text: 'Chart.js Line Chart - Cubic interpolation mode'
-      },
+  // Sort data by 'data_prevista'
+  data.sort((a, b) => new Date(a.data_prevista) - new Date(b.data_prevista));
+
+  // Create chart
+  new Chart(ctx1, {
+    type: "line",
+    data: {
+      labels: data.map((item) => item.data_prevista),
+      datasets: [
+        {
+          label: "Chapas compradas",
+          data: data.map((item) => Number(item.quantidade_comprada)),
+          fill: false,
+          borderColor: "rgb(75, 192, 192)",
+          tension: 0.1,
+        },
+        {
+          label: "Chapas recebidas",
+          data: data.map((item) => Number(item.quantidade_recebida)),
+          fill: false,
+          borderColor: "rgb(192, 75, 75)",
+          tension: 0.1,
+        },
+        {
+          label: "Chapas em estoque",
+          data: data.map((item) => Number(item.quantidade_estoque)),
+          fill: false,
+          borderColor: "rgb(75, 75, 192)",
+          tension: 0.1,
+        },
+        {
+          label: "Chapas disponíveis",
+          data: data.map((item) => Number(item.quantidade_disponivel)),
+          fill: false,
+          borderColor: "rgb(192, 192, 75)",
+          tension: 0.1,
+        },
+      ],
     },
-    interaction: {
-      intersect: false,
-    },
-    scales: {
-      x: {
-        display: true,
-        title: {
-          display: true
-        }
-      },
-      y: {
-        display: true,
+    options: {
+      responsive: true,
+      plugins: {
         title: {
           display: true,
-          text: 'Value'
+          text: "Chart.js Line Chart - Cubic interpolation mode",
         },
-        suggestedMin: -10,
-        suggestedMax: 200
-      }
-    }
-  },
-});
+      },
+      interaction: {
+        intersect: false,
+      },
+      scales: {
+        x: {
+          display: true,
+          title: {
+            display: true,
+          },
+        },
+        y: {
+          display: true,
+          title: {
+            display: true,
+            text: "Value",
+          },
+          suggestedMin: -10,
+          suggestedMax: 200,
+        },
+      },
+    },
+  });
 
   // Chart 2
   const suppliers = [...new Set(data.map((item) => item.fornecedor))];
