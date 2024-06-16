@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="author" content="Seu Nome" />
         <title>Histórico</title>
-        
+
         <!-- CSS -->
         <link id="theme" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
@@ -20,6 +20,8 @@
         <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+        <script src="https://cdn.datatables.net/plug-ins/1.10.22/sorting/datetime-moment.js"></script>
     </head>
 
     <body class="body">
@@ -80,9 +82,7 @@
                         <div class="row flex-grow-1 overflow-hidden">
                             <div class="col-lg-6 col-md-12 d-flex flex-column pt-3">
                                 <div class="flex-grow-1 p-3 position-relative border rounded">
-                                    <!-- Remove overflow-auto here -->
                                     <div id="chartCarousel" class="carousel slide h-100 overflow-auto" data-ride="carousel">
-                                        <!-- Add overflow-auto here -->
                                         <!-- Slides -->
                                         <div class="carousel-inner">
                                             <div class="carousel-item active">
@@ -106,8 +106,7 @@
                             </div>
 
                             <!-- 2 seção -->
-                            <div class="col-lg-6 col-md-12 d-flex flex-column">
-                                <!-- Change col-md-6 to col-lg-6 and add col-md-12 -->
+                            <div class="col-lg-6 col-md-12 d-flex flex-column pt-3">
                                 <div class="flex-grow-1 overflow-auto p-3">
                                     <h2 class="table-header">Itens Criados</h2>
                                     <table id="myTable" class="display">
@@ -119,8 +118,8 @@
                         </div>
 
                         <!-- 3 Seção -->
-                        <div class="row flex-grow-1 overflow-hidden dark-mode">
-                            <div class="col-md-12 d-flex flex-column p-3">
+                        <div class="row flex-grow-1 overflow-hidden dark-mode pt-3">
+                            <div class="col-12 d-flex flex-column">
                                 <div class="flex-grow-1 overflow-auto">
                                     <table id="myTable2" class="display w-100">
                                         <thead></thead>
