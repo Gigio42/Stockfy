@@ -393,7 +393,7 @@ max-height: 100%;
   display: flex;
   flex-wrap: wrap;
 
-  height: 100%;
+  height: 90%;
 
 }
 
@@ -598,9 +598,8 @@ span.item-number {
   } 
 
   .conteudoInterno {
-
     overflow-y: auto;
-    max-height: 4778%;
+    max-height: 50%;
     margin-bottom: 0.5rem;
   }
   
@@ -896,6 +895,31 @@ display: flex;
     width: 100%;
   }
 
+  #confirmarOrdem {
+    font-size: 1.9rem;
+    margin-bottom: 2rem !important;
+  }
+
+  .drag-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  span.item-number {
+    font-size: 1rem;
+    padding: 0.2rem;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.5rem;
+  }
+
+  .item-card {
+    flex-direction: column;
+  }
+
+  .status-produzindo {
+    padding: 0.7rem;
+  }
 
 }
 
