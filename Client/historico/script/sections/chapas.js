@@ -41,22 +41,108 @@ function generateTableHeaders(tableId, columns) {
   }
 }
 
-function populateTableWithDatatables(tableId, data, columns) {
+function populateTableWithDatatables(tableId, data, columns, scrollHeight = "25vh", pageLength = 5) {
+  const isTable2 = tableId === "myTable2";
+
+  const columnData = columns.map((column) => ({
+    data: column,
+    render: function (data, type, row) {
+      if (["data_compra", "data_prevista", "data_recebimento"].includes(column) && type === "display" && data) {
+        return moment(data, "YYYY-MM-DD").format("DD/MM/YYYY");
+      }
+      return data;
+    },
+  }));
+
+  // Find the index of the 'data_compra' column
+  const dataCompraIndex = columns.indexOf("data_compra");
+
+  const domString = isTable2 ? "<'row'<'col-sm-4'l><'col-sm-4'B><'col-sm-4'f>>rtip" : "lfrtip";
+
+  const buttons = isTable2
+    ? [
+        {
+          text: "Expand",
+          attr: { id: "expandButton" },
+          className: "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",
+          action: function (e, dt, node, config) {
+            var tableWrapper = document.getElementById("tableWrapper");
+            if (tableWrapper.classList.contains("expanded")) {
+              tableWrapper.classList.remove("expanded");
+              node.textContent = "Expand";
+              reinitializeTable(tableId, data, columns, "25vh", 5);
+            } else {
+              tableWrapper.classList.add("expanded");
+              node.textContent = "Collapse";
+              reinitializeTable(tableId, data, columns, "60vh", 20);
+            }
+          },
+        },
+      ]
+    : [];
+
   $("#" + tableId).DataTable({
     retrieve: true,
     responsive: true,
-    scrollY: "25vh",
+    scrollY: scrollHeight,
     scrollCollapse: true,
     paging: true,
     data: data,
-    columns: columns.map((column) => ({
-      data: column,
-      render: function (data, type, row) {
-        if (["data_compra", "data_prevista", "data_recebimento"].includes(column) && type === "display" && data) {
-          return moment(data, "YYYY-MM-DD").format("DD/MM/YYYY");
-        }
-        return data;
-      },
-    })),
+    columns: columnData,
+    dom: domString,
+    buttons: buttons,
+    order: dataCompraIndex !== -1 ? [[dataCompraIndex, "desc"]] : [],
+    pageLength: pageLength,
+    initComplete: function () {
+      if (isTable2) {
+        addEventListeners(tableId, data, columns);
+      }
+      adjustColumns(tableId); // Adjust columns on init
+    },
   });
 }
+
+function reinitializeTable(tableId, data, columns, scrollHeight, pageLength) {
+  $("#" + tableId).DataTable().destroy();
+  populateTableWithDatatables(tableId, data, columns, scrollHeight, pageLength);
+  adjustColumns(tableId); // Adjust columns after reinitialization
+}
+
+function adjustColumns(tableId) {
+  setTimeout(function () {
+    $("#" + tableId).DataTable().columns.adjust().draw();
+  }, 0);
+}
+
+function addEventListeners(tableId, data, columns) {
+  var expandButton = document.getElementById("expandButton");
+  var tableWrapper = document.getElementById("tableWrapper");
+
+  tableWrapper.addEventListener("click", function (event) {
+    event.stopPropagation();
+  });
+
+  window.addEventListener("click", function () {
+    if (tableWrapper.classList.contains("expanded")) {
+      tableWrapper.classList.remove("expanded");
+      expandButton.textContent = "Expand";
+      reinitializeTable(tableId, data, columns, "25vh", 5);
+    }
+  });
+
+  window.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+      if (tableWrapper.classList.contains("expanded")) {
+        tableWrapper.classList.remove("expanded");
+        expandButton.textContent = "Expand";
+        reinitializeTable(tableId, data, columns, "25vh", 5);
+      }
+    }
+  });
+
+  // Adjust columns on window resize
+  window.addEventListener("resize", function () {
+    adjustColumns(tableId);
+  });
+}
+
