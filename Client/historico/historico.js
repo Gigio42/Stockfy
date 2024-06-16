@@ -8,7 +8,7 @@ $(document).ready(function () {
   var ctx3 = document.getElementById("myChart3").getContext("2d");
 
   loadChapasData(ctx1, ctx2, ctx3);
-  loadChapasCards(); 
+  loadChapasCards();
 
   $("#chartCarousel").on("slid.bs.carousel", function () {
     var currentIndex = $(".carousel-item.active").index();
