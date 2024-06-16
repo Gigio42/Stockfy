@@ -787,7 +787,7 @@ p {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  max-height: 80%;
+  max-height: 70%;
   border-radius: 1rem;
 }
 
