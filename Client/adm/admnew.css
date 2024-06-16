@@ -601,7 +601,7 @@ span.item-number {
     overflow-y: auto;
     max-height: 50%;
     height: 40%;
-    margin-bottom: 6REM;
+    margin-bottom: 7REM;
   }
   
 }
@@ -750,7 +750,7 @@ p {
   display: flex;
   align-items: center;
   margin-bottom: 10px; /* Ajuste o espaço entre os cards conforme necessário */
- 
+ width: fit-content;
 }
 
 .drag-icon {
@@ -770,9 +770,10 @@ p {
   display: flex;
   gap: 1rem;
   border-radius: 1rem;
-  margin-bottom: 2rem;
   flex-direction: column;
-  width: fit-content;
+  width: 100%;
+  overflow-y: auto;
+  max-height: 80%;
 }
 
 #finalizadoItemsList {
@@ -787,8 +788,7 @@ p {
 .itensContainerstatus {
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  max-height: 73%;
+
   border-radius: 1rem;
   border-radius: 2REM;
 }
@@ -899,7 +899,7 @@ display: flex;
 
   #confirmarOrdem {
     font-size: 1.9rem;
-    margin-bottom: 6rem !important;
+    margin-bottom: 9rem !important;
   }
 
   .drag-icon {
@@ -917,10 +917,16 @@ display: flex;
 
   .item-card {
     flex-direction: column;
+    width: 10REM;
   }
 
   .status-produzindo {
     padding: 0.7rem;
+    width: fit-content;
+  }
+
+  #produzindoItemsList {
+    max-height: 70%;
   }
 
 }
