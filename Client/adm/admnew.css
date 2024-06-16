@@ -1010,10 +1010,21 @@ margin-right: 1rem;
   outline: none; /* Remove a borda ao clicar */
 }
 
-#partNumberCardsContainer{
+#partNumberCardsContainer {
   overflow-y: auto;
   max-height: 60vh;
 }
+
+#partNumberCardsContainer::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* opcional: faz a barra de rolagem ficar invisível */
+}
+
+#partNumberCardsContainer {
+  -ms-overflow-style: none;  /* IE 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+
 
 .card-wrapper {
   display: flex;
