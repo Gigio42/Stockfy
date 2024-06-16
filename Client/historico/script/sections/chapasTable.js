@@ -1,16 +1,13 @@
-import { fetchChapas, fetchItems } from "../connections.js";
+import { fetchChapas } from "../connections.js";
 import { createChapasCharts } from "./chapasChart.js";
 
 export async function loadChapasData(ctx1, ctx2, ctx3) {
   let chapasData = await fetchChapas();
-  const itemsData = await fetchItems();
 
   createChapasCharts(ctx1, ctx2, ctx3, chapasData);
 
   var chapasColumns = ["id_compra", "numero_cliente", "fornecedor", "comprador", "quantidade_estoque", "status", "data_compra", "data_prevista", "data_recebimento"];
-  var itemsColumns = Object.keys(itemsData[0]);
 
-  generateTableHeaders("myTable", itemsColumns);
   generateTableHeaders("myTable2", chapasColumns);
 
   chapasData = chapasData.map((chapa) => {
@@ -26,7 +23,6 @@ export async function loadChapasData(ctx1, ctx2, ctx3) {
     return chapa;
   });
 
-  populateTableWithDatatables("myTable", itemsData, itemsColumns);
   populateTableWithDatatables("myTable2", chapasData, chapasColumns);
 }
 
@@ -41,7 +37,7 @@ function generateTableHeaders(tableId, columns) {
   }
 }
 
-function populateTableWithDatatables(tableId, data, columns, scrollHeight = "25vh", pageLength = 5) {
+function populateTableWithDatatables(tableId, data, columns, scrollHeight = "25vh", pageLength = 20) {
   const isTable2 = tableId === "myTable2";
 
   const columnData = columns.map((column) => ({
@@ -54,7 +50,6 @@ function populateTableWithDatatables(tableId, data, columns, scrollHeight = "25v
     },
   }));
 
-  // Find the index of the 'data_compra' column
   const dataCompraIndex = columns.indexOf("data_compra");
 
   const domString = isTable2 ? "<'row'<'col-sm-4'l><'col-sm-4'B><'col-sm-4'f>>rtip" : "lfrtip";
@@ -125,7 +120,7 @@ function addEventListeners(tableId, data, columns) {
     if (tableWrapper.classList.contains("expanded")) {
       tableWrapper.classList.remove("expanded");
       expandButton.textContent = "Expand";
-      reinitializeTable(tableId, data, columns, "25vh", 5);
+      reinitializeTable(tableId, data, columns, "25vh", 20);
     }
   });
 
@@ -134,12 +129,11 @@ function addEventListeners(tableId, data, columns) {
       if (tableWrapper.classList.contains("expanded")) {
         tableWrapper.classList.remove("expanded");
         expandButton.textContent = "Expand";
-        reinitializeTable(tableId, data, columns, "25vh", 5);
+        reinitializeTable(tableId, data, columns, "25vh", 20);
       }
     }
   });
 
-  // Adjust columns on window resize
   window.addEventListener("resize", function () {
     adjustColumns(tableId);
   });

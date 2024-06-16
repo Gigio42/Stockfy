@@ -1,5 +1,6 @@
 // main.js
-import { loadChapasData } from "./script/sections/chapas.js";
+import { loadChapasData } from "./script/sections/chapasTable.js";
+import { loadChapasCards } from "./script/sections/chapaCards.js";
 
 $(document).ready(function () {
   var ctx1 = document.getElementById("myChart1").getContext("2d");
@@ -7,6 +8,7 @@ $(document).ready(function () {
   var ctx3 = document.getElementById("myChart3").getContext("2d");
 
   loadChapasData(ctx1, ctx2, ctx3);
+  loadChapasCards(); 
 
   $("#chartCarousel").on("slid.bs.carousel", function () {
     var currentIndex = $(".carousel-item.active").index();
@@ -22,6 +24,7 @@ $(document).ready(function () {
     $("#chartCarousel").carousel('cycle');
   });
 });
+
 if (localStorage.getItem("isLoggedIn") !== "true") {
   window.location.href = "../login/login.html";
 }
