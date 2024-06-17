@@ -1,25 +1,29 @@
 import Maquina from "../Models/maquinaModel.js";
 import Item from "../Models/itemModel.js";
 import Item_Maquina from "../Models/item_maquinaModel.js";
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 
 class ProducaoController {
   constructor() {}
 
   async getChapasInItemsInMaquinas(name) {
     console.log("name", name);
-    const maquina = await Maquina.findFirst({
-      where: {
-        nome: name,
-      },
+
+    // Fetch the machine details
+    const maquina = await prisma.maquina.findFirst({
+      where: { nome: name },
       select: {
         id_maquina: true,
         nome: true,
         items: {
           select: {
+            id_item_maquina: true,
             ordem: true,
             prazo: true,
             corte: true,
             finalizado: true,
+            itemId: true,
             Item: {
               select: {
                 id_item: true,
@@ -47,48 +51,61 @@ class ProducaoController {
       },
     });
 
-    if (maquina) {
-      const allItemsMaquinas = await Item_Maquina.findMany({
-        select: {
-          ordem: true,
-          finalizado: true,
-          itemId: true,
-          maquinaId: true,
-        },
-      });
-
-      const groupedItems = allItemsMaquinas.reduce((groups, item) => {
-        if (!groups[item.itemId]) {
-          groups[item.itemId] = [];
-        }
-        groups[item.itemId].push(item);
-        return groups;
-      }, {});
-
-      Object.values(groupedItems).forEach((items) => {
-        items.sort((a, b) => a.ordem - b.ordem);
-        const currentItem = items.find((item) => !item.finalizado);
-
-        items.forEach((item) => {
-          if (item.finalizado) {
-            item.estado = "FEITO";
-          } else if (item === currentItem && item.maquinaId === maquina.id_maquina) {
-            item.estado = "ATUAL";
-          } else {
-            item.estado = "PROXIMAS";
-          }
-        });
-      });
-
-      maquina.items.forEach((item) => {
-        const itemMaquina = groupedItems[item.Item.id_item];
-        if (itemMaquina) {
-          const correspondingItem = maquina.items.find((i) => i.Item.id_item === item.Item.id_item);
-          correspondingItem.estado = itemMaquina[0].estado;
-        }
-      });
+    if (!maquina) {
+      return null;
     }
 
+    // Fetch all items' processes
+    const allItemsMaquinas = await prisma.item_Maquina.findMany({
+      select: {
+        ordem: true,
+        finalizado: true,
+        itemId: true,
+        maquinaId: true,
+      },
+    });
+
+    // Group processes by itemId and calculate ordemTotal
+    const groupedItems = allItemsMaquinas.reduce((groups, item) => {
+      if (!groups[item.itemId]) {
+        groups[item.itemId] = [];
+      }
+      groups[item.itemId].push(item);
+      return groups;
+    }, {});
+
+    // Calculate ordemTotal and determine estado for each process
+    Object.values(groupedItems).forEach((items) => {
+      items.sort((a, b) => a.ordem - b.ordem);
+      const ordemTotal = items.length;
+      let currentItem = items.find((item) => !item.finalizado);
+
+      items.forEach((item) => {
+        item.ordemTotal = ordemTotal;
+        if (item.finalizado) {
+          item.estado = "FEITO";
+        } else if (item === currentItem) {
+          item.estado = "ATUAL";
+          currentItem = null; // Mark current item so no future items are marked as current
+        } else {
+          item.estado = "PROXIMAS";
+        }
+      });
+    });
+
+    // Assign estado to maquina items
+    maquina.items.forEach((item) => {
+      const itemProcesses = groupedItems[item.itemId];
+      if (itemProcesses) {
+        const currentItemProcess = itemProcesses.find((proc) => proc.ordem === item.ordem);
+        if (currentItemProcess) {
+          item.estado = currentItemProcess.estado;
+          item.ordemTotal = currentItemProcess.ordemTotal;
+        }
+      }
+    });
+
+    console.log("maquina ", maquina);
     return maquina;
   }
 

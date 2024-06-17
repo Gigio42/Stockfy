@@ -82,12 +82,6 @@ function cadastrarUsuario() {
     });
 }
 
-
-
-
-
-
-
 function carregarMaquinas() {
   fetch(`${BASE_URL}/adm/maquina`)
     .then((response) => response.json())

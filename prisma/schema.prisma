@@ -78,6 +78,7 @@ model Item_Maquina {
   id_item_maquina Int     @id @default(autoincrement())
   prazo           String?
   ordem           Int?
+  ordemTotal      Int?
   executor        String?
   finalizado      Boolean @default(false)
   corte           String?

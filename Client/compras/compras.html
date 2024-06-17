@@ -32,7 +32,6 @@
 
         <div class="container">
             <div id="dropzone" class="dropzone text-center mt-4">Arraste e solte o arquivo PDF aqui</div>
-            <pre id="jsonContent" style="display: none"></pre>
 
             <!-- Modal -->
             <div id="myModal" class="modal">
@@ -48,6 +47,7 @@
                         <table id="dataTable" class="table mt-4"></table>
                         <div id="form-container"></div>
                     </div>
+                    <pre id="jsonContent" style="display: none"></pre>
                     <div class="btninferior mt-4 d-flex justify-content-end">
                         <div class="date-input-container">
                             <input type="text" id="expectedDate" placeholder="Data Prevista" />
@@ -126,8 +126,10 @@
                     <div id="cardsContainer" class="cardsContainer"></div>
                 </div>
                 <div class="btninferior mt-4 d-flex justify-content-end">
+                    <pre id="jsonContentManual"></pre>
+                    <button id="editButtonmanual" class="btn btn-warning">Editar</button>
                     <div class="date-input-container">
-                        <input type="text" id="expectedDateManual" placeholder="Data Prevista" />
+                        <input type="date" id="expectedDateManual" placeholder="Data Prevista" />
                     </div>
                     <button id="sendbutton" class="btn btn-success mr-2 enviarManual">Enviar</button>
                 </div>
@@ -153,13 +155,51 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
         <script>
-            if (localStorage.getItem("isLoggedIn") !== "true") {
-                window.location.href = "../login/login.html";
+            function toggleDetails(event) {
+                const target = event.target;
+
+                // Verifica se o clique ocorreu na seta (.toggle-arrow) dentro do parágrafo
+                if (target && target.classList.contains("toggle-arrow")) {
+                    // Encontra o card pai onde os detalhes estão contidos
+                    const cardBody = target.closest(".card-body");
+
+                    if (cardBody) {
+                        // Encontra o elemento que contém os detalhes (div com a classe 'card-details')
+                        const details = cardBody.querySelector(".card-details");
+
+                        if (details) {
+                            // Encontra a imagem da seta
+                            const toggleArrow = target;
+
+                            // Alterna a visibilidade dos detalhes
+                            if (details.style.display === "none" || details.style.display === "") {
+                                details.style.display = "block";
+                                toggleArrow.style.transform = "rotate(180deg)"; // Gira a seta para cima
+                            } else {
+                                details.style.display = "none";
+                                toggleArrow.style.transform = "rotate(0deg)"; // Gira a seta para a direita
+                            }
+                        }
+                    }
+                }
             }
 
-            document.addEventListener("DOMContentLoaded", function () {
-                flatpickr("#expectedDate", {
-                    dateFormat: "Y-m-d",
+            function editCard(event) {
+                // Lógica para editar o card
+                console.log("Editar card");
+                event.preventDefault(); // Evita que o link seja seguido
+            }
+
+            function deleteCard(event) {
+                // Lógica para excluir o card
+                console.log("Excluir card");
+                event.preventDefault(); // Evita que o link seja seguido
+            }
+
+            $(document).ready(function () {
+                $("#expectedDateManual").datepicker({
+                    showOtherMonths: true,
+                    selectOtherMonths: true,
                 });
             });
 
