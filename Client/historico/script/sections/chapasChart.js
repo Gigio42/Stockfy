@@ -10,7 +10,7 @@ export function createChapasCharts(ctx1, ctx2, ctx3, data) {
   data.forEach((item) => {
     acumuladoComprado += Number(item.quantidade_comprada);
     acumuladoRecebido += Number(item.quantidade_recebida);
-    acumuladoEstoque += Number(item.quantidade_estoque); 
+    acumuladoEstoque += Number(item.quantidade_estoque);
     acumuladoDisponivel += Number(item.quantidade_disponivel);
 
     acumulativos.push({
