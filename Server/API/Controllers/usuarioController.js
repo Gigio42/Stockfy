@@ -22,8 +22,7 @@ class UsuarioController {
     } else {
       return { success: false, message: "Usuário ou senha inválidos!" };
     }
-}
-
+  }
 
   async addUsuario(data) {
     const { name, password } = data;
