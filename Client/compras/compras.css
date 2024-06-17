@@ -124,7 +124,8 @@ background: #ff434300 !important;
     max-height: 200px;
 }
 
-#expectedDate {
+#expectedDate,
+#expectedDateManual {
     width: 10rem;
     height:5rem;
     margin-right: 1.5rem;
@@ -137,11 +138,12 @@ background: #ff434300 !important;
     border: solid 1px #383838;
 }
 
-
+#expectedDateManual:focus,
 #expectedDate:focus {
     outline: none;
     border-left: 7px solid #3bf867;
 }
+
 #expectedDate.invalid-date {
     border-left: 7px solid rgb(255, 64, 64);
 }
