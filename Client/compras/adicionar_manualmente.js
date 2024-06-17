@@ -61,11 +61,12 @@ document.getElementById("addPlateButton").addEventListener("click", function () 
       <p class="card-text">Qualidade: ${data.qualidade}</p>
       <p class="card-text">Quantidade Comprada: ${data.quantidade_comprada}</p>
       <p class="card-text">Vincos: ${data.vincos}</p>
-      <p class="toggle-button" onclick="toggleDetails(this)">
-        <img src="media/seta-para-a-direita.png" class="toggle-arrow icon" />
-        <a href="#"><img src="media/icons8-editar-64.png" class="expand-icon icon" onclick="editCard(event)" /></a>
-        <a href="#"><img src="media/icons8-apagar-para-sempre-96.png" class="expand-icon icon" onclick="deleteCard(event)" /></a>
-      </p>
+     <p class="toggle-button" onclick="toggleDetails(this)">
+    <img src="media/seta-para-a-direita.png" class="toggle-arrow icon" />
+    <a href="#"><img src="media/icons8-editar-64.png" class="expand-icon icon" onclick="editCard(event)" /></a>
+    <a href="#"><img src="media/icons8-apagar-para-sempre-96.png" class="expand-icon icon" onclick="deleteCard(event)" /></a>
+</p>
+
       <div class="card-details" style="display: none;">
         <p class="card-text">Onda: ${data.onda}</p>
         <p class="card-text">Gramatura: ${data.gramatura}</p>
@@ -85,74 +86,6 @@ document.getElementById("addPlateButton").addEventListener("click", function () 
 
   console.log("JSON criado ao adicionar um novo card:", jsonData);
 });
-
-// Função para alternar a exibição dos detalhes do cartão
-function toggleDetails(button) {
-  const details = button.nextElementSibling;
-  const arrow = button.querySelector(".toggle-arrow");
-
-  if (details.style.display === "none" || details.style.display === "") {
-    details.style.display = "block";
-    arrow.style.transform = "rotate(180deg)";
-  } else {
-    details.style.display = "none";
-    arrow.style.transform = "rotate(0deg)";
-  }
-}
-
-function editCard(event) {
-  event.stopPropagation(); // Impede que o evento de clique se propague
-
-  const button = event.target;
-  const card = button.closest(".card");
-  const cardID = card.dataset.cardId; // Obtém o ID do cartão
-  const cardTitle = card.querySelector(".card-title").textContent.split(": ")[1];
-  const cardTexts = card.querySelectorAll(".card-text");
-  const form = document.getElementById("purchaseForm");
-
-  // Armazena o ID do cartão sendo editado globalmente
-  cardIDBeingEdited = cardID;
-
-  // Preenche o formulário com os dados do cartão selecionado
-  form.customerNumber.value = cardTitle;
-  form.width.value = cardTexts[1].textContent.split(": ")[1]; // Largura
-  form.length.value = cardTexts[2].textContent.split(": ")[1]; // Comprimento
-  form.quality.value = cardTexts[3].textContent.split(": ")[1]; // Qualidade
-  form.quantity.value = cardTexts[4].textContent.split(": ")[1]; // Quantidade Comprada
-  form.creases.value = cardTexts[5].textContent.split(": ")[1]; // Vincos
-
-  const details = card.querySelector(".card-details").children;
-  form.wave.value = details[0].textContent.split(": ")[1]; // Onda
-  form.weight.value = details[1].textContent.split(": ")[1]; // Gramatura
-  form.totalWeight.value = details[2].textContent.split(": ")[1]; // Peso Total
-  form.unitPrice.value = details[3].textContent.split(": ")[1]; // Valor Unitário
-  form.totalPrice.value = details[4].textContent.split(": ")[1]; // Valor Total
-  form.buyer.value = details[6].textContent.split(": ")[1]; // Comprador
-  form.purchaseDate.value = details[7].textContent.split(": ")[1]; // Data Compra
-  form.supplier.value = details[8].textContent.split(": ")[1]; // Fornecedor
-  form.purchaseID.value = details[9].textContent.split(": ")[1]; // ID Compra
-  document.getElementById("expectedDateManual").value = details[10].textContent.split(": ")[1]; // Data Prevista
-
-  // Exibe o botão de confirmação de edição
-  const confirmButton = document.getElementById("confirmEditButton");
-  confirmButton.style.display = "block";
-}
-
-// Evento de clique para confirmar a edição do cartão
-document.getElementById("confirmEditButton").addEventListener("click", function (event) {
-  event.preventDefault(); // Previne o comportamento padrão do botão (recarregar a página)
-  console.log("Botão de confirmação de edição clicado!");
-  confirmEdit();
-});
-
-function deleteCard(event) {
-  event.stopPropagation(); // Impede que o evento de clique se propague
-
-  const button = event.target;
-  const card = button.closest(".card");
-  card.remove();
-  console.log("Card excluído.");
-}
 
 // Função para obter o conteúdo de texto de um elemento com um seletor específico
 function getTextContent(selector, context) {
