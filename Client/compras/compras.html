@@ -32,7 +32,6 @@
 
         <div class="container">
             <div id="dropzone" class="dropzone text-center mt-4">Arraste e solte o arquivo PDF aqui</div>
-            
 
             <!-- Modal -->
             <div id="myModal" class="modal">
@@ -156,13 +155,12 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
         <script>
-
-$(document).ready(function() {
-        $("#expectedDateManual").datepicker({
-            showOtherMonths: true,
-            selectOtherMonths: true
-        });
-    });
+            $(document).ready(function () {
+                $("#expectedDateManual").datepicker({
+                    showOtherMonths: true,
+                    selectOtherMonths: true,
+                });
+            });
 
             $(document).ready(function () {
                 $("#errorModal").hide();
