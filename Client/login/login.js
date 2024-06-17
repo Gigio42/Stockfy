@@ -69,7 +69,9 @@ function cadastrarUsuario() {
   })
     .then((response) => response.json())
     .then((data) => {
-      if (data) {
+      if (!data.success) {
+        alert(data.message || "Erro desconhecido ao cadastrar usuário.");
+      } else {
         alert("Usuário cadastrado com sucesso!");
       }
     })
