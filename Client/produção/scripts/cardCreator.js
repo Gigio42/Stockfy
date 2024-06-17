@@ -86,13 +86,18 @@ export function createCard(item, maquinaName, estado, executor) {
 function updateSubmitButtonState(chapasContainer, submitButton) {
   const checkboxes = chapasContainer.querySelectorAll('input[type="checkbox"]');
 
+  function updateButtonState() {
+    const allChecked = Array.from(checkboxes).every((cb) => cb.checked);
+    submitButton.disabled = !allChecked;
+    submitButton.classList.toggle("enabled", allChecked);
+  }
+
   checkboxes.forEach((checkbox) => {
-    checkbox.addEventListener("change", () => {
-      const allChecked = Array.from(checkboxes).every((cb) => cb.checked);
-      submitButton.disabled = !allChecked;
-      submitButton.classList.toggle("enabled", allChecked);
-    });
+    checkbox.addEventListener("change", updateButtonState);
   });
+
+  // Inicializar o estado do botão baseado no estado inicial dos checkboxes
+  updateButtonState();
 }
 
 export function createChapasHeader(keys) {
