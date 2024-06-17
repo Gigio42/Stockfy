@@ -9,7 +9,7 @@
         <!-- Inclua o CSS do Flatpickr -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
         <!-- Vue.js -->
-<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     </head>
 
@@ -19,7 +19,7 @@
             <span id="notificationMessage"></span>
             <button id="closeNotification">x</button>
         </div>
-      
+
         <div class="header-principal d-flex flex-row align-items-center">
             <select id="fornecedor" name="fornecedor" class="form-control mb-2">
                 <option value="" disabled selected>fornecedor</option>
@@ -37,7 +37,7 @@
 
             <!-- Modal -->
             <div id="myModal" class="modal">
-                <div class="modal-content">   
+                <div class="modal-content">
                     <div class="fecharbtn d-flex justify-content-between align-items-center">
                         <h2>Confirme as informações dos itens que chegaram</h2>
                         <!-- Adicione a mesma classe ao botão de fechar -->
@@ -200,17 +200,15 @@
             }
 
             flatpickr("#expectedDate", {
-        dateFormat: "Y-m-d",
-        // Outras opções que você deseja configurar
-    });
-    flatpickr("#expectedDateManual", {
-        dateFormat: "Y-m-d",
-        // Outras opções que você deseja configurar
-    });
+                dateFormat: "Y-m-d",
+                // Outras opções que você deseja configurar
+            });
+            flatpickr("#expectedDateManual", {
+                dateFormat: "Y-m-d",
+                // Outras opções que você deseja configurar
+            });
 
             $(document).ready(function () {
-
-                
                 $("#errorModal").hide();
                 // Função para exibir a notificação
                 function showNotification(message) {
