@@ -22,7 +22,7 @@ function validaUsuario() {
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
-      if (data.exists) {
+      if (data.success) {  // Alterado de data.exists para data.success
         const nome = document.getElementById("username").value;
         localStorage.setItem("nome", nome);
 
@@ -45,6 +45,7 @@ function validaUsuario() {
       alert("Falha ao conectar ao servidor!");
     });
 }
+
 
 function cadastrarUsuario() {
   const username = document.getElementById("username").value;
