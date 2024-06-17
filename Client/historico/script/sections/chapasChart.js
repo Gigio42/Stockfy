@@ -1,37 +1,57 @@
 export function createChapasCharts(ctx1, ctx2, ctx3, data) {
-  // Chart 1
-  data.sort((a, b) => new Date(a.data_prevista) - new Date(b.data_prevista));
+  data.sort((a, b) => new Date(a.data_compra) - new Date(b.data_compra));
 
-  // Create chart
+  const acumulativos = [];
+  let acumuladoComprado = 0;
+  let acumuladoRecebido = 0;
+  let acumuladoEstoque = 0;
+  let acumuladoDisponivel = 0;
+
+  data.forEach((item) => {
+    acumuladoComprado += Number(item.quantidade_comprada);
+    acumuladoRecebido += Number(item.quantidade_recebida);
+    acumuladoEstoque += Number(item.quantidade_estoque); 
+    acumuladoDisponivel += Number(item.quantidade_disponivel);
+
+    acumulativos.push({
+      data_compra: item.data_compra,
+      acumuladoComprado,
+      acumuladoRecebido,
+      acumuladoEstoque,
+      acumuladoDisponivel,
+    });
+  });
+
+  // Criar o gráfico
   new Chart(ctx1, {
     type: "line",
     data: {
-      labels: data.map((item) => item.data_prevista),
+      labels: acumulativos.map((item) => item.data_compra),
       datasets: [
         {
           label: "Chapas compradas",
-          data: data.map((item) => Number(item.quantidade_comprada)),
+          data: acumulativos.map((item) => item.acumuladoComprado),
           fill: false,
           borderColor: "rgb(75, 192, 192)",
           tension: 0.1,
         },
         {
           label: "Chapas recebidas",
-          data: data.map((item) => Number(item.quantidade_recebida)),
+          data: acumulativos.map((item) => item.acumuladoRecebido),
           fill: false,
           borderColor: "rgb(192, 75, 75)",
           tension: 0.1,
         },
         {
           label: "Chapas em estoque",
-          data: data.map((item) => Number(item.quantidade_estoque)),
+          data: acumulativos.map((item) => item.acumuladoEstoque),
           fill: false,
           borderColor: "rgb(75, 75, 192)",
           tension: 0.1,
         },
         {
           label: "Chapas disponíveis",
-          data: data.map((item) => Number(item.quantidade_disponivel)),
+          data: acumulativos.map((item) => item.acumuladoDisponivel),
           fill: false,
           borderColor: "rgb(192, 192, 75)",
           tension: 0.1,
@@ -43,7 +63,7 @@ export function createChapasCharts(ctx1, ctx2, ctx3, data) {
       plugins: {
         title: {
           display: true,
-          text: "Chart.js Line Chart - Cubic interpolation mode",
+          text: "Chapas - Quantidade Acumulativa",
         },
       },
       interaction: {
@@ -60,10 +80,10 @@ export function createChapasCharts(ctx1, ctx2, ctx3, data) {
           display: true,
           title: {
             display: true,
-            text: "Value",
+            text: "Quantidade",
           },
           suggestedMin: -10,
-          suggestedMax: 200,
+          suggestedMax: 2000,
         },
       },
       animation: {
@@ -75,7 +95,7 @@ export function createChapasCharts(ctx1, ctx2, ctx3, data) {
 
   // Chart 2
   const qualidades = [...new Set(data.map((item) => item.qualidade))];
-  const fornecedores = [...new Set(data.map((item) => item.fornecedor))];
+  const fornecedores = [...new Set(data.map((item) => item.fornecedor.toLowerCase()))];
 
   const colors = [
     "rgba(255, 99, 132, 0.8)",
@@ -90,7 +110,7 @@ export function createChapasCharts(ctx1, ctx2, ctx3, data) {
     return {
       label: qualidade,
       data: fornecedores.map((fornecedor) => {
-        const itemsForFornecedorAndQualidade = data.filter((item) => item.fornecedor === fornecedor && item.qualidade === qualidade);
+        const itemsForFornecedorAndQualidade = data.filter((item) => item.fornecedor.toLowerCase() === fornecedor && item.qualidade === qualidade);
         return itemsForFornecedorAndQualidade.reduce((total, item) => total + item.quantidade_comprada, 0);
       }),
       backgroundColor: colors[index % colors.length],
