@@ -155,6 +155,47 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
         <script>
+            function toggleDetails(event) {
+                const target = event.target;
+
+                // Verifica se o clique ocorreu na seta (.toggle-arrow) dentro do parágrafo
+                if (target && target.classList.contains("toggle-arrow")) {
+                    // Encontra o card pai onde os detalhes estão contidos
+                    const cardBody = target.closest(".card-body");
+
+                    if (cardBody) {
+                        // Encontra o elemento que contém os detalhes (div com a classe 'card-details')
+                        const details = cardBody.querySelector(".card-details");
+
+                        if (details) {
+                            // Encontra a imagem da seta
+                            const toggleArrow = target;
+
+                            // Alterna a visibilidade dos detalhes
+                            if (details.style.display === "none" || details.style.display === "") {
+                                details.style.display = "block";
+                                toggleArrow.style.transform = "rotate(180deg)"; // Gira a seta para cima
+                            } else {
+                                details.style.display = "none";
+                                toggleArrow.style.transform = "rotate(0deg)"; // Gira a seta para a direita
+                            }
+                        }
+                    }
+                }
+            }
+
+            function editCard(event) {
+                // Lógica para editar o card
+                console.log("Editar card");
+                event.preventDefault(); // Evita que o link seja seguido
+            }
+
+            function deleteCard(event) {
+                // Lógica para excluir o card
+                console.log("Excluir card");
+                event.preventDefault(); // Evita que o link seja seguido
+            }
+
             $(document).ready(function () {
                 $("#expectedDateManual").datepicker({
                     showOtherMonths: true,
