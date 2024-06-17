@@ -425,7 +425,6 @@ function sendJSONDataToBackend() {
     });
 }
 
-
 // Função para remover propriedades vazias de um objeto
 function removeEmptyProperties(obj) {
   for (var prop in obj) {
