@@ -7,8 +7,12 @@ async function usuarioRoutes(fastify, options) {
   fastify.get("/", async (request, reply) => {
     const { name, password } = request.query;
     try {
-      const exists = await usuarioController.getUsuario({ name, password });
-      reply.send({ exists });
+      const result = await usuarioController.getUsuario({ name, password });
+      if (result.success) {
+        reply.send({ success: true });
+      } else {
+        reply.send({ success: false, message: "Usuário ou senha inválidos!" });
+      }
     } catch (error) {
       reply.status(500).send({ error: "Erro ao verificar o usuário" });
     }
