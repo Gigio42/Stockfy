@@ -31,7 +31,7 @@ html, body {
 }
 
 .modal-content {
-    background-color: #fefefe;
+    background-color: #141414;
     border: 1px solid #888;
     min-height: 100%;
     display: flex;
@@ -41,8 +41,8 @@ html, body {
 
 .fecharbtn {
     padding: 1rem 2rem;
-    background: #d9d9d9;
-    color: #555555;
+    background: #232323;
+    color: #959595;
     height: 10%;
     width: 100%;
     z-index: 5;
@@ -57,7 +57,7 @@ html, body {
 }
 
 .btn-primary:hover {
-    background: rgb(198, 198, 198);
+    background: rgb(49, 49, 49);
     color: #797979;
 }
 
@@ -66,10 +66,34 @@ html, body {
 }
 
 .table-container {
-
+    padding: 1rem;
     max-height: calc(100vh - 10rem); /* Altura máxima - altura dos botões inferiores e do fecharbtn */
     overflow-y: auto; /* Adiciona rolagem vertical quando necessário */
-    background: white;
+    background: #141414;
+}
+
+.table td {
+    color: #c2c2c2;
+    border-top: none;
+    text-align: center;
+    background: #232323;
+    border-radius: 2rem;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.table th {
+    border: none;
+    background: #4f27ff47;
+    color: #9178ff;
+    font-size: 2rem;
+    line-height: 30px;
+}
+
+.edit-icon {
+background: #ff434300 !important;
 }
 
 
@@ -85,28 +109,29 @@ html, body {
     left: 0; /* ou right: 0; para alinhamento à direita */
     width: 100%;
     padding-right: 2rem;
-    background-color: #ffffff;
+    background-color: #232323;
     height: 15%;
     align-items: center;
-    box-shadow: 0px 0px 30px 10px rgb(255, 255, 255); /* Adiciona sombra branca */
+    box-shadow: 0px 0px 30px 10px #232323; /* Adiciona sombra branca */
 }
 
 #expectedDate {
     width: 10rem;
-    height:4.2rem;
+    height:5rem;
     margin-right: 1.5rem;
     padding: 1rem;
     border-radius: 1rem;
-    background-color: #dfdfdf;
+    background-color: #282828;
     border: none;
     color: #131313 !important;
     padding-left: 1.5rem;
+    border: solid 1px #383838;
 }
+
 
 #expectedDate:focus {
     outline: none;
-    background-color: #dfdfdf;
-    border-left: 7px solid #84e789;
+    border-left: 7px solid #3bf867;
 }
 #expectedDate.invalid-date {
     border-left: 7px solid rgb(255, 64, 64);
@@ -144,9 +169,9 @@ html, body {
 
 .edit {
     display: flex;
-    background-color: #fdb6b6; /* Cor de fundo geral */
+    background-color: #ff43434b; /* Cor de fundo geral */
     border:none; /* Cor da borda geral */
-    border-radius: 0.5rem;
+    border-radius: 1rem;
   
     padding: 0.2;
 }
@@ -156,6 +181,9 @@ html, body {
     width: 10rem;
     font-size: 1.5rem;
     border-radius: 1rem;
+    background: #3bf86737;
+    border: solid 1px #3bf867;
+    color:#3bf867;
 }
 
 
@@ -163,16 +191,16 @@ html, body {
 body button.edit:active,
 body button.edit:focus,
 body button.edit:hover {
-    background-color: #f8a0a0 !important;
+    background-color: #ff434363 !important;
     color: #ffffff !important;
     box-shadow: none !important;
 }
 
 
 .confirm {
-    background: #9dffa2;
+    background: #38ff4230;
     border:none; /* Cor da borda geral */
-    border-radius: 0.5rem;
+    border-radius: 1rem;
 
 }
 
@@ -181,7 +209,7 @@ body button.edit:hover {
 body button.confirm:active,
 body button.confirm:focus,
 body button.confirm:hover {
-    background: #84e789 !important;
+    background: #38ff4243 !important;
     box-shadow: none !important;
 }
 
@@ -299,6 +327,7 @@ body button.edit.disabled {
     border-radius:.7rem ;
     border: none;
     width: 5rem;
+    background: #232323;
 }
 
 .alert {
@@ -322,12 +351,17 @@ body button.edit.disabled {
     text-align: center;
     align-content: center;
     font-size: 1.2rem;
+    color: #c3c3c3;
+    border-bottom: solid 1px #363636;
 }
 
 /* Centraliza o conteúdo das células da tabela */
  th {
-    text-align: center;
     vertical-align: middle;
+    border-radius: 2rem;
+    position: relative;
+    text-align: center;
+
 }
 
 /* Define o estilo do input para ocupar 100% da altura da célula e estar centralizado */
@@ -337,22 +371,16 @@ body button.edit.disabled {
     border-radius: 5px;
 }
 
-/* CSS para centralizar o input dentro do td */
- th {
-    position: relative;
-    text-align: center;
-    vertical-align: middle;
-}
 
 #purchaseForm {
     display: flex  !important;
     flex-wrap: wrap;
     gap: 1rem;
     align-content: center;padding: 6rem;
-    padding-top: 1.5rem ;
+    padding-top: 1.5rem;
     padding-left: 1.5rem;
     padding-bottom: 1rem;
-    background-color: #e4e4e4;
+    background-color: #232323;
     border-radius: 2rem;
     margin-left: 2rem;
     margin-right: 2rem;
@@ -363,11 +391,17 @@ body button.edit.disabled {
     width: fit-content;
     border-radius: 1rem;
     border: none;
-    background-color: #f3f3f3;;
+    background-color: #131313;;
     padding-left: 1rem;
-    border: solid 1px #a7a7a7;
+    border: solid 1px #b52aff;
     height: 3rem;
     font-size: 1rem;
+}
+
+@media screen and (max-width: 902px) {
+    .inputform {
+        width: 9rem;
+    }
 }
 
 .inputform:focus {
@@ -377,12 +411,12 @@ body button.edit.disabled {
 }
 
 .inputform::placeholder {
-   color: #717171;
+   color: #383838;
 
 }
 
 #mModal {
-    background-color: white;
+    background-color: #141414;
 }
 
 .card-body {
@@ -402,6 +436,7 @@ body button.edit.disabled {
 .modal-content-m {
     max-height: 85vh; /* Define a altura máxima do conteúdo do modal */
     overflow-y: auto; /* Adiciona o scroll vertical */
+    background: #131313;
 }
 
 .formAndcard {

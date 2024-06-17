@@ -937,6 +937,7 @@ display: flex;
 
 .button-container {
   display: flex;
+  margin: 1rem !important;
 }
 
 .card-header {
