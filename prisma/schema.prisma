@@ -65,18 +65,20 @@ model Chapa_Item {
 }
 
 model Item {
-  id_item     Int            @id @default(autoincrement())
-  part_number String         @unique @default("0")
-  prioridade  Int?
-  status      String         @default("")
-  chapas      Chapa_Item[]
-  maquinas    Item_Maquina[]
+  id_item       Int            @id @default(autoincrement())
+  part_number   String         @unique @default("0")
+  prioridade    Int?
+  status        String         @default("")
+  reservado_por String?
+  chapas        Chapa_Item[]
+  maquinas      Item_Maquina[]
 }
 
 model Item_Maquina {
   id_item_maquina Int     @id @default(autoincrement())
   prazo           String?
   ordem           Int?
+  ordemTotal      Int?
   executor        String?
   finalizado      Boolean @default(false)
   corte           String?

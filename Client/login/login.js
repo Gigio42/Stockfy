@@ -29,6 +29,7 @@ function validaUsuario() {
         const maquina = document.getElementById("selectMaquina").value;
         localStorage.setItem("maquina", maquina);
 
+        localStorage.setItem("isLoggedIn", "true"); //var q vai ser usada para verif se o usuario ta logado
         const isProducaoChecked = document.getElementById("toggleProducao").checked;
         if (isProducaoChecked) {
           window.location.href = "../produção/producao.html";
@@ -68,7 +69,9 @@ function cadastrarUsuario() {
   })
     .then((response) => response.json())
     .then((data) => {
-      if (data) {
+      if (!data.success) {
+        alert(data.message || "Erro desconhecido ao cadastrar usuário.");
+      } else {
         alert("Usuário cadastrado com sucesso!");
       }
     })
@@ -76,13 +79,6 @@ function cadastrarUsuario() {
       console.error("Erro ao cadastrar usuário:", error);
       alert("Falha ao conectar ao servidor!");
     });
-}
-
-function alterarTema() {
-  const toggle = document.getElementById("darkModeToggle");
-  const body = document.body;
-  body.classList.toggle("body-light-mode", !toggle.checked);
-  localStorage.setItem("theme", toggle.checked ? "dark" : "light");
 }
 
 function carregarMaquinas() {
@@ -116,3 +112,10 @@ document.addEventListener("DOMContentLoaded", () => {
   toggle.checked = savedTheme !== "light"; // Default is dark mode
   alterarTema();
 });
+
+function alterarTema() {
+  const toggle = document.getElementById("darkModeToggle");
+  const body = document.body;
+  body.classList.toggle("body-light-mode", !toggle.checked);
+  localStorage.setItem("theme", toggle.checked ? "dark" : "light");
+}

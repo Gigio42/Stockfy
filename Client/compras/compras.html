@@ -32,7 +32,6 @@
 
         <div class="container">
             <div id="dropzone" class="dropzone text-center mt-4">Arraste e solte o arquivo PDF aqui</div>
-            <pre id="jsonOutput" class="mt-4"></pre>
 
             <!-- Modal -->
             <div id="myModal" class="modal">
@@ -48,6 +47,7 @@
                         <table id="dataTable" class="table mt-4"></table>
                         <div id="form-container"></div>
                     </div>
+                    <pre id="jsonContent" style="display: none"></pre>
                     <div class="btninferior mt-4 d-flex justify-content-end">
                         <div class="date-input-container">
                             <input type="text" id="expectedDate" placeholder="Data Prevista" />
@@ -73,10 +73,10 @@
                     <div id="form-container">
                         <form id="purchaseForm">
                             <div class="form-group">
-                                <input type="text" id="customerNumber" name="customerNumber" class="form-control inputform" placeholder="Número Cliente" />
+                                <input type="text" id="customerNumber" name="customerNumber" class="form-control inputform" placeholder="Cliente" />
                             </div>
                             <div class="form-group">
-                                <input type="text" id="quantity" name="quantity" class="form-control inputform" placeholder="Quantidade Comprada" />
+                                <input type="text" id="quantity" name="quantity" class="form-control inputform" placeholder="Quantidade" />
                             </div>
                             <div class="form-group">
                                 <input type="text" id="quality" name="quality" class="form-control inputform" placeholder="Qualidade" />
@@ -88,13 +88,13 @@
                                 <input type="text" id="weight" name="weight" class="form-control inputform" placeholder="Gramatura" />
                             </div>
                             <div class="form-group">
-                                <input type="text" id="totalWeight" name="totalWeight" class="form-control inputform" placeholder="Peso Total" />
+                                <input type="text" id="totalWeight" name="totalWeight" class="form-control inputform" placeholder="Peso" />
                             </div>
                             <div class="form-group">
-                                <input type="text" id="unitPrice" name="unitPrice" class="form-control inputform" placeholder="Valor Unitário" />
+                                <input type="text" id="unitPrice" name="unitPrice" class="form-control inputform" placeholder="Valor Uni." />
                             </div>
                             <div class="form-group">
-                                <input type="text" id="totalPrice" name="totalPrice" class="form-control inputform" placeholder="Valor Total" />
+                                <input type="text" id="totalPrice" name="totalPrice" class="form-control inputform" placeholder="Valor Tot." />
                             </div>
                             <div class="form-group">
                                 <input type="text" id="width" name="width" class="form-control inputform" placeholder="Largura" />
@@ -126,8 +126,10 @@
                     <div id="cardsContainer" class="cardsContainer"></div>
                 </div>
                 <div class="btninferior mt-4 d-flex justify-content-end">
+                    <pre id="jsonContentManual"></pre>
+                    <button id="editButtonmanual" class="btn btn-warning">Editar</button>
                     <div class="date-input-container">
-                        <input type="text" id="expectedDateManual" placeholder="Data Prevista" />
+                        <input type="date" id="expectedDateManual" placeholder="Data Prevista" />
                     </div>
                     <button id="sendbutton" class="btn btn-success mr-2 enviarManual">Enviar</button>
                 </div>
@@ -153,9 +155,10 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
         <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                flatpickr("#expectedDate", {
-                    dateFormat: "Y-m-d",
+            $(document).ready(function () {
+                $("#expectedDateManual").datepicker({
+                    showOtherMonths: true,
+                    selectOtherMonths: true,
                 });
             });
 

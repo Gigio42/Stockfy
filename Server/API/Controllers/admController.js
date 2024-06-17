@@ -94,6 +94,82 @@ class AdmController {
       throw new Error("Erro ao buscar itens para a máquina: " + error.message);
     }
   }
+
+  async updateItemPriorities(newPriorities) {
+    try {
+      console.log("Recebido para atualização de prioridades:", newPriorities);
+
+      // Verificar se todos os itens existem antes de atualizar
+      for (const { id_item } of newPriorities) {
+        const itemExists = await Item.findUnique({
+          where: { id_item: id_item },
+        });
+
+        if (!itemExists) {
+          throw new Error(`Item com id ${id_item} não encontrado`);
+        }
+      }
+
+      await Promise.all(
+        newPriorities.map(async ({ id_item, prioridade }) => {
+          await Item.update({
+            where: { id_item: id_item },
+            data: { prioridade: prioridade },
+          });
+        }),
+      );
+
+      console.log("Prioridades dos itens atualizadas com sucesso");
+    } catch (error) {
+      console.error("Erro ao atualizar as prioridades dos itens:", error);
+      throw new Error("Erro ao atualizar as prioridades dos itens: " + error.message);
+    }
+  }
+
+  async getAllItemMaquina() {
+    try {
+      const itemMaquinas = await Item_Maquina.findMany({
+        include: {
+          maquina: true,
+          Item: true,
+        },
+      });
+      return itemMaquinas;
+    } catch (error) {
+      throw new Error("Erro ao buscar todos os Item_Maquina: " + error.message);
+    }
+  }
+
+  async createItemMaquina(itemId, maquinaId) {
+    try {
+      const lastItem = await Item_Maquina.findFirst({
+        where: { itemId: itemId },
+        orderBy: { ordem: "desc" },
+      });
+
+      let ordem = 1;
+      if (lastItem) {
+        ordem = lastItem.ordem + 1;
+      }
+
+      await Item_Maquina.create({
+        data: {
+          prazo: lastItem ? lastItem.prazo : null,
+          ordem: ordem,
+          executor: lastItem ? lastItem.executor : null,
+          finalizado: lastItem ? lastItem.finalizado : false,
+          corte: lastItem ? lastItem.corte : null,
+          maquinaId: maquinaId,
+          itemId: itemId,
+        },
+      });
+
+      console.log(`Item_Maquina criado com sucesso para o item ${itemId} e a máquina ${maquinaId}.`);
+    } catch (error) {
+      console.error("Erro ao criar Item_Maquina:", error);
+      throw new Error("Erro ao criar Item_Maquina: " + error.message);
+    }
+  }
 }
 
 export default AdmController;

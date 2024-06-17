@@ -29,23 +29,37 @@ nav {
     height: 80vh;
 }
 
-nav ul li {
+
+nav ul li{
+    align-items: center;
+}
+
+
+
+nav ul li a {
     margin: 20px;
     padding: 20px 40px;
     border-radius: 50px;
     background: var(--nav-background);
     display: block;
     font-size: 1.5em;
-    transition: background 0.3s ease;
-}
-
-nav ul li:hover {
-    background: var(--nav-hover);
-}
-
-nav ul li a {
+    transition:  0.3s ease;
     color: var(--text-color);
-    text-decoration: none;
+    text-decoration: none !important;
+}
+
+nav ul li a:hover {
+    background: var(--nav-hover);
+    color: var(--text-color);
+    text-decoration: none !important;
+}
+
+.logout-link {
+    background-color: rgba(0, 68, 255, 0.356) !important;
+}
+
+.logout-link:hover {
+    background-color: rgba(0, 0, 139, 0.438) !important;
 }
 
 .theme-switch-wrapper {

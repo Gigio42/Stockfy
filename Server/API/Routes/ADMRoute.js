@@ -47,6 +47,43 @@ async function admRoute(fastify, options) {
       reply.code(500).send({ message: "Internal Server Error" });
     }
   });
+
+  fastify.post("/atualizar-prioridades", async (request, reply) => {
+    try {
+      const newPriorities = request.body;
+      console.log("Dados recebidos na rota /atualizar-prioridades:", newPriorities);
+      await admController.updateItemPriorities(newPriorities);
+      reply.send({ message: "Prioridades atualizadas com sucesso" });
+      console.log("Prioridades atualizadas com sucesso");
+    } catch (err) {
+      console.error("Erro ao atualizar as prioridades:", err);
+      reply.code(500).send({ message: "Erro ao atualizar as prioridades" });
+    }
+  });
+
+  fastify.get("/item_maquina", async (request, reply) => {
+    try {
+      const itemMaquinas = await admController.getAllItemMaquina(); // Nova função no controlador para buscar todos os Item_Maquina
+      reply.send(itemMaquinas);
+    } catch (err) {
+      reply.code(500).send({ message: "Internal Server Error" });
+    }
+  });
+
+  fastify.post("/item_maquina/selecionar-maquinas", async (request, reply) => {
+    try {
+      const items = request.body;
+
+      for (const { itemId, maquinaId, ordem } of items) {
+        await admController.createItemMaquina(itemId, maquinaId, ordem);
+      }
+
+      reply.send({ message: "Itens_Maquina criados com sucesso." });
+    } catch (err) {
+      console.error("Erro ao criar Itens_Maquina:", err);
+      reply.code(500).send({ message: "Erro ao criar Itens_Maquina." });
+    }
+  });
 }
 
 export default admRoute;

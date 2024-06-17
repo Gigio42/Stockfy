@@ -90,7 +90,7 @@ class PCPController {
   async createItemWithChapa(body) {
     try {
       console.log(body);
-      const { partNumber, chapas } = body;
+      const { partNumber, chapas, reservedBy } = body;
 
       for (const { quantity, keepRemaining } of chapas) {
         if (keepRemaining) throw new Error("Reciclagem ainda está sendo desenvolvida"); //TODO Desenvolver reciclagem de chapas
@@ -114,6 +114,7 @@ class PCPController {
               data: {
                 part_number: partNumber,
                 status: "RESERVADO",
+                reservado_por: reservedBy,
               },
             });
           } else if (item.status !== "RESERVADO") {

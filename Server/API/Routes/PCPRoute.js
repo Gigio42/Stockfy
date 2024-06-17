@@ -4,6 +4,14 @@ import { createItemWithChapaSchema } from "../validators/pcpValidator.js";
 async function pcpRoute(fastify, options) {
   const pcpRouteController = new PCPController(options.db);
 
+  fastify.setErrorHandler((error, request, reply) => {
+    if (error.validation) {
+      reply.status(400).send(error.validation[0].message);
+    } else {
+      reply.send(error);
+    }
+  });
+
   fastify.get("/chapas", async (request, reply) => {
     try {
       const filterCriteria = request.query.filterCriteria ? JSON.parse(request.query.filterCriteria) : {};
@@ -33,15 +41,14 @@ async function pcpRoute(fastify, options) {
     handler: async (request, reply) => {
       try {
         const result = await pcpRouteController.createItemWithChapa(request.body);
-
         if (result.error) {
-          reply.code(500).send({ message: "Error processing data", error: result.error });
+          reply.code(500).send({ message: "Erro de processamento", error: result.error });
         } else {
           reply.send({ message: "Data received and inserted into SQLite database successfully" });
         }
       } catch (err) {
         console.log(err.message);
-        reply.code(500).send({ message: "Error processing data", error: err.message });
+        reply.code(500).send({ message: "Erro de processamento", error: err.message });
       }
     },
   });
