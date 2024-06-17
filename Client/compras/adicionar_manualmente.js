@@ -87,10 +87,6 @@ document.getElementById("addPlateButton").addEventListener("click", function () 
   console.log("JSON criado ao adicionar um novo card:", jsonData);
 });
 
-
-
-
-
 // Função para obter o conteúdo de texto de um elemento com um seletor específico
 function getTextContent(selector, context) {
   const element = context.querySelector(selector);
