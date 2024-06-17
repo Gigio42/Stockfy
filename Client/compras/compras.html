@@ -8,7 +8,6 @@
         <link rel="stylesheet" href="compras.css" />
         <!-- Inclua o CSS do Flatpickr -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
-<<<<<<< HEAD
         <!-- Vue.js -->
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -39,36 +38,6 @@
             <!-- Modal -->
             <div id="myModal" class="modal">
                 <div class="modal-content">   
-=======
-
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    </head>
-
-    <body>
-        <!-- Adicione uma div para a notificação -->
-        <div id="notification" class="notification" style="display: none">
-            <span id="notificationMessage"></span>
-            <button id="closeNotification">x</button>
-        </div>
-        <div class="header-principal d-flex flex-row align-items-center">
-            <select id="fornecedor" name="fornecedor" class="form-control mb-2">
-                <option value="" disabled selected>fornecedor</option>
-                <option value="penha">Penha</option>
-                <option value="fernandez">Fernandez</option>
-                <option value="irani">Irani</option>
-                <option value="Adicionar Manualmente">Adicionar Manualmente</option>
-            </select>
-
-            <h1 class="text-center mt-4">Bem-vindo à página de compras</h1>
-        </div>
-
-        <div class="container">
-            <div id="dropzone" class="dropzone text-center mt-4">Arraste e solte o arquivo PDF aqui</div>
-
-            <!-- Modal -->
-            <div id="myModal" class="modal">
-                <div class="modal-content">
->>>>>>> 2e6c5b6b69827a8d9c16d8e84cd39247803b1db2
                     <div class="fecharbtn d-flex justify-content-between align-items-center">
                         <h2>Confirme as informações dos itens que chegaram</h2>
                         <!-- Adicione a mesma classe ao botão de fechar -->
@@ -184,7 +153,6 @@
         </div>
         <!-- Inclua o JS do Flatpickr -->
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<<<<<<< HEAD
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -206,28 +174,6 @@
                             // Encontra a imagem da seta
                             const toggleArrow = target;
 
-=======
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
-        <script>
-            function toggleDetails(event) {
-                const target = event.target;
-
-                // Verifica se o clique ocorreu na seta (.toggle-arrow) dentro do parágrafo
-                if (target && target.classList.contains("toggle-arrow")) {
-                    // Encontra o card pai onde os detalhes estão contidos
-                    const cardBody = target.closest(".card-body");
-
-                    if (cardBody) {
-                        // Encontra o elemento que contém os detalhes (div com a classe 'card-details')
-                        const details = cardBody.querySelector(".card-details");
-
-                        if (details) {
-                            // Encontra a imagem da seta
-                            const toggleArrow = target;
-
->>>>>>> 2e6c5b6b69827a8d9c16d8e84cd39247803b1db2
                             // Alterna a visibilidade dos detalhes
                             if (details.style.display === "none" || details.style.display === "") {
                                 details.style.display = "block";
@@ -253,7 +199,6 @@
                 event.preventDefault(); // Evita que o link seja seguido
             }
 
-<<<<<<< HEAD
             flatpickr("#expectedDate", {
         dateFormat: "Y-m-d",
         // Outras opções que você deseja configurar
@@ -266,16 +211,6 @@
             $(document).ready(function () {
 
                 
-=======
-            $(document).ready(function () {
-                $("#expectedDateManual").datepicker({
-                    showOtherMonths: true,
-                    selectOtherMonths: true,
-                });
-            });
-
-            $(document).ready(function () {
->>>>>>> 2e6c5b6b69827a8d9c16d8e84cd39247803b1db2
                 $("#errorModal").hide();
                 // Função para exibir a notificação
                 function showNotification(message) {
