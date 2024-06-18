@@ -23,6 +23,18 @@ h1 {
   font-size: 180%;
 }
 
+.nomeModal {
+  color:#b3b3b3;
+  padding: 0.7rem;
+}
+
+@media (max-width: 767.98px) {
+  .nomeModal {
+    display: none;
+}
+  
+}
+
 /* ======================================
        Dark Mode Toggle Styles
        ====================================== */
