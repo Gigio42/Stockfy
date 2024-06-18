@@ -20,6 +20,7 @@ h1 {
 
 #logoutButton {
   border: none;
+  background: #181818;
 }
 
 #logoutButton:hover {
@@ -29,7 +30,7 @@ h1 {
 
 .light-mode #logoutButton {
  border: none;
-background:#d4d4d4 ;
+background:#C5C5C5 ;
 
 } 
 
@@ -248,6 +249,39 @@ body {
   height: 100%;
   font-family: Arial, Helvetica, sans-serif;
   overflow-y: hidden;
+}
+
+#mobileOptionsButton {
+  margin-left:1rem ;
+  background: #181818;
+
+}
+
+#mobileOpenModalLink {
+  margin-left:1rem ;
+  background: #181818;
+}
+
+.light-mode #mobileOptionsButton,
+.light-mode #mobileOpenModalLink {
+  margin-left:1rem ;
+  background: #c5c5c5;
+
+}
+
+.icoreserv,
+.iconsulta {
+  width: 30px;
+}
+
+.light-mode .icoreserv,
+.iconsulta {
+filter: invert(1);}
+
+
+.hed {
+  width: 100%;
+  display: flex !important;
 }
 
 .header {
@@ -1048,7 +1082,7 @@ input[type="checkbox"]:checked::before {
 .light-mode .card-info-button:focus,
 .light-mode .card-info-button:active {
   color: #333;
-  background: #e0e0e0;
+  background: #F0F0F0;
 }
 
 .light-mode input[type="checkbox"] {
