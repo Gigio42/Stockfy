@@ -364,6 +364,13 @@
                         limparConteudo();
                     }
                 };
+
+                // Verifica o tamanho da tela e abre o modal se estiver em um dispositivo móvel
+                if (window.innerWidth <= 768) {
+                    const fornecedorSelect = document.getElementById("fornecedor");
+                    fornecedorSelect.value = "Adicionar Manualmente";
+                    $('#mModal').modal('show');
+                }
             });
         </script>
     </body>
