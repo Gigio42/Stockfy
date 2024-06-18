@@ -244,15 +244,6 @@ body {
   margin-right: 2rem;
 }
 
-.row {
-  display: flex;
-  /* Para fazer os elementos dentro da linha se comportarem como flexíveis */
-  height: 100%;
-}
-
-.container-fluid {
-  height: 100%;
-}
 
 #container {
   max-height: 100vh;
@@ -300,7 +291,8 @@ body {
   color: #cccccc;
 }
 
-.dark-mode .logo {
+
+.logout {
   filter: invert(1);
   /* Exemplo de inversão de cores */
 }
