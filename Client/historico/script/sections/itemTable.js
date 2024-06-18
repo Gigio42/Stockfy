@@ -5,7 +5,7 @@ export async function loadItemMaquinaData() {
 
   var itemColumns = ["id_item", "part_number", "prioridade", "status", "reservado_por"];
 
-  let table = '<table id="myTable3" class="display responsive"><thead><tr><th></th>';
+  let table = '<table id="myTable3" class="display responsive nowrap"><thead><tr><th></th>';
 
   itemColumns.forEach((column) => {
     table += `<th>${column}</th>`;
@@ -14,7 +14,7 @@ export async function loadItemMaquinaData() {
   table += "</tr></thead><tbody>";
 
   itemData.forEach((item) => {
-    table += `<tr data-item='${JSON.stringify(item.maquinas)}'><td class="details-control"></td>`;
+    table += `<tr data-item='${JSON.stringify(item.maquinas)}'><td class="details-control"><i class="fas fa-plus"></i></td>`;
     itemColumns.forEach((column) => {
       table += `<td>${item[column] || ""}</td>`;
     });
@@ -61,10 +61,11 @@ export async function loadItemMaquinaData() {
       // This row is already open - close it
       row.child.hide();
       tr.removeClass("shown");
+      $(this).html('<i class="fas fa-plus"></i>'); // Change icon to plus
     } else {
       // Open this row
       var maquinas = JSON.parse(tr.attr("data-item"));
-      var childTable = "<table class='child-table'><thead><tr>";
+      var childTable = "<table class='child-table display responsive nowrap'><thead><tr>";
       ["id_item_maquina", "prazo", "ordem", "executor", "finalizado", "corte", "maquinaId", "itemId"].forEach((column) => {
         childTable += `<th>${column}</th>`;
       });
@@ -72,13 +73,18 @@ export async function loadItemMaquinaData() {
       maquinas.forEach((maquina) => {
         childTable += "<tr>";
         ["id_item_maquina", "prazo", "ordem", "executor", "finalizado", "corte", "maquinaId", "itemId"].forEach((column) => {
-          childTable += `<td>${maquina[column] || ""}</td>`;
+          if (column === "finalizado") {
+            childTable += `<td>${maquina[column] ? '<i class="fas fa-check"></i>' : ""}</td>`;
+          } else {
+            childTable += `<td>${maquina[column] || ""}</td>`;
+          }
         });
         childTable += "</tr>";
       });
       childTable += "</tbody></table>";
       row.child(childTable).show();
       tr.addClass("shown");
+      $(this).html('<i class="fas fa-minus"></i>'); // Change icon to minus
     }
   });
 }

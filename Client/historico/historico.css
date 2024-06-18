@@ -603,29 +603,23 @@ body.dark-mode .expanded {
 }
 
 .modal-dialog {
-  max-width: 50%;
+  max-width: 35%;
 }
 .modal-content {
   overflow-x: auto;
 }
 #myTable3 {
-  width: 90%;
+  width: 100%;
+}
+.child-table {
+  width: 100%;
+  margin: 10px 0;
+}
+.details-control {
+  cursor: pointer;
+  text-align: center;
 }
 
-@media (min-width: 768px) {
-  #myTable3 {
-    width: 70%;
-  }
-}
-
-@media (min-width: 992px) {
-  #myTable3 {
-    width: 60%;
-  }
-}
-
-@media (min-width: 1200px) {
-  #myTable3 {
-    width: 50%;
-  }
+.fas {
+  font-size: 16px;
 }
