@@ -79,7 +79,7 @@
                                 <input type="number" id="customerNumber" name="customerNumber" class="form-control inputform" placeholder="Cliente" inputmode="numeric" />
                             </div>
                             <div class="form-group">
-                                <input type="number" id="quantity" name="quantity" class="form-control inputform" placeholder="Quantidade" inputmode="numeric"/>
+                                <input type="number" id="quantity" name="quantity" class="form-control inputform" placeholder="Quantidade" inputmode="numeric" />
                             </div>
                             <div class="form-group">
                                 <input type="text" id="quality" name="quality" class="form-control inputform" placeholder="Qualidade" />
@@ -97,16 +97,16 @@
                                 <input type="text" id="unitPrice" name="unitPrice" class="form-control inputform" placeholder="Valor Uni." inputmode="numeric" />
                             </div>
                             <div class="form-group">
-                                <input type="text" id="totalPrice" name="totalPrice" class="form-control inputform" placeholder="Valor Tot." inputmode="numeric"/>
+                                <input type="text" id="totalPrice" name="totalPrice" class="form-control inputform" placeholder="Valor Tot." inputmode="numeric" />
                             </div>
                             <div class="form-group">
-                                <input type="number" id="width" name="width" class="form-control inputform" placeholder="Largura" inputmode="numeric"/>
+                                <input type="number" id="width" name="width" class="form-control inputform" placeholder="Largura" inputmode="numeric" />
                             </div>
                             <div class="form-group">
-                                <input type="number" id="length" name="length" class="form-control inputform" placeholder="Comprimento" inputmode="numeric"/>
+                                <input type="number" id="length" name="length" class="form-control inputform" placeholder="Comprimento" inputmode="numeric" />
                             </div>
                             <div class="form-group">
-                                <input type="text" id="creases" name="creases" class="form-control inputform" placeholder="Vincos" inputmode="numeric"/>
+                                <input type="text" id="creases" name="creases" class="form-control inputform" placeholder="Vincos" inputmode="numeric" />
                             </div>
                             <div class="form-group">
                                 <input type="text" id="buyer" name="buyer" class="form-control inputform" placeholder="Comprador" />
@@ -365,36 +365,34 @@
                     }
                 };
             });
-  // Definição global da função carregarScript
-  function carregarScript(url) {
-        const existingScript = document.querySelector("script[data-fornecedor]");
-        if (existingScript) {
-            existingScript.parentNode.removeChild(existingScript);
-        }
+            // Definição global da função carregarScript
+            function carregarScript(url) {
+                const existingScript = document.querySelector("script[data-fornecedor]");
+                if (existingScript) {
+                    existingScript.parentNode.removeChild(existingScript);
+                }
 
-        const script = document.createElement("script");
-        script.onload = function () {
-            console.log("Script carregado:", url);
-        };
-        script.src = url;
-        script.setAttribute("data-fornecedor", "");
-        script.type = "module";
-        document.head.appendChild(script);
-    }
+                const script = document.createElement("script");
+                script.onload = function () {
+                    console.log("Script carregado:", url);
+                };
+                script.src = url;
+                script.setAttribute("data-fornecedor", "");
+                script.type = "module";
+                document.head.appendChild(script);
+            }
 
-    // Verifica se o dispositivo é um dispositivo móvel (largura menor que 768 pixels, por exemplo)
-    if (window.innerWidth < 768) {
-        // Exibe o modal de adicionar manualmente
-        const modal = document.getElementById("myModal");
-        if (modal) {
-            modal.style.display = "block";
-        }
+            // Verifica se o dispositivo é um dispositivo móvel (largura menor que 768 pixels, por exemplo)
+            if (window.innerWidth < 768) {
+                // Exibe o modal de adicionar manualmente
+                const modal = document.getElementById("myModal");
+                if (modal) {
+                    modal.style.display = "block";
+                }
 
-        // Carrega o script específico para adicionar manualmente
-        carregarScript("adicionar_manualmente.js");
-    }
-
-
+                // Carrega o script específico para adicionar manualmente
+                carregarScript("adicionar_manualmente.js");
+            }
         </script>
     </body>
 </html>
