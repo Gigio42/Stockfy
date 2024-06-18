@@ -86,7 +86,7 @@ export async function loadItemMaquinaData() {
       childTable += "</tbody></table>";
       row.child(childTable).show();
       tr.addClass("shown");
-      $(this).html('<i class="fas fa-minus"></i>'); 
+      $(this).html('<i class="fas fa-minus"></i>');
     }
   });
 }
