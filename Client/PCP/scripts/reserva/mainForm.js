@@ -91,12 +91,12 @@ export class Reservar {
 
       if (!this.animationExecuted) {
         anime({
-          targets: '.card.mb-3.shadow-sm',
+          targets: ".card.mb-3.shadow-sm",
           translateX: [-100, 0],
           opacity: [0, 1],
           delay: anime.stagger(100), 
           duration: 500,
-          easing: 'easeOutQuad'
+          easing: "easeOutQuad",
         });
         this.animationExecuted = true; 
       }
