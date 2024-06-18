@@ -94,7 +94,6 @@ async function example() {
     }
 
     await driver.findElement(By.id("sendbutton")).click();
-    await driver.sleep(100000);
   } finally {
     await driver.quit();
   }
