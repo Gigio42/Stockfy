@@ -144,10 +144,11 @@ background:#d4d4d4 ;
   }
 
 
+
 }
 
 .logo {
-  width: 10rem;
+  width: 7rem;
 }
 
 .logo-container {
@@ -375,7 +376,6 @@ body {
     padding: 1rem !important;
     border: none !important;
     width: 80%;
-    height: 90%;
     max-height: 90vh; /* Altura máxima do modal */
     display: flex;
     flex-direction: column;
@@ -582,12 +582,6 @@ formulário
   height: 3rem;
 }
 
-.header-custom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 15px;
-}
 
 .mobileOptions {
   background: #262626;
@@ -665,12 +659,28 @@ background: #232323;
 }
 
 @media (max-width: 902px) {
+
+  .header-custom {
+    display: flex;
+    color: #1a1a1a;
+    /* Cor do texto padrão para o header */
+    border-bottom: solid 1px #6a6a6a45;
+    background-color: #d4d4d4;
+    height: 5rem;
+    width: 100%;
+    padding-left: 0!important;
+    border-radius: 0 !important;
+  }
+
   .formQuantidade {
     margin-top: 1rem;
   }
 
   .card-value-div {
     font-size: 0.8rem;
+    padding: 0.7rem;
+    background-color: #3c3c3c5a;
+    border-radius: 1rem !important;
   }
 
   .body-div {
@@ -681,6 +691,10 @@ background: #232323;
   #partNumberInput {
     width: 8rem;
     font-size: 0.7rem !important;
+}
+
+.card-body {
+  padding-bottom: 0;
 }
 }
 
@@ -1028,6 +1042,7 @@ input[type="checkbox"]:checked::before {
 
 
 
+
 .light-mode .card-info-button,
 .light-mode .card-info-button:hover,
 .light-mode .card-info-button:focus,
@@ -1098,6 +1113,7 @@ input[type="checkbox"]:checked::before {
 
   .form-control {
     width: 50% !important;
+    height: fit-content;
   }
 
   #filterLength,
