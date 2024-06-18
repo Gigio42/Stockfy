@@ -22,6 +22,7 @@ body {
 
 }
 
+
 nav {
     display: flex;
     flex-direction: column;
@@ -35,7 +36,20 @@ nav ul li{
     align-items: center;
 }
 
+.btn-primary {
+background: var(--nav-background) ;
+border: none;
+border-radius: 1rem;
+height: 3rem;
+color: var( --text-color);
+}
 
+.header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
 
 nav ul li a {
     margin: 20px;
@@ -59,6 +73,29 @@ nav ul li a {
 .qr {
     border-radius: 2rem;
     width: 10rem;
+}
+
+.logostockfy {
+    width: 200px;
+}
+
+
+.eisso {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+}
+
+
+
+.modal {
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    width: 50%;
+    margin: 0 auto;
+    border-radius: 1rem;
 }
 
 nav ul li a:hover {

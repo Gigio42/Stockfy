@@ -1,58 +1,81 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Home Page</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="home.css" />
-    </head>
-    <body>
-        <div class="d-flex justify-content-end p-2">
-            <div class="theme-switch-wrapper ml-2">
-                <label class="theme-switch" for="checkbox">
-                    <input type="checkbox" id="checkbox" />
-                    <div class="slider round"></div>
-                </label>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="home.css" />
+
+</head>
+<body>
+    <div class="header" >
+    <button type="button" class="btn btn-primary ml-2" data-toggle="modal" data-target="#indicarModal">
+        Indicar a um Amigo
+    </button>
+    <div class="d-flex justify-content-end p-2">
+        <div class="theme-switch-wrapper ml-2">
+            <label class="theme-switch" for="checkbox">
+                <input type="checkbox" id="checkbox" />
+                <div class="slider round"></div>
+            </label>
+        </div>
+        </div>
+        
+    </div>
+
+    <nav>
+        <div>
+            <span id="nomeUsuario"></span>
+        </div>
+        <ul class="list-unstyled text-center">
+            <li class="mb-2"><a href="./compras/compras.html">Compras</a></li>
+            <li class="mb-2"><a href="./recebimento/recebimento.html">Recebimento</a></li>
+            <li class="mb-2"><a href="./PCP/pcp.html">Controle de Produção</a></li>
+            <li class="mb-2"><a href="./adm/admnew.html">Administração</a></li>
+            <li class="mb-2"><a href="./historico/historico.html">Consulta</a></li>
+            <li class="mb-2 logout-item"><a id="logoutButton" href="#" class="logout-link">Logout</a></li>
+        </ul>
+    </nav>
+
+    <!-- Modal para Indicar a um amigo -->
+    <div class="modal fade" id="indicarModal" tabindex="-1" role="dialog" aria-labelledby="indicarModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="eisso">
+            <img class="logostockfy" src="logoTransparente.png" alt="" />
+            <div class="modal-content">
+                    <div class="qrcode">
+                        <img class="qr" src="frame.png" alt="QR Code" />
+                </div>
+            </div>
             </div>
         </div>
-        <div class="qrcode">
-            <img class="qr" src="frame.png" alt="" />
-        </div>
+    </div>
 
-        <nav>
-            <div>
-                <span id="nomeUsuario"></span>
-            </div>
-            <ul class="list-unstyled text-center">
-                <li class="mb-2"><a href="./compras/compras.html">Compras</a></li>
-                <li class="mb-2"><a href="./recebimento/recebimento.html">Recebimento</a></li>
-                <li class="mb-2"><a href="./PCP/pcp.html">Controle de Produção</a></li>
-                <li class="mb-2"><a href="./adm/admnew.html">Administração</a></li>
-                <li class="mb-2"><a href="./historico/historico.html">Consulta</a></li>
-                <li class="mb-2 logout-item"><a id="logoutButton" href="#" class="logout-link">Logout</a></li>
-            </ul>
-        </nav>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-        <script>
-            if (localStorage.getItem("isLoggedIn") !== "true") {
-                window.location.href = "./login/login.html";
-            }
+    <script>
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+            window.location.href = "./login/login.html";
+        }
 
-            document.getElementById("logoutButton").addEventListener("click", function () {
-                localStorage.clear();
-                window.location.href = "./login/login.html";
-            });
+        document.getElementById("logoutButton").addEventListener("click", function () {
+            localStorage.clear();
+            window.location.href = "./login/login.html";
+        });
 
-            const checkbox = document.getElementById("checkbox");
-            checkbox.addEventListener("change", () => {
-                document.body.classList.toggle("light-mode");
-            });
+        const checkbox = document.getElementById("checkbox");
+        checkbox.addEventListener("change", () => {
+            document.body.classList.toggle("light-mode");
+        });
 
-            window.onload = function () {
-                const nome = localStorage.getItem("nome");
-                document.getElementById("nomeUsuario").textContent = "User: " + nome;
-            };
-        </script>
-    </body>
+        window.onload = function () {
+            const nome = localStorage.getItem("nome");
+            document.getElementById("nomeUsuario").textContent = "User: " + nome;
+        };
+    </script>
+</body>
+
 </html>
