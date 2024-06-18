@@ -757,6 +757,7 @@ document.getElementById("confirmarProcesso").addEventListener("click", async () 
             ordem: ordem,
           });
         }
+        window.location.reload(); // Recarrega a página
       } catch (error) {
         console.error("Erro ao verificar a existência do processo:", error);
       }
