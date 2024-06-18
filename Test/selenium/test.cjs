@@ -1,15 +1,22 @@
-const { Builder, By, Key, until } = require("selenium-webdriver");
+const { Builder, By, until } = require("selenium-webdriver");
 const faker = require("faker");
 
 async function example() {
   let driver = await new Builder().forBrowser("firefox").build();
   try {
     await driver.get("https://stockfysite.onrender.com/login/login.html");
-    await driver.findElement(By.id("username")).sendKeys("SeleniumTestUser");
-    await driver.findElement(By.id("password")).sendKeys("SeleTestUser123");
+
+    // Login Step
+    await driver.findElement(By.id("username")).sendKeys("seleniumUser");
+    await driver.findElement(By.id("password")).sendKeys("selenium");
     await driver.findElement(By.id("login")).click();
+
+    // Navigate to Compras
     await driver.wait(until.elementLocated(By.linkText("Compras")), 10000);
     await driver.findElement(By.linkText("Compras")).click();
+
+    // Select Fornecedor
+    await driver.wait(until.elementLocated(By.id("fornecedor")), 10000);
     await driver.findElement(By.id("fornecedor")).click();
     await driver.findElement(By.css("#fornecedor > option:nth-child(5)")).click();
 
@@ -17,7 +24,8 @@ async function example() {
     for (let i = 0; i < randomQuantity; i++) {
       let customerNumberElement = await driver.wait(until.elementIsVisible(driver.findElement(By.id("customerNumber"))), 10000);
       await driver.wait(until.elementIsEnabled(customerNumberElement), 10000);
-      await driver.executeScript("arguments[0].value = '999';", customerNumberElement);
+      await customerNumberElement.clear();
+      await customerNumberElement.sendKeys(faker.datatype.number({ min: 1, max: 999 }).toString().padStart(3, "0"));
 
       let quantityElement = await driver.findElement(By.id("quantity"));
       await quantityElement.clear();
@@ -77,12 +85,16 @@ async function example() {
 
       await driver.findElement(By.id("addPlateButton")).click();
 
+      // Set the expected date using JavaScript
       let expectedDateManualElement = await driver.findElement(By.id("expectedDateManual"));
+      let futureDate = faker.date.future().toISOString().split("T")[0];
+      await driver.executeScript("arguments[0].removeAttribute('readonly')", expectedDateManualElement);
       await expectedDateManualElement.clear();
-      await expectedDateManualElement.sendKeys(faker.date.future().toISOString().split("T")[0]);
+      await expectedDateManualElement.sendKeys(futureDate);
     }
 
     await driver.findElement(By.id("sendbutton")).click();
+    await driver.sleep(100000);
   } finally {
     await driver.quit();
   }
