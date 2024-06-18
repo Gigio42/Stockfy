@@ -352,6 +352,24 @@ body button.edit.disabled {
     background: #232323;
 }
 
+@media screen and (max-width: 902px) {
+    .closeButton {
+        display: none;
+    }
+}
+
+.logout {
+    width:40px ;
+    padding: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+.logout:hover {
+    background: #313131;
+
+}
+
+
 .alert {
     display: flex;
     flex-direction: column;
