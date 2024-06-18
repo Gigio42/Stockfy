@@ -6,7 +6,7 @@ async function example() {
   try {
     await driver.get("https://stockfysite.onrender.com/login/login.html");
 
-    // Login 
+    // Login
     await driver.findElement(By.id("username")).sendKeys("seleniumUser");
     await driver.findElement(By.id("password")).sendKeys("selenium");
     await driver.findElement(By.id("login")).click();
