@@ -9,7 +9,9 @@
     </head>
     <body>
         <div class="header">
-            <button type="button" class="btn btn-primary ml-2" data-toggle="modal" data-target="#indicarModal">Indicar a um Amigo</button>
+            <span id="nomeUsuario"></span>
+
+            <button type="button" class="btn btn-primary ml-2" data-toggle="modal" data-target="#indicarModal">Indicar a um Amigo <img class="share" src="icons8-share-48.png" alt=""></button>
             <div class="d-flex justify-content-end p-2">
                 <div class="theme-switch-wrapper ml-2">
                     <label class="theme-switch" for="checkbox">
@@ -22,7 +24,6 @@
 
         <nav>
             <div>
-                <span id="nomeUsuario"></span>
             </div>
             <ul class="list-unstyled text-center">
                 <li class="mb-2"><a href="./compras/compras.html">Compras</a></li>
@@ -69,7 +70,7 @@
 
             window.onload = function () {
                 const nome = localStorage.getItem("nome");
-                document.getElementById("nomeUsuario").textContent = "User: " + nome;
+                document.getElementById("nomeUsuario").innerHTML = '<img class="useron" src="icons8-online-30.png" alt="" />' + nome;
             };
         </script>
     </body>
