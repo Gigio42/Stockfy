@@ -62,6 +62,7 @@ export function createCard(item, maquinaName, estado, executor) {
     const data = await updateItemStatus(itemId, maquinaName, executor);
     alert(`Item ${item.Item.part_number}, id: ${item.Item.id_item} enviado`);
     console.log(data);
+    window.location.reload();
   });
   buttonContainer.appendChild(submitButton);
 
@@ -96,7 +97,6 @@ function updateSubmitButtonState(chapasContainer, submitButton) {
     checkbox.addEventListener("change", updateButtonState);
   });
 
-  // Inicializar o estado do botão baseado no estado inicial dos checkboxes
   updateButtonState();
 }
 
