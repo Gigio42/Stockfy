@@ -107,10 +107,10 @@ background: #ff434300 !important;
     position: fixed;
     bottom: 0;
     left: 0; /* ou right: 0; para alinhamento à direita */
-    width: 98%;
-    padding: 3rem;
+    width: 94%;
+    padding: 1rem;
     background-color: #232323;
-    height: 20%;
+    height: 5rem;
     align-items: center;
     margin: 1rem;
     border-radius: 2rem;
@@ -352,6 +352,24 @@ body button.edit.disabled {
     background: #232323;
 }
 
+@media screen and (max-width: 902px) {
+    .closeButton {
+        display: none;
+    }
+}
+
+.logout {
+    width:40px ;
+    padding: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+.logout:hover {
+    background: #313131;
+
+}
+
+
 .alert {
     display: flex;
     flex-direction: column;
@@ -529,7 +547,7 @@ border-radius: 2rem;
 
 
 .enviarManual {
-    font-size: 2rem;
+    font-size: 1.5rem;
     border-radius: 1rem;
     background: #2ab14a61;
     color: #39ea62;

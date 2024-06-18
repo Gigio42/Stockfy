@@ -103,6 +103,7 @@ function formatarDataParaEnvio(dateString) {
 document.getElementById("sendbutton").addEventListener("click", function () {
   console.log("Botão clicado!");
   sendJSONDataToBackend();
+  window.location.reload(); // Recarrega a página
 });
 
 // Função para enviar os dados JSON ao backend

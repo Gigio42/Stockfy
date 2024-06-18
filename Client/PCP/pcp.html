@@ -23,11 +23,20 @@
                         <img class="logo" src="./media/logoTransparente.png" alt="Logo" class="logoImg" />
                     </div>
                     <div class="p-2 navbar">
+                        <div class="navbar-header">
+                            <div class="media hide-on-mobile">
+                                <img class="mr-3 align-self-center" alt="Profile Pic" id="profilePic" style="width: 50px; height: 50px; border-radius: 50%" />
+                                <div class="media-body">
+                                    <h5 class="mt-0 mb-0" id="user-name">Username</h5>
+                                    <p class="mb-0 text-muted" id="role">Administrador</p>
+                                </div>
+                            </div>
+                        </div>
                         <ul class="list-unstyled">
                             <li class="icon-li mb-2">
                                 <a id="optionsButton">
                                     <img class="imgicon" src="media/bandeira (1).png" alt="Dashboard Icon" />
-                                    Reservar Chapa
+                                    Reservar
                                 </a>
                             </li>
                             <li class="mb-2 active">
@@ -46,15 +55,6 @@
                         <div class="d-flex align-items-center">
                             <h1 class="m-0 hide-on-mobile">Gerenciamento PCP</h1>
                         </div>
-                        <div class="navbar-header">
-                            <div class="media hide-on-mobile">
-                                <img class="mr-3 align-self-center" alt="Profile Pic" id="profilePic" style="width: 50px; height: 50px; border-radius: 50%" />
-                                <div class="media-body">
-                                    <h5 class="mt-0 mb-0" id="user-name">Username</h5>
-                                    <p class="mb-0 text-muted" id="role">Administrador</p>
-                                </div>
-                            </div>
-                        </div>
 
                         <div class="d-flex justify-content-around align-items-center" style="min-height: 70px">
                             <div class="mx-sm-1 mx-0 my-1 align-self-center">
@@ -63,12 +63,14 @@
                             <div class="mx-sm-1 mx-0 my-1 align-self-center">
                                 <button id="mobileOpenModalLink" class="mobileOptions px-sm-3 px-2">CONSULTAR</button>
                             </div>
+
+                            <button id="logoutButton">
+                                <img class="sair" src="../adm/media/sair (1).png" alt="Sair icon" />
+                            </button>
+
                             <div class="dark-mode-toggle mx-sm-1 mx-0 my-1 align-self-center px-sm-3 px-2">
                                 <input type="checkbox" id="darkModeToggle" />
                                 <label for="darkModeToggle"></label>
-                            </div>
-                            <div class="mx-sm-1 mx-0 my-1 align-self-center">
-                                <button id="logoutButton" class="btn btn-primary px-sm-3 px-2">Logout</button>
                             </div>
                         </div>
                     </div>
@@ -83,7 +85,7 @@
                                             <button type="submit" class="btn agrupar-button w-100 update">ATUALIZAR</button>
                                         </div>
                                         <div class="form-group">
-                                            <div class="d-flex align-items-center">
+                                            <div class="loriei d-flex align-items-center">
                                                 <select class="form-control" id="sortKey" style="flex-grow: 1">
                                                     <option value="largura">Largura</option>
                                                     <option value="comprimento">Comprimento</option>
@@ -133,7 +135,7 @@
                     <!-- reservar chapas modal -->
                     <div id="popupContainer" class="modal" style="display: none">
                         <div id="modalContent" class="modal-content">
-                            <span class="close" id="closeModal">&times;</span>
+                            <span class="close d-none" id="closeModal">&times;</span>
                             <form id="partNumberForm">
                                 <label for="partNumber">Part Number:</label>
                                 <input type="text" id="partNumber" name="partNumber" />
