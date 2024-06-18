@@ -250,6 +250,25 @@ body {
   overflow-y: hidden;
 }
 
+#mobileOptionsButton,
+#mobileOpenModalLink {
+  margin-left:1rem ;
+  background: #181818;
+
+}
+
+.icoreserv,
+.iconsulta {
+  width: 30px;
+}
+
+
+
+.hed {
+  width: 100%;
+  display: flex !important;
+}
+
 .header {
   padding: 0;
   display: flex;
