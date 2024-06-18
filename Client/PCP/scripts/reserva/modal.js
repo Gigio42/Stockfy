@@ -48,7 +48,7 @@ function createModalHandler(modalContent, closeModal, getSelectedSubcards, popup
     const newContent = document.createElement("div");
 
     const contentWrapper = document.createElement("div");
-    contentWrapper.style.maxHeight = "50vh";
+    contentWrapper.style.maxHeight = "70vh";
     contentWrapper.style.overflowY = "auto";
 
     const keys = ["id_chapa", "largura", "fornecedor", "qualidade", "quantidade_disponivel"];
@@ -105,7 +105,7 @@ function createFormRow(chapa) {
   const formRow = document.createElement("div");
   formRow.className = "form-row row flex-nowrap overflow-auto w-100 align-items-stretch";
 
-  const quantityInput = createInputCell("number", "Quantidade", `quantityInput-${chapa.id_chapa}`);
+  const quantityInput = createInputCell("number", "Quantidade", `quantityInput-${chapa.id_chapa}`, "formQuantidade");
 
   const medidaInput = createInputCell("text", "medida", `medidaInput-${chapa.id_chapa}`);
   medidaInput.style.display = "none";
@@ -133,20 +133,27 @@ function createFormRow(chapa) {
   return formRow;
 }
 
-function createInputCell(type, placeholder, id) {
+function createInputCell(type, placeholder, id, additionalClass) {
   const cell = document.createElement("div");
   cell.className = "form-cell col text-center value align-items-center justify-content-center rounded";
+
   const input = document.createElement("input");
   input.type = type;
   input.placeholder = placeholder;
   input.id = id;
   input.min = 0;
-  input.style.width = "100%"; // Add this line
+  input.style.width = "50%";
   input.oninput = function () {
     if (this.value < 0) {
       this.value = 0;
     }
   };
+
+  // Adiciona a classe adicional, se fornecida
+  if (additionalClass) {
+    input.classList.add(additionalClass);
+  }
+
   cell.appendChild(input);
   return cell;
 }
