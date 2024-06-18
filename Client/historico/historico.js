@@ -1,6 +1,7 @@
 // main.js
 import { loadChapasData } from "./script/sections/chapasTable.js";
 import { loadChapasCards } from "./script/sections/chapaCards.js";
+import { loadItemMaquinaData } from "./script/sections/itemTable.js";
 
 $(document).ready(function () {
   var ctx1 = document.getElementById("myChart1").getContext("2d");
@@ -22,6 +23,14 @@ $(document).ready(function () {
 
   $("#myChart1, #myChart2, #myChart3").mouseleave(function () {
     $("#chartCarousel").carousel("cycle");
+  });
+
+  $(".nav-item").on("click", async function () {
+    // Fetch the item's information, load it into the table, and initialize the DataTable
+    await loadItemMaquinaData();
+
+    // Open the modal
+    $("#itemModal").modal("show");
   });
 });
 
