@@ -84,6 +84,24 @@ async function admRoute(fastify, options) {
       reply.code(500).send({ message: "Erro ao criar Itens_Maquina." });
     }
   });
+
+  fastify.get("/item_maquina/existence-check", async (request, reply) => {
+    try {
+      const { itemId, maquinaId } = request.query;
+      console.log(`Received existence check request for itemId: ${itemId}, maquinaId: ${maquinaId}`);
+
+      if (!itemId || !maquinaId) {
+        reply.code(400).send({ message: "itemId and maquinaId are required." });
+        return;
+      }
+
+      const exists = await admController.checkItemMaquinaExists(parseInt(itemId), parseInt(maquinaId));
+      reply.send({ exists });
+    } catch (err) {
+      console.error("Erro ao verificar a existência do item_maquina:", err);
+      reply.code(500).send({ message: "Erro ao verificar a existência do item_maquina." });
+    }
+  });
 }
 
 export default admRoute;

@@ -1,23 +1,49 @@
-const { Builder, By, Key, until } = require("selenium-webdriver");
+const { Builder, By, until } = require("selenium-webdriver");
 const faker = require("faker");
 
 async function example() {
   let driver = await new Builder().forBrowser("firefox").build();
   try {
     await driver.get("https://stockfysite.onrender.com/login/login.html");
-    await driver.findElement(By.id("username")).sendKeys("SeleniumTestUser");
-    await driver.findElement(By.id("password")).sendKeys("SeleTestUser123");
+
+    // Login
+    await driver.findElement(By.id("username")).sendKeys("seleniumUser");
+    await driver.findElement(By.id("password")).sendKeys("selenium");
     await driver.findElement(By.id("login")).click();
+
+    // ir para compras
     await driver.wait(until.elementLocated(By.linkText("Compras")), 10000);
     await driver.findElement(By.linkText("Compras")).click();
+
+    // selecionar fornecedor
+    await driver.wait(until.elementLocated(By.id("fornecedor")), 10000);
     await driver.findElement(By.id("fornecedor")).click();
     await driver.findElement(By.css("#fornecedor > option:nth-child(5)")).click();
 
-    let randomQuantity = Math.floor(Math.random() * 5) + 1;
+    // let randomQuantity = Math.floor(Math.random() * 5) + 1;
+    let randomQuantity = 5;
     for (let i = 0; i < randomQuantity; i++) {
+      let fornecedor = faker.random.arrayElement(["IRANI", "PENHA", "FERNANDEZ"]);
+      let qualidade;
+      let coluna;
+
+      if (fornecedor === "FERNANDEZ") {
+        qualidade = faker.random.arrayElement(["KMK", "FK2"]);
+      } else if (fornecedor === "IRANI") {
+        qualidade = faker.random.arrayElement(["SLL40", "DKL80"]);
+        if (qualidade === "SLL40") {
+          coluna = 40;
+        } else {
+          coluna = 80;
+        }
+      } else if (fornecedor === "PENHA") {
+        qualidade = faker.random.arrayElement(["BR11JJ", "BR11S"]);
+      }
+
       let customerNumberElement = await driver.wait(until.elementIsVisible(driver.findElement(By.id("customerNumber"))), 10000);
       await driver.wait(until.elementIsEnabled(customerNumberElement), 10000);
-      await driver.executeScript("arguments[0].value = '999';", customerNumberElement);
+      await customerNumberElement.clear();
+      await customerNumberElement.sendKeys(faker.datatype.number({ min: 1, max: 999 }).toString().padStart(3, "0"));
 
       let quantityElement = await driver.findElement(By.id("quantity"));
       await quantityElement.clear();
@@ -25,7 +51,7 @@ async function example() {
 
       let qualityElement = await driver.findElement(By.id("quality"));
       await qualityElement.clear();
-      await qualityElement.sendKeys(faker.random.arrayElement(["KMK", "FK2", "SLL40", "DKL80", "BR11JJ", "BR11S"]));
+      await qualityElement.sendKeys(qualidade);
 
       let waveElement = await driver.findElement(By.id("wave"));
       await waveElement.clear();
@@ -69,7 +95,7 @@ async function example() {
 
       let supplierElement = await driver.findElement(By.id("supplier"));
       await supplierElement.clear();
-      await supplierElement.sendKeys(faker.random.arrayElement(["IRANI", "PENHA", "FERNANDEZ"]));
+      await supplierElement.sendKeys(fornecedor);
 
       let purchaseIDElement = await driver.findElement(By.id("purchaseID"));
       await purchaseIDElement.clear();
@@ -78,8 +104,10 @@ async function example() {
       await driver.findElement(By.id("addPlateButton")).click();
 
       let expectedDateManualElement = await driver.findElement(By.id("expectedDateManual"));
+      let futureDate = faker.date.future().toISOString().split("T")[0];
+      await driver.executeScript("arguments[0].removeAttribute('readonly')", expectedDateManualElement);
       await expectedDateManualElement.clear();
-      await expectedDateManualElement.sendKeys(faker.date.future().toISOString().split("T")[0]);
+      await expectedDateManualElement.sendKeys(futureDate);
     }
 
     await driver.findElement(By.id("sendbutton")).click();

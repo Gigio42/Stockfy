@@ -47,6 +47,12 @@ body, table, td, th, input[type="text"], input[type="date"], select{
     align-items: center;
 }
 
+.logo {
+    width: 8rem;
+    margin-left: 1rem;
+
+}
+
 
 aside {
     position: fixed; /* Fixa o aside na posição, fazendo-o não rolar com o resto da página */

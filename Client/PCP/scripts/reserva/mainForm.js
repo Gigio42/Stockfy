@@ -18,6 +18,7 @@ export class Reservar {
     this.updateFormElement = document.getElementById("groupingForm");
     this.checkboxButtons = document.querySelectorAll(".checkbox-button");
     this.selectedChapas = new Map();
+    this.animationExecuted = false; // Flag to track animation execution
   }
 
   initialize() {
@@ -87,6 +88,18 @@ export class Reservar {
         this.cards.push(card);
         this.containerElement.appendChild(card.createCard());
       });
+
+      if (!this.animationExecuted) {
+        anime({
+          targets: ".card.mb-3.shadow-sm",
+          translateX: [-100, 0],
+          opacity: [0, 1],
+          delay: anime.stagger(100),
+          duration: 500,
+          easing: "easeOutQuad",
+        });
+        this.animationExecuted = true;
+      }
 
       reservarModal(() => Array.from(this.selectedChapas.values()));
     } catch (error) {

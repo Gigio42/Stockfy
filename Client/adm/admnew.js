@@ -576,6 +576,11 @@ async function createEmptyCard(cardWrapper) {
       machineList.className = "machine-list";
 
       machines.forEach((machine) => {
+        // Verificar se a máquina já está adicionada ao item
+        const existingMachineCards = cardWrapper.querySelectorAll(".machine-card");
+        const machineAlreadyAdded = Array.from(existingMachineCards).some((card) => card.textContent === machine.nome);
+        if (machineAlreadyAdded) return;
+
         const machineButton = document.createElement("button");
         machineButton.className = "machine-card";
         machineButton.textContent = machine.nome;
@@ -722,31 +727,56 @@ document.addEventListener("DOMContentLoaded", function () {
 document.getElementById("confirmarProcesso").addEventListener("click", async () => {
   const cards = document.querySelectorAll(".card");
   const items = [];
+  const duplicates = [];
 
-  cards.forEach((card) => {
+  for (const card of cards) {
     const emptyCard = card.closest(".card-wrapper").querySelector(".empty-card");
     const maquinaId = emptyCard?.dataset.maquinaId;
+
     if (maquinaId) {
+      const itemId = parseInt(card.dataset.itemId);
       const ordem = parseInt(card.dataset.ordem) + 1;
 
-      items.push({
-        itemId: parseInt(card.dataset.itemId),
-        maquinaId: parseInt(maquinaId),
-        ordem: ordem,
-      });
-    }
-  });
+      try {
+        const response = await axios.get(`${BASE_URL}/adm/item_maquina/existence-check`, {
+          params: {
+            itemId: itemId,
+            maquinaId: maquinaId,
+          },
+        });
 
-  if (items.length === 0) {
-    console.warn("Nenhum item selecionado.");
-    return;
+        if (response.data.exists) {
+          duplicates.push({
+            itemId: itemId,
+            maquinaId: maquinaId,
+          });
+        } else {
+          items.push({
+            itemId: itemId,
+            maquinaId: parseInt(maquinaId), // Convert to integer here
+            ordem: ordem,
+          });
+          window.location.reload(); // Recarrega a página
+        }
+      } catch (error) {
+        console.error("Erro ao verificar a existência do processo:", error);
+      }
+    }
   }
 
-  try {
-    const response = await axios.post(`${BASE_URL}/adm/item_maquina/selecionar-maquinas`, items);
-    console.log(response.data.message);
-  } catch (error) {
-    console.error("Erro ao confirmar processos:", error);
+  if (duplicates.length > 0) {
+    alert("Alguns processos já existem:\n" + duplicates.map((d) => `Item ID: ${d.itemId}, Máquina ID: ${d.maquinaId}`).join("\n"));
+  }
+
+  if (items.length > 0) {
+    try {
+      const response = await axios.post(`${BASE_URL}/adm/item_maquina/selecionar-maquinas`, items);
+      console.log(response.data.message);
+    } catch (error) {
+      console.error("Erro ao confirmar processos:", error);
+    }
+  } else {
+    console.warn("Nenhum item selecionado.");
   }
 });
 
