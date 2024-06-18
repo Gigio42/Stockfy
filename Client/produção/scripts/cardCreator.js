@@ -62,6 +62,7 @@ export function createCard(item, maquinaName, estado, executor) {
     const data = await updateItemStatus(itemId, maquinaName, executor);
     alert(`Item ${item.Item.part_number}, id: ${item.Item.id_item} enviado`);
     console.log(data);
+    window.location.reload();
   });
   buttonContainer.appendChild(submitButton);
 
@@ -86,13 +87,17 @@ export function createCard(item, maquinaName, estado, executor) {
 function updateSubmitButtonState(chapasContainer, submitButton) {
   const checkboxes = chapasContainer.querySelectorAll('input[type="checkbox"]');
 
+  function updateButtonState() {
+    const allChecked = Array.from(checkboxes).every((cb) => cb.checked);
+    submitButton.disabled = !allChecked;
+    submitButton.classList.toggle("enabled", allChecked);
+  }
+
   checkboxes.forEach((checkbox) => {
-    checkbox.addEventListener("change", () => {
-      const allChecked = Array.from(checkboxes).every((cb) => cb.checked);
-      submitButton.disabled = !allChecked;
-      submitButton.classList.toggle("enabled", allChecked);
-    });
+    checkbox.addEventListener("change", updateButtonState);
   });
+
+  updateButtonState();
 }
 
 export function createChapasHeader(keys) {

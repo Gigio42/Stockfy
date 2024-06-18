@@ -1,16 +1,40 @@
 import { reserveChapas } from "../utils/connection.js";
 
-export function handleShowSelectedButtonClick(getSelectedSubcards) {
+export function handleShowSelectedButtonClick(getSelectedChapas) {
   const showSelectedButton = document.getElementById("showSelectedButton");
   const modalContent = document.getElementById("modalContent");
   const closeModal = document.getElementById("closeModal");
   const popupContainer = document.getElementById("popupContainer");
 
   removeExistingListener(showSelectedButton);
-  showSelectedButton.onclick = createModalHandler(modalContent, closeModal, getSelectedSubcards, popupContainer);
+  showSelectedButton.onclick = () => {
+    const selectedChapas = getSelectedChapas();
+    if (selectedChapas.length > 0) {
+      const modalHandler = createModalHandler(modalContent, closeModal, () => selectedChapas, popupContainer);
+      modalHandler();
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Precisa selecionar pelomenos 1 chapa!",
+      });
+    }
+  };
   closeModal.onclick = () => {
     popupContainer.style.display = "none";
   };
+
+  window.addEventListener("click", (event) => {
+    if (event.target == popupContainer) {
+      popupContainer.style.display = "none";
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      popupContainer.style.display = "none";
+    }
+  });
 }
 
 function removeExistingListener(element) {
@@ -21,14 +45,13 @@ function removeExistingListener(element) {
 
 function createModalHandler(modalContent, closeModal, getSelectedSubcards, popupContainer) {
   return () => {
-    modalContent.innerHTML = "";
-    modalContent.appendChild(closeModal);
+    const newContent = document.createElement("div");
 
     const contentWrapper = document.createElement("div");
-    contentWrapper.style.maxHeight = "50vh";
+    contentWrapper.style.maxHeight = "70vh";
     contentWrapper.style.overflowY = "auto";
 
-    const keys = ["id_chapa", "largura", "fornecedor", "qualidade", "quantidade_comprada", "quantidade_estoque"];
+    const keys = ["id_chapa", "largura", "fornecedor", "qualidade", "quantidade_disponivel"];
 
     const selectedSubcards = getSelectedSubcards();
     selectedSubcards.forEach((chapa) => {
@@ -37,7 +60,16 @@ function createModalHandler(modalContent, closeModal, getSelectedSubcards, popup
 
     contentWrapper.appendChild(createButtonFormContainer(selectedSubcards));
 
-    modalContent.appendChild(contentWrapper);
+    newContent.appendChild(contentWrapper);
+
+    Array.from(modalContent.childNodes).forEach((child) => {
+      if (child !== closeModal) {
+        modalContent.removeChild(child);
+      }
+    });
+
+    modalContent.appendChild(newContent);
+
     popupContainer.style.display = "block";
   };
 }
@@ -49,7 +81,7 @@ function createCard(chapa, keys) {
   cardBody.className = "body-div card-body rounded d-flex align-items-center";
 
   const valueRow = document.createElement("div");
-  valueRow.className = "value-row row flex-nowrap overflow-auto w-100 align-items-stretch";
+  valueRow.className = "value-row row overflow-auto w-100 align-items-stretch";
   keys.forEach((key) => {
     const valueDiv = document.createElement("div");
     valueDiv.className = "card-value-div col text-center value align-items-center justify-content-center rounded";
@@ -73,12 +105,12 @@ function createFormRow(chapa) {
   const formRow = document.createElement("div");
   formRow.className = "form-row row flex-nowrap overflow-auto w-100 align-items-stretch";
 
-  const quantityInput = createInputCell("number", "Quantidade", `quantityInput-${chapa.id_chapa}`);
+  const quantityInput = createInputCell("number", "Quantidade", `quantityInput-${chapa.id_chapa}`, "formQuantidade");
 
   const medidaInput = createInputCell("text", "medida", `medidaInput-${chapa.id_chapa}`);
   medidaInput.style.display = "none";
 
-  const recycleTd = document.createElement("div");
+  /* const recycleTd = document.createElement("div");
   recycleTd.className = "form-cell col-1 text-center value align-items-center justify-content-center rounded";
   recycleTd.style.display = "flex";
   recycleTd.style.justifyContent = "center";
@@ -92,28 +124,36 @@ function createFormRow(chapa) {
   recycleCheckbox.onchange = () => {
     medidaInput.style.display = recycleCheckbox.checked ? "" : "none";
   };
-  recycleTd.appendChild(recycleCheckbox);
+  recycleTd.appendChild(recycleCheckbox); */
 
   formRow.appendChild(quantityInput);
   formRow.appendChild(medidaInput);
-  formRow.appendChild(recycleTd);
+  /* formRow.appendChild(recycleTd); */
 
   return formRow;
 }
 
-function createInputCell(type, placeholder, id) {
+function createInputCell(type, placeholder, id, additionalClass) {
   const cell = document.createElement("div");
   cell.className = "form-cell col text-center value align-items-center justify-content-center rounded";
+
   const input = document.createElement("input");
   input.type = type;
   input.placeholder = placeholder;
   input.id = id;
   input.min = 0;
+  input.style.width = "50%";
   input.oninput = function () {
     if (this.value < 0) {
       this.value = 0;
     }
   };
+
+  // Adiciona a classe adicional, se fornecida
+  if (additionalClass) {
+    input.classList.add(additionalClass);
+  }
+
   cell.appendChild(input);
   return cell;
 }
@@ -136,6 +176,9 @@ function createPartNumberForm() {
   input.id = "partNumberInput";
   input.placeholder = "PART NUMBER";
   form.appendChild(input);
+
+  $(input).mask("9999.9999");
+
   return form;
 }
 
@@ -150,15 +193,53 @@ function createReserveButton(selectedSubcards) {
       chapaID: subcard.id_chapa,
       quantity: document.getElementById(`quantityInput-${subcard.id_chapa}`).value,
       medida: document.getElementById(`medidaInput-${subcard.id_chapa}`).value,
-      keepRemaining: document.getElementById(`recycleCheckbox-${subcard.id_chapa}`).checked,
+      keepRemaining: false,
     }));
 
+    const loadingSpinner = document.getElementById("loadingSpinner");
+    loadingSpinner.style.display = "block";
+
     try {
-      const response = await reserveChapas({ partNumber, chapas });
-      console.log(response);
+      const reservedBy = localStorage.getItem("nome");
+      console.log("reservedBy:", reservedBy);
+      const response = await reserveChapas({ partNumber, chapas, reservedBy });
+      console.log("this is the response:", response);
+      localStorage.setItem("showSwal", "true");
+      localStorage.setItem("partNumber", partNumber);
+      location.reload();
     } catch (error) {
-      alert(error.message);
+      console.error("This is the error response:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: error.message,
+      });
+    } finally {
+      loadingSpinner.style.display = "none";
     }
   };
   return reserveButton;
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const showSwal = localStorage.getItem("showSwal");
+  const partNumber = localStorage.getItem("partNumber");
+  if (showSwal === "true") {
+    Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 5000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
+      },
+    }).fire({
+      icon: "success",
+      title: `Item ${partNumber} reservado.`,
+    });
+    localStorage.removeItem("showSwal");
+    localStorage.removeItem("partNumber");
+  }
+});

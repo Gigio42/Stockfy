@@ -418,6 +418,7 @@ function sendJSONDataToBackend() {
     })
     .then(() => {
       console.log("Dados enviados com sucesso!");
+      window.location.reload(); // Recarrega a página ao enviar dados com sucesso
     })
     .catch((error) => {
       console.error("Erro ao enviar dados:", error);

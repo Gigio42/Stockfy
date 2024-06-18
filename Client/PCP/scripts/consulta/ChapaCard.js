@@ -6,34 +6,51 @@ export class ChapaCard {
     this.chapa = chapa;
     this.itemStatus = itemStatus;
     this.itemId = itemId;
-    this.keys = ["status", "largura", "vincos", "qualidade", "onda", "quantidade_disponivel", "data_prevista"];
+    this.keys = ["status", "largura", "vincos", "qualidade", "onda", "data_prevista"];
   }
 
   createValueDiv(key, value) {
     let valueDiv = createElementWithClass("div", `card-value-div col-12 col-sm text-center value align-items-center justify-content-center rounded`);
 
     if (key.startsWith("data")) {
-      let [day, month] = value.split("/");
-      value = `${day}/${month}`;
-    }
-
-    if (key === "status") {
-      valueDiv.className += " card-status d-flex align-items-center justify-content-center";
-      let status = value.toLowerCase();
-      if (status === "recebido") {
-        valueDiv.className += " card-status-recebido ";
-      } else if (status === "comprado") {
-        valueDiv.className += " card-status-comprado ";
+      let dateParts;
+      if (value.includes("/")) {
+        // Date is in "dd/mm/yyyy" format
+        dateParts = value.split("/");
+      } else if (value.includes("-")) {
+        // Date is in "yyyy-mm-dd" format
+        dateParts = value.split("-");
+        dateParts.reverse();
+      }
+      if (dateParts) {
+        let [day, month] = dateParts;
+        value = `${day}/${month}`;
       }
     }
 
-    if (key === "largura") {
+    if (key === "status") {
+      valueDiv.className += " card-status ";
+      let status = value.toLowerCase();
+      if (status === "recebido") {
+        valueDiv.className += "card-status-recebido";
+      } else if (status === "comprado") {
+        valueDiv.className += "card-status-comprado";
+      } else if (status === "parcial" || status === "parcialmente") {
+        valueDiv.className += "card-status-parcial";
+      } else if (status === "usado") {
+        valueDiv.className += "card-status-usado";
+      }
+
+      valueDiv.textContent = value.toUpperCase();
+    } else if (key === "largura") {
       let largura = this.chapa.largura;
       let comprimento = this.chapa.comprimento;
       value = `${largura} x ${comprimento}`;
+      valueDiv.textContent = value;
+    } else {
+      valueDiv.textContent = value;
     }
 
-    valueDiv.textContent = value;
     return valueDiv;
   }
 

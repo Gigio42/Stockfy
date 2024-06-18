@@ -7,8 +7,12 @@ async function usuarioRoutes(fastify, options) {
   fastify.get("/", async (request, reply) => {
     const { name, password } = request.query;
     try {
-      const exists = await usuarioController.getUsuario({ name, password });
-      reply.send({ exists });
+      const result = await usuarioController.getUsuario({ name, password });
+      if (result.success) {
+        reply.send({ success: true });
+      } else {
+        reply.send({ success: false, message: "Usuário ou senha inválidos!" });
+      }
     } catch (error) {
       reply.status(500).send({ error: "Erro ao verificar o usuário" });
     }
@@ -17,12 +21,10 @@ async function usuarioRoutes(fastify, options) {
   fastify.post("/add", async (request, reply) => {
     const { name, password } = request.body;
     try {
-      console.log(name, password);
       const newUser = await usuarioController.addUsuario({ name, password });
-      console.log("test");
-      reply.send({ success: true });
+      reply.send(newUser); // Aqui enviamos a resposta detalhada do controlador
     } catch (error) {
-      reply.status(500).send({ success: false, error: "Erro ao adicionar o usuário" });
+      reply.status(500).send({ success: false, message: "Erro ao adicionar o usuário" });
     }
   });
 }

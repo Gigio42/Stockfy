@@ -19,18 +19,24 @@ export class ItemModal {
     this.closeModalButton.addEventListener("click", this.closeModal.bind(this));
     this.modal.addEventListener("click", this.closeModal.bind(this));
     this.modalContent.addEventListener("click", (event) => event.stopPropagation());
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        this.closeModal();
+      }
+    });
   }
 
   async openModal(event) {
     event.preventDefault();
-    this.modal.style.display = "block";
+    this.modal.classList.add("open");
     const items = await fetchItems();
     this.renderItems = createModalContent(this.modalContent, this.closeModalButton, () => this.generateContent(items));
     this.renderItems();
   }
 
   closeModal() {
-    this.modal.style.display = "none";
+    this.modal.classList.remove("open");
   }
 
   createSearchBar() {
@@ -44,9 +50,11 @@ export class ItemModal {
         this.searchButton.click();
       }
     });
+
+    $(searchBar).mask("9999.9999");
+
     return searchBar;
   }
-
   createSearchButton() {
     const searchButton = document.createElement("button");
     searchButton.textContent = "Search";

@@ -18,6 +18,7 @@ export class Reservar {
     this.updateFormElement = document.getElementById("groupingForm");
     this.checkboxButtons = document.querySelectorAll(".checkbox-button");
     this.selectedChapas = new Map();
+    this.animationExecuted = false; // Flag to track animation execution
   }
 
   initialize() {
@@ -76,12 +77,29 @@ export class Reservar {
         }
       };
 
-      this.containerElement.innerHTML = "";
+      this.cards = [];
+      while (this.containerElement.firstChild) {
+        this.containerElement.removeChild(this.containerElement.firstChild);
+      }
+
       items.forEach((chapa, index) => {
         const keys = ["largura", "vincos", "qualidade", "onda", "quantidade_disponivel", "data_prevista", "status"];
         const card = new Card(chapa, keys, index, sortKey, onSubcardSelectionChange, this.selectedChapas.has(chapa.id_chapa));
+        this.cards.push(card);
         this.containerElement.appendChild(card.createCard());
       });
+
+      if (!this.animationExecuted) {
+        anime({
+          targets: ".card.mb-3.shadow-sm",
+          translateX: [-100, 0],
+          opacity: [0, 1],
+          delay: anime.stagger(100),
+          duration: 500,
+          easing: "easeOutQuad",
+        });
+        this.animationExecuted = true;
+      }
 
       reservarModal(() => Array.from(this.selectedChapas.values()));
     } catch (error) {
@@ -89,3 +107,8 @@ export class Reservar {
     }
   }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const reservar = new Reservar();
+  reservar.initialize();
+});

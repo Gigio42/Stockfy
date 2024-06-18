@@ -8,41 +8,43 @@ class UsuarioController {
   }
 
   async getUsuario(data) {
-    if (!data) throw new Error("Data is undefined");
-
     const { name, password } = data;
 
-    // Buscar usuário com nome e senha correspondentes
-    const usuario = await prisma.usuarios.findFirst({
+    const usuario = await this.prisma.usuarios.findFirst({
       where: {
         username: name,
-        password: password, // Aqui você deve idealmente comparar hashes, não senhas em texto plano
+        password: password,
       },
     });
 
-    // Logar o resultado da verificação
     if (usuario) {
-      console.log(`Usuario found: ${name}`);
-      return true;
+      return { success: true };
     } else {
-      console.log(`No usuario found with name ${name} and the provided password.`);
-      return false;
+      return { success: false, message: "Usuário ou senha inválidos!" };
     }
   }
 
   async addUsuario(data) {
-    console.log("test2");
     const { name, password } = data;
-    const hashedPassword = password; // Substitua isso por uma hash real com bcrypt
+
+    const existingUser = await this.prisma.usuarios.findFirst({
+      where: {
+        username: name,
+      },
+    });
+
+    if (existingUser) {
+      return { success: false, message: "O nome de usuário já existe" };
+    }
 
     const newUser = await this.prisma.usuarios.create({
       data: {
         username: name,
-        password: hashedPassword,
+        password: password,
       },
     });
 
-    return newUser;
+    return { success: true, message: "Usuário cadastrado com sucesso!", id: newUser.id };
   }
 }
 

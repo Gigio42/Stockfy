@@ -28,13 +28,13 @@ export class ItemCard {
     const previewDiv = this.createPreviewDiv();
     titleContainer.appendChild(previewDiv);
 
-    const chapasContainer = this.createChapasContainer(); // Define chapasContainer here
+    const chapasContainer = this.createChapasContainer();
     cardBody.appendChild(chapasContainer);
 
     const buttonContainer = createElementWithClass("div", "d-flex justify-content-end");
     titleContainer.appendChild(buttonContainer);
 
-    const dropdownButton = this.createDropdownButton(chapasContainer); // Now chapasContainer is defined
+    const dropdownButton = this.createDropdownButton(chapasContainer);
     buttonContainer.appendChild(dropdownButton);
 
     const deleteButton = this.createDeleteButton();
@@ -61,8 +61,12 @@ export class ItemCard {
     const status = this.item.status.toLowerCase();
     if (status === "reservado") {
       statusDiv.className += " card-status-reservado";
+    } else if (status === "produzindo") {
+      statusDiv.className += " card-status-produzindo";
+    } else if (status === "finalizado") {
+      statusDiv.className += " card-status-finalizado";
     } else {
-      statusDiv.className += " bg-secondary";
+      statusDiv.className += " bg-danger";
     }
     return statusDiv;
   }
@@ -106,9 +110,11 @@ export class ItemCard {
   createDropdownButton(chapasContainer) {
     const dropdownButton = document.createElement("button");
     dropdownButton.className = "btn btn-sm ml-2 card-info-button";
-    dropdownButton.innerHTML = 'Chapas <i class="fas fa-chevron-down"></i>';
+    dropdownButton.innerHTML = '<span style="font-size: 0.8em;">mostrar chapas</span> <i class="fas fa-chevron-down" style="font-size: 1.2em;"></i>';
+    const chevronIcon = dropdownButton.querySelector("i");
     dropdownButton.addEventListener("click", function () {
       chapasContainer.style.display = chapasContainer.style.display === "none" ? "block" : "none";
+      chevronIcon.classList.toggle("rotate-icon");
     });
     return dropdownButton;
   }

@@ -31,7 +31,7 @@ html, body {
 }
 
 .modal-content {
-    background-color: #fefefe;
+    background-color: #141414;
     border: 1px solid #888;
     min-height: 100%;
     display: flex;
@@ -41,8 +41,8 @@ html, body {
 
 .fecharbtn {
     padding: 1rem 2rem;
-    background: #d9d9d9;
-    color: #555555;
+    background: #232323;
+    color: #959595;
     height: 10%;
     width: 100%;
     z-index: 5;
@@ -57,7 +57,7 @@ html, body {
 }
 
 .btn-primary:hover {
-    background: rgb(198, 198, 198);
+    background: rgb(49, 49, 49);
     color: #797979;
 }
 
@@ -66,10 +66,34 @@ html, body {
 }
 
 .table-container {
-
+    padding: 1rem;
     max-height: calc(100vh - 10rem); /* Altura máxima - altura dos botões inferiores e do fecharbtn */
     overflow-y: auto; /* Adiciona rolagem vertical quando necessário */
-    background: white;
+    background: #141414;
+}
+
+.table td {
+    color: #c2c2c2;
+    border-top: none;
+    text-align: center;
+    background: #232323;
+    border-radius: 2rem;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.table th {
+    border: none;
+    background: #4f27ff47;
+    color: #9178ff;
+    font-size: 2rem;
+    line-height: 30px;
+}
+
+.edit-icon {
+background: #ff434300 !important;
 }
 
 
@@ -78,50 +102,48 @@ html, body {
     overflow-y: auto; /* Adiciona rolagem vertical quando necessário */
 }
 
-.precontainer {
-    max-height: 80vh;
-    overflow-y: auto; /* Adiciona rolagem vertical quando necessário */
-}
-
-
-.table td {
-    align-content: center;
-    text-align: center;
-    font-size: 1.5rem;
-    justify-content: center;
-    height: 5rem;
-}
-
 
 .btninferior {
     position: fixed;
     bottom: 0;
     left: 0; /* ou right: 0; para alinhamento à direita */
-    width: 100%;
-    padding-right: 2rem;
-    background-color: #ffffff;
-    height: 15%;
+    width: 94%;
+    padding: 1rem;
+    background-color: #232323;
+    height: 5rem;
     align-items: center;
-    box-shadow: 0px 0px 30px 10px rgb(255, 255, 255); /* Adiciona sombra branca */
+    margin: 1rem;
+    border-radius: 2rem;
+    
 }
 
-#expectedDate {
+#jsonContent,
+#jsonContentManual {
+    color: #39ea62;
+    overflow-y: auto;
+    max-height: 200px;
+}
+
+#expectedDate,
+#expectedDateManual {
     width: 10rem;
-    height:4.2rem;
+    height:5rem;
     margin-right: 1.5rem;
     padding: 1rem;
     border-radius: 1rem;
-    background-color: #dfdfdf;
+    background-color: #282828;
     border: none;
     color: #131313 !important;
     padding-left: 1.5rem;
+    border: solid 1px #383838;
 }
 
+#expectedDateManual:focus,
 #expectedDate:focus {
     outline: none;
-    background-color: #dfdfdf;
-    border-left: 7px solid #84e789;
+    border-left: 7px solid #3bf867;
 }
+
 #expectedDate.invalid-date {
     border-left: 7px solid rgb(255, 64, 64);
 }
@@ -142,42 +164,14 @@ html, body {
     animation: blink 1s infinite;
 }
 
-    .flatpickr-calendar {
-        background: #f8f9fa;
-        border: 1px solid #198cff;
-        border-radius: 1rem !important;
-        color: #495057;
-        font-size: 12px !important;
-        background-color: #a2a2a257 !important;
-        backdrop-filter: blur(5px) !important;
+.logostockfy {
+    width: 100px;
+}
 
-    }
-    .flatpickr-day.today {
-        background: #3999ff;
-        color: white;
-        border: none;
-    }
-    .flatpickr-day.selected {
-        background: #28a745 !important;
-        border: none !important;
-        color: white;
-    }
-
-    .flatpickr-day:hover{
-        background: #a9a9a97e !important;
-    }
-
-    .flatpickr-current-month .flatpickr-monthDropdown-months {
-        border-radius: 0.5rem !important;
-        color: #131313 !important;
-        padding: 0.2rem !important;
-    }
-
-    .flatpickr-current-month .flatpickr-monthDropdown-months .flatpickr-monthDropdown-month {
-        color: #232323 !important;
-        background: #7979793a !important;
-        border: none !important;
-    }
+.logocontainer {
+    width: 50%;
+    display: flex;
+}
 
 
 
@@ -195,18 +189,21 @@ html, body {
 
 .edit {
     display: flex;
-    background-color: #fdb6b6; /* Cor de fundo geral */
+    background-color: #ff43434b; /* Cor de fundo geral */
     border:none; /* Cor da borda geral */
-    border-radius: 0.5rem;
+    border-radius: 1rem;
   
     padding: 0.2;
 }
 
 #sendButton {
-    height: 60%;
+    height: 4.8rem;
     width: 10rem;
     font-size: 1.5rem;
     border-radius: 1rem;
+    background: #3bf86737;
+    border: solid 1px #3bf867;
+    color:#3bf867;
 }
 
 
@@ -214,16 +211,16 @@ html, body {
 body button.edit:active,
 body button.edit:focus,
 body button.edit:hover {
-    background-color: #f8a0a0 !important;
+    background-color: #ff434363 !important;
     color: #ffffff !important;
     box-shadow: none !important;
 }
 
 
 .confirm {
-    background: #9dffa2;
+    background: #38ff4230;
     border:none; /* Cor da borda geral */
-    border-radius: 0.5rem;
+    border-radius: 1rem;
 
 }
 
@@ -232,7 +229,7 @@ body button.edit:hover {
 body button.confirm:active,
 body button.confirm:focus,
 body button.confirm:hover {
-    background: #84e789 !important;
+    background: #38ff4243 !important;
     box-shadow: none !important;
 }
 
@@ -243,8 +240,10 @@ body button.confirm:hover {
 }
 
 .header-principal {
+    display: flex;
     padding: 1rem;
     background-color: #232323;
+    justify-content: space-around;
 
 }
 
@@ -350,7 +349,26 @@ body button.edit.disabled {
     border-radius:.7rem ;
     border: none;
     width: 5rem;
+    background: #232323;
 }
+
+@media screen and (max-width: 902px) {
+    .closeButton {
+        display: none;
+    }
+}
+
+.logout {
+    width:40px ;
+    padding: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+.logout:hover {
+    background: #313131;
+
+}
+
 
 .alert {
     display: flex;
@@ -373,80 +391,76 @@ body button.edit.disabled {
     text-align: center;
     align-content: center;
     font-size: 1.2rem;
+    color: #c3c3c3;
+    border-bottom: solid 1px #363636;
 }
 
 /* Centraliza o conteúdo das células da tabela */
-td, th {
-    text-align: center;
+ th {
     vertical-align: middle;
+    border-radius: 2rem;
+    position: relative;
+    text-align: center;
+
 }
 
 /* Define o estilo do input para ocupar 100% da altura da célula e estar centralizado */
-td input {
-    width: 90%; /* Pode ajustar conforme necessário */
-    height: 100%; /* Define a altura do input igual à altura da célula */
-    box-sizing: border-box; /* Garante que o padding não adicione largura extra */
-    text-align: center; /* Centraliza o texto dentro do input */
-}
 
 /* Classe para bordas arredondadas nas linhas da tabela */
 .rounded-rows {
     border-radius: 5px;
 }
 
-/* CSS para centralizar o input dentro do td */
-td, th {
-    position: relative;
-    text-align: center;
-    vertical-align: middle;
-}
-
-td .centered-input {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    margin: 0;
-}
 
 #purchaseForm {
     display: flex  !important;
     flex-wrap: wrap;
     gap: 1rem;
     align-content: center;padding: 6rem;
-    padding-top: 1.5rem ;
+    padding-top: 1.5rem;
     padding-left: 1.5rem;
     padding-bottom: 1rem;
-    background-color: #e4e4e4;
     border-radius: 2rem;
-    margin-left: 2rem;
-    margin-right: 2rem;
+    padding-right: 0;
 }
 
 .inputform {
     width: fit-content;
     border-radius: 1rem;
     border: none;
-    background-color: #f3f3f3;;
+    background-color: #1c1c1c;;
     padding-left: 1rem;
-    border: solid 1px #a7a7a7;
     height: 3rem;
     font-size: 1rem;
+    color: #b52aff;
+}
+
+
+@media screen and (max-width: 902px) {
+    .inputform {
+        width: 9rem;
+    }
 }
 
 .inputform:focus {
-    background-color: #f3f3f3;
-    border-left: solid 7px #198cff;
+    background-color: #1c1c1c;
+    border-left: solid 7px #b52aff;
+    color: #ffffff;
     box-shadow: none !important;
 }
 
 .inputform::placeholder {
-   color: #717171;
+   color: #383838;
 
 }
 
+.inputform:focus::placeholder {
+    color: #9f9f9f !important;
+ 
+ }
+
 #mModal {
-    background-color: white;
+    background-color: #141414;
 }
 
 .card-body {
@@ -466,6 +480,7 @@ td .centered-input {
 .modal-content-m {
     max-height: 85vh; /* Define a altura máxima do conteúdo do modal */
     overflow-y: auto; /* Adiciona o scroll vertical */
+    background: #131313;
 }
 
 .formAndcard {
@@ -493,7 +508,7 @@ border-radius: 2rem;
 }
 
 #purchaseID {
-    background-color: #ffc9c9;
+    background-color: #ff3a3a5e;
     border-color: #ff3a3a;
     color:  #ff3a3a;
 }
@@ -502,8 +517,12 @@ border-radius: 2rem;
   color:  #ff3a3a;
 }
 
+#purchaseID:focus::placeholder {
+    color:  #ff3a3a !important;
+  }
+
 #supplier {
-    background-color: #ffe7d3;
+    background-color: #ff85215c;
     border-color: #ff8f32;
     color:  #ff8f32;
 }
@@ -512,26 +531,31 @@ border-radius: 2rem;
   color:  #ff8f32;
 }
 
-.input-error {
-    border: 1px solid rgb(255, 50, 50);
-}
+#supplier:focus::placeholder {
+    color:  #ff8f32 !important;
+  }
 
 .expand-icon {
     width: 34px; /* Defina a largura desejada */
     height: 34px; /* Defina a altura desejada */
 }
 
+#addPlateButton {
+    background: #232323;
+    
+}
+
 
 .enviarManual {
-    font-size: 2rem;
+    font-size: 1.5rem;
     border-radius: 1rem;
     background: #2ab14a61;
-    color: #2b8540;
+    color: #39ea62;
 }
 
 .enviarManual:hover {
     background: rgba(49, 163, 76, 0.622);
-    color: #2b8540;
+    color: #39ea62;
 }
 
 .icon:hover {
@@ -542,3 +566,51 @@ border-radius: 2rem;
 .toggle-arrow {
     padding: 0.5rem;
 }
+
+/* Remove a borda branca ao clicar */
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-clear-button {
+    display: none;
+}
+
+input[type="date"] {
+    /* Seus estilos personalizados */
+    width: fit-content;
+    border-radius: 1rem;
+    border: none;
+    background-color: #1b1b1b;
+    padding-left: 1rem;
+    height: 3rem;
+    font-size: 1rem;
+    margin-right: 1rem;
+    padding-right: 1rem;
+    color: #383838;
+}
+
+input[type="date"]:focus {
+    background-color: #161616;
+    border-left: solid 7px #b52aff;
+    box-shadow: none !important;
+    outline: none; /* Remove a borda de foco padrão */
+}
+
+/* Estiliza o indicador do calendário (botão) no Webkit (Chrome, Safari) */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    background-color: #4caf50; /* Cor de fundo do indicador */
+    padding: 5px; /* Espaçamento interno do indicador */
+    border-radius: 5px; /* Cantos arredondados do indicador */
+}
+
+
+
+
+@media (max-width: 902px) {
+    #fornecedor {
+        font-size: 1rem;
+        width: 7rem;
+    }
+    h2,
+    h1.text-center {
+        font-size: 1.5rem;
+    }
+    }

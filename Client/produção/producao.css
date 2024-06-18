@@ -59,24 +59,10 @@ Cards Styles
   justify-content: space-between;
 }
 
-.grid-container {
-  display: grid;
-  gap: 7rem; /* 7rem 105px */
-}
-
 .card {
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.card-header {
-  color: #d0ffca;
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-weight: bold;
 }
 .part-number {
   background: #7a1bff23 !important;
@@ -112,10 +98,6 @@ Cards Styles
 }
 .chapa-card .card-body {
   padding: 10px;
-}
-
-.form-check-input:checked + .form-check-label {
-  text-decoration: line-through;
 }
 
 .custom-checkbox {
@@ -220,7 +202,7 @@ Cards Styles
   .keys {
     display: none;
   }
-  .card-header,
+  
   .card {
     font-size: 11px;
     font-weight: normal;
@@ -250,10 +232,6 @@ body.light-mode .card-body {
   background-color: #fff;
   color: #000;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-body.light-mode .card-header {
-  color: #000;
 }
 
 body.light-mode .part-number {
