@@ -21,7 +21,7 @@ async function example() {
     await driver.findElement(By.css("#fornecedor > option:nth-child(5)")).click();
 
     // let randomQuantity = Math.floor(Math.random() * 5) + 1;
-    let randomQuantity = 5;
+    let randomQuantity = 1;
     for (let i = 0; i < randomQuantity; i++) {
       let fornecedor = faker.random.arrayElement(["IRANI", "PENHA", "FERNANDEZ"]);
       let qualidade;
@@ -111,6 +111,7 @@ async function example() {
     }
 
     await driver.findElement(By.id("sendbutton")).click();
+    await driver.sleep(100000);
   } finally {
     await driver.quit();
   }
