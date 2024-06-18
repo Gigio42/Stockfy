@@ -35,6 +35,10 @@ h1 {
   
 }
 
+.logoStockfy {
+  width: 45%;
+}
+
 /* ======================================
        Dark Mode Toggle Styles
        ====================================== */
@@ -80,7 +84,7 @@ h1 {
        ====================================== */
 #aside {
   display: flex;
-  background: #e6e6e6;
+  background: #b8b8b8;
   /* Cor de fundo para o aside no modo escuro */
   min-height: 70%;
   overflow-y: auto;
@@ -101,9 +105,18 @@ h1 {
   }
 }
 
+.dark-mode #mobileButtonContainer {
+  display: flex;
+  background: #2e2e2e;
+  width: 100vw;
+  height: 5rem;
+padding: 1rem;
+
+}
+
 #mobileButtonContainer {
   display: flex;
-  background: #212121;
+  background: #666666;
   width: 100vw;
   height: 5rem;
 padding: 1rem;
@@ -117,7 +130,7 @@ padding: 1rem;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  background: #e6e6e6;
+  background: #8d8d8d;
   height: 5rem;
   border: solid 1px #6a6a6a45;
   align-items: center;
@@ -336,7 +349,7 @@ body {
   display: flex;
   padding: 2rem;
   border-radius: 1rem;
-  background-color: #2d2d2d;
+  background-color: #c4c4c4;
   font-size: 1.5rem;
   flex-direction: row;
   justify-content: center;
@@ -344,6 +357,12 @@ body {
   height: 2rem;
   padding-right: 0.5rem;
 }
+
+.dark-mode .cardMaquina {
+  background-color: #2d2d2d;
+}
+
+
 
 #allMaquina {
   overflow-y: auto;
@@ -363,10 +382,25 @@ body {
 .textButtonli {
   display: flex;
   width: 75%;
+  color: #3d3d3d;
+  font-weight: bold;
+}
+
+.dark-mode .textButtonli {
+  display: flex;
+  width: 75%;
+  color: #d4d4d4;
+  font-weight: bold;
 }
 
 .maquinaName {
   font-size: 90%;
+  color: #444444;
+}
+
+.dark-mode .maquinaName {
+  font-size: 90%;
+  color: #b9b9b9;
 }
 
 .svgIcon {
@@ -448,7 +482,7 @@ max-height: 100%;
 
 .modal-content, 
 .modal-content1 {
-  padding: 2rem !important;
+  padding: 1.5rem !important;
   width: 100vw;
   border: none;
   position: absolute;
@@ -576,8 +610,12 @@ span.item-number {
   transition: transform 0.005s; /* Reduzindo ainda mais a duração da transição */
 }
 
-.abrirModal:hover {
+.dark-mode .abrirModal:hover {
   background: #353535;
+}
+
+.abrirModal:hover {
+  background: #b4b4b4;
 }
 
 .conteudoInterno {

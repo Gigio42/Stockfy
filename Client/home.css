@@ -4,12 +4,12 @@
     --background-color: #2d2d2d;
     --text-color: white;
     --nav-background: #4e4e4e;
-    --nav-hover: #66bb6a;
+    --nav-hover: #2e2e2e;
 }
 
 body.light-mode {
     --background-color: white;
-    --text-color: #2d2d2d;
+    --text-color: rgb(32, 32, 32);
     --nav-background: #ddd;
     --nav-hover: #aaa;
 }
@@ -19,6 +19,7 @@ body {
     background-color: var(--background-color);
     color: var(--text-color);
     transition: background-color 0.5s ease, color 0.5s ease;
+    overflow-y: hidden;
 }
 
 nav {
@@ -39,13 +40,25 @@ nav ul li{
 nav ul li a {
     margin: 20px;
     padding: 20px 40px;
-    border-radius: 50px;
+    border-radius: 1rem;
     background: var(--nav-background);
     display: block;
     font-size: 1.5em;
     transition:  0.3s ease;
     color: var(--text-color);
     text-decoration: none !important;
+    font-size: 1rem;
+}
+
+.qrcode {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.qr {
+    border-radius: 2rem;
+    width: 10rem;
 }
 
 nav ul li a:hover {

@@ -164,6 +164,15 @@ background: #ff434300 !important;
     animation: blink 1s infinite;
 }
 
+.logostockfy {
+    width: 100px;
+}
+
+.logocontainer {
+    width: 50%;
+    display: flex;
+}
+
 
 
 @media (max-width: 576px) {
@@ -231,8 +240,10 @@ body button.confirm:hover {
 }
 
 .header-principal {
+    display: flex;
     padding: 1rem;
     background-color: #232323;
+    justify-content: space-around;
 
 }
 
