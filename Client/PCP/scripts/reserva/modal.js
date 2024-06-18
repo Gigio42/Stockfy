@@ -193,7 +193,7 @@ function createReserveButton(selectedSubcards) {
       chapaID: subcard.id_chapa,
       quantity: document.getElementById(`quantityInput-${subcard.id_chapa}`).value,
       medida: document.getElementById(`medidaInput-${subcard.id_chapa}`).value,
-      keepRemaining: document.getElementById(`recycleCheckbox-${subcard.id_chapa}`).checked,
+      keepRemaining: false,
     }));
 
     const loadingSpinner = document.getElementById("loadingSpinner");
