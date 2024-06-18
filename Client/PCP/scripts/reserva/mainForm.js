@@ -94,11 +94,11 @@ export class Reservar {
           targets: ".card.mb-3.shadow-sm",
           translateX: [-100, 0],
           opacity: [0, 1],
-          delay: anime.stagger(100), 
+          delay: anime.stagger(100),
           duration: 500,
           easing: "easeOutQuad",
         });
-        this.animationExecuted = true; 
+        this.animationExecuted = true;
       }
 
       reservarModal(() => Array.from(this.selectedChapas.values()));
