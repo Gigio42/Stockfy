@@ -179,7 +179,7 @@ class AdmController {
           maquinaId: maquinaId,
         },
       });
-  
+
       return existingItemMaquina ? true : false;
     } catch (error) {
       console.error("Erro ao verificar se Item_Maquina existe:", error);
@@ -204,7 +204,6 @@ class AdmController {
       throw new Error("Erro ao verificar a existência do item_maquina: " + error.message);
     }
   }
-
 }
 
 export default AdmController;
