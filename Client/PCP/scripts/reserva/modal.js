@@ -136,7 +136,7 @@ function createFormRow(chapa) {
 function createInputCell(type, placeholder, id, additionalClass) {
   const cell = document.createElement("div");
   cell.className = "form-cell col text-center value align-items-center justify-content-center rounded";
-  
+
   const input = document.createElement("input");
   input.type = type;
   input.placeholder = placeholder;
@@ -157,7 +157,6 @@ function createInputCell(type, placeholder, id, additionalClass) {
   cell.appendChild(input);
   return cell;
 }
-
 
 function createButtonFormContainer(selectedSubcards) {
   const container = document.createElement("div");
