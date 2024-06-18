@@ -577,8 +577,8 @@ async function createEmptyCard(cardWrapper) {
 
       machines.forEach((machine) => {
         // Verificar se a máquina já está adicionada ao item
-        const existingMachineCards = cardWrapper.querySelectorAll('.machine-card');
-        const machineAlreadyAdded = Array.from(existingMachineCards).some(card => card.textContent === machine.nome);
+        const existingMachineCards = cardWrapper.querySelectorAll(".machine-card");
+        const machineAlreadyAdded = Array.from(existingMachineCards).some((card) => card.textContent === machine.nome);
         if (machineAlreadyAdded) return;
 
         const machineButton = document.createElement("button");
@@ -741,14 +741,14 @@ document.getElementById("confirmarProcesso").addEventListener("click", async () 
         const response = await axios.get(`${BASE_URL}/adm/item_maquina/existence-check`, {
           params: {
             itemId: itemId,
-            maquinaId: maquinaId
-          }
+            maquinaId: maquinaId,
+          },
         });
 
         if (response.data.exists) {
           duplicates.push({
             itemId: itemId,
-            maquinaId: maquinaId
+            maquinaId: maquinaId,
           });
         } else {
           items.push({
@@ -764,7 +764,7 @@ document.getElementById("confirmarProcesso").addEventListener("click", async () 
   }
 
   if (duplicates.length > 0) {
-    alert("Alguns processos já existem:\n" + duplicates.map(d => `Item ID: ${d.itemId}, Máquina ID: ${d.maquinaId}`).join("\n"));
+    alert("Alguns processos já existem:\n" + duplicates.map((d) => `Item ID: ${d.itemId}, Máquina ID: ${d.maquinaId}`).join("\n"));
   }
 
   if (items.length > 0) {
@@ -778,10 +778,6 @@ document.getElementById("confirmarProcesso").addEventListener("click", async () 
     console.warn("Nenhum item selecionado.");
   }
 });
-
-
-
-
 
 //=================================================
 // função para CONFIRMAR prioridade
