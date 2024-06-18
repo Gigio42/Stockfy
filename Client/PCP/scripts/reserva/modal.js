@@ -200,11 +200,11 @@ function createReserveButton(selectedSubcards) {
       localStorage.setItem("partNumber", partNumber);
       location.reload();
     } catch (error) {
-      console.error("This is the error response:", error); 
+      console.error("This is the error response:", error);
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: error.message, 
+        text: error.message,
       });
     } finally {
       loadingSpinner.style.display = "none";

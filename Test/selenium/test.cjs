@@ -25,7 +25,7 @@ async function example() {
       let customerNumberElement = await driver.wait(until.elementIsVisible(driver.findElement(By.id("customerNumber"))), 10000);
       await driver.wait(until.elementIsEnabled(customerNumberElement), 10000);
       await customerNumberElement.clear();
-      await customerNumberElement.sendKeys(faker.datatype.number({ min: 1, max: 999 }).toString().padStart(3, '0'));
+      await customerNumberElement.sendKeys(faker.datatype.number({ min: 1, max: 999 }).toString().padStart(3, "0"));
 
       let quantityElement = await driver.findElement(By.id("quantity"));
       await quantityElement.clear();
