@@ -20,8 +20,19 @@ export class Card {
       valueDiv.textContent = "N/A";
     } else {
       if (key.startsWith("data")) {
-        let [day, month] = value.split(/\/|-/);
-        valueDiv.textContent = `${day}/${month}`;
+        let dateParts;
+        if (value.includes("/")) {
+          // Date is in "dd/mm/yyyy" format
+          dateParts = value.split("/");
+        } else if (value.includes("-")) {
+          // Date is in "yyyy-mm-dd" format
+          dateParts = value.split("-");
+          dateParts.reverse();
+        }
+        if (dateParts) {
+          let [day, month] = dateParts;
+          valueDiv.textContent = `${day}/${month}`;
+        }
       } else {
         valueDiv.textContent = value;
       }

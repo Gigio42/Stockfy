@@ -110,7 +110,7 @@ function createFormRow(chapa) {
   const medidaInput = createInputCell("text", "medida", `medidaInput-${chapa.id_chapa}`);
   medidaInput.style.display = "none";
 
-  const recycleTd = document.createElement("div");
+  /* const recycleTd = document.createElement("div");
   recycleTd.className = "form-cell col-1 text-center value align-items-center justify-content-center rounded";
   recycleTd.style.display = "flex";
   recycleTd.style.justifyContent = "center";
@@ -124,11 +124,11 @@ function createFormRow(chapa) {
   recycleCheckbox.onchange = () => {
     medidaInput.style.display = recycleCheckbox.checked ? "" : "none";
   };
-  recycleTd.appendChild(recycleCheckbox);
+  recycleTd.appendChild(recycleCheckbox); */
 
   formRow.appendChild(quantityInput);
   formRow.appendChild(medidaInput);
-  formRow.appendChild(recycleTd);
+  /* formRow.appendChild(recycleTd); */
 
   return formRow;
 }
@@ -141,6 +141,7 @@ function createInputCell(type, placeholder, id) {
   input.placeholder = placeholder;
   input.id = id;
   input.min = 0;
+  input.style.width = "100%"; // Add this line
   input.oninput = function () {
     if (this.value < 0) {
       this.value = 0;

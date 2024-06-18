@@ -28,13 +28,13 @@ export class ItemCard {
     const previewDiv = this.createPreviewDiv();
     titleContainer.appendChild(previewDiv);
 
-    const chapasContainer = this.createChapasContainer(); // Define chapasContainer here
+    const chapasContainer = this.createChapasContainer(); 
     cardBody.appendChild(chapasContainer);
 
     const buttonContainer = createElementWithClass("div", "d-flex justify-content-end");
     titleContainer.appendChild(buttonContainer);
 
-    const dropdownButton = this.createDropdownButton(chapasContainer); // Now chapasContainer is defined
+    const dropdownButton = this.createDropdownButton(chapasContainer); 
     buttonContainer.appendChild(dropdownButton);
 
     const deleteButton = this.createDeleteButton();
