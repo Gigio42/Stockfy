@@ -66,15 +66,17 @@ export async function loadItemMaquinaData() {
       // Open this row
       var maquinas = JSON.parse(tr.attr("data-item"));
       var childTable = "<table class='child-table display responsive nowrap'><thead><tr>";
-      ["id_item_maquina", "prazo", "ordem", "executor", "finalizado", "corte", "maquinaId", "itemId"].forEach((column) => {
+      ["id_item_maquina", "prazo", "ordem", "executor", "finalizado", "corte", "maquina.nome"].forEach((column) => {
         childTable += `<th>${column}</th>`;
       });
       childTable += "</tr></thead><tbody>";
       maquinas.forEach((maquina) => {
         childTable += "<tr>";
-        ["id_item_maquina", "prazo", "ordem", "executor", "finalizado", "corte", "maquinaId", "itemId"].forEach((column) => {
+        ["id_item_maquina", "prazo", "ordem", "executor", "finalizado", "corte", "maquina.nome"].forEach((column) => {
           if (column === "finalizado") {
             childTable += `<td>${maquina[column] ? '<i class="fas fa-check"></i>' : ""}</td>`;
+          } else if (column === "maquina.nome") {
+            childTable += `<td>${maquina.maquina ? maquina.maquina.nome : ""}</td>`;
           } else {
             childTable += `<td>${maquina[column] || ""}</td>`;
           }
@@ -84,7 +86,7 @@ export async function loadItemMaquinaData() {
       childTable += "</tbody></table>";
       row.child(childTable).show();
       tr.addClass("shown");
-      $(this).html('<i class="fas fa-minus"></i>'); // Change icon to minus
+      $(this).html('<i class="fas fa-minus"></i>'); 
     }
   });
 }
