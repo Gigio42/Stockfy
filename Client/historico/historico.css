@@ -601,3 +601,31 @@ body.dark-mode .expanded {
     font-size: 0.8em;
   }
 }
+
+.modal-dialog {
+  max-width: 50%;
+}
+.modal-content {
+  overflow-x: auto;
+}
+#myTable3 {
+  width: 90%;
+}
+
+@media (min-width: 768px) {
+  #myTable3 {
+    width: 70%;
+  }
+}
+
+@media (min-width: 992px) {
+  #myTable3 {
+    width: 60%;
+  }
+}
+
+@media (min-width: 1200px) {
+  #myTable3 {
+    width: 50%;
+  }
+}
