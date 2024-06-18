@@ -107,10 +107,10 @@ background: #ff434300 !important;
     position: fixed;
     bottom: 0;
     left: 0; /* ou right: 0; para alinhamento à direita */
-    width: 98%;
+    width: 94%;
     padding: 3rem;
     background-color: #232323;
-    height: 20%;
+    height: 5rem;
     align-items: center;
     margin: 1rem;
     border-radius: 2rem;
@@ -529,7 +529,7 @@ border-radius: 2rem;
 
 
 .enviarManual {
-    font-size: 2rem;
+    font-size: 1rem;
     border-radius: 1rem;
     background: #2ab14a61;
     color: #39ea62;
