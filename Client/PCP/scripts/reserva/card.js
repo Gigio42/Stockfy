@@ -76,7 +76,7 @@ export class Card {
   }
 
   createValueRow() {
-    let valueRow = createElementWithClass("div", "value-row row flex-nowrap overflow-auto w-100 align-items-stretch");
+    let valueRow = createElementWithClass("div", "value-row row overflow-auto w-100 align-items-stretch");
     this.keys.forEach((key) => valueRow.appendChild(this.createValueDiv(key, this.chapa[key])));
     return valueRow;
   }

@@ -677,6 +677,11 @@ background: #232323;
     display: flex;
     flex-wrap: wrap;
   }
+
+  #partNumberInput {
+    width: 8rem;
+    font-size: 0.7rem !important;
+}
 }
 
 #partNumberInput {
@@ -687,6 +692,7 @@ background-color: #801eff48 !important;
   outline: none; /* Remove a borda de foco padrão */
   font-size: 1rem;
   color: #aa69ff;
+  
 }
 
 .light-mode #partNumberInput {
@@ -934,7 +940,7 @@ input[type="checkbox"]:checked::before {
    ====================================== */
 
 /* Responsive styles */
-@media (max-width: 600px) {
+@media (max-width: 922px) {
   .card {
     margin-bottom: 5px;
     margin-top: 1px;
@@ -942,6 +948,8 @@ input[type="checkbox"]:checked::before {
   }
 
   .value-row {
+    display: flex;
+    flex-wrap: wrap;
     font-size: 1rem;
     margin-right: 0px;
     margin-left: 0px;
@@ -1062,6 +1070,45 @@ input[type="checkbox"]:checked::before {
 .light-mode .grouping-form select:hover {
   background: #d0d0d0;
   color: #333;
+}
+
+
+@media screen and (max-width:922px) {
+  .grouping-form {
+    width: 50%;
+    padding: 0.5;
+    gap: 0.5;
+  }
+  
+  .agrupar-button {
+    width: 8rem !important;
+    font-size: 0.7rem;
+    padding: 0.5rem;
+  }
+
+  .grouping-form input[type="text"] {
+    width: 8rem !important;
+    font-size: 0.7rem;
+    padding: 0.5rem;
+
+  }
+  .input-group {
+    width: 50%;
+  }
+
+  .form-control {
+    width: 50% !important;
+  }
+
+  #filterLength,
+  #filterWidth,
+  #sortKey {
+    width: 50% !important;
+  }
+
+  .loriei {
+    width: 50%;
+  }
 }
 
 .light-mode .agrupar-button {

@@ -81,7 +81,7 @@ function createCard(chapa, keys) {
   cardBody.className = "body-div card-body rounded d-flex align-items-center";
 
   const valueRow = document.createElement("div");
-  valueRow.className = "value-row row flex-nowrap overflow-auto w-100 align-items-stretch";
+  valueRow.className = "value-row row overflow-auto w-100 align-items-stretch";
   keys.forEach((key) => {
     const valueDiv = document.createElement("div");
     valueDiv.className = "card-value-div col text-center value align-items-center justify-content-center rounded";
