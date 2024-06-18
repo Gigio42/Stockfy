@@ -11,7 +11,15 @@ class HistoricoController {
   }
 
   async getItems() {
-    const items = await prisma.Item.findMany();
+    const items = await prisma.Item.findMany({
+      include: {
+        maquinas: {
+          include: {
+            maquina: true,
+          },
+        },
+      },
+    });
     return items;
   }
 }

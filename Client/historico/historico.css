@@ -601,3 +601,25 @@ body.dark-mode .expanded {
     font-size: 0.8em;
   }
 }
+
+.modal-dialog {
+  max-width: 35%;
+}
+.modal-content {
+  overflow-x: auto;
+}
+#myTable3 {
+  width: 100%;
+}
+.child-table {
+  width: 100%;
+  margin: 10px 0;
+}
+.details-control {
+  cursor: pointer;
+  text-align: center;
+}
+
+.fas {
+  font-size: 16px;
+}
