@@ -79,37 +79,37 @@
                                 <input type="text" id="customerNumber" name="customerNumber" class="form-control inputform" placeholder="Cliente" />
                             </div>
                             <div class="form-group">
-                                <input type="number" id="quantity" name="quantity" class="form-control inputform" placeholder="Quantidade" inputmode="numeric" />
+                                <input type="text" id="quantity" name="quantity" class="form-control inputform" placeholder="Quantidade" />
                             </div>
                             <div class="form-group">
-                                <input type="number" id="quality" name="quality" class="form-control inputform" placeholder="Qualidade" />
+                                <input type="text" id="quality" name="quality" class="form-control inputform" placeholder="Qualidade" />
                             </div>
                             <div class="form-group">
-                                <input type="number" id="wave" name="wave" class="form-control inputform" placeholder="Onda" />
+                                <input type="text" id="wave" name="wave" class="form-control inputform" placeholder="Onda" />
                             </div>
                             <div class="form-group">
-                                <input type="number" id="weight" name="weight" class="form-control inputform" placeholder="Gramatura" inputmode="numeric" />
+                                <input type="text" id="weight" name="weight" class="form-control inputform" placeholder="Gramatura" />
                             </div>
                             <div class="form-group">
-                                <input type="number" id="totalWeight" name="totalWeight" class="form-control inputform" placeholder="Peso" inputmode="numeric" />
+                                <input type="text" id="totalWeight" name="totalWeight" class="form-control inputform" placeholder="Peso" />
                             </div>
                             <div class="form-group">
-                                <input type="number" id="unitPrice" name="unitPrice" class="form-control inputform" placeholder="Valor Uni." inputmode="numeric" />
+                                <input type="text" id="unitPrice" name="unitPrice" class="form-control inputform" placeholder="Valor Uni." />
                             </div>
                             <div class="form-group">
-                                <input type="number" id="totalPrice" name="totalPrice" class="form-control inputform" placeholder="Valor Tot." inputmode="numeric" />
+                                <input type="text" id="totalPrice" name="totalPrice" class="form-control inputform" placeholder="Valor Tot." />
                             </div>
                             <div class="form-group">
-                                <input type="number" id="width" name="width" class="form-control inputform" placeholder="Largura" inputmode="numeric" />
+                                <input type="text" id="width" name="width" class="form-control inputform" placeholder="Largura" />
                             </div>
                             <div class="form-group">
-                                <input type="number" id="length" name="length" class="form-control inputform" placeholder="Comprimento" inputmode="numeric" />
+                                <input type="text" id="length" name="length" class="form-control inputform" placeholder="Comprimento" />
                             </div>
                             <div class="form-group">
-                                <input type="number" id="creases" name="creases" class="form-control inputform" placeholder="Vincos" inputmode="numeric" />
+                                <input type="text" id="creases" name="creases" class="form-control inputform" placeholder="Vincos" />
                             </div>
                             <div class="form-group">
-                                <input type="number" id="buyer" name="buyer" class="form-control inputform" placeholder="Comprador" />
+                                <input type="text" id="buyer" name="buyer" class="form-control inputform" placeholder="Comprador" />
                             </div>
                             <div class="form-group">
                                 <input type="date" id="purchaseDate" name="purchaseDate" class="form-control inputform" placeholder="Data Compra" />
@@ -118,7 +118,7 @@
                                 <input type="text" id="supplier" name="supplier" class="form-control inputform" placeholder="Fornecedor" />
                             </div>
                             <div class="form-group">
-                                <input type="number" id="purchaseID" name="purchaseID" class="form-control inputform" placeholder="ID Compra" inputmode="numeric" />
+                                <input type="text" id="purchaseID" name="purchaseID" class="form-control inputform" placeholder="ID Compra" />
                             </div>
                             <div class="form-group">
                                 <button id="addPlateButton" type="button" class="btn btn-primary">Adicionar Chapa</button>
@@ -164,7 +164,7 @@
 
                 // Verifica se o clique ocorreu na seta (.toggle-arrow) dentro do parágrafo
                 if (target && target.classList.contains("toggle-arrow")) {
-                    // Encontra o elemento pai mais próximo com a classe 'card-body'
+                    // Encontra o card pai onde os detalhes estão contidos
                     const cardBody = target.closest(".card-body");
 
                     if (cardBody) {
@@ -264,7 +264,7 @@
                                 $("#errorMessage").text("Esse pedido de compra não corresponde ao fornecedor selecionado.");
                                 $("#errorModal").show();
                             }
-                        }, 1000); // Tempo de espera
+                        }, 1000); // Tempo de espera em milissegundos
                     });
                 }
 
@@ -364,13 +364,6 @@
                         limparConteudo();
                     }
                 };
-
-                // Verifica o tamanho da tela e abre o modal se estiver em um dispositivo móvel
-                if (window.innerWidth <= 768) {
-                    const fornecedorSelect = document.getElementById("fornecedor");
-                    fornecedorSelect.value = "Adicionar Manualmente";
-                    $("#mModal").modal("show");
-                }
             });
         </script>
     </body>
