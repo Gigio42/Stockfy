@@ -6,15 +6,26 @@ export class ChapaCard {
     this.chapa = chapa;
     this.itemStatus = itemStatus;
     this.itemId = itemId;
-    this.keys = ["status", "largura", "vincos", "qualidade", "onda", "quantidade_disponivel", "data_prevista"];
+    this.keys = ["status", "largura", "vincos", "qualidade", "onda", "data_prevista"];
   }
 
   createValueDiv(key, value) {
     let valueDiv = createElementWithClass("div", `card-value-div col-12 col-sm text-center value align-items-center justify-content-center rounded`);
 
     if (key.startsWith("data")) {
-      let [day, month] = value.split("/");
-      value = `${day}/${month}`;
+      let dateParts;
+      if (value.includes("/")) {
+        // Date is in "dd/mm/yyyy" format
+        dateParts = value.split("/");
+      } else if (value.includes("-")) {
+        // Date is in "yyyy-mm-dd" format
+        dateParts = value.split("-");
+        dateParts.reverse();
+      }
+      if (dateParts) {
+        let [day, month] = dateParts;
+        value = `${day}/${month}`;
+      }
     }
 
     if (key === "status") {
