@@ -15,7 +15,7 @@ export function handleShowSelectedButtonClick(getSelectedChapas) {
     } else {
       Swal.fire({
         icon: "error",
-        title: "Oops...",
+        title: "Nenhuma chapa selecionada.",
         text: "Precisa selecionar pelomenos 1 chapa!",
       });
     }
@@ -110,25 +110,8 @@ function createFormRow(chapa) {
   const medidaInput = createInputCell("text", "medida", `medidaInput-${chapa.id_chapa}`);
   medidaInput.style.display = "none";
 
-  /* const recycleTd = document.createElement("div");
-  recycleTd.className = "form-cell col-1 text-center value align-items-center justify-content-center rounded";
-  recycleTd.style.display = "flex";
-  recycleTd.style.justifyContent = "center";
-  recycleTd.style.alignItems = "center";
-
-  const recycleCheckbox = document.createElement("input");
-  recycleCheckbox.type = "checkbox";
-  recycleCheckbox.id = `recycleCheckbox-${chapa.id_chapa}`;
-  recycleCheckbox.style.width = "25px";
-  recycleCheckbox.style.height = "25px";
-  recycleCheckbox.onchange = () => {
-    medidaInput.style.display = recycleCheckbox.checked ? "" : "none";
-  };
-  recycleTd.appendChild(recycleCheckbox); */
-
   formRow.appendChild(quantityInput);
   formRow.appendChild(medidaInput);
-  /* formRow.appendChild(recycleTd); */
 
   return formRow;
 }
@@ -149,7 +132,6 @@ function createInputCell(type, placeholder, id, additionalClass) {
     }
   };
 
-  // Adiciona a classe adicional, se fornecida
   if (additionalClass) {
     input.classList.add(additionalClass);
   }
