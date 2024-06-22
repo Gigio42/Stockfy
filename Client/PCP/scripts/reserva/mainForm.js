@@ -18,7 +18,7 @@ export class Reservar {
     this.updateFormElement = document.getElementById("groupingForm");
     this.checkboxButtons = document.querySelectorAll(".checkbox-button");
     this.selectedChapas = new Map();
-    this.animationExecuted = false; 
+    this.animationExecuted = false;
   }
 
   initialize() {
