@@ -30,7 +30,7 @@
 
             <aside id="button-container">
                 <div class="logo-container">
-                    <div><img class="logo" src="logoTransparente.png" alt="logo" /></div>
+                    <img class="logo" src="logoTransparente.png" alt="logo" />
                 </div>
 
                 <div class="buttonsBlock">
@@ -78,7 +78,10 @@
                             </thead>
                             <tbody id="tableBody"></tbody>
                         </table>
-                        <button id="compare-tables">Comparar Tabelas</button>
+                        <div class="bancoDadosButton">
+                            <div></div>
+                            <button id="copiarTudo">copiar tudo</button>
+                        </div>
                         <div style="height: 10px"></div>
                         <div class="titulo">
                             <h2>Recebimento</h2>
@@ -102,11 +105,16 @@
                             </thead>
                             <tbody id="tableBody2"></tbody>
                         </table>
-                        <button id="add-line-button">addLine</button>
+                        <div class="recebimentoButton">
+                            <button id="add-line-button">addLine</button>
+                            <button id="enviarTudo">Atualizar tudo</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </main>
+
+        <div id="message-container"></div>
 
         <script type="module" src="recebimento.js"></script>
     </body>
