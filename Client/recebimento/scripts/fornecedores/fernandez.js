@@ -26,12 +26,10 @@ export function fernandez(fullText) {
   }
   
   function organizarFernandez(array, idCompra) {
-    console.log(array);
     var indexesToRemove = [0, 2, 3, 4, 7, 9, 10, 11, 12];
     var newArray = [];
     for (var i = 0; i < array.length; i += 13) {
       var subArray = array.slice(i, i + 13);
-      console.log(subArray);
       if (subArray.length > 1) {
         var filteredSubArray = subArray.filter((item, index) => !indexesToRemove.includes(index));
         var filteredAndProcessed = filtroFernandez(filteredSubArray[0]);
@@ -71,7 +69,6 @@ export function fernandez(fullText) {
   }
   
   function filtroFernandez(secondArray) {
-    console.log(secondArray);
     let parts = secondArray.split("-");
     let secondPart = parts.length > 1 ? parts[1] : "";
     let result = secondPart.split(/(\d.+)/, 2);
@@ -79,7 +76,6 @@ export function fernandez(fullText) {
   }
   
   function criaObjFernandez(array) {
-    console.log(array);
     var medidas = array[5].split("X");
     return {
       id_compra: array[0],
