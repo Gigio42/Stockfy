@@ -1,8 +1,7 @@
 import BASE_URL from "../../utils/config.js";
-import { clearTable } from './manipularTabela.js';
-import { criarTable } from './manipularTabela.js';
+import { clearTable } from "./manipularTabela.js";
+import { criarTable } from "./manipularTabela.js";
 import { verifyIdChapa, rowDataObj } from "./utils.js";
-
 
 export function fetchChapas(xPed) {
   clearTable();
@@ -28,28 +27,24 @@ export function fetchChapas(xPed) {
     });
 }
 
-
-
 export async function sendDataToServer(row) {
-    try {
-        var data = [rowDataObj(row)]; // Enviar como array de objetos
-        console.log("Data to send:", data);  // Verifique o dado que está sendo enviado
-        const response = await axios.put(`${BASE_URL}/recebimento`, data);
-        alert("Dados atualizados com sucesso!");
-    } catch (error) {
-        console.error("Erro ao enviar dados: ", error);
-        alert("Erro ao atualizar os dados: " + error.message);
-    }
+  try {
+    var data = [rowDataObj(row)]; // Enviar como array de objetos
+    console.log("Data to send:", data); // Verifique o dado que está sendo enviado
+    const response = await axios.put(`${BASE_URL}/recebimento`, data);
+    alert("Dados atualizados com sucesso!");
+  } catch (error) {
+    console.error("Erro ao enviar dados: ", error);
+    alert("Erro ao atualizar os dados: " + error.message);
+  }
 }
-
-
 
 export async function sendAllDataToServer() {
   const tableBody = document.getElementById("tableBody2");
   const rows = Array.from(tableBody.getElementsByTagName("tr"));
   const allData = rows
-      .filter(row => verifyIdChapa(row)) // Verifica se as 7 primeiras colunas não são vazias e se as 3 primeiras colunas não são vazias
-      .map(row => rowDataObj(row));
+    .filter((row) => verifyIdChapa(row)) // Verifica se as 7 primeiras colunas não são vazias e se as 3 primeiras colunas não são vazias
+    .map((row) => rowDataObj(row));
 
   try {
       console.log("Data to send:", allData);  // Verifique o dado que está sendo enviado

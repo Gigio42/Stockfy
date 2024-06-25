@@ -1,4 +1,3 @@
-
 import { fernandez, prod_Fernandez } from "./fornecedores/fernandez.js";
 import { penha, prod_Penha } from "./fornecedores/penha.js";
 import { irani, prod_Irani } from "./fornecedores/irani.js";
@@ -64,7 +63,6 @@ function processText(text) {
     console.log("Não encontrou o fornecedor");
   }
 }
-
 
 function parseXML(xml) {
     const parser = new DOMParser();
@@ -141,7 +139,6 @@ function parseXML(xml) {
     };
   }
 
-
 function handleFetchAndCreateTable(result) {
   const table = document.getElementById("recebimento");
   const uniqueIds = new Set(result.map(obj => obj.id_compra));
@@ -154,4 +151,3 @@ function handleFetchAndCreateTable(result) {
   });
   
 }
-

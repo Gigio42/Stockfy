@@ -4,7 +4,6 @@ import { fetchChapas } from "./scripts/connections.js";
 import { comparar, addLine, copiarTudo } from "./scripts/manipularTabela.js";
 import { processPDF, processXML } from "./scripts/processFile.js";
 
-
 document.getElementById("buscarChapa").addEventListener("click", buscarChapa);
 
 function buscarChapa() {
@@ -12,7 +11,7 @@ function buscarChapa() {
   fetchChapas(idCompra);
 }
 
-document.getElementById("copiarTudo").addEventListener("click", copiarTudo)
+document.getElementById("copiarTudo").addEventListener("click", copiarTudo);
 
 document.getElementById("logout-button").addEventListener("click", logout);
 
@@ -75,8 +74,3 @@ dropZone.addEventListener("drop", function (event) {
       break;
   }
 });
-
-
-
-
-

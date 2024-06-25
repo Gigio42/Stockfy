@@ -1,61 +1,59 @@
 <!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Recebimento</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <link rel="stylesheet" href="recebimento.css" />
-    <style>
-
-    </style>
-</head>
-<body>
-    <main>
-        <header>
-            <div class="text-content">
-                <div>Recebimento</div>
-                <div class="userBlock">
-                    <img src="" alt="" id="profilePic" />
-                    <div class="user-name" id="user-name">username</div>
-                </div>
-            </div>
-
-            <div class="dark-mode-toggle">
-                <input type="checkbox" id="darkModeToggle" checked />
-                <label for="darkModeToggle"></label>
-            </div>
-            <button id="logout-button" class="logout">Logout</button>
-        </header>
-
-        <aside id="button-container">
-            <div class="logo-container">
-                <img class="logo" src="logoTransparente.png" alt="logo" />
-            </div>
-
-            <div class="buttonsBlock">
-                <div class="buttons">
-                    <button id="toggle-drop-zone">Tabela/Area de arquivo</button>
-
-                    <input type="file" id="fileInput" style="display: none" accept=".pdf, text/xml" />
-                    <button onclick="document.getElementById('fileInput').click()">Upload Arquivo</button>
-                    <div class="buscar">
-                        <input id="id_compra" placeholder="Digite o Id_compra:" />
-                        <button id="buscarChapa">buscar</button>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Recebimento</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <link rel="stylesheet" href="recebimento.css" />
+        <style></style>
+    </head>
+    <body>
+        <main>
+            <header>
+                <div class="text-content">
+                    <div>Recebimento</div>
+                    <div class="userBlock">
+                        <img src="" alt="" id="profilePic" />
+                        <div class="user-name" id="user-name">username</div>
                     </div>
                 </div>
-            </div>
-        </aside>
 
-        <div class="block1">
-            <div class="block2">
-                <div class="drop-zone" id="drop-zone">
-                    <div id="drop-zoneText">
-                        <div>Arraste e solte seu arquivo aqui</div>
+                <div class="dark-mode-toggle">
+                    <input type="checkbox" id="darkModeToggle" checked />
+                    <label for="darkModeToggle"></label>
+                </div>
+                <button id="logout-button" class="logout">Logout</button>
+            </header>
+
+            <aside id="button-container">
+                <div class="logo-container">
+                    <img class="logo" src="logoTransparente.png" alt="logo" />
+                </div>
+
+                <div class="buttonsBlock">
+                    <div class="buttons">
+                        <button id="toggle-drop-zone">Tabela/Area de arquivo</button>
+
+                        <input type="file" id="fileInput" style="display: none" accept=".pdf, text/xml" />
+                        <button onclick="document.getElementById('fileInput').click()">Upload Arquivo</button>
+                        <div class="buscar">
+                            <input id="id_compra" placeholder="Digite o Id_compra:" />
+                            <button id="buscarChapa">buscar</button>
+                        </div>
                     </div>
                 </div>
+            </aside>
+
+            <div class="block1">
+                <div class="block2">
+                    <div class="drop-zone" id="drop-zone">
+                        <div id="drop-zoneText">
+                            <div>Arraste e solte seu arquivo aqui</div>
+                        </div>
+                    </div>
 
                 <div id="tables" style="display: none" class="scrollable-table">
                     <div>
@@ -116,8 +114,8 @@
         </div>
     </main>
 
-    <div id="message-container"></div>
+        <div id="message-container"></div>
 
-    <script type="module" src="recebimento.js"></script>
-</body>
+        <script type="module" src="recebimento.js"></script>
+    </body>
 </html>

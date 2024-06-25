@@ -302,7 +302,7 @@ filter: invert(1);}
 }
 
 #container {
-  max-height: 100vh;
+  max-height: 90vh;
   overflow-y: auto;
   /* Adiciona barra de rolagem vertical se necessário */
 }

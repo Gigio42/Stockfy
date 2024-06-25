@@ -5,7 +5,7 @@ var rowId = 0; // Variável global para manter o ID da linha
 export function criarTable(table, chapaData) {
   var tbody = table.querySelector("tbody");
   var row = tbody.insertRow(-1);
-  
+
   var idCell = row.insertCell(0);
   idCell.innerHTML = `<input type='text' value='${chapaData.id_chapa ? chapaData.id_chapa : ""}' class='editable-id'>`;
 
@@ -40,7 +40,7 @@ export function criarTable(table, chapaData) {
     let dataPrevistaCell = row.insertCell(-1);
     let formattedDataPrevista = chapaData.data_prevista.split("/").reverse().join("-");
     dataPrevistaCell.innerHTML = `<input type='date' value='${formattedDataPrevista}'>`;
-    
+
     let copiarCell = row.insertCell(-1);
     let copiarButton = document.createElement("button");
     copiarButton.className = "recebido";
@@ -53,11 +53,11 @@ export function criarTable(table, chapaData) {
     let dataRecebimentoCell = row.insertCell(-1);
     let todayDate = new Date().toISOString().slice(0, 10);
     dataRecebimentoCell.innerHTML = `<input type='date' value='${todayDate}'>`;
-    
+
     const updateCell = row.insertCell(-1);
     let updateButton = document.createElement("button");
-    updateButton.className = 'update-button';
-    updateButton.textContent = 'Atualizar';    
+    updateButton.className = "update-button";
+    updateButton.textContent = "Atualizar";
     updateCell.appendChild(updateButton);
   }
 
@@ -79,7 +79,7 @@ export function copiarParaRecebimento(button) {
   const sourceRow = button.closest("tr"); // Encontra a linha do botão que foi clicado
   const targetTableBody = document.getElementById("tableBody2"); // Seleciona o tbody da tabela de destino
   const newRow = targetTableBody.insertRow(-1); // Cria uma nova linha no final do tbody de recebimento
-  
+
   // Copia as células da linha de origem para a nova linha de destino, exceto as duas últimas
   Array.from(sourceRow.cells).forEach((cell, index) => {
     if (index < sourceRow.cells.length - 2) {
@@ -106,19 +106,19 @@ export function copiarParaRecebimento(button) {
       }
     }
   });
-  
+
   // Adiciona células específicas para a tabela de recebimento
   let todayDate = new Date().toISOString().slice(0, 10);
   newRow.insertCell(-1).innerHTML = `<input type='date' value='${todayDate}'>`; // Data de recebimento
   newRow.insertCell(-1).innerHTML = `<button class='update-button'>Atualizar</button>`; // Botão Atualizar
-  
+
   comparar();
 }
 
 export function copiarTudo() {
   const bancoDadosTable = document.getElementById("bancoDados");
   const rows = Array.from(bancoDadosTable.querySelectorAll("tbody tr"));
-  rows.forEach(row => {
+  rows.forEach((row) => {
     const copiarButton = row.querySelector(".recebido");
     if (copiarButton) {
       copiarParaRecebimento(copiarButton);
@@ -129,11 +129,11 @@ export function copiarTudo() {
 export function comparar() {
   const table1 = document.getElementById("bancoDados").querySelector("tbody");
   const table2 = document.getElementById("recebimento").querySelector("tbody");
-  
+
   for (let i = 0; i < table2.rows.length; i++) {
     const row2 = table2.rows[i];
     let foundMatch = false;
-    
+
     for (let j = 0; j < table1.rows.length; j++) {
       const row1 = table1.rows[j];
       let allMatch = true;
@@ -148,18 +148,18 @@ export function comparar() {
 
       for (let k = 4; k <= colunaLimite; k++) {
         const cell1 = row1.cells[k].querySelector("input, select")
-        ? row1.cells[k].querySelector("input, select").value.trim().toLowerCase()
-        : row1.cells[k].textContent.trim().toLowerCase();
+          ? row1.cells[k].querySelector("input, select").value.trim().toLowerCase()
+          : row1.cells[k].textContent.trim().toLowerCase();
         const cell2 = row2.cells[k].querySelector("input, select")
-        ? row2.cells[k].querySelector("input, select").value.trim().toLowerCase()
-        : row2.cells[k].textContent.trim().toLowerCase();
-        
+          ? row2.cells[k].querySelector("input, select").value.trim().toLowerCase()
+          : row2.cells[k].textContent.trim().toLowerCase();
+
         if (cell1 !== cell2) {
           allMatch = false;
           break;
         }
       }
-      
+
       if (allMatch) {
         foundMatch = true;
         row2.cells[0].querySelector("input").value = row1.cells[0].querySelector("input").value;
@@ -174,7 +174,7 @@ export function comparar() {
         break;
       }
     }
-    
+
     if (!foundMatch) {
       // console.log(`${i + 1}`);
     }
@@ -185,7 +185,7 @@ function validar_status(rowBancoDados, rowRecebimento) {
   
   const quantidadeBancoDados = parseInt(rowBancoDados.cells[3].querySelector("input").value, 10);
   const quantidadeRecebimento = parseInt(rowRecebimento.cells[3].querySelector("input").value, 10);
-  
+
   if (quantidadeRecebimento >= quantidadeBancoDados) {
     rowRecebimento.cells[9].querySelector("select").value = "Recebido";
     console.log("Status mudado para Recebido");
@@ -200,7 +200,7 @@ export function addLine() {
   const tbody = table.querySelector("tbody");
   const row = tbody.insertRow(-1);
   const fields = ["ID", "Fornecedor", "Id_compra", "Quantidade", "Qualidade", "Largura", "Comprimento", "Onda", "Vincos", "Status", "Data_recebimento"];
-  
+
   fields.forEach((field, index) => {
     const cell = row.insertCell(index);
     if (field === "Status" || field === "Onda" || field == "Vincos") {
@@ -221,7 +221,7 @@ export function addLine() {
       cell.innerHTML = `<input type='text'>`; // Campos editáveis
     }
   });
-  
+
   // Adicionar botão de atualizar
   const updateCell = row.insertCell(-1);
   updateCell.innerHTML = `<button class='update-button'>Atualizar</button>`;

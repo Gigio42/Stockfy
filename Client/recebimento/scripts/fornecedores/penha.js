@@ -3,14 +3,13 @@ export function prod_Penha(product) {
   return {
     qualidade: xProd.match(/-QUAL\.(.*)-MED\./)[1],
     medida: xProd
-    .match(/-MED\.(.*)--REF\./)[1]
-    .replace(/^[^-]*-/, "")
-    .trim(),
+      .match(/-MED\.(.*)--REF\./)[1]
+      .replace(/^[^-]*-/, "")
+      .trim(),
     tipoOnda: xProd.match(/ONDA (.*?)-SEU PEDIDO/)[1],
     vincada: /VINCADA/.test(xProd) ? "Sim" : "Não",
   };
 }
-
 
 export function penha(fullText) {
   var descricaoIndex = fullText.indexOf("DESCRIÇÃO DOS PRODUTOS/SERVIÇOS CÓDIGO");
@@ -29,7 +28,6 @@ export function penha(fullText) {
 }
 
 function filtroPenha(text) {
-  
   function replaceMed(match) {
     return match.replace("-MED.", " ");
   }
@@ -42,7 +40,7 @@ function filtroPenha(text) {
   result = result.replace(/:/g, "");
   result = result.replace(/-SEU/g, "");
   result = result.replace(/MEDIDAS/g, "");
-  
+
   var resultArray = result.split(/\s+/).filter(Boolean);
   return organizarpenha(resultArray);
 }
@@ -54,19 +52,18 @@ function organizarpenha(array) {
   for (var i = 0; i < array.length; i += 18) {
     var subArray = array.slice(i, i + 18);
     // console.log(subArray)
-    
-    
+
     if (subArray.length === 18 && subArray[17].length !== 7) {
       // Remove o último índice
       subArray.pop();
-      
+
       // Adiciona o próximo índice ao subArray se disponível
       if (array[i + 18] !== undefined) {
         subArray.push(array[i + 18]);
         i++; // Incrementa i para evitar que o próximo índice seja duplicado em outro subArray
       }
     }
-    
+
     if (subArray.length > 0) {
       if (subArray[14] == "VINCADA" && subArray[16].length !== 11) {
         // Pular o próximo índice
@@ -79,8 +76,7 @@ function organizarpenha(array) {
           i++;
         }
       }
-      
-      
+
       for (var j = 0; j < indexesToRemove.length; j++) {
         if (subArray[14] == "VINCADA") {
           var index = indexesToRemoveVincos[j];
@@ -92,12 +88,12 @@ function organizarpenha(array) {
         }
       }
       subArray = subArray.filter((item) => item !== undefined);
-      
+
       if (subArray.length >= 5) {
         subArray[4] = subArray[4] + subArray[5];
         subArray.splice(5, 1);
       }
-      
+
       newArray.push(subArray);
     }
   }
@@ -114,7 +110,7 @@ function criaObjPenha(array) {
   var qRec = parseFloat(array[2].replace(/[,.]/g, ""));
   var valorUnitario = parseFloat(array[1].replace(",", ".")); // Correção para formato de número
   var valor_total = parseFloat(array[0].replace(".", "").replace(",", "."));
-  
+
   var medidas = array[4].split("X").map(function (medidas) {
     return medidas.replace(/^0+/, "");
   });
@@ -124,7 +120,7 @@ function criaObjPenha(array) {
   } else {
     vinco = "não";
   }
-  
+
   return {
     id_compra: (id_compra || "").trim(),
     fornecedor: "Penha",

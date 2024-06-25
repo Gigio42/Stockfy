@@ -1,17 +1,17 @@
 export function prod_Fernandez(product) {
-    var xProd = product.getElementsByTagName("xProd")[0].textContent;
-    var parts = xProd.split("-");
-    var tipoOnda = parts.length > 1 ? parts[1].match(/[A-Za-z]+/)[0] : "";
-    var startOfMeasure = parts[1].indexOf(tipoOnda) + tipoOnda.length;
-    var medida = parts.length > 1 ? parts[1].substring(startOfMeasure).trim() : "";
-  
-    return {
-      qualidade: parts[0] ? parts[0].trim() : "",
-      medida: medida,
-      tipoOnda: tipoOnda,
-      vincada: "", // Always empty for Fernandez
-    };
-  }
+  var xProd = product.getElementsByTagName("xProd")[0].textContent;
+  var parts = xProd.split("-");
+  var tipoOnda = parts.length > 1 ? parts[1].match(/[A-Za-z]+/)[0] : "";
+  var startOfMeasure = parts[1].indexOf(tipoOnda) + tipoOnda.length;
+  var medida = parts.length > 1 ? parts[1].substring(startOfMeasure).trim() : "";
+
+  return {
+    qualidade: parts[0] ? parts[0].trim() : "",
+    medida: medida,
+    tipoOnda: tipoOnda,
+    vincada: "", // Always empty for Fernandez
+  };
+}
 
 export function fernandez(fullText) {
     var aiIndex = fullText.indexOf("A.IPI");
