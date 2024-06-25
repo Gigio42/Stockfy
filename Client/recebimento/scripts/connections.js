@@ -47,11 +47,11 @@ export async function sendAllDataToServer() {
     .map((row) => rowDataObj(row));
 
   try {
-      console.log("Data to send:", allData);  // Verifique o dado que está sendo enviado
-      const response = await axios.put(`${BASE_URL}/recebimento`, allData);
-      alert("dados atualizados com sucesso!");
+    console.log("Data to send:", allData); // Verifique o dado que está sendo enviado
+    const response = await axios.put(`${BASE_URL}/recebimento`, allData);
+    alert("dados atualizados com sucesso!");
   } catch (error) {
-      console.error("Erro ao enviar os dados: ", error);
-      alert("Erro ao atualizar os dados: " + error.message);
+    console.error("Erro ao enviar os dados: ", error);
+    alert("Erro ao atualizar os dados: " + error.message);
   }
 }

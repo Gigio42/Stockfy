@@ -10,13 +10,13 @@ export function criarTable(table, chapaData) {
   idCell.innerHTML = `<input type='text' value='${chapaData.id_chapa ? chapaData.id_chapa : ""}' class='editable-id'>`;
 
   let today = new Date();
-  let dataPrevista = chapaData.data_prevista ? new Date(chapaData.data_prevista.split("/").reverse().join("-")) : new Date();  // Usa a data atual como fallback
-  
-  let statusOption = ""; 
+  let dataPrevista = chapaData.data_prevista ? new Date(chapaData.data_prevista.split("/").reverse().join("-")) : new Date(); // Usa a data atual como fallback
+
+  let statusOption = "";
   if (table.id === "recebimento") {
-    statusOption = `<option value="" selected>Indefinido</option>`;  // Valor indefinido como padrão para recebimento
+    statusOption = `<option value="" selected>Indefinido</option>`; // Valor indefinido como padrão para recebimento
   } else if (table.id === "bancoDados") {
-    statusOption = (dataPrevista > today) ? `<option value="Comprado" selected>Comprado</option>` : `<option value="Atrasado" selected>Atrasado</option>`;
+    statusOption = dataPrevista > today ? `<option value="Comprado" selected>Comprado</option>` : `<option value="Atrasado" selected>Atrasado</option>`;
   }
 
   var cellContents = [
@@ -26,9 +26,12 @@ export function criarTable(table, chapaData) {
     `<input type='text' value='${chapaData.qualidade}'>`,
     `<input type='text' value='${chapaData.largura}'>`,
     `<input type='text' value='${chapaData.comprimento}'>`,
-    `<select>${["E", "B", "C", "BB", "BC", ""].map(type => `<option value="${type}" ${type === chapaData.onda ? "selected" : ""}>${type}</option>`).join("")}</select>`,
+    `<select>${["E", "B", "C", "BB", "BC", ""].map((type) => `<option value="${type}" ${type === chapaData.onda ? "selected" : ""}>${type}</option>`).join("")}</select>`,
     `<select><option value="Sim" ${chapaData.vincos.toLowerCase() === "não" ? "" : "selected"}>Sim</option><option value="Não" ${chapaData.vincos.toLowerCase() === "não" ? "selected" : ""}>Não</option></select>`,
-    `<select style='width: 120px;'>${statusOption}${["Comprado", "Recebido", "Parcialmente", "Atrasado", "Cancelado"].filter(status => status !== (dataPrevista > today ? "Comprado" : "Atrasado")).map(status => `<option ${status === chapaData.status ? "selected" : ""}>${status}</option>`).join("")}</select>`
+    `<select style='width: 120px;'>${statusOption}${["Comprado", "Recebido", "Parcialmente", "Atrasado", "Cancelado"]
+      .filter((status) => status !== (dataPrevista > today ? "Comprado" : "Atrasado"))
+      .map((status) => `<option ${status === chapaData.status ? "selected" : ""}>${status}</option>`)
+      .join("")}</select>`,
   ];
 
   cellContents.forEach((content, index) => {
@@ -61,7 +64,7 @@ export function criarTable(table, chapaData) {
     updateCell.appendChild(updateButton);
   }
 
-  comparar()
+  comparar();
 }
 
 export function clearTable() {
@@ -137,14 +140,12 @@ export function comparar() {
     for (let j = 0; j < table1.rows.length; j++) {
       const row1 = table1.rows[j];
       let allMatch = true;
-      
 
-      var colunaLimite = 8
+      var colunaLimite = 8;
 
-      if (row1.cells[1]=="fernandez"||"Fernandez"||"FERNANDEZ"||"irani"||"IRANI"||"Irani"){
-        colunaLimite=7
+      if (row1.cells[1] == "fernandez" || "Fernandez" || "FERNANDEZ" || "irani" || "IRANI" || "Irani") {
+        colunaLimite = 7;
       }
-
 
       for (let k = 4; k <= colunaLimite; k++) {
         const cell1 = row1.cells[k].querySelector("input, select")
@@ -182,7 +183,6 @@ export function comparar() {
 }
 
 function validar_status(rowBancoDados, rowRecebimento) {
-  
   const quantidadeBancoDados = parseInt(rowBancoDados.cells[3].querySelector("input").value, 10);
   const quantidadeRecebimento = parseInt(rowRecebimento.cells[3].querySelector("input").value, 10);
 
