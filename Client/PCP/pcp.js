@@ -7,8 +7,7 @@ if (localStorage.getItem("isLoggedIn") !== "true") {
 }
 
 logoutButton.addEventListener("click", function () {
-  localStorage.clear();
-  window.location.href = "../login/login.html";
+  window.location.href = "../home.html";
 });
 
 document.addEventListener("DOMContentLoaded", function () {
