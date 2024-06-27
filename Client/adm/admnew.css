@@ -1284,3 +1284,18 @@ align-items: center;
 .textomodalnext {
 margin-left: 2rem;
 }
+
+@media (max-width: 920PX) {
+  .textomodalnext {
+    font-size: 1.5rem;
+  }
+
+  .card-wrapper {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0;
+  }
+  
+
+}
+
