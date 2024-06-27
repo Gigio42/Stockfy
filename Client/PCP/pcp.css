@@ -154,7 +154,7 @@ h1 {
 
 .navbar {
   display: flex;
-  margin-top: 2rem;
+  margin-top: 0.5rem;
   justify-content: center;
 }
 
@@ -199,7 +199,6 @@ a {
 a:hover {
   color: #535353;
   text-decoration: none;
-  /* Remove o sublinhado */
 }
 
 li {
@@ -208,12 +207,17 @@ li {
   font-size: 1.1rem;
   border-radius: 1.2rem;
   text-decoration: none;
-  /* Remove o sublinhado */
+  cursor: pointer;
 }
 
 li:hover {
   background-color: #cacaca;
 }
+
+li:active {
+  transform: scale(0.95);
+}
+
 
 /* ======================================
    Grid and Layout Styles
