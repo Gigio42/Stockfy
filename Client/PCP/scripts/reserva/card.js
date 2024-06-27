@@ -22,10 +22,10 @@ export class Card {
       if (key.startsWith("data")) {
         let dateParts;
         if (value.includes("/")) {
-          // Date is in "dd/mm/yyyy" format
+          //"dd/mm/yyyy" format
           dateParts = value.split("/");
         } else if (value.includes("-")) {
-          // Date is in "yyyy-mm-dd" format
+          //"yyyy-mm-dd" format
           dateParts = value.split("-");
           dateParts.reverse();
         }

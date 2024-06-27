@@ -13,16 +13,15 @@
         <link rel="icon" type="image/png" sizes="32x32" href="./media/Web/icons8-cardboard-basic-outline-32.png" />
         <link rel="icon" type="image/png" sizes="96x96" href="./media/Web/icons8-cardboard-basic-outline-96.png" />
     </head>
-
     <body class="body">
         <div class="container-fluid">
             <div class="row">
-                <!-- Aside -->
+                <!-- Sidebar -->
                 <aside id="aside" class="aside col-md-2 navbar-lateral d-none d-md-block">
                     <div class="logo-container">
-                        <img class="logo" src="./media/logoTransparente.png" alt="Logo" class="logoImg" />
+                        <img class="logo" src="./media/logoTransparente.png" alt="Logo" />
                     </div>
-                    <div class="p-2 navbar">
+                    <nav class="p-2 navbar">
                         <div class="navbar-header">
                             <div class="media hide-on-mobile">
                                 <img class="mr-3 align-self-center" alt="Profile Pic" id="profilePic" style="width: 50px; height: 50px; border-radius: 50%" />
@@ -46,101 +45,97 @@
                                 </a>
                             </li>
                         </ul>
-                    </div>
+                    </nav>
                 </aside>
 
-                <!-- Header -->
-                <div class="col-md-10 header">
-                    <div class="hed header-custom text-light d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center">
+                <!-- Main Content -->
+                <main class="col-md-10 p-0">
+                    <div class="header">
+                        <!-- Header -->
+                        <header class="header-custom text-light d-flex justify-content-between align-items-center">
                             <h1 class="m-0 hide-on-mobile">Gerenciamento PCP</h1>
-                        </div>
-
-                        <div class="hed d-flex justify-content-between align-items-center" style="min-height: 70px">
-                            <div class="d-flex justify-content-around align-items-center">
-                                <div class="mx-sm-1 mx-0 my-1 align-self-center">
-                                    <button id="mobileOptionsButton" class="mobileOptions px-sm-3 px-2">
-                                        <img class="icoreserv" src="../PCP/media/icons8-reserva-48.png" alt="" />
-                                    </button>
-                                </div>
-                                <div class="mx-sm-1 mx-0 my-1 align-self-center">
-                                    <button id="mobileOpenModalLink" class="mobileOptions px-sm-3 px-2">
-                                        <img class="iconsulta" src="../PCP/media/icons8-loading-50.png" alt="" />
-                                    </button>
-                                </div>
-                            </div>
-
                             <div class="d-flex align-items-center">
-                                <div class="dark-mode-toggle mx-sm-1 mx-0 my-1 align-self-center px-sm-3 px-2">
+                                <button id="mobileOptionsButton" class="mobileOptions">
+                                    <img src="../PCP/media/icons8-reserva-48.png" alt="Reservar" />
+                                </button>
+                                <button id="mobileOpenModalLink" class="mobileOptions">
+                                    <img src="../PCP/media/icons8-loading-50.png" alt="Consulta" />
+                                </button>
+                                <div class="dark-mode-toggle mx-2">
                                     <input type="checkbox" id="darkModeToggle" />
                                     <label for="darkModeToggle"></label>
                                 </div>
-
-                                <button id="logoutButton" style="margin-right: 20px">
+                                <button id="logoutButton" class="mx-2">
                                     <img class="sair" src="../adm/media/sair (1).png" alt="Sair icon" />
                                 </button>
                             </div>
-                        </div>
+                        </header>
                     </div>
 
-                    <!-- Card -->
-                    <div class="w-100 p-3">
-                        <div class="column-rigth w-100">
-                            <form id="groupingForm" class="grouping-form d-none">
-                                <div class="row">
-                                    <div class="col-md-6 order-md-1">
-                                        <div class="form-group">
-                                            <button type="submit" class="btn agrupar-button w-100 update">ATUALIZAR</button>
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="loriei d-flex align-items-center">
-                                                <select class="form-control" id="sortKey" style="flex-grow: 1">
-                                                    <option value="largura">Largura</option>
-                                                    <option value="comprimento">Comprimento</option>
-                                                    <option value="qualidade">Qualidade</option>
-                                                    <option value="vincos">Vincos</option>
-                                                    <option value="onda">Onda</option>
-                                                    <option value="status">Status</option>
-                                                    <option value="data_prevista">Data</option>
-                                                    <option value="quantidade_comprada">Quantidade Comprada</option>
-                                                    <option value="quantidade_estoque">Quantidade Estoque</option>
-                                                </select>
-                                                <button type="button" class="btn btn-secondary agrupar-button ml-2" id="sortOrder" data-sort="asc">&#8593;</button>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <button id="showSelectedButton" class="btn agrupar-button w-100">RESERVAR</button>
-                                        </div>
-                                        <div class="form-group">
-                                            <button id="clearButton" type="submit" class="btn agrupar-button w-100">LIMPAR</button>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 order-md-2">
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control" id="filterLength" name="filterLength" placeholder="Comprimento" />
-                                                    <input type="text" class="form-control" id="filterWidth" name="filterWidth" placeholder="Largura" />
+                    <div id="main-content">
+                        <!-- Card -->
+                        <section class="p-3">
+                            <div class="column-right w-100">
+                                <div id="form-container">
+                                    <form id="groupingForm" class="grouping-form d-none">
+                                        <div class="row">
+                                            <div class="col-md-6 order-md-1">
+                                                <div class="form-group">
+                                                    <button type="submit" class="btn agrupar-button w-100 update">ATUALIZAR</button>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="loriei d-flex align-items-center">
+                                                        <select class="form-control" id="sortKey">
+                                                            <option value="largura">Largura</option>
+                                                            <option value="comprimento">Comprimento</option>
+                                                            <option value="qualidade">Qualidade</option>
+                                                            <option value="vincos">Vincos</option>
+                                                            <option value="onda">Onda</option>
+                                                            <option value="status">Status</option>
+                                                            <option value="data_prevista">Data</option>
+                                                            <option value="quantidade_comprada">Quantidade Comprada</option>
+                                                            <option value="quantidade_estoque">Quantidade Estoque</option>
+                                                        </select>
+                                                        <button type="button" class="btn btn-secondary agrupar-button ml-2" id="sortOrder" data-sort="asc">&#8593;</button>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <button id="showSelectedButton" class="btn agrupar-button w-100">RESERVAR</button>
+                                                </div>
+                                                <div class="form-group">
+                                                    <button id="clearButton" type="submit" class="btn agrupar-button w-100">LIMPAR</button>
                                                 </div>
                                             </div>
-                                            <div class="col-12">
-                                                <input type="text" class="form-control" id="filterVincos" name="filterVincos" placeholder="Vincos" />
-                                            </div>
-                                            <div class="col-12">
-                                                <input type="text" class="form-control" id="filterQualidade" name="filterQualidade" placeholder="Qualidade" />
-                                            </div>
-                                            <div class="col-12">
-                                                <input type="text" class="form-control" id="filterOnda" name="filterOnda" placeholder="Onda" />
+                                            <div class="col-md-6 order-md-2">
+                                                <div class="form-group row">
+                                                    <div class="col-12">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" id="filterLength" name="filterLength" placeholder="Comprimento" />
+                                                            <input type="text" class="form-control" id="filterWidth" name="filterWidth" placeholder="Largura" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <input type="text" class="form-control" id="filterVincos" name="filterVincos" placeholder="Vincos" />
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <input type="text" class="form-control" id="filterQualidade" name="filterQualidade" placeholder="Qualidade" />
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <input type="text" class="form-control" id="filterOnda" name="filterOnda" placeholder="Onda" />
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </form>
                                 </div>
-                            </form>
-                            <div id="container"></div>
-                        </div>
+                                <div id="card-container">
+                                    <div id="container"></div>
+                                </div>
+                            </div>
+                        </section>
                     </div>
 
-                    <!-- reservar chapas modal -->
+                    <!-- Modals -->
                     <div id="popupContainer" class="modal" style="display: none">
                         <div id="modalContent" class="modal-content">
                             <span class="close d-none" id="closeModal">&times;</span>
@@ -151,53 +146,45 @@
                             </form>
                         </div>
                     </div>
-                </div>
 
-                <!-- item modal -->
-                <div id="itemModal" class="modal">
-                    <div id="itemContainer" class="modal-content">
-                        <span class="close" id="closeItemModal">&times;</span>
-                        <input type="search" id="searchBar" placeholder="Procurar PART NUMBER" />
+                    <div id="itemModal" class="modal">
+                        <div id="itemContainer" class="modal-content">
+                            <span class="close" id="closeItemModal">&times;</span>
+                            <input type="search" id="searchBar" placeholder="Procurar PART NUMBER" />
+                        </div>
                     </div>
-                </div>
 
-                <!-- Chapa Info modal -->
-                <div id="infoModal" class="modal">
-                    <div id="infoContainer" class="modal-content">
-                        <span class="close" id="closeInfoModal">&times;</span>
+                    <div id="infoModal" class="modal">
+                        <div id="infoContainer" class="modal-content">
+                            <span class="close" id="closeInfoModal">&times;</span>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Loading Spinner -->
-                <div id="loadingSpinner" class="sk-cube-grid" style="display: none">
-                    <div class="sk-cube sk-cube1"></div>
-                    <div class="sk-cube sk-cube2"></div>
-                    <div class="sk-cube sk-cube3"></div>
-                    <div class="sk-cube sk-cube4"></div>
-                    <div class="sk-cube sk-cube5"></div>
-                    <div class="sk-cube sk-cube6"></div>
-                    <div class="sk-cube sk-cube7"></div>
-                    <div class="sk-cube sk-cube8"></div>
-                    <div class="sk-cube sk-cube9"></div>
-                </div>
+                    <!-- Loading Spinner -->
+                    <div id="loadingSpinner" class="sk-cube-grid" style="display: none">
+                        <div class="sk-cube sk-cube1"></div>
+                        <div class="sk-cube sk-cube2"></div>
+                        <div class="sk-cube sk-cube3"></div>
+                        <div class="sk-cube sk-cube4"></div>
+                        <div class="sk-cube sk-cube5"></div>
+                        <div class="sk-cube sk-cube6"></div>
+                        <div class="sk-cube sk-cube7"></div>
+                        <div class="sk-cube sk-cube8"></div>
+                        <div class="sk-cube sk-cube9"></div>
+                    </div>
+                </main>
             </div>
         </div>
 
+        <!-- Scripts -->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-        <!-- jQuery library -->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-        <!-- Popper.js library -->
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <!-- Bootstrap library -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
-        <!-- jQuery Mask plugin -->
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-        <!-- Axios library -->
+        <link id="swal2-theme" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.9/dist/sweetalert2.all.min.js"></script>
-        <!-- sweetAlert -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-        <!-- Anime.js library -->
-
         <script type="module" src="pcp.js"></script>
     </body>
 </html>
