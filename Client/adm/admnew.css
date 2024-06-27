@@ -980,8 +980,7 @@ display: flex;
 
 .button-container {
   display: flex;
-  margin: 1rem !important;
-}
+  margin: 1rem !important;}
 
 .card-header {
   display: flex;
@@ -1058,8 +1057,8 @@ padding: 1rem;
 
 .add-button {
   border-radius: 50%;
-  height: 40px;
-  width: 40px;
+  height: 30px;
+  width: 30px;
   border: none;
 background: #232323;
 color: #9178ff;
@@ -1081,7 +1080,7 @@ margin-right: 1rem;
   background: #313131;
   box-shadow: 0 0 30px 1px #876cff;
   color: #9178ff;
-  margin-left: 1rem;
+
 }
 
 .add-button:focus {
