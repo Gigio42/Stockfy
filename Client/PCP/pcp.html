@@ -33,9 +33,15 @@
                         </div>
                         <ul class="list-unstyled">
                             <li class="icon-li mb-2">
-                                <a id="optionsButton">
-                                    <img class="imgicon" src="media/bandeira (1).png" alt="Dashboard Icon" />
+                                <a id="showSelectedButton">
+                                    <img class="imgicon" src="media/bandeira.png" alt="Dashboard Icon" />
                                     Reservar
+                                </a>
+                            </li>
+                            <li class="icon-li mb-2">
+                                <a id="optionsButton">
+                                    <img class="imgicon" src="media/filter.png" alt="Dashboard Icon" />
+                                    Filtrar
                                 </a>
                             </li>
                             <li class="mb-2 active">
@@ -78,11 +84,8 @@
                             <div class="column-right w-100">
                                 <div id="form-container">
                                     <form id="groupingForm" class="grouping-form d-none">
-                                        <div class="row">
-                                            <div class="col-md-6 order-md-1">
-                                                <div class="form-group">
-                                                    <button type="submit" class="btn agrupar-button w-100 update">ATUALIZAR</button>
-                                                </div>
+                                        <div class="flex-container">
+                                            <div class="flex-item">
                                                 <div class="form-group">
                                                     <div class="loriei d-flex align-items-center">
                                                         <select class="form-control" id="sortKey">
@@ -99,30 +102,28 @@
                                                         <button type="button" class="btn btn-secondary agrupar-button ml-2" id="sortOrder" data-sort="asc">&#8593;</button>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div class="flex-item">
                                                 <div class="form-group">
-                                                    <button id="showSelectedButton" class="btn agrupar-button w-100">RESERVAR</button>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" id="filterLength" name="filterLength" placeholder="Comprimento" />
+                                                        <input type="text" class="form-control" id="filterWidth" name="filterWidth" placeholder="Largura" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id="filterVincos" name="filterVincos" placeholder="Vincos" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id="filterQualidade" name="filterQualidade" placeholder="Qualidade" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id="filterOnda" name="filterOnda" placeholder="Onda" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <button type="submit" class="btn agrupar-button w-100 update">ATUALIZAR</button>
                                                 </div>
                                                 <div class="form-group">
                                                     <button id="clearButton" type="submit" class="btn agrupar-button w-100">LIMPAR</button>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 order-md-2">
-                                                <div class="form-group row">
-                                                    <div class="col-12">
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control" id="filterLength" name="filterLength" placeholder="Comprimento" />
-                                                            <input type="text" class="form-control" id="filterWidth" name="filterWidth" placeholder="Largura" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <input type="text" class="form-control" id="filterVincos" name="filterVincos" placeholder="Vincos" />
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <input type="text" class="form-control" id="filterQualidade" name="filterQualidade" placeholder="Qualidade" />
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <input type="text" class="form-control" id="filterOnda" name="filterOnda" placeholder="Onda" />
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
