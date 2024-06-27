@@ -87,12 +87,13 @@ function createValueRow(chapa, keys) {
   valueRow.className = "value-row row overflow-auto w-100 align-items-stretch";
 
   keys.forEach((key) => {
-    const valueDiv = document.createElement("div");
-    valueDiv.className = "card-value-div col text-center value align-items-center justify-content-center rounded";
-    valueDiv.textContent = key === "largura" ? `${chapa.largura} x ${chapa.comprimento}` : chapa[key];
-    valueRow.appendChild(valueDiv);
-  });
-
+  const valueDiv = document.createElement("div");
+  valueDiv.className = "card-value-div col text-center value align-items-center justify-content-center rounded";
+  valueDiv.style.display = "flex";
+  valueDiv.style.whiteSpace = "nowrap"; // Adicione esta linha
+  valueDiv.textContent = key === "largura" ? `${chapa.largura} x ${chapa.comprimento}` : chapa[key];
+  valueRow.appendChild(valueDiv);
+});
   return valueRow;
 }
 
@@ -101,10 +102,8 @@ function createFormRow(chapa) {
   formRow.className = "form-row row flex-nowrap overflow-auto w-100 align-items-stretch";
 
   const quantityInput = createInputCell("number", "Quantidade", `quantityInput-${chapa.id_chapa}`, "formQuantidade");
-  const medidaInput = createInputCell("text", "medida", `medidaInput-${chapa.id_chapa}`, "", { display: "none" });
 
   formRow.appendChild(quantityInput);
-  formRow.appendChild(medidaInput);
 
   return formRow;
 }
@@ -118,7 +117,7 @@ function createInputCell(type, placeholder, id, additionalClass = "", styles = {
   input.placeholder = placeholder;
   input.id = id;
   input.min = 0;
-  input.style.width = "50%";
+  input.style.width = "100%";
   Object.assign(input.style, styles);
 
   input.oninput = function () {
@@ -169,7 +168,6 @@ function createReserveButton(selectedChapas) {
     const chapas = selectedChapas.map((chapa) => ({
       chapaID: chapa.id_chapa,
       quantity: document.getElementById(`quantityInput-${chapa.id_chapa}`).value,
-      medida: document.getElementById(`medidaInput-${chapa.id_chapa}`).value,
       keepRemaining: false,
     }));
 
@@ -200,7 +198,7 @@ async function handleReserveChapas(partNumber, chapas) {
 }
 
 function setupEventListeners(popupContainer) {
-  console.log('Setting up event listeners reservarmodal');
+  console.log("Setting up event listeners reservarmodal");
   window.addEventListener("click", (event) => {
     if (event.target === popupContainer) {
       popupContainer.style.display = "none";

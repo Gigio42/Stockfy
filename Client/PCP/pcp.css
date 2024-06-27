@@ -484,6 +484,7 @@ button:hover {
 }
 .formQuantidade {
   background: #232323;
+  width: 100%;
   border: none;
   padding: 1rem;
   border-radius: 0.5rem;
@@ -520,6 +521,7 @@ button:hover {
  }
   .formQuantidade {
       margin-top: 1rem;
+      margin-bottom: 1rem;
  }
   .card-value-div {
       font-size: 0.8rem;
