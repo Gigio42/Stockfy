@@ -10,7 +10,7 @@ const DARK_THEME_URL = "https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/d
 const LIGHT_THEME_URL = "https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bootstrap-4@4/bootstrap-4.css";
 
 // Utilidade
-const redirectTo = (url) => window.location.href = url;
+const redirectTo = (url) => (window.location.href = url);
 
 const getUserName = () => localStorage.getItem("nome") || "UserName";
 
@@ -61,10 +61,12 @@ const addEventListeners = (body, swal2Theme) => {
     setSwal2Theme(isDarkModeEnabled, swal2Theme);
   });
 
-  document.getElementById("optionsButton").addEventListener("click", () => {
-    document.getElementById("groupingForm").classList.toggle("d-none");
-  });
+  //refactor mt louco pro modal de filtro, com opt de esc p/ sair
+  const modal = document.getElementById("groupingForm");
+  document.getElementById("optionsButton").onclick = () => modal.classList.toggle("d-none");
+  document.onkeydown = (e) => e.key === "Escape" && modal.classList.add("d-none");
 
+  //botão da vs mobile
   document.getElementById("mobileOptionsButton").addEventListener("click", () => {
     document.getElementById("groupingForm").classList.toggle("d-none");
   });
