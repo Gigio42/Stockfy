@@ -31,8 +31,8 @@ fastify.get("/", async () => {
   return { text: "Hello, World!" };
 });
 
-fastify.get('/health', (req, res) => {
-  res.status(200).send('OK');
+fastify.get("/health", (req, res) => {
+  res.status(200).send("OK");
 });
 
 const prisma = new PrismaClient();
