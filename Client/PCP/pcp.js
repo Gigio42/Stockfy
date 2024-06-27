@@ -34,41 +34,45 @@ profilePic.onerror = function () {
 var darkModeToggle = document.getElementById("darkModeToggle");
 var body = document.body;
 
-// DARK MODE pode tirar se quiser
+// Set dark mode by default
+body.classList.add("dark-mode");
+var aside = document.getElementById("aside");
+if (aside) {
+  aside.classList.add("dark-mode-aside");
+}
+
+// DARK MODE toggle
 darkModeToggle.addEventListener("change", function () {
   if (darkModeToggle.checked) {
     body.classList.add("dark-mode");
     body.classList.remove("light-mode");
     localStorage.setItem("darkMode", "enabled");
 
-    var aside = document.getElementById("aside");
-    aside.classList.add("dark-mode-aside");
+    if (aside) {
+      aside.classList.add("dark-mode-aside");
+    }
   } else {
     body.classList.remove("dark-mode");
     body.classList.add("light-mode");
     localStorage.setItem("darkMode", "disabled");
 
-    var aside = document.getElementById("aside");
-    aside.classList.remove("dark-mode-aside");
+    if (aside) {
+      aside.classList.remove("dark-mode-aside");
+    }
   }
 });
 
-if (localStorage.getItem("darkMode") === "enabled") {
-  darkModeToggle.checked = true;
-  body.classList.add("dark-mode");
-
-  var aside = document.getElementById("aside");
-  if (aside) {
-    aside.classList.add("dark-mode-aside");
-  }
-} else {
+// Check local storage for dark mode setting
+if (localStorage.getItem("darkMode") === "disabled") {
   darkModeToggle.checked = false;
+  body.classList.remove("dark-mode");
   body.classList.add("light-mode");
 
-  var aside = document.getElementById("aside");
   if (aside) {
     aside.classList.remove("dark-mode-aside");
   }
+} else {
+  darkModeToggle.checked = true;
 }
 
 function highlightCurrentPage() {
