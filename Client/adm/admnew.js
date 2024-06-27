@@ -755,7 +755,6 @@ document.getElementById("confirmarProcesso").addEventListener("click", async () 
             maquinaId: parseInt(maquinaId),
             ordem: ordem,
           });
-          window.location.reload();
         }
       } catch (error) {
         console.error("Erro ao verificar a existência do processo:", error);
