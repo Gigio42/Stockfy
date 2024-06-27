@@ -49,9 +49,9 @@ export async function sendAllDataToServer() {
   try {
     console.log("Data to send:", allData); // Verifique o dado que está sendo enviado
     const response = await axios.put(`${BASE_URL}/recebimento`, allData);
-    alert("Todos os dados foram atualizados com sucesso!");
+    alert("dados atualizados com sucesso!");
   } catch (error) {
-    console.error("Erro ao enviar todos os dados: ", error);
-    alert("Erro ao atualizar todos os dados: " + error.message);
+    console.error("Erro ao enviar os dados: ", error);
+    alert("Erro ao atualizar os dados: " + error.message);
   }
 }

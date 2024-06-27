@@ -555,15 +555,11 @@ async function createEmptyCard(cardWrapper) {
   emptyCard.textContent = "Selecione";
   cardWrapper.appendChild(emptyCard);
 
-  addAddButton(emptyCard, cardWrapper);
-
   emptyCard.addEventListener("click", async (event) => {
     const existingMachineList = emptyCard.querySelector(".machine-list");
     if (existingMachineList) {
       if (!event.target.classList.contains("machine-list") && !event.target.classList.contains("machine-card")) {
         existingMachineList.remove();
-        const addButton = emptyCard.querySelector(".add-button");
-        if (addButton) addButton.remove();
       }
       return;
     }
@@ -576,7 +572,6 @@ async function createEmptyCard(cardWrapper) {
       machineList.className = "machine-list";
 
       machines.forEach((machine) => {
-        // Verificar se a máquina já está adicionada ao item
         const existingMachineCards = cardWrapper.querySelectorAll(".machine-card");
         const machineAlreadyAdded = Array.from(existingMachineCards).some((card) => card.textContent === machine.nome);
         if (machineAlreadyAdded) return;
@@ -585,7 +580,10 @@ async function createEmptyCard(cardWrapper) {
         machineButton.className = "machine-card";
         machineButton.textContent = machine.nome;
 
-        machineButton.addEventListener("click", () => {
+        // Prevenir propagação do evento de clique no emptyCard
+        machineButton.addEventListener("click", (event) => {
+          event.stopPropagation(); // Previne a propagação do evento
+
           emptyCard.textContent = machine.nome;
           emptyCard.classList.add("add-processo");
           emptyCard.dataset.maquinaId = machine.id_maquina;
@@ -609,8 +607,7 @@ async function createEmptyCard(cardWrapper) {
             console.error("Card não encontrado para atualizar os dados.");
           }
 
-          machineList.remove();
-          addAddButton(emptyCard, cardWrapper);
+          machineList.remove(); // Fecha a lista de máquinas após selecionar uma máquina
         });
 
         machineList.appendChild(machineButton);
@@ -623,7 +620,9 @@ async function createEmptyCard(cardWrapper) {
   });
 }
 
-function addAddButton(emptyCard, cardWrapper) {
+function addAddButton(card, cardWrapper) {
+  if (card.classList.contains("empty-card")) return; // Não adicionar botão ao empty card
+
   const buttonContainer = document.createElement("div");
   buttonContainer.className = "button-container";
 
@@ -633,12 +632,12 @@ function addAddButton(emptyCard, cardWrapper) {
   addButton.style.display = "none";
 
   buttonContainer.appendChild(addButton);
-  emptyCard.appendChild(buttonContainer);
+  card.appendChild(buttonContainer);
 
   addButton.addEventListener("click", () => createEmptyCard(cardWrapper));
 
-  emptyCard.addEventListener("mouseover", () => (addButton.style.display = "block"));
-  emptyCard.addEventListener("mouseout", () => (addButton.style.display = "none"));
+  card.addEventListener("mouseover", () => (addButton.style.display = "block"));
+  card.addEventListener("mouseout", () => (addButton.style.display = "none"));
 }
 
 async function showPartNumbersAndMachines() {
@@ -664,7 +663,10 @@ async function showPartNumbersAndMachines() {
         };
       }
 
-      partNumberMap[partNumber].maquinas.push(itemMaquina.maquina.nome);
+      partNumberMap[partNumber].maquinas.push({
+        nome: itemMaquina.maquina.nome,
+        finalizado: itemMaquina.finalizado,
+      });
     });
 
     for (const [partNumber, data] of Object.entries(partNumberMap)) {
@@ -686,7 +688,7 @@ async function showPartNumbersAndMachines() {
                   <img class="toggle-arrow" src="media/seta.png" style="cursor: pointer; transform: rotate(0deg);">
               </div>
               <div class="card-body d-none">
-                  ${data.maquinas.map((maquina) => `<div class="maquina-div">${maquina}</div>`).join("")}
+                  ${data.maquinas.map((maquina) => `<div class="maquina-div ${maquina.finalizado ? "finalizado" : ""}">${maquina.nome}</div>`).join("")}
               </div>
           `;
 
@@ -699,9 +701,9 @@ async function showPartNumbersAndMachines() {
       cardHeader.addEventListener("click", () => {
         cardBody.classList.toggle("d-none");
         if (cardBody.classList.contains("d-none")) {
-          toggleArrow.style.transform = "rotate(0deg)"; // Seta para a direita
+          toggleArrow.style.transform = "rotate(0deg)";
         } else {
-          toggleArrow.style.transform = "rotate(180deg)"; // Seta para baixo
+          toggleArrow.style.transform = "rotate(180deg)";
         }
       });
 
@@ -753,10 +755,9 @@ document.getElementById("confirmarProcesso").addEventListener("click", async () 
         } else {
           items.push({
             itemId: itemId,
-            maquinaId: parseInt(maquinaId), // Convert to integer here
+            maquinaId: parseInt(maquinaId),
             ordem: ordem,
           });
-          window.location.reload(); // Recarrega a página
         }
       } catch (error) {
         console.error("Erro ao verificar a existência do processo:", error);
@@ -772,6 +773,7 @@ document.getElementById("confirmarProcesso").addEventListener("click", async () 
     try {
       const response = await axios.post(`${BASE_URL}/adm/item_maquina/selecionar-maquinas`, items);
       console.log(response.data.message);
+      showPartNumbersAndMachines(); // Chama a função para atualizar os cards
     } catch (error) {
       console.error("Erro ao confirmar processos:", error);
     }

@@ -17,7 +17,17 @@
 }
 
 
-
+.userdiv {
+    background: #4a4a4a;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    padding: 1rem;
+    border-radius: 1rem;
+    margin-TOP: 2REM;
+}
 
 
 body {
@@ -40,8 +50,13 @@ body, table, td, th, input[type="text"], input[type="date"], select{
     display: absolute;
     flex-grow: 1;
     width: 100%;
-    height: 10vh;
+    height: 10.2vh;
+    max-height: 63px;
     border-bottom: solid 1px #6a6a6a45;
+}
+
+h5, P {
+    margin: 0.5REM;
 }
 
 .logo {
@@ -226,7 +241,8 @@ header{
     background-color: var(--header-color);
     color: var(--text-color);
     display: flex;
-    height: 10vh;
+    height: 11.5vh;
+    max-height: 63px;
 }
 
 .text-content{
@@ -237,6 +253,7 @@ header{
     font-size: 200%;
     display: flex;
     justify-content: space-between;
+
 }
 
 .userBlock{
