@@ -7,7 +7,7 @@ export class Reservar {
     this.initDOMElements();
     this.selectedChapas = new Map();
     this.animationExecuted = false;
-    this.sortOrder = "asc"; 
+    this.sortOrder = "asc";
   }
 
   initDOMElements() {
