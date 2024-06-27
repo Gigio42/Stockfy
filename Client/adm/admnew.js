@@ -665,7 +665,7 @@ async function showPartNumbersAndMachines() {
 
       partNumberMap[partNumber].maquinas.push({
         nome: itemMaquina.maquina.nome,
-        finalizado: itemMaquina.finalizado
+        finalizado: itemMaquina.finalizado,
       });
     });
 
@@ -688,7 +688,7 @@ async function showPartNumbersAndMachines() {
                   <img class="toggle-arrow" src="media/seta.png" style="cursor: pointer; transform: rotate(0deg);">
               </div>
               <div class="card-body d-none">
-                  ${data.maquinas.map((maquina) => `<div class="maquina-div ${maquina.finalizado ? 'finalizado' : ''}">${maquina.nome}</div>`).join("")}
+                  ${data.maquinas.map((maquina) => `<div class="maquina-div ${maquina.finalizado ? "finalizado" : ""}">${maquina.nome}</div>`).join("")}
               </div>
           `;
 
@@ -716,8 +716,6 @@ async function showPartNumbersAndMachines() {
     console.error("Erro ao buscar os part-numbers e máquinas:", error);
   }
 }
-
-
 
 document.addEventListener("DOMContentLoaded", function () {
   const optionsButton = document.getElementById("optionsButton");
