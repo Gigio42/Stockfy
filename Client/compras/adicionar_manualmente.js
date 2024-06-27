@@ -103,7 +103,6 @@ function formatarDataParaEnvio(dateString) {
 document.getElementById("sendbutton").addEventListener("click", function () {
   console.log("Botão clicado!");
   sendJSONDataToBackend();
-
 });
 
 // Função para enviar os dados JSON ao backend
@@ -172,4 +171,3 @@ function sendData(jsonData) {
       alert("Erro ao enviar dados para o servidor. Por favor, tente novamente mais tarde.");
     });
 }
-
