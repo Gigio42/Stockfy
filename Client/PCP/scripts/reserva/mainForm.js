@@ -7,7 +7,7 @@ export class Reservar {
     this.initDOMElements();
     this.selectedChapas = new Map();
     this.animationExecuted = false;
-    this.sortOrder = "asc"; // Initial sort order
+    this.sortOrder = "asc"; 
   }
 
   initDOMElements() {
@@ -26,17 +26,16 @@ export class Reservar {
   }
 
   initialize() {
-    console.log('Initializing Reservar module');
-    
+    console.log("Initializing Reservar module");
     this.setupEventListeners();
     this.populateCards();
   }
 
   setupEventListeners() {
-    console.log('Setting up event listeners');
-
+    console.log("Setting up event listeners");
     this.updateFormElement.addEventListener("submit", (event) => this.onFormSubmit(event));
     this.sortOrderElement.addEventListener("click", (event) => this.onSortOrderClick(event));
+    this.clearButtonElement.addEventListener("click", () => this.clearFiltersAndSelection());
   }
 
   onFormSubmit(event) {
@@ -66,7 +65,7 @@ export class Reservar {
     return Object.fromEntries(
       Object.entries(this.filterElements)
         .map(([key, element]) => [key, element.value])
-        .filter(([, value]) => value)
+        .filter(([, value]) => value),
     );
   }
 
@@ -93,7 +92,7 @@ export class Reservar {
   }
 
   clearContainer() {
-    this.containerElement.innerHTML = '';
+    this.containerElement.innerHTML = "";
   }
 
   renderCards(items) {
@@ -123,9 +122,17 @@ export class Reservar {
       easing: "easeOutQuad",
     });
   }
+
+  clearFiltersAndSelection() {
+    Object.values(this.filterElements).forEach((element) => (element.value = ""));
+    this.selectedChapas.clear();
+    this.populateCards();
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const reservar = new Reservar();
-  reservar.initialize();
+  if (!window.reservarInstance) {
+    window.reservarInstance = new Reservar();
+    window.reservarInstance.initialize();
+  }
 });
