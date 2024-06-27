@@ -9,7 +9,7 @@ export class ItemCard {
 
   render() {
     const itemCard = createElementWithClass("div", "card");
-    const cardBody = createElementWithClass("div", "card-body");
+    const cardBody = createElementWithClass("div", "card-body card-item");
     itemCard.appendChild(cardBody);
 
     const titleContainer = createElementWithClass("div", "d-flex justify-content-between align-items-center");

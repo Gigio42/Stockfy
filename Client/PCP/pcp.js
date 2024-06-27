@@ -64,7 +64,11 @@ const addEventListeners = (body, swal2Theme) => {
   //refactor mt louco pro modal de filtro, com opt de esc p/ sair
   const modal = document.getElementById("groupingForm");
   document.getElementById("optionsButton").onclick = () => modal.classList.toggle("d-none");
-  document.onkeydown = (e) => e.key === "Escape" && modal.classList.add("d-none");
+  document.onkeydown = (e) => {
+    if (e.key === "Escape" && document.activeElement.tagName !== "INPUT") {
+      modal.classList.add("d-none");
+    }
+  };
 
   //botão da vs mobile
   document.getElementById("mobileOptionsButton").addEventListener("click", () => {

@@ -1004,19 +1004,11 @@ input[type="checkbox"]:checked::before {
 
 /* LUGHTMODE CARD Montei por graça pode tirar se quiser */
 
-.light-mode .card-body {
-  background-color: #efefef;
-  color: black;
-}
-.light-mode .card-body.d-flex {
-  background-color: #f0f0f0;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+.light-mode .card.mb-3.shadow-sm:not(.selected) {
+  background-color: #f8f9fa;
+  border: 1px solid #c0c0c0;
 }
 
-/* o treco principal do card */
-.light-mode .body-div {
-  background-color: #efefef;
-}
 /* fundo do modal */
 .light-mode .modal-content {
   background-color: #f8f8f8;
@@ -1064,6 +1056,12 @@ input[type="checkbox"]:checked::before {
 }
 
 /* LIGHT MODE FORM pode tirar tb, fiz por graça */
+.light-mode .card-item {
+  background-color: #f8f9fa;
+  border: 1px solid #777777;
+
+}
+
 .light-mode .grouping-form {
   background: #fafafa;
   color: #333;
