@@ -55,15 +55,33 @@ export class ItemModal {
 
     return searchBar;
   }
+
   createSearchButton() {
     const searchButton = document.createElement("button");
     searchButton.textContent = "Search";
     searchButton.className = "btn btn-primary";
     searchButton.addEventListener("click", async () => {
-      const searchValue = this.searchBar.value;
-      const filteredItems = await fetchItems(searchValue);
-      this.renderItems = createModalContent(this.modalContent, this.closeModalButton, () => this.generateContent(filteredItems));
-      this.renderItems();
+      try {
+        const searchValue = this.searchBar.value;
+        const filteredItems = await fetchItems(searchValue);
+        if (filteredItems.length === 0) {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Item não encontrado",
+          });
+        } else {
+          this.renderItems = createModalContent(this.modalContent, this.closeModalButton, () => this.generateContent(filteredItems));
+          this.renderItems();
+        }
+      } catch (error) {
+        const errorMessage = error.message.split(": ")[1];
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: errorMessage,
+        });
+      }
     });
     return searchButton;
   }

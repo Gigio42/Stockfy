@@ -1,9 +1,16 @@
 import { Card } from "./card.js";
-import { handleShowSelectedButtonClick as reservarModal } from "./modal.js";
+import { reservarModal } from "./modal.js";
 import { fetchChapas } from "../utils/connection.js";
 
 export class Reservar {
   constructor() {
+    this.initDOMElements();
+    this.selectedChapas = new Map();
+    this.animationExecuted = false;
+    this.sortOrder = "asc";
+  }
+
+  initDOMElements() {
     this.sortKeyElement = document.getElementById("sortKey");
     this.sortOrderElement = document.getElementById("sortOrder");
     this.filterElements = {
@@ -16,18 +23,19 @@ export class Reservar {
     this.containerElement = document.getElementById("container");
     this.clearButtonElement = document.getElementById("clearButton");
     this.updateFormElement = document.getElementById("groupingForm");
-    this.checkboxButtons = document.querySelectorAll(".checkbox-button");
-    this.selectedChapas = new Map();
-    this.animationExecuted = false;
   }
 
   initialize() {
-    this.updateFormElement.addEventListener("submit", (event) => this.onFormSubmit(event));
-    this.checkboxButtons.forEach((button) => button.addEventListener("click", (event) => this.onCheckboxButtonClick(event)));
-    this.sortOrderElement.addEventListener("click", (event) => this.onSortOrderClick(event));
-    this.clearButtonElement.addEventListener("click", () => this.onClearButtonClick());
-
+    console.log("Initializing Reservar module");
+    this.setupEventListeners();
     this.populateCards();
+  }
+
+  setupEventListeners() {
+    console.log("Setting up event listeners");
+    this.updateFormElement.addEventListener("submit", (event) => this.onFormSubmit(event));
+    this.sortOrderElement.addEventListener("click", (event) => this.onSortOrderClick(event));
+    this.clearButtonElement.addEventListener("click", () => this.clearFiltersAndSelection());
   }
 
   onFormSubmit(event) {
@@ -35,80 +43,45 @@ export class Reservar {
     this.populateCards();
   }
 
-  onCheckboxButtonClick(event) {
-    const isChecked = event.target.getAttribute("data-checked") === "true";
-    event.target.setAttribute("data-checked", !isChecked);
-  }
-
-  onSortOrderClick(event) {
+  async onSortOrderClick(event) {
+    this.toggleSortOrder();
     this.sortOrderElement.disabled = true;
-    this.sortOrder = this.sortOrder === "asc" ? "desc" : "asc";
 
-    const isAscending = this.sortOrder === "asc";
-    event.target.setAttribute("data-sort", isAscending ? "ascending" : "descending");
-    event.target.innerHTML = isAscending ? " &#8593" : " &#8595";
-
-    fetchChapas(this.sortKey, this.sortOrder, this.filterCriteria)
-      .then((response) => {
-        this.sortOrderElement.disabled = false;
-        this.populateCards();
-      })
-      .catch((error) => {
-        this.sortOrderElement.disabled = false;
-      });
+    try {
+      await this.populateCards();
+    } finally {
+      this.sortOrderElement.disabled = false;
+    }
   }
 
-  onClearButtonClick() {
-    this.selectedChapas.clear();
-    document.querySelectorAll(".card-checkbox").forEach((checkbox) => {
-      checkbox.checked = false;
-    });
+  toggleSortOrder() {
+    this.sortOrder = this.sortOrder === "asc" ? "desc" : "asc";
+    const isAscending = this.sortOrder === "asc";
+    this.sortOrderElement.setAttribute("data-sort", isAscending ? "ascending" : "descending");
+    this.sortOrderElement.innerHTML = isAscending ? " &#8593" : " &#8595";
+  }
+
+  getFilterCriteria() {
+    return Object.fromEntries(
+      Object.entries(this.filterElements)
+        .map(([key, element]) => [key, element.value])
+        .filter(([, value]) => value),
+    );
   }
 
   async populateCards() {
     const sortKey = this.sortKeyElement.value;
     const sortOrder = this.sortOrderElement.getAttribute("data-sort");
-
-    let filterCriteria = {};
-    for (let key in this.filterElements) {
-      const value = this.filterElements[key].value;
-      if (value) {
-        filterCriteria[key] = value;
-      }
-    }
+    const filterCriteria = this.getFilterCriteria();
 
     try {
-      let items = await fetchChapas(sortKey, sortOrder, filterCriteria);
+      const items = await fetchChapas(sortKey, sortOrder, filterCriteria);
 
-      const onSubcardSelectionChange = (chapa, isSelected) => {
-        if (isSelected) {
-          this.selectedChapas.set(chapa.id_chapa, chapa);
-        } else {
-          this.selectedChapas.delete(chapa.id_chapa);
-        }
-      };
-
-      this.cards = [];
-      while (this.containerElement.firstChild) {
-        this.containerElement.removeChild(this.containerElement.firstChild);
-      }
-
-      items.forEach((chapa, index) => {
-        const keys = ["largura", "vincos", "qualidade", "onda", "quantidade_disponivel", "data_prevista", "status"];
-        const card = new Card(chapa, keys, index, sortKey, onSubcardSelectionChange, this.selectedChapas.has(chapa.id_chapa));
-        this.cards.push(card);
-        this.containerElement.appendChild(card.createCard());
-      });
+      this.clearContainer();
+      this.renderCards(items);
 
       if (!this.animationExecuted) {
-        anime({
-          targets: ".card.mb-3.shadow-sm",
-          translateX: [-100, 0],
-          opacity: [0, 1],
-          delay: anime.stagger(100),
-          duration: 500,
-          easing: "easeOutQuad",
-        });
+        this.animateCards();
         this.animationExecuted = true;
       }
 
@@ -117,9 +90,49 @@ export class Reservar {
       console.error("Error fetching data: ", error);
     }
   }
+
+  clearContainer() {
+    this.containerElement.innerHTML = "";
+  }
+
+  renderCards(items) {
+    items.forEach((chapa, index) => {
+      const keys = ["largura", "vincos", "qualidade", "onda", "quantidade_disponivel", "data_prevista", "status"];
+      const isSelected = this.selectedChapas.has(chapa.id_chapa);
+      const card = new Card(chapa, keys, index, this.sortKey, (chapa, isSelected) => this.onSubcardSelectionChange(chapa, isSelected), isSelected);
+      this.containerElement.appendChild(card.createCard());
+    });
+  }
+
+  onSubcardSelectionChange(chapa, isSelected) {
+    if (isSelected) {
+      this.selectedChapas.set(chapa.id_chapa, chapa);
+    } else {
+      this.selectedChapas.delete(chapa.id_chapa);
+    }
+  }
+
+  animateCards() {
+    anime({
+      targets: ".card.mb-3.shadow-sm",
+      translateX: [-100, 0],
+      opacity: [0, 1],
+      delay: anime.stagger(100),
+      duration: 500,
+      easing: "easeOutQuad",
+    });
+  }
+
+  clearFiltersAndSelection() {
+    Object.values(this.filterElements).forEach((element) => (element.value = ""));
+    this.selectedChapas.clear();
+    this.populateCards();
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const reservar = new Reservar();
-  reservar.initialize();
+  if (!window.reservarInstance) {
+    window.reservarInstance = new Reservar();
+    window.reservarInstance.initialize();
+  }
 });
