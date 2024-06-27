@@ -1,4 +1,5 @@
 import { sendDataToServer } from "./connections.js";
+import { fernandez } from "./fornecedores/fernandez.js";
 
 var rowId = 0; // Variável global para manter o ID da linha
 export function criarTable(table, chapaData) {
@@ -7,6 +8,16 @@ export function criarTable(table, chapaData) {
 
   var idCell = row.insertCell(0);
   idCell.innerHTML = `<input type='text' value='${chapaData.id_chapa ? chapaData.id_chapa : ""}' class='editable-id'>`;
+
+  let today = new Date();
+  let dataPrevista = chapaData.data_prevista ? new Date(chapaData.data_prevista.split("/").reverse().join("-")) : new Date(); // Usa a data atual como fallback
+
+  let statusOption = "";
+  if (table.id === "recebimento") {
+    statusOption = `<option value="" selected>Indefinido</option>`; // Valor indefinido como padrão para recebimento
+  } else if (table.id === "bancoDados") {
+    statusOption = dataPrevista > today ? `<option value="Comprado" selected>Comprado</option>` : `<option value="Atrasado" selected>Atrasado</option>`;
+  }
 
   var cellContents = [
     `<input type='text' value='${chapaData.fornecedor}'>`,
@@ -17,7 +28,10 @@ export function criarTable(table, chapaData) {
     `<input type='text' value='${chapaData.comprimento}'>`,
     `<select>${["E", "B", "C", "BB", "BC", ""].map((type) => `<option value="${type}" ${type === chapaData.onda ? "selected" : ""}>${type}</option>`).join("")}</select>`,
     `<select><option value="Sim" ${chapaData.vincos.toLowerCase() === "não" ? "" : "selected"}>Sim</option><option value="Não" ${chapaData.vincos.toLowerCase() === "não" ? "selected" : ""}>Não</option></select>`,
-    `<select style='width: 120px;'>${["Comprado", "Recebido", "Parcialmente", "Atrasado", "Cancelado"].map((status) => `<option ${status === chapaData.status ? "selected" : ""}>${status}</option>`).join("")}</select>`,
+    `<select style='width: 120px;'>${statusOption}${["Comprado", "Recebido", "Parcialmente", "Atrasado", "Cancelado"]
+      .filter((status) => status !== (dataPrevista > today ? "Comprado" : "Atrasado"))
+      .map((status) => `<option ${status === chapaData.status ? "selected" : ""}>${status}</option>`)
+      .join("")}</select>`,
   ];
 
   cellContents.forEach((content, index) => {
@@ -25,7 +39,6 @@ export function criarTable(table, chapaData) {
     cell.innerHTML = content;
   });
 
-  // Adicionando as células específicas baseado no ID da tabela
   if (table.id === "bancoDados") {
     let dataPrevistaCell = row.insertCell(-1);
     let formattedDataPrevista = chapaData.data_prevista.split("/").reverse().join("-");
@@ -41,7 +54,7 @@ export function criarTable(table, chapaData) {
     copiarCell.appendChild(copiarButton);
   } else if (table.id === "recebimento") {
     let dataRecebimentoCell = row.insertCell(-1);
-    let todayDate = new Date().toISOString().slice(0, 10); // Esta já está no formato correto
+    let todayDate = new Date().toISOString().slice(0, 10);
     dataRecebimentoCell.innerHTML = `<input type='date' value='${todayDate}'>`;
 
     const updateCell = row.insertCell(-1);
@@ -50,6 +63,7 @@ export function criarTable(table, chapaData) {
     updateButton.textContent = "Atualizar";
     updateCell.appendChild(updateButton);
   }
+
   comparar();
 }
 
@@ -127,7 +141,13 @@ export function comparar() {
       const row1 = table1.rows[j];
       let allMatch = true;
 
-      for (let k = 4; k <= 8; k++) {
+      var colunaLimite = 8;
+
+      if (row1.cells[1] == "fernandez" || "Fernandez" || "FERNANDEZ" || "irani" || "IRANI" || "Irani") {
+        colunaLimite = 7;
+      }
+
+      for (let k = 4; k <= colunaLimite; k++) {
         const cell1 = row1.cells[k].querySelector("input, select")
           ? row1.cells[k].querySelector("input, select").value.trim().toLowerCase()
           : row1.cells[k].textContent.trim().toLowerCase();
@@ -142,23 +162,27 @@ export function comparar() {
       }
 
       if (allMatch) {
-        console.log(`Correspondência completa encontrada na linha ${i + 1}`);
         foundMatch = true;
         row2.cells[0].querySelector("input").value = row1.cells[0].querySelector("input").value;
+
+        const select1 = row1.cells[8].querySelector("select");
+        const select2 = row2.cells[8].querySelector("select");
+        if (select1 && select2) {
+          select2.value = select1.value;
+        }
+
         validar_status(row1, row2);
         break;
       }
     }
 
     if (!foundMatch) {
-      console.log(`Nenhuma correspondência completa encontrada para a linha ${i + 1}`);
+      // console.log(`${i + 1}`);
     }
   }
 }
 
 function validar_status(rowBancoDados, rowRecebimento) {
-  console.log("Validando status...");
-
   const quantidadeBancoDados = parseInt(rowBancoDados.cells[3].querySelector("input").value, 10);
   const quantidadeRecebimento = parseInt(rowRecebimento.cells[3].querySelector("input").value, 10);
 

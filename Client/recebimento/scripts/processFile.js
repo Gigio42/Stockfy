@@ -2,7 +2,7 @@ import { fernandez, prod_Fernandez } from "./fornecedores/fernandez.js";
 import { penha, prod_Penha } from "./fornecedores/penha.js";
 import { irani, prod_Irani } from "./fornecedores/irani.js";
 import { fetchChapas } from "./connections.js";
-import { criarTable } from "./manipularTabela.js";
+import { comparar, criarTable } from "./manipularTabela.js";
 
 export function processPDF(file) {
   var reader = new FileReader();
