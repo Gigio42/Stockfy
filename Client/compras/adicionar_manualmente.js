@@ -103,7 +103,7 @@ function formatarDataParaEnvio(dateString) {
 document.getElementById("sendbutton").addEventListener("click", function () {
   console.log("Botão clicado!");
   sendJSONDataToBackend();
-  window.location.reload(); // Recarrega a página
+
 });
 
 // Função para enviar os dados JSON ao backend
@@ -173,42 +173,3 @@ function sendData(jsonData) {
     });
 }
 
-// Função para criar e exibir o JSON com as informações capturadas nos inputs
-function showJSON() {
-  const form = document.getElementById("purchaseForm");
-
-  // Capturando os valores do formulário
-  const data = {
-    numero_cliente: parseInt(form.customerNumber.value) || 0,
-    quantidade_comprada: parseInt(form.quantity.value) || 0,
-    unidade: "CH",
-    qualidade: form.quality.value,
-    onda: form.wave.value,
-    gramatura: parseFloat(form.weight.value) || 0,
-    peso_total: parseFloat(form.totalWeight.value) || 0,
-    valor_unitario: form.unitPrice.value,
-    valor_total: form.totalPrice.value,
-    largura: parseInt(form.width.value) || 0,
-    comprimento: parseInt(form.length.value) || 0,
-    vincos: form.creases.value,
-    status: "COMPRADO",
-    comprador: form.buyer.value,
-    data_compra: formatarDataParaEnvio(form.purchaseDate.value),
-    fornecedor: form.supplier.value,
-    id_compra: parseInt(form.purchaseID.value) || 0,
-    data_prevista: formatarDataParaEnvio(document.getElementById("expectedDateManual").value),
-  };
-
-  // Criando o JSON com as informações capturadas
-  const jsonData = {
-    info_prod_comprados: [data],
-  };
-
-  // Exibindo o JSON no elemento <pre>
-  const jsonContentElement = document.getElementById("jsonContentManual");
-  if (jsonContentElement) {
-    jsonContentElement.textContent = JSON.stringify(jsonData, null, 2);
-  } else {
-    console.error("Elemento <pre> não encontrado.");
-  }
-}
