@@ -287,11 +287,6 @@ table thead {
   border-bottom: 1px solid #ddd;
 }
 
-.dataTables_wrapper .dataTables_paginate .paginate_button {
-  padding: 0.5em 1em;
-  font-size: 0.8em;
-}
-
 /* LIGHT MODE */
 body.light-mode .table-header {
   color: #333;
@@ -314,24 +309,6 @@ body.light-mode table td {
 
 body.light-mode table thead {
   background-color: #f2f2f2;
-}
-
-body.light-mode .dataTables_filter label,
-body.light-mode .dataTables_length label,
-body.light-mode .dataTables_info {
-  color: #333;
-}
-
-body.light-mode .dataTables_wrapper .dataTables_paginate .paginate_button {
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  color: #333;
-}
-
-body.light-mode .dataTables_wrapper .dataTables_filter input {
-  background-color: #f9f9f9;
-  color: #333;
-  border: 1px solid #ddd;
 }
 
 /* DARK MODE */
@@ -359,33 +336,6 @@ body.dark-mode select {
 body.dark-mode table thead {
   background-color: #2b2b2b;
   border-bottom: 1px solid #333333;
-}
-
-body.dark-mode .dataTables_filter label,
-body.dark-mode .dataTables_length label,
-body.dark-mode .dataTables_info {
-  color: #e0e0e0;
-}
-
-body.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button {
-  background-color: #333;
-  border: 1px solid #444;
-  color: #e0e0e0;
-}
-
-body.dark-mode .dataTables_wrapper .dataTables_filter input {
-  background-color: #444;
-  color: #e0e0e0;
-  border: 1px solid #555;
-}
-
-body.dark-mode .dtr-control,
-body.dark-mode .sorting_1 {
-  background-color: #1c1c1c !important;
-}
-
-body.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button {
-  color: #ffffff !important;
 }
 
 body.light-mode .theme-button {

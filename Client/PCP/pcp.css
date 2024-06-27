@@ -257,21 +257,6 @@ body {
   background: #c5c5c5;
 }
 
-.icoreserv,
-.iconsulta {
-  width: 30px;
-}
-
-.light-mode .icoreserv,
-.iconsulta {
-  filter: invert(1);
-}
-
-.hed {
-  width: 100%;
-  display: flex !important;
-}
-
 .header {
   padding: 0;
   display: flex;
@@ -492,15 +477,6 @@ button:hover {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(1px);
-}
-
-.spinner {
-  height: 100%;
-  width: 100%;
-  animation: rotate 0.8s infinite linear;
-  border: 12px solid #ffffff;
-  border-right-color: #9b4dca;
-  border-radius: 50%;
 }
 
 .sk-cube-grid .sk-cube {
