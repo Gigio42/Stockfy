@@ -16,16 +16,13 @@ export class Reservar {
     this.containerElement = document.getElementById("container");
     this.clearButtonElement = document.getElementById("clearButton");
     this.updateFormElement = document.getElementById("groupingForm");
-    this.checkboxButtons = document.querySelectorAll(".checkbox-button");
     this.selectedChapas = new Map();
     this.animationExecuted = false;
   }
 
   initialize() {
     this.updateFormElement.addEventListener("submit", (event) => this.onFormSubmit(event));
-    this.checkboxButtons.forEach((button) => button.addEventListener("click", (event) => this.onCheckboxButtonClick(event)));
     this.sortOrderElement.addEventListener("click", (event) => this.onSortOrderClick(event));
-    this.clearButtonElement.addEventListener("click", () => this.onClearButtonClick());
 
     this.populateCards();
   }
@@ -58,12 +55,6 @@ export class Reservar {
       });
   }
 
-  onClearButtonClick() {
-    this.selectedChapas.clear();
-    document.querySelectorAll(".card-checkbox").forEach((checkbox) => {
-      checkbox.checked = false;
-    });
-  }
 
   async populateCards() {
     const sortKey = this.sortKeyElement.value;

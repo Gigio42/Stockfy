@@ -62,11 +62,11 @@ const addEventListeners = (body, swal2Theme) => {
   });
 
   //refactor mt louco pro modal de filtro, com opt de esc p/ sair
-  const modal = document.getElementById("groupingForm");
-  document.getElementById("optionsButton").onclick = () => modal.classList.toggle("d-none");
+  const filtroModal = document.getElementById("groupingForm");
+  document.getElementById("optionsButton").onclick = () => filtroModal.classList.toggle("d-none");
   document.onkeydown = (e) => {
     if (e.key === "Escape" && document.activeElement.tagName !== "INPUT") {
-      modal.classList.add("d-none");
+      filtroModal.classList.add("d-none");
     }
   };
 

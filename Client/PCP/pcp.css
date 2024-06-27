@@ -1,10 +1,7 @@
-/* ======================================
-   Header Styles
-   ====================================== */
+/* ====================================== Header Styles ====================================== */
 .header-custom {
   display: flex;
   color: #1a1a1a;
-  /* Cor do texto padrão para o header */
   border-bottom: solid 1px #6a6a6a45;
   background-color: #d4d4d4;
   height: 5rem;
@@ -12,65 +9,51 @@
   padding-left: 1.5rem;
   border-radius: 0 !important;
 }
-
 h1 {
   color: #0f0f0f;
   font-size: 2rem;
 }
-
 #logoutButton {
   border: none;
   background: #181818;
 }
-
 #logoutButton:hover {
   border: none;
   background-color: #1e1e1e;
 }
-
 .light-mode #logoutButton {
   border: none;
   background: #c5c5c5;
 }
-
 .light-mode #logoutButton:hover {
   border: none;
   background: #b7b7b7;
 }
-
 .light-mode .sair {
   filter: invert(1);
 }
-
 .navbar-header {
   background: #262626;
   padding: 1.5rem;
   border-radius: 1rem;
   margin-bottom: 2rem;
 }
-
 .light-mode .navbar-header {
   background: #9f9f9f;
   padding: 1.5rem;
   border-radius: 1rem;
   margin-bottom: 2rem;
 }
-
 .light-mode .text-muted {
   color: #363636 !important;
 }
-
 .light-mode #user-name {
   color: #363636 !important;
 }
-
-/* ======================================
-   Dark Mode Toggle Styles
-   ====================================== */
+/* ====================================== Dark Mode Toggle Styles ====================================== */
 .dark-mode-toggle input[type="checkbox"] {
   display: none;
 }
-
 .dark-mode-toggle label {
   margin-right: 1rem;
   display: block;
@@ -81,7 +64,6 @@ h1 {
   position: relative;
   cursor: pointer;
 }
-
 .dark-mode-toggle label:after {
   content: "";
   display: block;
@@ -94,51 +76,38 @@ h1 {
   left: 2px;
   transition: transform 0.3s ease-in-out;
 }
-
 .dark-mode-toggle input[type="checkbox"]:checked + label {
   background-color: #007bff;
 }
-
 .dark-mode-toggle input[type="checkbox"]:checked + label:after {
   transform: translateX(100%);
 }
-
-/* ======================================
-   Navbar Styles
-   ====================================== */
+/* ====================================== Navbar Styles ====================================== */
 #aside {
   display: flex;
   background: #b8b8b8;
-  /* Cor de fundo para o aside no modo escuro */
   min-height: 70%;
   overflow-y: auto;
-  /* Permite rolagem se o conteúdo for maior do que a altura da página */
   padding: 0;
   border-radius: 0 !important;
 }
-
 .light-mode img.imgicon {
   filter: invert(1) !important;
 }
-
 .light-mode #optionsButton {
   color: #1a1a1a;
 }
-
 .light-mode #openModalLink {
   color: #1a1a1a;
 }
-
 @media (min-width: 992px) {
   #aside {
-    transform: translateX(0);
-  }
+      transform: translateX(0);
+ }
 }
-
 .logo {
   width: 7rem;
 }
-
 .logo-container {
   display: flex;
   flex-direction: row;
@@ -151,56 +120,39 @@ h1 {
   border-left: none;
   border-radius: 0 !important;
 }
-
 .navbar {
   display: flex;
   margin-top: 0.5rem;
   justify-content: center;
 }
-
-/* ======================================
-   Active Link Styles
-   ====================================== */
+/* ====================================== Active Link Styles ====================================== */
 .active {
   background-color: #007bff;
-  /* Cor de fundo do link ativo */
 }
-
 .active img.imgicon {
   filter: brightness(0) invert(1);
 }
-
 .active a {
   color: #ffffff;
 }
-
 .active:hover {
   background-color: #007bff;
-  /* Mantém a cor de fundo do link ativo */
   cursor: default;
-  /* Define o cursor como padrão */
 }
-
 .active:hover a {
   color: #ffffff;
-  /* Mantém a cor do texto do link ativo */
 }
-
-/* ======================================
-   General Link Styles
-   ====================================== */
+/* ====================================== General Link Styles ====================================== */
 a {
   color: #535353;
   padding: 1rem;
   border-radius: 1.2rem;
   font-size: 1.5rem;
 }
-
 a:hover {
   color: #535353;
   text-decoration: none;
 }
-
 li {
   color: #ffffff;
   padding: 1rem;
@@ -209,32 +161,23 @@ li {
   text-decoration: none;
   cursor: pointer;
 }
-
 li:hover {
   background-color: #cacaca;
 }
-
 li:active {
   transform: scale(0.95);
 }
-
-
-/* ======================================
-   Grid and Layout Styles
-   ====================================== */
+/* ====================================== Grid and Layout Styles ====================================== */
 .col-md-2 {
   padding: 0%;
 }
-
 .imgicon {
   width: 1.5rem;
   border-radius: 0 !important;
 }
-
 html {
   height: 100%;
 }
-
 body {
   margin: 0;
   padding: 0;
@@ -244,124 +187,89 @@ body {
   overflow-y: hidden;
   overflow-x: hidden;
 }
-
 #mobileOptionsButton {
   margin-left: 1rem;
   background: #181818;
 }
-
 #mobileOpenModalLink {
   margin-left: 1rem;
   background: #181818;
 }
-
-.light-mode #mobileOptionsButton,
-.light-mode #mobileOpenModalLink {
+.light-mode #mobileOptionsButton, .light-mode #mobileOpenModalLink {
   margin-left: 1rem;
   background: #c5c5c5;
 }
-
 .header {
   padding: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-
 .row {
   display: flex;
-  /* Para fazer os elementos dentro da linha se comportarem como flexíveis */
   height: 100%;
 }
-
 .container-fluid {
   height: 100%;
 }
-
 #container {
   max-height: 85vh;
-  overflow-y: auto; /* Adds vertical scrollbar if necessary */
-  scrollbar-width: none; /* For Firefox */
+  overflow-y: auto;
+  scrollbar-width: none;
 }
-
 #container::-webkit-scrollbar {
-  display: none; /* For Chrome, Safari and Opera */
+  display: none;
 }
-
 .itemContainer {
   padding-bottom: 0 !important;
 }
-
-/* ======================================
-   Scrollbar Styles
-   ====================================== */
+/* ====================================== Scrollbar Styles ====================================== */
 ::-webkit-scrollbar {
   width: 10px;
-  /* largura da barra de rolagem */
 }
-
 ::-webkit-scrollbar-thumb {
-  background-color: #424242; /* cor do 'thumb' (a parte que você arrasta) */
-  border-radius: 5px; /* borda arredondada */
+  background-color: #424242;
+  border-radius: 5px;
 }
-
 ::-webkit-scrollbar-track {
   background-color: #212121;
-  /* cor do fundo da barra de rolagem */
 }
-
-/* ======================================
-   Dark Mode Styles
-   ====================================== */
+/* ====================================== Dark Mode Styles ====================================== */
 .dark-mode #aside {
   background: #9a9a9a27;
-  /* Altere o fundo do modo escuro para a barra lateral conforme necessário */
   border: solid 1px #6a6a6a45;
   backdrop-filter: blur(5px);
   border-top: 0;
 }
-
-.dark-mode h1,
-.dark-mode li {
+.dark-mode h1, .dark-mode li {
   color: #cccccc;
 }
-
 .dark-mode.body {
   background: #191919;
 }
-
 .dark-mode .dark-mode-aside {
   background: #1c1c1c;
-  /* Altere o fundo do modo escuro para a barra lateral conforme necessário */
 }
-
 .dark-mode .header-custom {
   display: flex;
   background: #0f0f0f;
 }
-
 .dark-mode .logo-container {
   background: #2f2f2f;
   border: solid 1px #6a6a6a45;
 }
-
 .dark-mode li:hover {
   background-color: #333333;
 }
-
 .dark-mode a {
   color: #b3b3b3;
 }
-
 @media (prefers-color-scheme: dark) {
   .icon {
-    color: white; /* or any color for dark mode */
-  }
+      color: white;
+ }
 }
-
-/* ======================================
-   Modal Styles
-   ====================================== */
+/* ====================================== Modal Styles ====================================== */
 .modal {
   display: none;
   position: fixed;
@@ -375,89 +283,74 @@ body {
   z-index: 3;
   backdrop-filter: blur(1px);
 }
-
 .modal.open {
   display: block;
 }
-
 .modal-content {
   background-color: #252525;
   margin: 2% auto;
   padding: 1rem !important;
   border: none !important;
   width: 80%;
-  max-height: 90vh; /* Altura máxima do modal */
+  max-height: 90vh;
   display: flex;
   flex-direction: column;
   animation: slide-up 0.5s ease-out;
   border-radius: 1rem;
 }
-
 .modal-content .close {
-  align-self: flex-end; /* Alinha o botão de fechar à direita */
+  align-self: flex-end;
   cursor: pointer;
   font-size: 1.5em;
   color: #ffffff;
 }
-
 .modal-content .close:hover {
   color: #bbbbbb;
 }
-
 .modal-content .container-fluid {
   flex: 1;
-  overflow-y: auto; /* Habilita o scrolling no conteúdo */
+  overflow-y: auto;
 }
-
 @keyframes slide-up {
   0% {
-    transform: translateY(100%);
-    opacity: 0;
-  }
+      transform: translateY(100%);
+      opacity: 0;
+ }
   100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
+      transform: translateY(0);
+      opacity: 1;
+ }
 }
-
-input[type="checkbox"] {
-  text-align: center;
-}
-
 .close {
   display: flex;
   justify-content: flex-end;
 }
-
 button {
   padding: 15px;
   background-color: #111111;
   color: #fff;
   border-radius: 15px;
 }
-
 button:hover {
   background-color: #424242;
   color: #0e0e0e;
 }
-
 @media (max-width: 600px) {
   .modal-content {
-    width: 95%;
-    padding: 5px;
-    font-size: 0.8em;
-  }
+      width: 95%;
+      padding: 5px;
+      font-size: 0.8em;
+ }
   .modal-content input {
-    font-size: 0.8em;
-  }
+      font-size: 0.8em;
+ }
   .preview {
-    display: none;
-  }
+      display: none;
+ }
   .card {
-    width: 120%;
-  }
+      width: 120%;
+ }
 }
-
 #loadingSpinner {
   position: fixed;
   z-index: 999;
@@ -470,7 +363,6 @@ button:hover {
   bottom: 0;
   right: 0;
 }
-
 #loadingSpinner:before {
   content: "";
   display: block;
@@ -482,26 +374,18 @@ button:hover {
   background-color: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(1px);
 }
-
 .sk-cube-grid .sk-cube {
   background-color: #333;
 }
-
 @keyframes rotate {
   0% {
-    transform: rotate(0deg);
-  }
+      transform: rotate(0deg);
+ }
   100% {
-    transform: rotate(360deg);
-  }
+      transform: rotate(360deg);
+ }
 }
-
-/*
-==================
-formulário
-==================
-*/
-
+/* ================== formulário ================== */
 .grouping-form {
   position: fixed;
   display: grid;
@@ -509,14 +393,12 @@ formulário
   gap: 20px;
   justify-content: space-between;
   background: #484848;
-  padding: 20px;
-  border-radius: 1.5rem;
+  padding: 15px;
+  border-radius: 1rem;
   color: #fff;
-  margin-bottom: 1rem;
   width: 25%;
   z-index: 2;
 }
-
 .grouping-form label {
   color: #fff;
   font-size: 1em;
@@ -525,9 +407,7 @@ formulário
   border-radius: 5px;
   text-align: center;
 }
-
-.grouping-form input[type="text"],
-.grouping-form select {
+.grouping-form input[type="text"], .grouping-form select {
   background: #2e2e2e;
   padding: 10px;
   box-sizing: border-box;
@@ -536,13 +416,10 @@ formulário
   border-radius: 1rem;
   border: none;
 }
-
-.grouping-form input[type="text"]:hover,
-.grouping-form select:hover {
+.grouping-form input[type="text"]:hover, .grouping-form select:hover {
   background: #383838;
   color: #d3d3d3;
 }
-
 .agrupar-button {
   background: #3a3a3a;
   border: none;
@@ -553,7 +430,6 @@ formulário
   font-size: 1em;
   grid-column: span 2;
 }
-
 #sortOrder {
   width: 50px;
   height: 38px;
@@ -563,29 +439,9 @@ formulário
   align-items: center;
   justify-content: center;
 }
-
-.checkbox-button {
-  display: inline-block;
-  padding: 10px;
-  background: #56565600;
-  border: 1px solid #6d6d6d;
-  color: #fff;
-  border-radius: 5px;
-  margin: 2px;
-  cursor: pointer;
-  user-select: none;
-}
-
-.checkbox-button[data-checked="true"] {
-  background-color: #00000054 !important;
-  border: #0e0e0e;
-  color: #fff !important;
-}
-
 .form-control {
   height: 3rem;
 }
-
 .mobileOptions {
   background: #262626;
   border: none;
@@ -597,31 +453,24 @@ formulário
   grid-column: span 2;
   cursor: pointer;
 }
-
 .mobileOptions:hover {
   background: #5c5c5c;
   transform: scale(1.1);
 }
-
 @media (min-width: 601px) {
   .mobileOptions {
-    display: none;
-  }
+      display: none;
+ }
 }
-
 @media (max-width: 600px) {
   .grouping-form {
-    width: 90%;
-  }
+      width: 90%;
+ }
   .hide-on-mobile {
-    display: none;
-  }
+      display: none;
+ }
 }
-
-/* ======================================
-     cards
-     ====================================== */
-
+/* ====================================== cards ====================================== */
 /* MAIN CARD, compartilha com todos os sistemas de cards do sistema do PCP */
 .card {
   font-family: 'Roboto', sans-serif;
@@ -630,117 +479,98 @@ formulário
   border: none;
   border-radius: 1rem;
 }
-
 .card-body {
   border-radius: 10px;
 }
-
 .formQuantidade {
   background: #232323;
   border: none;
   padding: 1rem;
-  border-radius: 0.5rem; /* Adiciona 'rem' para o border-radius */
+  border-radius: 0.5rem;
   font-size: 1rem;
   color: #ffffff;
 }
-
 .light-mode .formQuantidade {
   background: #cacaca;
   border: none;
   padding: 1rem;
-  border-radius: 0.5rem; /* Adiciona 'rem' para o border-radius */
+  border-radius: 0.5rem;
   font-size: 1rem;
 }
-
 .formQuantidade::placeholder {
   font-size: 1rem;
   color: #333333;
 }
-
 .formQuantidade:focus {
   border: none !important;
-  outline: none; /* Remove a borda de foco padrão */
+  outline: none;
   border: solid 1px #007bff !important;
   color: hsl(0, 0%, 100%);
 }
-
 @media (max-width: 902px) {
   .header-custom {
-    display: flex;
-    color: #1a1a1a;
-    /* Cor do texto padrão para o header */
-    border-bottom: solid 1px #6a6a6a45;
-    background-color: #d4d4d4;
-    height: 5rem;
-    width: 100%;
-    padding-left: 0 !important;
-    border-radius: 0 !important;
-  }
-
+      display: flex;
+      color: #1a1a1a;
+      border-bottom: solid 1px #6a6a6a45;
+      background-color: #d4d4d4;
+      height: 5rem;
+      width: 100%;
+      padding-left: 0 !important;
+      border-radius: 0 !important;
+ }
   .formQuantidade {
-    margin-top: 1rem;
-  }
-
+      margin-top: 1rem;
+ }
   .card-value-div {
-    font-size: 0.8rem;
-    padding: 0.7rem;
-    background-color: #3c3c3c5a;
-    border-radius: 1rem !important;
-  }
-
+      font-size: 0.8rem;
+      padding: 0.7rem;
+      background-color: #3c3c3c5a;
+      border-radius: 1rem !important;
+ }
   .body-div {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
+      display: flex;
+      flex-wrap: wrap;
+ }
   #partNumberInput {
-    width: 8rem;
-    font-size: 0.7rem !important;
-  }
-
+      width: 8rem;
+      font-size: 0.7rem !important;
+ }
   .card-body {
-    padding-bottom: 0;
-  }
+      padding-bottom: 0;
+ }
 }
-
 #partNumberInput {
   background-color: #801eff48 !important;
   border: solid 1px #8a3eee;
   padding: 1rem;
   border-radius: 1rem;
-  outline: none; /* Remove a borda de foco padrão */
+  outline: none;
   font-size: 1rem;
   color: #aa69ff;
 }
-
 .light-mode #partNumberInput {
   background-color: #801eff48 !important;
   border: solid 1px #6817d2;
   padding: 1rem;
   border-radius: 1rem;
-  outline: none; /* Remove a borda de foco padrão */
+  outline: none;
   font-size: 1rem;
 }
-
 #partNumberInput::placeholder {
   color: #aa69ff;
 }
-
 #partNumberInput:focus {
   color: #a865ff;
   background-color: #801eff48 !important;
 }
-
 #partNumberInput:focus {
   color: #a865ff;
   background-color: #801eff48 !important;
 }
-
 .selected {
   border: 1px solid #007bff6d;
   background-color: #007bff14;
 }
-
 input[type="checkbox"] {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -755,25 +585,20 @@ input[type="checkbox"] {
   align-items: center;
   align-content: center;
 }
-
 .value-row {
   margin-right: 0px;
   margin-left: 0px;
 }
-
 .chapa-card {
   background-color: #252525;
 }
-
 .chapas-container {
   padding-left: 0px;
   padding-right: 0px;
 }
-
 .chapa-card-element {
   padding: 0px;
 }
-
 /* STATUS div que muda de cor baseado no status da chapa E do item (na consulta) */
 .card-status {
   padding: 10px;
@@ -781,70 +606,9 @@ input[type="checkbox"] {
   color: white;
   font-weight: bold;
 }
-
-/* chrome, safari e opera */
 .card-value-div::-webkit-scrollbar {
   display: none;
 }
-
-/* CHECKBOX o checkbox do card de chapas principal, pelo problema de checkbox do navegador
-talvez tenha algumas coisas nesses primeiros 3 estilos que mudam nada e podem ser excluidos */
-.card-checkbox {
-  display: inline-block;
-  border-radius: 0.5rem !important;
-}
-
-.card-checkbox:checked + .card-checkbox::after {
-  display: block;
-  width: 30px;
-  height: 30px;
-
-  background-color: #4d4d4d;
-  position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.card-checkbox:checked + .card-checkbox::after {
-  display: block;
-  width: 30px;
-  height: 30px;
-  border-radius: 5px;
-  background-color: #4d4d4d;
-  position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-input[type="checkbox"] {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  width: 25px;
-  height: 25px;
-  background-color: #2d2d2d;
-  border: 2px solid #4e4e4e;
-  border-radius: 4px;
-  position: relative;
-  cursor: pointer;
-  align-items: center;
-  align-content: center;
-}
-
-input[type="checkbox"]:checked {
-  background-color: #007bff;
-  border-color: #007bff;
-}
-
-input[type="checkbox"]:checked::before {
-  content: "✔";
-  font-size: 14px;
-  color: white;
-  align-content: center;
-}
-
 /* INFO botão de dropdown pra mostrar mais informações, usado em item e no chapa principal */
 .card-info-button {
   background: transparent;
@@ -855,30 +619,24 @@ input[type="checkbox"]:checked::before {
   grid-column: span 2;
   padding: 1rem;
 }
-
 .card-info-button:hover {
   background: #3b3b3b;
   color: #fff;
 }
-
 .card-info-button:focus {
   background: transparent;
   box-shadow: none !important;
 }
-
 .card-info-button:active {
   background: #3b3b3b !important;
   box-shadow: none !important;
 }
-
 .fas.fa-chevron-down {
   transition: transform 0.3s ease-in-out;
 }
-
 .rotate-icon {
   transform: rotate(180deg);
 }
-
 .card-part-number {
   background: #ab58ff23 !important;
   color: #8a3eee;
@@ -886,7 +644,6 @@ input[type="checkbox"]:checked::before {
   padding: 10px;
   margin-right: 10px;
 }
-
 .card-status-comprado {
   background: #ff262656 !important;
   border: 1px solid #ff000098;
@@ -894,7 +651,6 @@ input[type="checkbox"]:checked::before {
   border-radius: 0.7rem !important;
   padding: 10px;
 }
-
 .card-status-recebido {
   background: #5cff2656 !important;
   border: 1px solid #2bff0098;
@@ -902,7 +658,6 @@ input[type="checkbox"]:checked::before {
   border-radius: 0.7rem !important;
   padding: 10px;
 }
-
 .card-status-parcial {
   background: #f1ff2656 !important;
   border: 1px solid #eeff0098;
@@ -910,7 +665,6 @@ input[type="checkbox"]:checked::before {
   border-radius: 0.7rem !important;
   padding: 10px;
 }
-
 .card-status-usado {
   background: #21723756 !important;
   border: 1px solid #1b582b98;
@@ -918,7 +672,6 @@ input[type="checkbox"]:checked::before {
   border-radius: 0.7rem !important;
   padding: 10px;
 }
-
 .card-status-reservado {
   background: #58f9ff23 !important;
   color: #caffff;
@@ -926,7 +679,6 @@ input[type="checkbox"]:checked::before {
   border-radius: 0.3rem !important;
   padding: 10px;
 }
-
 /* consulta item */
 .card-status-produzindo {
   background: #fff12656 !important;
@@ -935,7 +687,6 @@ input[type="checkbox"]:checked::before {
   border-radius: 0.3rem !important;
   padding: 10px;
 }
-
 .card-status-finalizado {
   background: #6cff5823 !important;
   color: #d0ffca;
@@ -943,72 +694,52 @@ input[type="checkbox"]:checked::before {
   border-radius: 0.3rem !important;
   padding: 10px;
 }
-
 .card-status-reservado:hover {
   color: #d0ffca !important;
 }
-/* botão de fade pro card item pra n clicar em deletar */
-
-/* ======================================
-   media mode do card Styles
-   ====================================== */
-
-/* Responsive styles */
+/* ====================================== media mode do card Styles ====================================== */
 @media (max-width: 922px) {
   .card {
-    margin-bottom: 5px;
-    margin-top: 1px;
-    width: 100%;
-  }
-
+      margin-bottom: 5px;
+      margin-top: 1px;
+      width: 100%;
+ }
   .value-row {
-    display: flex;
-    flex-wrap: wrap;
-    font-size: 1rem;
-    margin-right: 0px;
-    margin-left: 0px;
-    white-space: nowrap;
-  }
-
+      display: flex;
+      flex-wrap: wrap;
+      font-size: 1rem;
+      margin-right: 0px;
+      margin-left: 0px;
+      white-space: nowrap;
+ }
   .chapa-card {
-    background-color: #252525;
-  }
-
+      background-color: #252525;
+ }
   .chapas-container {
-    padding-left: 0px;
-    padding-right: 0px;
-  }
-
+      padding-left: 0px;
+      padding-right: 0px;
+ }
   .chapa-card-element {
-    padding: 0px;
-  }
-
+      padding: 0px;
+ }
   input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-  }
-
+      width: 20px;
+      height: 20px;
+ }
   .card-checkbox:checked + .card-checkbox::after {
-    width: 20px;
-    height: 20px;
-  }
-
-  .card-part-number,
-  .card-status-comprado,
-  .card-status-parcial,
-  .card-status-reservado {
-    padding: 5px;
-    margin-right: 5px;
-  }
+      width: 20px;
+      height: 20px;
+ }
+  .card-part-number, .card-status-comprado, .card-status-parcial, .card-status-reservado {
+      padding: 5px;
+      margin-right: 5px;
+ }
 }
-
 /* LUGHTMODE CARD Montei por graça pode tirar se quiser */
-
 .light-mode .card.mb-3.shadow-sm:not(.selected) {
   background-color: #f8f9fa;
   border: 1px solid #c0c0c0;
 }
-
 /* fundo do modal */
 .light-mode .modal-content {
   background-color: #f8f8f8;
@@ -1020,124 +751,95 @@ input[type="checkbox"]:checked::before {
 .light-mode .card-title {
   color: #333;
 }
-
 .light-mode .chapa-card {
   background-color: #e0e0e0;
 }
-
 .light-mode .card-status {
   color: #333;
 }
-
 .light-mode .card-value-div {
   color: #333;
 }
-
-.light-mode .card-info-button,
-.light-mode .card-info-button:hover,
-.light-mode .card-info-button:focus,
-.light-mode .card-info-button:active {
+.light-mode .card-info-button, .light-mode .card-info-button:hover, .light-mode .card-info-button:focus, .light-mode .card-info-button:active {
   color: #333;
   background: #f0f0f0;
 }
-
 .light-mode input[type="checkbox"] {
   background-color: #e0e0e0;
   border: 2px solid #ccc;
 }
-
 .light-mode input[type="checkbox"]:checked {
   background-color: #007bff;
   border-color: #007bff;
 }
-
 .light-mode input[type="checkbox"]:checked::before {
   color: #fff;
 }
-
 /* LIGHT MODE FORM pode tirar tb, fiz por graça */
 .light-mode .card-item {
   background-color: #f8f9fa;
   border: 1px solid #777777;
-
 }
-
 .light-mode .grouping-form {
   background: #fafafa;
   color: #333;
+  border: 1px solid #929292;
 }
-
 .light-mode .grouping-form label {
   color: #333;
 }
-
-.light-mode .grouping-form input[type="text"],
-.light-mode .grouping-form select {
+.light-mode .grouping-form input[type="text"], .light-mode .grouping-form select {
   background: #e0e0e0;
   color: #333;
 }
-
-.light-mode .grouping-form input[type="text"]:hover,
-.light-mode .grouping-form select:hover {
+.light-mode .grouping-form input[type="text"]:hover, .light-mode .grouping-form select:hover {
   background: #d0d0d0;
   color: #333;
 }
-
 @media screen and (max-width: 922px) {
   .grouping-form {
-    width: 50%;
-    padding: 0.5;
-    gap: 0.5;
-  }
-
+      width: 50%;
+      padding: 0.5;
+      gap: 0.5;
+ }
   .agrupar-button {
-    width: 8rem !important;
-    font-size: 0.7rem;
-    padding: 0.5rem;
-  }
-
+      width: 8rem !important;
+      font-size: 0.7rem;
+      padding: 0.5rem;
+ }
   .grouping-form input[type="text"] {
-    width: 8rem !important;
-    font-size: 0.7rem;
-    padding: 0.5rem;
-  }
+      width: 8rem !important;
+      font-size: 0.7rem;
+      padding: 0.5rem;
+ }
   .input-group {
-    width: 50%;
-  }
-
+      width: 50%;
+ }
   .form-control {
-    width: 50% !important;
-    height: fit-content;
-  }
-
-  #filterLength,
-  #filterWidth,
-  #sortKey {
-    width: 50% !important;
-  }
-
+      width: 50% !important;
+      height: fit-content;
+ }
+  #filterLength, #filterWidth, #sortKey {
+      width: 50% !important;
+ }
   .loriei {
-    width: 50%;
-  }
+      width: 50%;
+ }
 }
-
 .light-mode .agrupar-button {
   background: #e0e0e0;
   color: #333;
 }
-
 .light-mode .checkbox-button {
   background: #e0e0e0;
   border: 1px solid #ccc;
   color: #333;
 }
-
 .light-mode .checkbox-button[data-checked="true"] {
   background-color: #007bff !important;
   border: #007bff;
   color: #fff !important;
 }
-
 /* mudar nome da classe, isso na vdd cuida do preview div do consulta */
 .dark-background {
   background: #5c5c5c23 !important;
