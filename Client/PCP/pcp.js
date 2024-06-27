@@ -38,7 +38,10 @@ const highlightCurrentPage = () => {
 };
 
 const initializeModules = () => {
-  new Reservar().initialize();
+  if (!window.reservarInstance) {
+    window.reservarInstance = new Reservar();
+    window.reservarInstance.initialize();
+  }
   new ItemModal().initialize();
   new InfoModal().initialize();
 };
