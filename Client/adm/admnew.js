@@ -779,7 +779,6 @@ document.getElementById("confirmarProcesso").addEventListener("click", async () 
   }
 });
 
-
 //=================================================
 // função para CONFIRMAR prioridade
 //=================================================
