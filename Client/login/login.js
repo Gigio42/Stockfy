@@ -22,7 +22,8 @@ function validaUsuario() {
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
-      if (data.exists) {
+      if (data.success) {
+        // Alterado de data.exists para data.success
         const nome = document.getElementById("username").value;
         localStorage.setItem("nome", nome);
 

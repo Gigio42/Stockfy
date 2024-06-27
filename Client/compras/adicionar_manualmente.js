@@ -103,6 +103,7 @@ function formatarDataParaEnvio(dateString) {
 document.getElementById("sendbutton").addEventListener("click", function () {
   console.log("Botão clicado!");
   sendJSONDataToBackend();
+  window.location.reload(); // Recarrega a página
 });
 
 // Função para enviar os dados JSON ao backend
@@ -210,14 +211,4 @@ function showJSON() {
   } else {
     console.error("Elemento <pre> não encontrado.");
   }
-}
-
-// Adicionando um listener ao botão "Editar"
-const editButton = document.getElementById("editButtonmanual");
-if (editButton) {
-  editButton.addEventListener("click", function () {
-    showJSON(); // Chama a função showJSON ao clicar no botão "Editar"
-  });
-} else {
-  console.error("Botão de edição não encontrado.");
 }

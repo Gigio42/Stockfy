@@ -61,6 +61,7 @@ CREATE TABLE "Item_Maquina" (
     "id_item_maquina" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "prazo" TEXT,
     "ordem" INTEGER,
+    "ordemTotal" INTEGER,
     "executor" TEXT,
     "finalizado" BOOLEAN NOT NULL DEFAULT false,
     "corte" TEXT,

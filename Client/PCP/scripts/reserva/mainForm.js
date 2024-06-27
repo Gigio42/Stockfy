@@ -18,6 +18,7 @@ export class Reservar {
     this.updateFormElement = document.getElementById("groupingForm");
     this.checkboxButtons = document.querySelectorAll(".checkbox-button");
     this.selectedChapas = new Map();
+    this.animationExecuted = false;
   }
 
   initialize() {
@@ -40,10 +41,21 @@ export class Reservar {
   }
 
   onSortOrderClick(event) {
-    const isAscending = event.target.getAttribute("data-sort") === "asc";
-    event.target.setAttribute("data-sort", isAscending ? "descending" : "asc");
-    event.target.innerHTML = isAscending ? " &#8595" : " &#8593";
-    this.populateCards();
+    this.sortOrderElement.disabled = true;
+    this.sortOrder = this.sortOrder === "asc" ? "desc" : "asc";
+
+    const isAscending = this.sortOrder === "asc";
+    event.target.setAttribute("data-sort", isAscending ? "ascending" : "descending");
+    event.target.innerHTML = isAscending ? " &#8593" : " &#8595";
+
+    fetchChapas(this.sortKey, this.sortOrder, this.filterCriteria)
+      .then((response) => {
+        this.sortOrderElement.disabled = false;
+        this.populateCards();
+      })
+      .catch((error) => {
+        this.sortOrderElement.disabled = false;
+      });
   }
 
   onClearButtonClick() {
@@ -87,6 +99,18 @@ export class Reservar {
         this.cards.push(card);
         this.containerElement.appendChild(card.createCard());
       });
+
+      if (!this.animationExecuted) {
+        anime({
+          targets: ".card.mb-3.shadow-sm",
+          translateX: [-100, 0],
+          opacity: [0, 1],
+          delay: anime.stagger(100),
+          duration: 500,
+          easing: "easeOutQuad",
+        });
+        this.animationExecuted = true;
+      }
 
       reservarModal(() => Array.from(this.selectedChapas.values()));
     } catch (error) {

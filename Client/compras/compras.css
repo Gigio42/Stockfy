@@ -107,10 +107,10 @@ background: #ff434300 !important;
     position: fixed;
     bottom: 0;
     left: 0; /* ou right: 0; para alinhamento à direita */
-    width: 98%;
-    padding: 3rem;
+    width: 94%;
+    padding: 1rem;
     background-color: #232323;
-    height: 20%;
+    height: 5rem;
     align-items: center;
     margin: 1rem;
     border-radius: 2rem;
@@ -124,7 +124,8 @@ background: #ff434300 !important;
     max-height: 200px;
 }
 
-#expectedDate {
+#expectedDate,
+#expectedDateManual {
     width: 10rem;
     height:5rem;
     margin-right: 1.5rem;
@@ -137,11 +138,12 @@ background: #ff434300 !important;
     border: solid 1px #383838;
 }
 
-
+#expectedDateManual:focus,
 #expectedDate:focus {
     outline: none;
     border-left: 7px solid #3bf867;
 }
+
 #expectedDate.invalid-date {
     border-left: 7px solid rgb(255, 64, 64);
 }
@@ -160,6 +162,15 @@ background: #ff434300 !important;
 
 #expectedDate.invalid-date {
     animation: blink 1s infinite;
+}
+
+.logostockfy {
+    width: 100px;
+}
+
+.logocontainer {
+    width: 50%;
+    display: flex;
 }
 
 
@@ -229,8 +240,10 @@ body button.confirm:hover {
 }
 
 .header-principal {
+    display: flex;
     padding: 1rem;
     background-color: #232323;
+    justify-content: space-around;
 
 }
 
@@ -339,6 +352,24 @@ body button.edit.disabled {
     background: #232323;
 }
 
+@media screen and (max-width: 902px) {
+    .closeButton {
+        display: none;
+    }
+}
+
+.logout {
+    width:40px ;
+    padding: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+.logout:hover {
+    background: #313131;
+
+}
+
+
 .alert {
     display: flex;
     flex-direction: column;
@@ -401,6 +432,7 @@ body button.edit.disabled {
     padding-left: 1rem;
     height: 3rem;
     font-size: 1rem;
+    color: #b52aff;
 }
 
 
@@ -411,9 +443,9 @@ body button.edit.disabled {
 }
 
 .inputform:focus {
-    background-color: #161616;
+    background-color: #1c1c1c;
     border-left: solid 7px #b52aff;
-    
+    color: #ffffff;
     box-shadow: none !important;
 }
 
@@ -515,7 +547,7 @@ border-radius: 2rem;
 
 
 .enviarManual {
-    font-size: 2rem;
+    font-size: 1.5rem;
     border-radius: 1rem;
     background: #2ab14a61;
     color: #39ea62;

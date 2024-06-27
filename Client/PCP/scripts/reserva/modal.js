@@ -15,7 +15,7 @@ export function handleShowSelectedButtonClick(getSelectedChapas) {
     } else {
       Swal.fire({
         icon: "error",
-        title: "Oops...",
+        title: "Nenhuma chapa selecionada.",
         text: "Precisa selecionar pelomenos 1 chapa!",
       });
     }
@@ -48,7 +48,7 @@ function createModalHandler(modalContent, closeModal, getSelectedSubcards, popup
     const newContent = document.createElement("div");
 
     const contentWrapper = document.createElement("div");
-    contentWrapper.style.maxHeight = "50vh";
+    contentWrapper.style.maxHeight = "70vh";
     contentWrapper.style.overflowY = "auto";
 
     const keys = ["id_chapa", "largura", "fornecedor", "qualidade", "quantidade_disponivel"];
@@ -81,7 +81,7 @@ function createCard(chapa, keys) {
   cardBody.className = "body-div card-body rounded d-flex align-items-center";
 
   const valueRow = document.createElement("div");
-  valueRow.className = "value-row row flex-nowrap overflow-auto w-100 align-items-stretch";
+  valueRow.className = "value-row row overflow-auto w-100 align-items-stretch";
   keys.forEach((key) => {
     const valueDiv = document.createElement("div");
     valueDiv.className = "card-value-div col text-center value align-items-center justify-content-center rounded";
@@ -105,47 +105,37 @@ function createFormRow(chapa) {
   const formRow = document.createElement("div");
   formRow.className = "form-row row flex-nowrap overflow-auto w-100 align-items-stretch";
 
-  const quantityInput = createInputCell("number", "Quantidade", `quantityInput-${chapa.id_chapa}`);
+  const quantityInput = createInputCell("number", "Quantidade", `quantityInput-${chapa.id_chapa}`, "formQuantidade");
 
   const medidaInput = createInputCell("text", "medida", `medidaInput-${chapa.id_chapa}`);
   medidaInput.style.display = "none";
 
-  const recycleTd = document.createElement("div");
-  recycleTd.className = "form-cell col-1 text-center value align-items-center justify-content-center rounded";
-  recycleTd.style.display = "flex";
-  recycleTd.style.justifyContent = "center";
-  recycleTd.style.alignItems = "center";
-
-  const recycleCheckbox = document.createElement("input");
-  recycleCheckbox.type = "checkbox";
-  recycleCheckbox.id = `recycleCheckbox-${chapa.id_chapa}`;
-  recycleCheckbox.style.width = "25px";
-  recycleCheckbox.style.height = "25px";
-  recycleCheckbox.onchange = () => {
-    medidaInput.style.display = recycleCheckbox.checked ? "" : "none";
-  };
-  recycleTd.appendChild(recycleCheckbox);
-
   formRow.appendChild(quantityInput);
   formRow.appendChild(medidaInput);
-  formRow.appendChild(recycleTd);
 
   return formRow;
 }
 
-function createInputCell(type, placeholder, id) {
+function createInputCell(type, placeholder, id, additionalClass) {
   const cell = document.createElement("div");
   cell.className = "form-cell col text-center value align-items-center justify-content-center rounded";
+
   const input = document.createElement("input");
   input.type = type;
   input.placeholder = placeholder;
   input.id = id;
   input.min = 0;
+  input.style.width = "50%";
   input.oninput = function () {
     if (this.value < 0) {
       this.value = 0;
     }
   };
+
+  if (additionalClass) {
+    input.classList.add(additionalClass);
+  }
+
   cell.appendChild(input);
   return cell;
 }
@@ -185,7 +175,7 @@ function createReserveButton(selectedSubcards) {
       chapaID: subcard.id_chapa,
       quantity: document.getElementById(`quantityInput-${subcard.id_chapa}`).value,
       medida: document.getElementById(`medidaInput-${subcard.id_chapa}`).value,
-      keepRemaining: document.getElementById(`recycleCheckbox-${subcard.id_chapa}`).checked,
+      keepRemaining: false,
     }));
 
     const loadingSpinner = document.getElementById("loadingSpinner");
@@ -196,13 +186,15 @@ function createReserveButton(selectedSubcards) {
       console.log("reservedBy:", reservedBy);
       const response = await reserveChapas({ partNumber, chapas, reservedBy });
       console.log("this is the response:", response);
+      localStorage.setItem("showSwal", "true");
+      localStorage.setItem("partNumber", partNumber);
       location.reload();
     } catch (error) {
-      console.error("This is the error response:", error); // Log the error object
+      console.error("This is the error response:", error);
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: error.message, // Display the error message from error.response.data
+        text: error.message,
       });
     } finally {
       loadingSpinner.style.display = "none";
