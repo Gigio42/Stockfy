@@ -205,8 +205,8 @@ class AdmController {
     }
   }
 
-   // Método para criar uma nova máquina
-   async createMaquina(nome) {
+  // Método para criar uma nova máquina
+  async createMaquina(nome) {
     try {
       const newMaquina = await Maquina.create({
         data: {
