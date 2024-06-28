@@ -204,6 +204,21 @@ class AdmController {
       throw new Error("Erro ao verificar a existência do item_maquina: " + error.message);
     }
   }
+
+   // Método para criar uma nova máquina
+   async createMaquina(nome) {
+    try {
+      const newMaquina = await Maquina.create({
+        data: {
+          nome: nome,
+        },
+      });
+      return newMaquina;
+    } catch (error) {
+      console.error("Erro ao criar uma nova máquina:", error);
+      throw new Error("Erro ao criar uma nova máquina: " + error.message);
+    }
+  }
 }
 
 export default AdmController;

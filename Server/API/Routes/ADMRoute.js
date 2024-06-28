@@ -102,6 +102,18 @@ async function admRoute(fastify, options) {
       reply.code(500).send({ message: "Erro ao verificar a existência do item_maquina." });
     }
   });
+
+  // Rota para criar uma nova máquina
+  fastify.post("/maquina", async (request, reply) => {
+    try {
+      const { nome } = request.body;
+      const newMaquina = await admController.createMaquina(nome);
+      reply.send(newMaquina);
+    } catch (err) {
+      console.error("Erro ao criar uma nova máquina:", err);
+      reply.code(500).send({ message: "Erro ao criar uma nova máquina", error: err.message });
+    }
+  });
 }
 
 export default admRoute;

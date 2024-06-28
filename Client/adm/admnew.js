@@ -814,3 +814,32 @@ document.addEventListener("DOMContentLoaded", () => {
   handleDarkModeToggle();
   fetchMaquinas();
 });
+
+document.getElementById("criarMaquinaBtn").addEventListener("click", async () => {
+  const nome = document.getElementById("maquinaNome").value;
+
+  if (nome.trim() === "") {
+    alert("O nome da máquina não pode estar vazio.");
+    return;
+  }
+
+  try {
+    const response = await fetch("/maquina", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ nome })
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao criar a máquina.");
+    }
+
+    const newMaquina = await response.json();
+    alert(`Máquina criada com sucesso: ${newMaquina.nome}`);
+  } catch (error) {
+    console.error("Erro:", error);
+    alert("Erro ao criar a máquina. Verifique o console para mais detalhes.");
+  }
+});

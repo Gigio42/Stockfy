@@ -32,7 +32,6 @@ h1 {
   .nomeModal {
     display: none;
   }
-
 }
 
 .logoStockfy {
@@ -70,12 +69,12 @@ h1 {
   transition: transform 0.3s ease-in-out;
 }
 
-.dark-mode-toggle input[type="checkbox"]:checked+label {
+.dark-mode-toggle input[type="checkbox"]:checked + label {
   background-color: #6eec07;
   box-shadow: 0 0 30px 20px #6eec074f;
 }
 
-.dark-mode-toggle input[type="checkbox"]:checked+label:after {
+.dark-mode-toggle input[type="checkbox"]:checked + label:after {
   transform: translateX(100%);
 }
 
@@ -92,7 +91,6 @@ h1 {
   padding: 0;
   border-radius: 0 !important;
   height: 100vh;
-
 }
 
 @media (max-width: 767.98px) {
@@ -112,7 +110,6 @@ h1 {
   width: 100vw;
   height: 5rem;
   padding: 1rem;
-
 }
 
 #mobileButtonContainer {
@@ -153,7 +150,6 @@ h1 {
 
 .dark-mode .list-unstyled:hover {
   background: #333333;
-
 }
 
 .list-unstyled {
@@ -250,7 +246,6 @@ body {
   margin-right: 2rem;
 }
 
-
 #container {
   max-height: 100vh;
   overflow-y: auto;
@@ -270,20 +265,19 @@ body {
     width: 10px;
     /* largura da barra de rolagem */
   }
-  
+
   ::-webkit-scrollbar-thumb {
     background-color: #424242;
     /* cor do 'thumb' (a parte que você arrasta) */
     border-radius: 5px;
     /* borda arredondada */
   }
-  
+
   ::-webkit-scrollbar-track {
     background-color: #212121;
     /* cor do fundo da barra de rolagem */
   }
-  
-}      
+}
 
 ::-webkit-scrollbar {
   width: 10px;
@@ -317,7 +311,6 @@ body {
 .dark-mode li {
   color: #cccccc;
 }
-
 
 .logout {
   filter: invert(1);
@@ -380,8 +373,6 @@ body {
 .dark-mode .cardMaquina {
   background-color: #2d2d2d;
 }
-
-
 
 #allMaquina {
   overflow-y: auto;
@@ -460,7 +451,6 @@ body {
   flex-wrap: wrap;
 
   height: 90%;
-
 }
 
 #stagedItems {
@@ -471,9 +461,8 @@ body {
   margin-bottom: 1rem;
 }
 
-
 .modal-content-2 {
-  padding: 1.5REM;
+  padding: 1.5rem;
   border: none;
   border-radius: 1.5rem;
   position: absolute;
@@ -538,8 +527,6 @@ body {
 .dark-mode .sair {
   filter: none;
 }
-
-
 
 #voltarModalContentnext,
 #voltarModalContent2,
@@ -657,14 +644,13 @@ span.item-number {
   background: #b4b4b4;
 }
 
-@media (max-width:920px) {
+@media (max-width: 920px) {
   .abrirModal {
     width: 40px;
   }
 
   .cardMaquina {
     padding: 1.5rem 0.7rem;
-  
   }
   .header-custom {
     padding: 0.7rem;
@@ -680,24 +666,35 @@ span.item-number {
 
   .textButtonli {
     font-size: 1rem;
-width: 4.5rem !important;
-height: 2rem;
+    width: 4.5rem !important;
+    height: 2rem;
   }
- #mobileButtonContainer {
-  height: 4rem !important;
- }
+  #mobileButtonContainer {
+    height: 4rem !important;
+  }
   #optionsButton {
-  height: 2rem;
+    height: 2rem;
   }
 
   .imgicon {
-width: 30px;
-height: 30px; 
+    width: 30px;
+    height: 30px;
   }
 
-   .maquinaName {
+  .maquinaName {
     font-size: 1.2rem !important;
-   }
+  }
+
+  div.card-body {
+    overflow-y: auto;
+    max-height: 30vh;
+  }
+}
+
+.botoesheader{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .conteudoInterno {
@@ -708,7 +705,6 @@ height: 30px;
   padding: 1rem;
   border-radius: 2rem;
   overflow-y: auto;
-
 }
 
 #stagedArea {
@@ -722,6 +718,10 @@ height: 30px;
   max-height: 77vh;
 }
 
+.addmachine {
+  margin-right: 2rem;
+}
+
 @media (max-width: 902px) {
   #stagedArea {
     justify-content: space-between;
@@ -733,12 +733,9 @@ height: 30px;
     overflow-y: auto;
     max-height: 50%;
     height: 40%;
-    margin-bottom: 7REM;
+    margin-bottom: 7rem;
   }
-
 }
-
-
 
 .stagedCard {
   display: flex;
@@ -926,7 +923,7 @@ p {
   flex-direction: column;
 
   border-radius: 1rem;
-  border-radius: 2REM;
+  border-radius: 2rem;
 }
 
 .textoModal {
@@ -957,7 +954,6 @@ h2 {
   height: 3.5rem;
   width: 30% !important;
   max-width: 200px;
-
 }
 
 .inputPrazo:focus,
@@ -976,7 +972,6 @@ h2 {
   flex-direction: column;
   justify-content: space-between;
 }
-
 
 .title-container {
   display: flex;
@@ -1058,7 +1053,7 @@ h2 {
 
   .item-card {
     flex-direction: column;
-    width: 10REM;
+    width: 10rem;
   }
 
   .status-produzindo {
@@ -1069,7 +1064,6 @@ h2 {
   #produzindoItemsList {
     max-height: 70%;
   }
-
 }
 
 .toggle-arrow {
@@ -1099,9 +1093,7 @@ h2 {
   align-items: center;
   font-size: 80%;
   height: 100% !important;
-
 }
-
 
 #confirmarProcesso {
   padding: 1rem;
@@ -1116,7 +1108,6 @@ h2 {
   color: #b8b8b8;
   background: #292929;
 }
-
 
 div.card-body {
   display: flex;
@@ -1147,24 +1138,22 @@ div.card-body {
   background-color: #232323;
   height: fit-content !important;
   border-radius: 1rem;
-  gap: 1REM;
+  gap: 1rem;
   padding: 1rem;
   overflow-y: auto;
   max-height: 100%;
   width: 20%;
-
 }
 
 .nomeCard {
   padding: 1rem;
   background: #35ff782e;
-  border-radius: 1REM;
+  border-radius: 1rem;
 
   color: #35ff78;
   font-size: calc(1vw + 10px);
   display: flex;
   padding: 1rem;
-
 }
 
 .add-button {
@@ -1177,7 +1166,6 @@ div.card-body {
   color: #7a5cff;
   border: none !important;
   margin-right: 1rem;
-
 }
 
 .dark-mode .add-button {
@@ -1187,18 +1175,15 @@ div.card-body {
 
 @media (max-width: 902px) {
   .add-button {
-    margin-bottom: 1REM;
+    margin-bottom: 1rem;
     margin-right: 0;
   }
 }
-
-
 
 .add-button:hover {
   background: #eaeaea;
   box-shadow: 0 0 30px 1px #6745ff4e;
   color: #9178ff;
-
 }
 
 .add-button:focus {
@@ -1206,14 +1191,11 @@ div.card-body {
   /* Remove a borda ao clicar */
 }
 
-
 .dark-mode .add-button:hover {
   background: #313131;
   box-shadow: 0 0 30px 1px #876cff;
   color: #9178ff;
-
 }
-
 
 #partNumberCardsContainer {
   overflow-y: auto;
@@ -1232,7 +1214,6 @@ div.card-body {
   scrollbar-width: none;
   /* Firefox */
 }
-
 
 .card-wrapper {
   display: flex;
@@ -1258,7 +1239,6 @@ div.card-body {
   gap: 1rem;
   overflow-y: auto;
   max-height: 20rem;
-
 }
 
 .dark-mode .machine-list {
@@ -1284,7 +1264,6 @@ div.card-body {
   background: #232323;
   color: #929292;
 }
-
 
 li::marker {
   visibility: hidden !important;
@@ -1320,15 +1299,15 @@ li::marker {
 
 .headernext {
   display: flex;
-flex-direction: row;
-align-items: center;
+  flex-direction: row;
+  align-items: center;
 }
 
 .textomodalnext {
-margin-left: 2rem;
+  margin-left: 2rem;
 }
 
-@media (max-width: 920PX) {
+@media (max-width: 920px) {
   .textomodalnext {
     font-size: 1.5rem;
   }
@@ -1338,7 +1317,4 @@ margin-left: 2rem;
     gap: 1rem;
     margin-top: 0;
   }
-  
-
 }
-
