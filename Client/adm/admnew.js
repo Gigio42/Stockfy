@@ -827,9 +827,9 @@ document.getElementById("criarMaquinaBtn").addEventListener("click", async () =>
     const response = await fetch("/maquina", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ nome })
+      body: JSON.stringify({ nome }),
     });
 
     if (!response.ok) {
