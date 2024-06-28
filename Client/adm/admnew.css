@@ -117,7 +117,7 @@ h1 {
 
 #mobileButtonContainer {
   display: flex;
-  background: #666666;
+  background: #c0c0c0;
   width: 100vw;
   height: 5rem;
   padding: 1rem;
@@ -655,6 +655,17 @@ span.item-number {
 
 .abrirModal:hover {
   background: #b4b4b4;
+}
+
+@media (max-width:920px) {
+  .abrirModal {
+    width: 40px;
+  }
+
+  .cardMaquina {
+    padding: 1.5rem 0.7rem;
+  
+  }
 }
 
 .conteudoInterno {
