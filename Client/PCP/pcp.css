@@ -832,16 +832,6 @@ input[type="checkbox"] {
   background: #e0e0e0;
   color: #333;
 }
-.light-mode .checkbox-button {
-  background: #e0e0e0;
-  border: 1px solid #ccc;
-  color: #333;
-}
-.light-mode .checkbox-button[data-checked="true"] {
-  background-color: #007bff !important;
-  border: #007bff;
-  color: #fff !important;
-}
 /* mudar nome da classe, isso na vdd cuida do preview div do consulta */
 .dark-background {
   background: #5c5c5c23 !important;
@@ -849,3 +839,15 @@ input[type="checkbox"] {
   border: solid 1px #8a8a8a3d;
   padding: 10px;
 }
+.info-card {
+  background-color: #ffffff;
+  border: 1px solid #c0c0c0;
+  color: black;
+}
+.dark-mode .info-card {
+  background-color: #333333;
+  border: 1px solid #c0c0c0;
+  color: white;
+}
+
+  
