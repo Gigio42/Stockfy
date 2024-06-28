@@ -12,6 +12,27 @@
         <!-- CSS Personalizado -->
         <link rel="stylesheet" href="admnew.css" />
     </head>
+    <style>
+        .modal-content8 {
+          background-color: #fefefe;
+          margin: 5% auto;
+          padding: 20px;
+          border: 1px solid #888;
+          width: 80%;
+        }
+        .close {
+          color: #aaa;
+          float: right;
+          font-size: 28px;
+          font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+          color: black;
+          text-decoration: none;
+          cursor: pointer;
+        }
+      </style>
 
     <body class="body dark-mode">
         <div class="container-fluid">
@@ -37,11 +58,18 @@
                         <div class="d-flex align-items-center">
                             <h1 class="m-0">Lider de produção</h1>
                         </div>
-                        <a class="logout" href="../home.html"><img class="" src="media\sair (1).png" alt="" /></a>
+                        <div class="botoesheader">
+                            <div class="addmachine">
+                                <label for="maquinaNome">Nome da Máquina:</label>
+                                <input type="text" id="maquinaNome" />
+                                <button id="criarMaquinaBtn">Criar Máquina</button>
+                              </div>
                         <div class="dark-mode-toggle">
                             <input type="checkbox" id="darkModeToggle" />
                             <label for="darkModeToggle"></label>
                         </div>
+                        <a class="logout" href="../home.html"><img class="" src="media\sair (1).png" alt="" /></a>
+                    </div>
                     </div>
 
                     <!-- Div para o botão em mobile -->
