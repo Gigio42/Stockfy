@@ -87,13 +87,13 @@ function createValueRow(chapa, keys) {
   valueRow.className = "value-row row overflow-auto w-100 align-items-stretch";
 
   keys.forEach((key) => {
-  const valueDiv = document.createElement("div");
-  valueDiv.className = "card-value-div col text-center value align-items-center justify-content-center rounded";
-  valueDiv.style.display = "flex";
-  valueDiv.style.whiteSpace = "nowrap"; // Adicione esta linha
-  valueDiv.textContent = key === "largura" ? `${chapa.largura} x ${chapa.comprimento}` : chapa[key];
-  valueRow.appendChild(valueDiv);
-});
+    const valueDiv = document.createElement("div");
+    valueDiv.className = "card-value-div col text-center value align-items-center justify-content-center rounded";
+    valueDiv.style.display = "flex";
+    valueDiv.style.whiteSpace = "nowrap"; // Adicione esta linha
+    valueDiv.textContent = key === "largura" ? `${chapa.largura} x ${chapa.comprimento}` : chapa[key];
+    valueRow.appendChild(valueDiv);
+  });
   return valueRow;
 }
 
