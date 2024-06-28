@@ -30,6 +30,24 @@ async function postData() {
         qualidade = faker.random.arrayElement(["BR11JJ", "BR11S"]);
       }
 
+      const conjugacoesChance = Math.random();
+      const conjugacoes =
+        conjugacoesChance > 0.1
+          ? {
+              create: Array.from({ length: faker.datatype.number({ min: 1, max: 5 }) }, () => {
+                const largura = faker.datatype.number({ min: 1, max: 6 }) * 500;
+                const comprimento = faker.datatype.number({ min: 1, max: 6 }) * 500;
+                return {
+                  medida: `${largura}x${comprimento}`,
+                  largura: largura,
+                  comprimento: comprimento,
+                  quantidade: faker.datatype.number({ min: 1, max: 4 }) * 500,
+                  usado: faker.datatype.boolean(),
+                };
+              }),
+            }
+          : {};
+
       return {
         fornecedor: fornecedor,
         comprador: faker.name.findName(),
@@ -49,6 +67,7 @@ async function postData() {
         gramatura: faker.datatype.number({ min: 100, max: 500 }),
         peso_total: faker.datatype.number({ min: 1000, max: 5000 }),
         status: "COMPRADO",
+        conjugacoes: conjugacoes,
       };
     }),
   };

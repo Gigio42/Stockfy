@@ -15,37 +15,50 @@ class PCPController {
   // ------------------------------
   async getChapas(query, filterCriteria, sortOrder, sortBy) {
     let data = await Chapas.findMany({ include: { conjugacoes: true } });
-
+  
     data = data.filter((chapa) => chapa.status !== "USADO");
-
+  
     if (filterCriteria) {
       for (let key in filterCriteria) {
         if (key === "comprimento" || key === "largura") {
           data = data.filter((chapa) => {
-            const [comprimento, largura] = chapa.medida.split("x");
+            let isValid = chapa.conjugacoes.some((conjugacao) => {
+              const [comprimento, largura] = conjugacao.medida.split("x");
+              if (key === "comprimento") {
+                return comprimento === filterCriteria[key];
+              } else {
+                return largura === filterCriteria[key];
+              }
+            });
+  
+            const [cardComprimento, cardLargura] = chapa.medida.split("x");
             if (key === "comprimento") {
-              return comprimento === filterCriteria[key];
+              isValid = isValid || cardComprimento === filterCriteria[key];
             } else {
-              return largura === filterCriteria[key];
+              isValid = isValid || cardLargura === filterCriteria[key];
             }
+  
+            return isValid;
           });
         } else {
           data = data.filter((chapa) => chapa[key].toLowerCase() === filterCriteria[key].toLowerCase());
         }
       }
     }
-
+  
     const sortedChapas = data.sort((a, b) => {
       const getValue = (obj, prop) => prop.split(".").reduce((acc, part) => acc && acc[part], obj);
-
+  
       if (sortOrder === "descending") {
         return getValue(a, sortBy) < getValue(b, sortBy) ? -1 : getValue(a, sortBy) > getValue(b, sortBy) ? 1 : 0;
       } else {
         return getValue(a, sortBy) > getValue(b, sortBy) ? -1 : getValue(a, sortBy) < getValue(b, sortBy) ? 1 : 0;
       }
     });
+  
     return sortedChapas;
   }
+  
 
   // ------------------------------
   // GetItemsComment Function

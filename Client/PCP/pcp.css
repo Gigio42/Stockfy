@@ -850,4 +850,35 @@ input[type="checkbox"] {
   color: white;
 }
 
-  
+.subcards-container {
+  padding: 10px;
+  overflow: hidden;
+}
+
+.card-dropdown-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.card-dropdown-button i {
+  font-size: 1.2em;
+}
+
+.subcard-body {
+  padding: 10px;
+  background-color: #3b3b3b;
+}
+
+.highlighted {
+  border: 1px solid #ffc1076d;
+  background-color: #ffc10714;
+}
+
+
+
+.light-mode .subcard-body {
+  background-color: #f8f9fa;
+  border: 1px solid #c0c0c0;
+  color: black;
+}

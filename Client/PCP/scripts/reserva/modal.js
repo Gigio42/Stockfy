@@ -90,7 +90,7 @@ function createValueRow(chapa, keys) {
     const valueDiv = document.createElement("div");
     valueDiv.className = "card-value-div col text-center value align-items-center justify-content-center rounded";
     valueDiv.style.display = "flex";
-    valueDiv.style.whiteSpace = "nowrap"; // Adicione esta linha
+    valueDiv.style.whiteSpace = "nowrap";
     valueDiv.textContent = key === "largura" ? `${chapa.largura} x ${chapa.comprimento}` : chapa[key];
     valueRow.appendChild(valueDiv);
   });

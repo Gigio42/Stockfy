@@ -13,6 +13,9 @@ datasource db {
 model Conjugacoes {
   id_conjugacoes Int     @id @default(autoincrement())
   medida         String
+  largura        Int
+  comprimento    Int
+  quantidade     Int     @default(0)
   usado          Boolean @default(false)
 
   chapaId Int
