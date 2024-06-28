@@ -692,8 +692,12 @@ height: 2rem;
 
   .imgicon {
 width: 30px;
-height: 30px;
+height: 30px; 
   }
+
+   .maquinaName {
+    font-size: 1.2rem !important;
+   }
 }
 
 .conteudoInterno {
