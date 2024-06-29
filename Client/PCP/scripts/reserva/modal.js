@@ -137,10 +137,21 @@ function createFormRow(item) {
 
 function createButtonFormContainer(selectedChapas, selectedSubcards) {
   const buttonFormContainer = document.createElement("div");
-  buttonFormContainer.className = "button-form-container d-flex justify-content-end mt-3";
+  buttonFormContainer.className = "button-form-container d-flex flex-column justify-content-end mt-3";
 
+  // Adiciona o campo de Part Number
+  const partNumberForm = document.createElement("form");
+  const partNumberInput = document.createElement("input");
+  partNumberInput.type = "text";
+  partNumberInput.id = "partNumberInput";
+  partNumberInput.placeholder = "PART NUMBER";
+  partNumberForm.appendChild(partNumberInput);
+
+  $(partNumberInput).mask("9999.9999");
+  buttonFormContainer.appendChild(partNumberForm);
+
+  // Adiciona o botão de reserva
   const form = document.createElement("form");
-
   const submitButton = document.createElement("button");
   submitButton.className = "btn btn-primary";
   submitButton.type = "submit";
@@ -158,6 +169,8 @@ function createButtonFormContainer(selectedChapas, selectedSubcards) {
 }
 
 async function handleFormSubmit(selectedChapas, selectedSubcards) {
+  const partNumber = document.getElementById("partNumberInput").value;
+
   const reservasChapas = selectedChapas.map((chapa) => ({
     id_chapa: chapa.id_chapa,
     quantidade: parseInt(chapa.quantidade),
@@ -169,7 +182,7 @@ async function handleFormSubmit(selectedChapas, selectedSubcards) {
   }));
 
   try {
-    await reserveChapas([...reservasChapas, ...reservasConjugacoes]);
+    await reserveChapas({ partNumber, chapas: reservasChapas, conjugacoes: reservasConjugacoes });
     Swal.fire({
       icon: "success",
       title: "Reserva realizada com sucesso!",
