@@ -1,6 +1,6 @@
 import { reserveChapas } from "../utils/connection.js";
 
-export function reservarModal(getSelectedChapas) {
+export function reservarModal(getSelectedChapasAndConjugacoes) {
   const showSelectedButton = document.getElementById("showSelectedButton");
   const modalContent = document.getElementById("modalContent");
   const closeModal = document.getElementById("closeModal");
@@ -8,15 +8,15 @@ export function reservarModal(getSelectedChapas) {
 
   removeExistingListener(showSelectedButton);
   showSelectedButton.onclick = () => {
-    const selectedChapas = getSelectedChapas();
-    if (selectedChapas.length > 0) {
-      const modalHandler = createModalHandler(modalContent, closeModal, () => selectedChapas, popupContainer);
+    const [selectedChapas, selectedSubcards] = getSelectedChapasAndConjugacoes();
+    if (selectedChapas.length > 0 || selectedSubcards.length > 0) {
+      const modalHandler = createModalHandler(modalContent, closeModal, () => [selectedChapas, selectedSubcards], popupContainer);
       modalHandler();
     } else {
       Swal.fire({
         icon: "error",
-        title: "Nenhuma chapa selecionada.",
-        text: "Precisa selecionar pelo menos 1 chapa!",
+        title: "Nenhuma chapa ou conjugação selecionada.",
+        text: "Precisa selecionar pelo menos 1 chapa ou conjugação!",
       });
     }
   };
@@ -33,21 +33,26 @@ function removeExistingListener(element) {
   }
 }
 
-function createModalHandler(modalContent, closeModal, getSelectedChapas, popupContainer) {
+function createModalHandler(modalContent, closeModal, getSelectedChapasAndConjugacoes, popupContainer) {
   return () => {
     const newContent = document.createElement("div");
     const contentWrapper = document.createElement("div");
     contentWrapper.style.maxHeight = "70vh";
     contentWrapper.style.overflowY = "auto";
 
-    const keys = ["id_chapa", "largura", "fornecedor", "qualidade", "quantidade_disponivel"];
-    const selectedChapas = getSelectedChapas();
+    const keysChapas = ["id_chapa", "largura", "fornecedor", "qualidade", "quantidade_disponivel"];
+    const keysConjugacoes = ["id_conjugacoes", "medida", "quantidade", "usado"];
+    const [selectedChapas, selectedSubcards] = getSelectedChapasAndConjugacoes();
 
     selectedChapas.forEach((chapa) => {
-      contentWrapper.appendChild(createCard(chapa, keys));
+      contentWrapper.appendChild(createCard(chapa, keysChapas));
     });
 
-    contentWrapper.appendChild(createButtonFormContainer(selectedChapas));
+    selectedSubcards.forEach((conjugacao) => {
+      contentWrapper.appendChild(createSubcard(conjugacao, keysConjugacoes));
+    });
+
+    contentWrapper.appendChild(createButtonFormContainer(selectedChapas, selectedSubcards));
     newContent.appendChild(contentWrapper);
 
     clearModalContent(modalContent, closeModal);
@@ -82,157 +87,105 @@ function createCard(chapa, keys) {
   return card;
 }
 
-function createValueRow(chapa, keys) {
+function createSubcard(conjugacao, keys) {
+  const subcard = document.createElement("div");
+  subcard.className = "subcard mb-3 shadow-sm";
+
+  const subcardBody = document.createElement("div");
+  subcardBody.className = "body-div subcard-body rounded d-flex align-items-center";
+
+  const valueRow = createValueRow(conjugacao, keys);
+  subcardBody.appendChild(valueRow);
+
+  const formRow = createFormRow(conjugacao);
+  subcardBody.appendChild(formRow);
+
+  subcard.appendChild(subcardBody);
+  return subcard;
+}
+
+function createValueRow(item, keys) {
   const valueRow = document.createElement("div");
-  valueRow.className = "value-row row overflow-auto w-100 align-items-stretch";
+  valueRow.className = "value-row flex-grow-1";
 
   keys.forEach((key) => {
-    const valueDiv = document.createElement("div");
-    valueDiv.className = "card-value-div col text-center value align-items-center justify-content-center rounded";
-    valueDiv.style.display = "flex";
-    valueDiv.style.whiteSpace = "nowrap";
-    valueDiv.textContent = key === "largura" ? `${chapa.largura} x ${chapa.comprimento}` : chapa[key];
-    valueRow.appendChild(valueDiv);
+    const valueItem = document.createElement("div");
+    valueItem.className = "value-item";
+    valueItem.textContent = item[key];
+    valueRow.appendChild(valueItem);
   });
+
   return valueRow;
 }
 
-function createFormRow(chapa) {
+function createFormRow(item) {
   const formRow = document.createElement("div");
-  formRow.className = "form-row row flex-nowrap overflow-auto w-100 align-items-stretch";
+  formRow.className = "form-row d-flex align-items-center justify-content-end";
 
-  const quantityInput = createInputCell("number", "Quantidade", `quantityInput-${chapa.id_chapa}`, "formQuantidade");
+  const quantidadeInput = document.createElement("input");
+  quantidadeInput.type = "number";
+  quantidadeInput.className = "form-control quantidade";
+  quantidadeInput.value = item.quantidade || 1;
 
-  formRow.appendChild(quantityInput);
+  formRow.appendChild(quantidadeInput);
 
   return formRow;
 }
 
-function createInputCell(type, placeholder, id, additionalClass = "", styles = {}) {
-  const cell = document.createElement("div");
-  cell.className = "form-cell col text-center value align-items-center justify-content-center rounded";
+function createButtonFormContainer(selectedChapas, selectedSubcards) {
+  const buttonFormContainer = document.createElement("div");
+  buttonFormContainer.className = "button-form-container d-flex justify-content-end mt-3";
 
-  const input = document.createElement("input");
-  input.type = type;
-  input.placeholder = placeholder;
-  input.id = id;
-  input.min = 0;
-  input.style.width = "100%";
-  Object.assign(input.style, styles);
-
-  input.oninput = function () {
-    if (this.value < 0) {
-      this.value = 0;
-    }
-  };
-
-  if (additionalClass) {
-    input.classList.add(additionalClass);
-  }
-
-  cell.appendChild(input);
-  return cell;
-}
-
-function createButtonFormContainer(selectedChapas) {
-  const container = document.createElement("div");
-  container.style.display = "flex";
-  container.style.justifyContent = "space-between";
-
-  container.appendChild(createPartNumberForm());
-  container.appendChild(createReserveButton(selectedChapas));
-
-  return container;
-}
-
-function createPartNumberForm() {
   const form = document.createElement("form");
-  const input = document.createElement("input");
-  input.type = "text";
-  input.id = "partNumberInput";
-  input.placeholder = "PART NUMBER";
-  form.appendChild(input);
 
-  $(input).mask("9999.9999");
+  const submitButton = document.createElement("button");
+  submitButton.className = "btn btn-primary";
+  submitButton.type = "submit";
+  submitButton.textContent = "Reservar";
 
-  return form;
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    handleFormSubmit(selectedChapas, selectedSubcards);
+  });
+
+  form.appendChild(submitButton);
+  buttonFormContainer.appendChild(form);
+
+  return buttonFormContainer;
 }
 
-function createReserveButton(selectedChapas) {
-  const reserveButton = document.createElement("button");
-  reserveButton.textContent = "RESERVAR";
-  reserveButton.classList.add("agrupar-button");
-  reserveButton.onclick = async () => {
-    const partNumber = document.getElementById("partNumberInput").value;
+async function handleFormSubmit(selectedChapas, selectedSubcards) {
+  const reservasChapas = selectedChapas.map((chapa) => ({
+    id_chapa: chapa.id_chapa,
+    quantidade: parseInt(chapa.quantidade),
+  }));
 
-    const chapas = selectedChapas.map((chapa) => ({
-      chapaID: chapa.id_chapa,
-      quantity: document.getElementById(`quantityInput-${chapa.id_chapa}`).value,
-      keepRemaining: false,
-    }));
-
-    await handleReserveChapas(partNumber, chapas);
-  };
-  return reserveButton;
-}
-
-async function handleReserveChapas(partNumber, chapas) {
-  const loadingSpinner = document.getElementById("loadingSpinner");
-  loadingSpinner.style.display = "block";
+  const reservasConjugacoes = selectedSubcards.map((conjugacao) => ({
+    id_conjugacoes: conjugacao.id_conjugacoes,
+    quantidade: parseInt(conjugacao.quantidade),
+  }));
 
   try {
-    const reservedBy = localStorage.getItem("nome");
-    const response = await reserveChapas({ partNumber, chapas, reservedBy });
-    localStorage.setItem("showSwal", "true");
-    localStorage.setItem("partNumber", partNumber);
-    location.reload();
+    await reserveChapas([...reservasChapas, ...reservasConjugacoes]);
+    Swal.fire({
+      icon: "success",
+      title: "Reserva realizada com sucesso!",
+      showConfirmButton: false,
+      timer: 1500,
+    });
   } catch (error) {
     Swal.fire({
       icon: "error",
-      title: "Oops...",
+      title: "Erro ao realizar a reserva.",
       text: error.message,
     });
-  } finally {
-    loadingSpinner.style.display = "none";
   }
 }
 
 function setupEventListeners(popupContainer) {
-  console.log("Setting up event listeners reservarmodal");
   window.addEventListener("click", (event) => {
     if (event.target === popupContainer) {
       popupContainer.style.display = "none";
     }
   });
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      popupContainer.style.display = "none";
-    }
-  });
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  const showSwal = localStorage.getItem("showSwal");
-  const partNumber = localStorage.getItem("partNumber");
-
-  if (showSwal === "true") {
-    Swal.mixin({
-      toast: true,
-      position: "top-end",
-      showConfirmButton: false,
-      timer: 5000,
-      timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.addEventListener("mouseenter", Swal.stopTimer);
-        toast.addEventListener("mouseleave", Swal.resumeTimer);
-      },
-    }).fire({
-      icon: "success",
-      title: `Item ${partNumber} reservado.`,
-    });
-
-    localStorage.removeItem("showSwal");
-    localStorage.removeItem("partNumber");
-  }
-});

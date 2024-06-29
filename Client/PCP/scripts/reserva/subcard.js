@@ -1,8 +1,10 @@
 import { createElementWithClass } from "../utils/dom.js";
 
 export class Subcard {
-  constructor(conjugacao) {
+  constructor(conjugacao, onSelectionChange) {
     this.conjugacao = conjugacao;
+    this.onSelectionChange = onSelectionChange;
+    this.isChecked = false;
   }
 
   createValueDiv(value) {
@@ -34,8 +36,27 @@ export class Subcard {
   }
 
   createSubcard() {
-    let subcard = createElementWithClass("div", "subcard mb-3 shadow-sm");
-    subcard.appendChild(this.createSubcardBody());
+    let subcard = createElementWithClass("div", "subcard p-2 border rounded mb-2");
+    subcard.setAttribute("data-id-conjugacao", this.conjugacao.id_conjugacoes);
+
+    const p = document.createElement("p");
+    p.className = "subcard-text mb-0";
+    p.innerText = `Conjugação: ${this.conjugacao.id_conjugacoes}, Quantidade: ${this.conjugacao.quantidade}`;
+
+    subcard.appendChild(p);
+
+    subcard.addEventListener("click", (event) => {
+      event.stopPropagation();
+      this.isChecked = !this.isChecked;
+      subcard.classList.toggle("selected");
+      this.onSelectionChange(this.conjugacao, this.isChecked, "subcard");
+    });
+
     return subcard;
+  }
+
+  deselect() {
+    this.isChecked = false;
+    this.subcard.classList.remove("selected");
   }
 }

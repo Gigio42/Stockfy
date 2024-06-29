@@ -6,6 +6,7 @@ export class Reservar {
   constructor() {
     this.initDOMElements();
     this.selectedChapas = new Map();
+    this.selectedSubcards = new Map();
     this.animationExecuted = false;
     this.sortOrder = "asc";
   }
@@ -85,7 +86,13 @@ export class Reservar {
         this.animationExecuted = true;
       }
 
-      reservarModal(() => Array.from(this.selectedChapas.values()));
+      reservarModal(() => {
+        const selectedChapas = Array.from(this.selectedChapas.values());
+        const selectedSubcards = Array.from(this.selectedSubcards.values());
+        console.log("Chapas selecionadas:", selectedChapas);
+        console.log("Subcards selecionados:", selectedSubcards);
+        return [selectedChapas, selectedSubcards];
+      });
     } catch (error) {
       console.error("Error fetching data: ", error);
     }
@@ -99,19 +106,27 @@ export class Reservar {
     items.forEach((chapa, index) => {
       const keys = ["largura", "vincos", "qualidade", "onda", "quantidade_disponivel", "data_prevista", "status"];
       const isSelected = this.selectedChapas.has(chapa.id_chapa);
-      const card = new Card(chapa, keys, index, this.sortKey, (chapa, isSelected) => this.onSubcardSelectionChange(chapa, isSelected), isSelected);
+      const card = new Card(chapa, keys, index, this.sortKey, (item, isSelected) => this.onSubcardSelectionChange(item, isSelected), isSelected);
       this.containerElement.appendChild(card.createCard());
     });
   }
 
-  onSubcardSelectionChange(chapa, isSelected) {
-    if (isSelected) {
-      this.selectedChapas.set(chapa.id_chapa, chapa);
-    } else {
-      this.selectedChapas.delete(chapa.id_chapa);
+  onSubcardSelectionChange(item, isSelected) {
+    if (item.id_chapa) {
+      if (isSelected) {
+        this.selectedChapas.set(item.id_chapa, item);
+      } else {
+        this.selectedChapas.delete(item.id_chapa);
+      }
+    } else if (item.id_conjugacoes) {
+      if (isSelected) {
+        this.selectedSubcards.set(item.id_conjugacoes, item);
+      } else {
+        this.selectedSubcards.delete(item.id_conjugacoes);
+      }
     }
   }
-
+  
   animateCards() {
     anime({
       targets: ".card.mb-3.shadow-sm",
@@ -126,6 +141,7 @@ export class Reservar {
   clearFiltersAndSelection() {
     Object.values(this.filterElements).forEach((element) => (element.value = ""));
     this.selectedChapas.clear();
+    this.selectedSubcards.clear();
     this.populateCards();
   }
 }
