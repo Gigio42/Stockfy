@@ -744,6 +744,116 @@ span.item-number {
   gap: 0.5rem;
 }
 
+.addText {
+  font-size: 1.3rem;
+  padding: 0.2rem;
+}
+
+.modal-content-add {
+  width: 70%;
+  height: 70%;
+  background-color: #2c2c2c;
+  margin: 7rem auto;
+  border-radius: 1rem;
+  padding: 3rem;
+}
+
+.textoaddmachine {
+  margin-bottom: 2rem;
+}
+
+.addmachine {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 50%;
+  background: #303030;
+  padding: 2rem;
+  border-radius: 1rem;
+  justify-content: space-between;
+}
+
+.inputadd {
+  flex-direction: column;
+}
+
+.displaymodaladd {
+  display: flex;
+  flex: 1;
+  overflow-y: auto;
+  max-height: 80%;
+}
+
+#maquinaNomeModal{
+  background: #222222;
+  border-radius: 0.5em;
+  border: none;
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.cardMaquinainmodal {
+  display: flex;
+  font-size: 1.7rem;
+  background: #3d3d3d;
+  width: fit-content;
+  margin: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+
+}
+
+
+#modalContentMaquinas{
+  overflow-y: auto;
+  max-height: 40%;
+  display: flex;
+  flex-wrap: wrap;
+  width: 50%;
+}
+.addCard {
+  background: #4fa4ff !important;
+  color:#1E3F63 ;
+
+}
+
+.addCard:hover {
+  background: #4795e9 !important;
+}
+
+.dark-mode .addCard {
+  background: #4fa4ff !important;
+  color:#1E3F63 ;
+
+}
+
+.dark-mode .addCard:hover {
+  background: #4895e7 !important;
+  color:#1E3F63 ;
+
+}
+
+
+#criarMaquinaModalBtn {
+  background: #1b80df6d;
+  border-radius: 0.5em;
+  border: solid 1px #7dbcff;
+  color: #86c1ff;
+  width: fit-content;
+  font-size: 1.5rem;
+  padding: 0.5rem;
+}
+
+/* Estilo para o ícone de deletar */
+.deleteIcon {
+  display: none; /* Inicialmente oculto */
+  cursor: pointer;
+  margin-left: 5px; /* Ajuste conforme necessário */
+}
+
+
+
 .addItem {
   margin-top: 1rem;
   margin-bottom: 0.2rem;
