@@ -12,23 +12,23 @@ export class Subcard {
     let valueDiv = createElementWithClass("div", "subcard-value-div col text-center value d-flex align-items-center justify-content-center rounded");
     valueDiv.textContent = value || "N/A";
     return valueDiv;
-  }
+}
 
-  createUsadoDiv() {
+createUsadoDiv() {
     let status = this.conjugacao.usado ? "USADO" : "DISP";
     let statusDiv = createElementWithClass("div", "subcard-status-div col text-center value d-flex align-items-center justify-content-center rounded");
     statusDiv.textContent = status;
     statusDiv.className += this.conjugacao.usado ? " text-danger" : " text-success";
     return statusDiv;
-  }
+}
 
-  createValueRow() {
+createValueRow() {
     let valueRow = createElementWithClass("div", "value-row d-flex flex-wrap w-100 justify-content-between");
     valueRow.appendChild(this.createValueDiv(this.conjugacao.medida));
     valueRow.appendChild(this.createValueDiv(this.conjugacao.quantidade));
     valueRow.appendChild(this.createUsadoDiv());
     return valueRow;
-  }
+}
 
   createSubcardBody() {
     let subcardBody = createElementWithClass("div", "subcard-body rounded d-flex align-items-center");
@@ -37,15 +37,11 @@ export class Subcard {
   }
 
   createSubcard() {
-    let subcard = createElementWithClass("div", "subcard p-2 border rounded mb-2");
+    let subcard = createElementWithClass("div", "subcard p-2 border rounded mb-2 d-flex flex-column");
     subcard.setAttribute("data-id-conjugacao", this.conjugacao.id_conjugacoes);
+    subcard.style.flex = "1 0 21%";
 
-    const p = document.createElement("p");
-    p.className = "subcard-text mb-0";
-    let status = this.conjugacao.usado ? "USADO" : "DISP";
-    p.innerText = `Medida: ${this.conjugacao.medida}, Quantidade: ${this.conjugacao.quantidade}, Status: ${status}`;
-
-    subcard.appendChild(p);
+    subcard.appendChild(this.createValueRow());
 
     subcard.addEventListener("click", (event) => {
       event.stopPropagation();
