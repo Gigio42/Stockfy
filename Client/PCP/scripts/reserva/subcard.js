@@ -37,9 +37,13 @@ createValueRow() {
   }
 
   createSubcard() {
-    let subcard = createElementWithClass("div", "subcard p-2 border rounded mb-2 d-flex flex-column");
+    let subcard = createElementWithClass("div", "subcard p-2 rounded mb-2 d-flex flex-column");
     subcard.setAttribute("data-id-conjugacao", this.conjugacao.id_conjugacoes);
     subcard.style.flex = "1 0 21%";
+
+    if (this.conjugacao.usado) {
+        subcard.className += " usado";
+    }
 
     subcard.appendChild(this.createValueRow());
 
