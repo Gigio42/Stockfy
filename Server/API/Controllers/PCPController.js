@@ -172,10 +172,19 @@ class PCPController {
 
       for (const { conjugacoesID, quantity } of conjugacoes) {
         const conjugacao = await Conjugacoes.findUnique({ where: { id_conjugacoes: conjugacoesID } });
+        const chapa = await Chapas.findUnique({ where: { id_chapa: conjugacao.chapaId } });
 
         if (!conjugacao) throw new Error("Conjugação não encontrada");
         if (!quantity || quantity <= 0) throw new Error("Informe a quantidade de conjugações a serem reservadas");
         if (quantity > conjugacao.quantidade) throw new Error(`Conjugação ${conjugacoesID} não possui quantidade suficiente`);
+        if (!chapa) throw new Error("Chapa não encontrada");
+
+        await Chapas.update({
+          where: { id_chapa: chapa.id_chapa },
+          data: {
+            quantidade_disponivel: { decrement: parseInt(quantity) },
+          },
+        });
 
         await Conjugacoes.update({
           where: { id_conjugacoes: conjugacao.id_conjugacoes },

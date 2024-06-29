@@ -15,6 +15,7 @@ model Conjugacoes {
   medida         String
   largura        Int
   comprimento    Int
+  rendimento     Int     @default(0)
   quantidade     Int     @default(0)
   usado          Boolean @default(false)
 

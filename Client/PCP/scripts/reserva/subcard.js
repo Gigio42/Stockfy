@@ -22,12 +22,20 @@ createUsadoDiv() {
     return statusDiv;
 }
 
+createRendimentoDiv() {
+  let rendimento = this.conjugacao.rendimento ? `${this.conjugacao.rendimento}x` : "N/A";
+  let rendimentoDiv = createElementWithClass("div", "subcard-rendimento-div col text-center value d-flex align-items-center justify-content-center rounded");
+  rendimentoDiv.textContent = rendimento;
+  return rendimentoDiv;
+}
+
 createValueRow() {
-    let valueRow = createElementWithClass("div", "value-row d-flex flex-wrap w-100 justify-content-between");
-    valueRow.appendChild(this.createValueDiv(this.conjugacao.medida));
-    valueRow.appendChild(this.createValueDiv(this.conjugacao.quantidade));
-    valueRow.appendChild(this.createUsadoDiv());
-    return valueRow;
+  let valueRow = createElementWithClass("div", "value-row d-flex flex-wrap w-100 justify-content-between");
+  valueRow.appendChild(this.createValueDiv(this.conjugacao.medida));
+  valueRow.appendChild(this.createRendimentoDiv());
+  valueRow.appendChild(this.createValueDiv(this.conjugacao.quantidade));
+  valueRow.appendChild(this.createUsadoDiv());
+  return valueRow;
 }
 
   createSubcardBody() {

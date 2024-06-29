@@ -30,18 +30,25 @@ async function postData() {
         qualidade = faker.random.arrayElement(["BR11JJ", "BR11S"]);
       }
 
+      const medidaChapaLargura = faker.datatype.number({ min: 1, max: 6 }) * 500;
+      const medidaChapaComprimento = faker.datatype.number({ min: 1, max: 6 }) * 500;
+
       const conjugacoesChance = Math.random();
       const conjugacoes =
-        conjugacoesChance > 0.1
+        conjugacoesChance > 0.5
           ? {
               create: Array.from({ length: faker.datatype.number({ min: 1, max: 5 }) }, () => {
-                const largura = faker.datatype.number({ min: 1, max: 6 }) * 500;
-                const comprimento = faker.datatype.number({ min: 1, max: 6 }) * 500;
+                const divisoesLargura = faker.datatype.number({ min: 1, max: medidaChapaLargura / 500 });
+                const divisoesComprimento = faker.datatype.number({ min: 1, max: medidaChapaComprimento / 500 });
+                const largura = medidaChapaLargura / divisoesLargura;
+                const comprimento = medidaChapaComprimento / divisoesComprimento;
+                const rendimento = Math.min(divisoesLargura * divisoesComprimento, ((medidaChapaLargura / largura) * medidaChapaComprimento) / comprimento);
                 return {
                   medida: `${largura}x${comprimento}`,
                   largura: largura,
                   comprimento: comprimento,
-                  quantidade: faker.datatype.number({ min: 1, max: 4 }) * 500,
+                  rendimento: rendimento,
+                  quantidade: faker.datatype.number({ min: 1, max: 4 }) * 500 * rendimento,
                   usado: faker.datatype.boolean(),
                 };
               }),
@@ -60,7 +67,7 @@ async function postData() {
         valor_unitario: faker.commerce.price(),
         valor_total: faker.commerce.price(),
         qualidade: qualidade,
-        medida: `${faker.datatype.number({ min: 1, max: 6 }) * 500}x${faker.datatype.number({ min: 1, max: 6 }) * 500}`,
+        medida: `${medidaChapaLargura}x${medidaChapaComprimento}`,
         onda: faker.random.arrayElement(["B", "C", "BC", "BB", "E"]),
         vincos: faker.datatype.number({ min: 1, max: 100 }) <= 75 ? "Não" : Math.floor(100 + Math.random() * 900),
         coluna: coluna || faker.random.arrayElement([3, 12]),

@@ -5,8 +5,8 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("Destruição do banco de dados em 3 segundos...");
 
-  // Momento dramático até vc cancelar
-  let counter = 3;
+  // Momento dramático até vc cancelar/ Set pra zero
+  let counter = 0;
   let countdown = setInterval(async () => {
     counter--;
     if (counter > 1) {

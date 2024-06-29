@@ -92,3 +92,17 @@ if (localStorage.getItem("isLoggedIn") !== "true") {
     addEventListeners(body, swal2Theme);
   });
 }
+
+
+window.addEventListener('keydown', function(event) {
+    if (event.key === 'e' || event.key === 'E') {
+        let subcardsContainers = document.querySelectorAll('.subcards-container');
+        subcardsContainers.forEach((subcardsContainer) => {
+            if (subcardsContainer.style.display === "none") {
+                subcardsContainer.style.display = "block";
+            } else {
+                subcardsContainer.style.display = "none";
+            }
+        });
+    }
+});

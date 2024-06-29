@@ -100,6 +100,10 @@ export class Card {
   }
 
   createDropdownButton() {
+    if (this.chapa.conjugacoes.length === 0) {
+      return null;
+    }
+
     let dropdownButton = createElementWithClass("button", "btn btn-sm ml-2 card-dropdown-button");
     dropdownButton.innerHTML = '<i class="fas fa-chevron-down"></i>';
 
@@ -116,12 +120,26 @@ export class Card {
     let cardBody = createElementWithClass("div", "body-div card-body rounded d-flex align-items-center");
     cardBody.appendChild(this.createValueRow());
     cardBody.appendChild(this.createInfoButton());
-    cardBody.appendChild(this.createDropdownButton());
+    let dropdownButton = this.createDropdownButton();
+    if (dropdownButton !== null) {
+      cardBody.appendChild(dropdownButton);
+    }
     return cardBody;
   }
 
   createSubcardsContainer() {
     let subcardsContainer = createElementWithClass("div", "subcards-container");
+
+    this.subcards.sort((a, b) => {
+      if (a.conjugacao.usado && !b.conjugacao.usado) {
+        return 1;
+      }
+      if (!a.conjugacao.usado && b.conjugacao.usado) {
+        return -1;
+      }
+      return 0;
+    });
+
     this.subcards.forEach((subcard) => subcardsContainer.appendChild(subcard.createSubcard()));
     subcardsContainer.style.display = "none";
     return subcardsContainer;
@@ -144,7 +162,7 @@ export class Card {
         opacity: [1, 0],
         translateY: [0, -10],
         easing: "easeOutQuad",
-        duration: 500, 
+        duration: 500,
         complete: () => {
           subcardsContainer.style.display = "none";
         },
@@ -162,32 +180,22 @@ export class Card {
       card.classList.add("selected");
     }
 
-    card.addEventListener("click", (event) => {
-      if (event.target.closest(".card-info-button, .card-dropdown-button")) {
-        return;
-      }
+    if (this.chapa.conjugacoes.length === 0) {
+      card.addEventListener("click", (event) => {
+        if (event.target.closest(".card-info-button, .card-dropdown-button")) {
+          return;
+        }
 
-      if (this.subcards.some((subcard) => subcard.isChecked)) {
-        return;
-      }
+        this.onSelectionChange(this.chapa, !this.isChecked, "chapa");
+        this.isChecked = !this.isChecked;
 
-      this.onSelectionChange(this.chapa, !this.isChecked, "chapa");
-      this.isChecked = !this.isChecked;
-
-      if (this.isChecked) {
-        card.classList.add("selected");
-        // Desabilite todos os subcards
-        this.subcards.forEach((subcard) => {
-          subcard.disabled = true;
-        });
-      } else {
-        card.classList.remove("selected");
-        // Habilite todos os subcards
-        this.subcards.forEach((subcard) => {
-          subcard.disabled = false;
-        });
-      }
-    });
+        if (this.isChecked) {
+          card.classList.add("selected");
+        } else {
+          card.classList.remove("selected");
+        }
+      });
+    }
 
     return card;
   }
