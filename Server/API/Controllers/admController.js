@@ -219,12 +219,6 @@ class AdmController {
       throw new Error("Erro ao criar uma nova máquina: " + error.message);
     }
   }
-
-
-  
-  
-  
-  
 }
 
 async function deleteMaquina(maquinaId) {
@@ -247,7 +241,7 @@ async function deleteMaquina(maquinaId) {
     // Verifica se há itens associados à máquina
     if (maquina.items.length > 0) {
       // Lança um erro indicando que a máquina possui itens associados
-      throw new Error('Não é possível deletar a máquina porque há itens associados a ela.');
+      throw new Error("Não é possível deletar a máquina porque há itens associados a ela.");
     }
 
     // Remove a máquina se não houver itens associados
@@ -259,13 +253,11 @@ async function deleteMaquina(maquinaId) {
 
     console.log(`Máquina com ID ${maquinaId} deletada com sucesso.`);
   } catch (error) {
-    console.error('Erro ao deletar a máquina no controlador:', error);
+    console.error("Erro ao deletar a máquina no controlador:", error);
     // Lança o erro novamente para que seja capturado no local onde a função deleteMaquina é chamada
     throw error;
   }
 }
-
-
 
 export default AdmController;
 export { deleteMaquina };

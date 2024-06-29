@@ -116,19 +116,17 @@ async function admRoute(fastify, options) {
   });
 
   fastify.delete("/maquina/:id", async (request, reply) => {
-    console.log('Recebida requisição DELETE para /adm/maquina/:id');
+    console.log("Recebida requisição DELETE para /adm/maquina/:id");
     const maquinaId = parseInt(request.params.id, 10);
     console.log(`ID da máquina a ser deletada: ${maquinaId}`);
     try {
       await deleteMaquina(maquinaId);
       reply.code(204).send();
     } catch (err) {
-      console.error('Erro ao deletar a máquina:', err);
-      reply.code(500).send({ message: 'Erro ao deletar a máquina', error: err.message });
+      console.error("Erro ao deletar a máquina:", err);
+      reply.code(500).send({ message: "Erro ao deletar a máquina", error: err.message });
     }
   });
-  
 }
 
 export default admRoute;
-
