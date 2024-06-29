@@ -219,6 +219,53 @@ class AdmController {
       throw new Error("Erro ao criar uma nova máquina: " + error.message);
     }
   }
+
+
+  
+  
+  
+  
 }
 
+async function deleteMaquina(maquinaId) {
+  console.log(`Tentando deletar a máquina com ID: ${maquinaId}`);
+  try {
+    // Verifica se a máquina possui itens associados
+    const maquina = await Maquina.findUnique({
+      where: {
+        id_maquina: maquinaId,
+      },
+      include: {
+        items: true, // Inclui os itens associados à máquina
+      },
+    });
+
+    if (!maquina) {
+      throw new Error(`Máquina com ID ${maquinaId} não encontrada.`);
+    }
+
+    // Verifica se há itens associados à máquina
+    if (maquina.items.length > 0) {
+      // Lança um erro indicando que a máquina possui itens associados
+      throw new Error('Não é possível deletar a máquina porque há itens associados a ela.');
+    }
+
+    // Remove a máquina se não houver itens associados
+    const deletedMaquina = await Maquina.delete({
+      where: {
+        id_maquina: maquinaId,
+      },
+    });
+
+    console.log(`Máquina com ID ${maquinaId} deletada com sucesso.`);
+  } catch (error) {
+    console.error('Erro ao deletar a máquina no controlador:', error);
+    // Lança o erro novamente para que seja capturado no local onde a função deleteMaquina é chamada
+    throw error;
+  }
+}
+
+
+
 export default AdmController;
+export { deleteMaquina };
