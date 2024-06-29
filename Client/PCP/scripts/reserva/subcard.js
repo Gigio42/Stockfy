@@ -5,6 +5,7 @@ export class Subcard {
     this.conjugacao = conjugacao;
     this.onSelectionChange = onSelectionChange;
     this.isChecked = false;
+    this.disabled = false; 
   }
 
   createValueDiv(value) {
@@ -46,11 +47,24 @@ export class Subcard {
     subcard.appendChild(p);
 
     subcard.addEventListener("click", (event) => {
-      event.stopPropagation();
-      this.isChecked = !this.isChecked;
-      subcard.classList.toggle("selected");
-      this.onSelectionChange(this.conjugacao, this.isChecked, "subcard");
-    });
+  event.stopPropagation();
+  
+  if (this.disabled) {
+    return;
+  }
+
+  this.isChecked = !this.isChecked;
+  subcard.classList.toggle("selected");
+  this.onSelectionChange(this.conjugacao, this.isChecked, "subcard");
+
+  if (this.isChecked) {
+    this.parentCard.disabled = true;
+  } else {
+    if (!this.parentCard.subcards.some(subcard => subcard.isChecked)) {
+      this.parentCard.disabled = false;
+    }
+  }
+});
 
     return subcard;
   }

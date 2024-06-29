@@ -12,6 +12,7 @@ export class Card {
     this.isChecked = isChecked;
     this.subcards = [];
     this.infoModal = new InfoModal();
+    this.disabled = false;
     this.initSubcards();
   }
 
@@ -142,11 +143,11 @@ export class Card {
         targets: subcardsContainer,
         opacity: [1, 0],
         translateY: [0, -10],
-        easing: 'easeOutQuad',
-        duration: 500, // Ajuste a duração conforme desejado
+        easing: "easeOutQuad",
+        duration: 500, 
         complete: () => {
           subcardsContainer.style.display = "none";
-        }
+        },
       });
     }
   }
@@ -165,16 +166,34 @@ export class Card {
       if (event.target.closest(".card-info-button, .card-dropdown-button")) {
         return;
       }
+
+      if (this.subcards.some((subcard) => subcard.isChecked)) {
+        return;
+      }
+
       this.onSelectionChange(this.chapa, !this.isChecked, "chapa");
       this.isChecked = !this.isChecked;
 
       if (this.isChecked) {
         card.classList.add("selected");
+        // Desabilite todos os subcards
+        this.subcards.forEach((subcard) => {
+          subcard.disabled = true;
+        });
       } else {
         card.classList.remove("selected");
+        // Habilite todos os subcards
+        this.subcards.forEach((subcard) => {
+          subcard.disabled = false;
+        });
       }
     });
 
     return card;
+  }
+
+  deselect() {
+    this.isChecked = false;
+    this.card.classList.remove("selected");
   }
 }
