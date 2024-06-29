@@ -100,12 +100,12 @@ export class Card {
   }
 
   createDropdownButton() {
-    if (this.chapa.conjugacoes.length === 0) {
-      return null;
-    }
-
     let dropdownButton = createElementWithClass("button", "btn btn-sm ml-2 card-dropdown-button");
     dropdownButton.innerHTML = '<i class="fas fa-chevron-down"></i>';
+
+    if (this.chapa.conjugacoes.length === 0) {
+      dropdownButton.style.visibility = "hidden";
+    }
 
     dropdownButton.addEventListener("click", (event) => {
       event.stopPropagation();
