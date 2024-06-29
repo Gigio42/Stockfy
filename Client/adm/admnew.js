@@ -74,7 +74,6 @@ function createAddMaquinaCard() {
   allMaquina.appendChild(addCard);
 }
 
-
 async function deleteMaquina(maquinaId) {
   console.log(`Tentando deletar a máquina com ID: ${maquinaId}`);
   try {
@@ -83,22 +82,21 @@ async function deleteMaquina(maquinaId) {
       console.log(`Máquina com ID ${maquinaId} deletada com sucesso.`);
       return true; // Indica que a deleção foi bem-sucedida
     } else {
-      throw new Error('Erro ao deletar a máquina: Status ' + response.status);
+      throw new Error("Erro ao deletar a máquina: Status " + response.status);
     }
   } catch (error) {
-    console.error('Erro ao deletar a máquina:', error);
-    
+    console.error("Erro ao deletar a máquina:", error);
+
     // Verifica se o erro é devido a itens associados à máquina
-    if (error.response && error.response.status === 500 && error.response.data.message.includes('Não é possível deletar a máquina porque há itens associados a ela.')) {
-      alert('Não é possível deletar a máquina porque há itens associados a ela.');
+    if (error.response && error.response.status === 500 && error.response.data.message.includes("Não é possível deletar a máquina porque há itens associados a ela.")) {
+      alert("Não é possível deletar a máquina porque há itens associados a ela.");
     } else {
-      alert('Não é possível deletar a máquina porque há itens associados a ela.');
+      alert("Não é possível deletar a máquina porque há itens associados a ela.");
     }
 
-    throw new Error('Erro ao deletar a máquina: ' + error.message);
+    throw new Error("Erro ao deletar a máquina: " + error.message);
   }
 }
-
 
 function createMaquinaCardsInModalWithoutIcons(maquinas) {
   const modalContent = document.getElementById("modalContentMaquinas");
@@ -106,12 +104,12 @@ function createMaquinaCardsInModalWithoutIcons(maquinas) {
 
   // Função para limpar a seleção atual de cards e restaurar o estado inicial
   function clearSelection() {
-    const cards = document.querySelectorAll('.cardMaquinainmodal');
-    cards.forEach(card => {
-      const maquinaName = card.querySelector('.maquinaName');
-      const deleteIcon = card.querySelector('.deleteIcon');
-      maquinaName.style.display = 'block';
-      deleteIcon.style.display = 'none';
+    const cards = document.querySelectorAll(".cardMaquinainmodal");
+    cards.forEach((card) => {
+      const maquinaName = card.querySelector(".maquinaName");
+      const deleteIcon = card.querySelector(".deleteIcon");
+      maquinaName.style.display = "block";
+      deleteIcon.style.display = "none";
     });
   }
 
@@ -139,7 +137,7 @@ function createMaquinaCardsInModalWithoutIcons(maquinas) {
     });
 
     // Exemplo de uso no evento de clique do ícone de deletar
-    deleteIcon.addEventListener('click', async (event) => {
+    deleteIcon.addEventListener("click", async (event) => {
       event.stopPropagation(); // Impede a propagação do evento para o card
       try {
         const success = await deleteMaquina(maquina.id_maquina); // Chama a função para deletar a máquina
@@ -147,7 +145,7 @@ function createMaquinaCardsInModalWithoutIcons(maquinas) {
           cardMaquina.remove(); // Remove o card da interface após a deleção
         }
       } catch (error) {
-        console.error('Erro ao deletar a máquina:', error);
+        console.error("Erro ao deletar a máquina:", error);
         // Trate o erro, se necessário
       }
     });
@@ -156,19 +154,13 @@ function createMaquinaCardsInModalWithoutIcons(maquinas) {
   });
 
   // Event listener para clicar fora do card e limpar a seleção
-  modalContent.addEventListener('click', (event) => {
+  modalContent.addEventListener("click", (event) => {
     const target = event.target;
-    if (!target.closest('.cardMaquinainmodal')) {
+    if (!target.closest(".cardMaquinainmodal")) {
       clearSelection(); // Limpa a seleção ao clicar fora do card
     }
   });
 }
-
-
-
-
-
-
 
 async function openAddMaquinaModal() {
   const modal = document.getElementById("addMaquinaModal");
@@ -182,7 +174,6 @@ async function openAddMaquinaModal() {
     console.error("Houve um erro ao buscar as máquinas para o modal!", error);
   }
 }
-
 
 function closeAddMaquinaModal() {
   const modal = document.getElementById("addMaquinaModal");
