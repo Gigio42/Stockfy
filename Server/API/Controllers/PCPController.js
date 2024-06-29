@@ -3,6 +3,7 @@
 import Chapas from "../Models/chapasModel.js";
 import Chapa_Item from "../Models/chapa_itemModel.js";
 import Item from "../Models/itemModel.js";
+import Conjugacoes from "../Models/conjugacoesModel.js";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -15,9 +16,9 @@ class PCPController {
   // ------------------------------
   async getChapas(query, filterCriteria, sortOrder, sortBy) {
     let data = await Chapas.findMany({ include: { conjugacoes: true } });
-  
+
     data = data.filter((chapa) => chapa.status !== "USADO");
-  
+
     if (filterCriteria) {
       for (let key in filterCriteria) {
         if (key === "comprimento" || key === "largura") {
@@ -30,14 +31,14 @@ class PCPController {
                 return largura === filterCriteria[key];
               }
             });
-  
+
             const [cardComprimento, cardLargura] = chapa.medida.split("x");
             if (key === "comprimento") {
               isValid = isValid || cardComprimento === filterCriteria[key];
             } else {
               isValid = isValid || cardLargura === filterCriteria[key];
             }
-  
+
             return isValid;
           });
         } else {
@@ -45,20 +46,19 @@ class PCPController {
         }
       }
     }
-  
+
     const sortedChapas = data.sort((a, b) => {
       const getValue = (obj, prop) => prop.split(".").reduce((acc, part) => acc && acc[part], obj);
-  
+
       if (sortOrder === "descending") {
         return getValue(a, sortBy) < getValue(b, sortBy) ? -1 : getValue(a, sortBy) > getValue(b, sortBy) ? 1 : 0;
       } else {
         return getValue(a, sortBy) > getValue(b, sortBy) ? -1 : getValue(a, sortBy) < getValue(b, sortBy) ? 1 : 0;
       }
     });
-  
+
     return sortedChapas;
   }
-  
 
   // ------------------------------
   // GetItemsComment Function
@@ -103,14 +103,28 @@ class PCPController {
   async createItemWithChapa(body) {
     try {
       console.log(body);
-      const { partNumber, chapas, reservedBy } = body;
+      const { partNumber, chapas, conjugacoes, reservedBy } = body;
 
-      for (const { quantity, keepRemaining } of chapas) {
-        if (keepRemaining) throw new Error("Reciclagem ainda está sendo desenvolvida"); //TODO Desenvolver reciclagem de chapas
+      for (const { quantity } of chapas) {
         if (!quantity) throw new Error("Todas as chapas devem ter uma quantidade");
       }
+      for (const { quantity } of conjugacoes) {
+        if (!quantity) throw new Error("Todas as conjugacoes devem ter uma quantidade");
+      }
 
-      let item;
+      let item = await Item.findUnique({ where: { part_number: partNumber } });
+
+      if (!item) {
+        item = await Item.create({
+          data: {
+            part_number: partNumber,
+            status: "RESERVADO",
+            reservado_por: reservedBy,
+          },
+        });
+      } else if (item.status !== "RESERVADO") {
+        throw new Error("Item em processo");
+      }
 
       for (const { chapaID, quantity } of chapas) {
         const chapa = await Chapas.findUnique({ where: { id_chapa: chapaID } });
@@ -118,22 +132,6 @@ class PCPController {
         if (!chapa) throw new Error("Chapa não encontrada");
         if (!quantity || quantity <= 0) throw new Error("Informe a quantidade de chapas a serem reservadas");
         if (quantity > chapa.quantidade_disponivel) throw new Error(`Chapa ${chapaID} não possui quantidade suficiente`);
-
-        if (!item) {
-          item = await Item.findUnique({ where: { part_number: partNumber } });
-
-          if (!item) {
-            item = await Item.create({
-              data: {
-                part_number: partNumber,
-                status: "RESERVADO",
-                reservado_por: reservedBy,
-              },
-            });
-          } else if (item.status !== "RESERVADO") {
-            throw new Error("Item em processo");
-          }
-        }
 
         const updatedChapa = await Chapas.update({
           where: { id_chapa: chapa.id_chapa },
@@ -166,6 +164,53 @@ class PCPController {
             data: {
               quantidade: Number(quantity),
               chapa: { connect: { id_chapa: chapaID } },
+              item: { connect: { id_item: item.id_item } },
+            },
+          });
+        }
+      }
+
+      for (const { conjugacoesID, quantity } of conjugacoes) {
+        const conjugacao = await Conjugacoes.findUnique({ where: { id_conjugacoes: conjugacoesID } });
+
+        if (!conjugacao) throw new Error("Conjugação não encontrada");
+        if (!quantity || quantity <= 0) throw new Error("Informe a quantidade de conjugações a serem reservadas");
+        if (quantity > conjugacao.quantidade) throw new Error(`Conjugação ${conjugacoesID} não possui quantidade suficiente`);
+
+        await Conjugacoes.update({
+          where: { id_conjugacoes: conjugacao.id_conjugacoes },
+          data: {
+            quantidade: { decrement: parseInt(quantity) },
+            usado: quantity === conjugacao.quantidade,
+          },
+        });
+
+        const allConjugacoes = await Conjugacoes.findMany({ where: { chapaId: conjugacao.chapaId } });
+        const allUsed = allConjugacoes.every((c) => c.usado);
+
+        if (allUsed) {
+          await Chapas.update({
+            where: { id_chapa: conjugacao.chapaId },
+            data: { status: "USADO" },
+          });
+        }
+
+        let chapaItem = await Chapa_Item.findFirst({
+          where: {
+            AND: [{ chapa: { id_chapa: conjugacao.chapaId } }, { item: { id_item: item.id_item } }],
+          },
+        });
+
+        if (chapaItem) {
+          await Chapa_Item.update({
+            where: { id_chapa_item: chapaItem.id_chapa_item },
+            data: { quantidade: { increment: Number(quantity) } },
+          });
+        } else {
+          await Chapa_Item.create({
+            data: {
+              quantidade: Number(quantity),
+              chapa: { connect: { id_chapa: conjugacao.chapaId } },
               item: { connect: { id_item: item.id_item } },
             },
           });

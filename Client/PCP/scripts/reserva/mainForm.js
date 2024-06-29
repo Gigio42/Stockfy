@@ -89,8 +89,6 @@ export class Reservar {
       reservarModal(() => {
         const selectedChapas = Array.from(this.selectedChapas.values());
         const selectedSubcards = Array.from(this.selectedSubcards.values());
-        console.log("Chapas selecionadas:", selectedChapas);
-        console.log("Subcards selecionados:", selectedSubcards);
         return [selectedChapas, selectedSubcards];
       });
     } catch (error) {
@@ -126,7 +124,7 @@ export class Reservar {
       }
     }
   }
-  
+
   animateCards() {
     anime({
       targets: ".card.mb-3.shadow-sm",

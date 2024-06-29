@@ -5,7 +5,7 @@ export class Subcard {
     this.conjugacao = conjugacao;
     this.onSelectionChange = onSelectionChange;
     this.isChecked = false;
-    this.disabled = false; 
+    this.disabled = false;
   }
 
   createValueDiv(value) {
@@ -42,29 +42,30 @@ export class Subcard {
 
     const p = document.createElement("p");
     p.className = "subcard-text mb-0";
-    p.innerText = `Conjugação: ${this.conjugacao.id_conjugacoes}, Quantidade: ${this.conjugacao.quantidade}`;
+    let status = this.conjugacao.usado ? "USADO" : "DISP";
+    p.innerText = `Medida: ${this.conjugacao.medida}, Quantidade: ${this.conjugacao.quantidade}, Status: ${status}`;
 
     subcard.appendChild(p);
 
     subcard.addEventListener("click", (event) => {
-  event.stopPropagation();
-  
-  if (this.disabled) {
-    return;
-  }
+      event.stopPropagation();
 
-  this.isChecked = !this.isChecked;
-  subcard.classList.toggle("selected");
-  this.onSelectionChange(this.conjugacao, this.isChecked, "subcard");
+      if (this.disabled) {
+        return;
+      }
 
-  if (this.isChecked) {
-    this.parentCard.disabled = true;
-  } else {
-    if (!this.parentCard.subcards.some(subcard => subcard.isChecked)) {
-      this.parentCard.disabled = false;
-    }
-  }
-});
+      this.isChecked = !this.isChecked;
+      subcard.classList.toggle("selected");
+      this.onSelectionChange(this.conjugacao, this.isChecked, "subcard");
+
+      if (this.isChecked) {
+        this.parentCard.disabled = true;
+      } else {
+        if (!this.parentCard.subcards.some((subcard) => subcard.isChecked)) {
+          this.parentCard.disabled = false;
+        }
+      }
+    });
 
     return subcard;
   }

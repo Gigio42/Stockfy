@@ -36,6 +36,7 @@
   }
 
   export async function reserveChapas(data) {
+    console.log(data);
     try {
       const response = await axios.post(`${PCP_URL}`, data);
       return response.data;
