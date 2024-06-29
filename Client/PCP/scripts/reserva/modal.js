@@ -107,6 +107,9 @@ function createSubcard(conjugacao, keys) {
 function createValueRow(item, keys) {
   const valueRow = document.createElement("div");
   valueRow.className = "value-row flex-grow-1";
+  valueRow.style.display = "flex";
+  valueRow.style.flexDirection = "row";
+  valueRow.style.justifyContent = "space-between"; // Adicionado para distribuir os itens ao longo da linha
 
   keys.forEach((key) => {
     const valueItem = document.createElement("div");
@@ -130,7 +133,7 @@ function createFormRow(item) {
   formRow.appendChild(quantidadeInput);
 
   return formRow;
-}
+} 
 
 function createButtonFormContainer(selectedChapas, selectedSubcards) {
   const buttonFormContainer = document.createElement("div");
