@@ -57,6 +57,9 @@ export class Card {
       }
 
       if (key === "quantidade_disponivel") {
+        let quantidade_comprada = this.chapa.quantidade_comprada;
+        valueDiv.textContent = `${quantidade_comprada} / ${value}`;
+
         if (this.chapa.status.toUpperCase() === "RECEBIDO") {
           valueDiv.style.color = "green";
         } else if (this.chapa.status.toUpperCase() === "COMPRADO") {

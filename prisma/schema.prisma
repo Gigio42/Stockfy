@@ -11,13 +11,14 @@ datasource db {
 }
 
 model Conjugacoes {
-  id_conjugacoes Int     @id @default(autoincrement())
-  medida         String
-  largura        Int
-  comprimento    Int
-  rendimento     Int     @default(0)
-  quantidade     Int     @default(0)
-  usado          Boolean @default(false)
+  id_conjugacoes        Int     @id @default(autoincrement())
+  medida                String
+  largura               Int
+  comprimento           Int
+  rendimento            Int     @default(0)
+  quantidade            Int     @default(0)
+  quantidade_disponivel Int     @default(0)
+  usado                 Boolean @default(false)
 
   chapaId Int
   chapa   Chapas @relation(fields: [chapaId], references: [id_chapa])

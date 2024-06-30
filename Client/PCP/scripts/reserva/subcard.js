@@ -8,35 +8,42 @@ export class Subcard {
     this.disabled = false;
   }
 
-  createValueDiv(value) {
+  createValueDiv(key, value) {
     let valueDiv = createElementWithClass("div", "subcard-value-div col text-center value d-flex align-items-center justify-content-center rounded");
-    valueDiv.textContent = value || "N/A";
-    return valueDiv;
-}
 
-createUsadoDiv() {
+    if (key === "quantidade") {
+      let quantidade_disponivel = this.conjugacao.quantidade_disponivel;
+      valueDiv.textContent = `${value} / ${quantidade_disponivel}`;
+    } else {
+      valueDiv.textContent = value || "N/A";
+    }
+
+    return valueDiv;
+  }
+
+  createUsadoDiv() {
     let status = this.conjugacao.usado ? "USADO" : "DISP";
     let statusDiv = createElementWithClass("div", "subcard-status-div col text-center value d-flex align-items-center justify-content-center rounded");
     statusDiv.textContent = status;
     statusDiv.className += this.conjugacao.usado ? " text-danger" : " text-success";
     return statusDiv;
-}
+  }
 
-createRendimentoDiv() {
-  let rendimento = this.conjugacao.rendimento ? `${this.conjugacao.rendimento}x` : "N/A";
-  let rendimentoDiv = createElementWithClass("div", "subcard-rendimento-div col text-center value d-flex align-items-center justify-content-center rounded");
-  rendimentoDiv.textContent = rendimento;
-  return rendimentoDiv;
-}
+  createRendimentoDiv() {
+    let rendimento = this.conjugacao.rendimento ? `${this.conjugacao.rendimento}x` : "N/A";
+    let rendimentoDiv = createElementWithClass("div", "subcard-rendimento-div col text-center value d-flex align-items-center justify-content-center rounded");
+    rendimentoDiv.textContent = rendimento;
+    return rendimentoDiv;
+  }
 
-createValueRow() {
-  let valueRow = createElementWithClass("div", "value-row d-flex flex-wrap w-100 justify-content-between");
-  valueRow.appendChild(this.createValueDiv(this.conjugacao.medida));
-  valueRow.appendChild(this.createRendimentoDiv());
-  valueRow.appendChild(this.createValueDiv(this.conjugacao.quantidade));
-  valueRow.appendChild(this.createUsadoDiv());
-  return valueRow;
-}
+  createValueRow() {
+    let valueRow = createElementWithClass("div", "value-row d-flex flex-wrap w-100 justify-content-between");
+    valueRow.appendChild(this.createValueDiv("medida", this.conjugacao.medida));
+    valueRow.appendChild(this.createRendimentoDiv());
+    valueRow.appendChild(this.createValueDiv("quantidade", this.conjugacao.quantidade));
+    valueRow.appendChild(this.createUsadoDiv());
+    return valueRow;
+  }
 
   createSubcardBody() {
     let subcardBody = createElementWithClass("div", "subcard-body rounded d-flex align-items-center");
@@ -50,7 +57,7 @@ createValueRow() {
     subcard.style.flex = "1 0 21%";
 
     if (this.conjugacao.usado) {
-        subcard.className += " usado";
+      subcard.className += " usado";
     }
 
     subcard.appendChild(this.createValueRow());

@@ -49,7 +49,6 @@ async function postData() {
                   comprimento: comprimento,
                   rendimento: rendimento,
                   quantidade: faker.datatype.number({ min: 1, max: 4 }) * 500 * rendimento,
-                  usado: faker.datatype.boolean(),
                 };
               }),
             }

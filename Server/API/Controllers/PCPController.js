@@ -176,21 +176,14 @@ class PCPController {
 
         if (!conjugacao) throw new Error("Conjugação não encontrada");
         if (!quantity || quantity <= 0) throw new Error("Informe a quantidade de conjugações a serem reservadas");
-        if (quantity > conjugacao.quantidade) throw new Error(`Conjugação ${conjugacoesID} não possui quantidade suficiente`);
+        if (quantity > conjugacao.quantidade_disponivel) throw new Error(`Conjugação ${conjugacoesID} não possui quantidade suficiente`);
         if (!chapa) throw new Error("Chapa não encontrada");
-
-        await Chapas.update({
-          where: { id_chapa: chapa.id_chapa },
-          data: {
-            quantidade_disponivel: { decrement: parseInt(quantity) },
-          },
-        });
 
         await Conjugacoes.update({
           where: { id_conjugacoes: conjugacao.id_conjugacoes },
           data: {
-            quantidade: { decrement: parseInt(quantity) },
-            usado: quantity === conjugacao.quantidade,
+            quantidade_disponivel: { decrement: parseInt(quantity) },
+            usado: parseInt(quantity) === conjugacao.quantidade_disponivel,
           },
         });
 
@@ -200,7 +193,7 @@ class PCPController {
         if (allUsed) {
           await Chapas.update({
             where: { id_chapa: conjugacao.chapaId },
-            data: { status: "USADO" },
+            data: { quantidade_disponivel: { decrement: Math.min(...allConjugacoes.map((c) => c.quantidade_disponivel)) } },
           });
         }
 
@@ -225,7 +218,6 @@ class PCPController {
           });
         }
       }
-
       return item;
     } catch (error) {
       console.error(error);
