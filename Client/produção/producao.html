@@ -1,5 +1,5 @@
-<!doctype html>
-<html lang="pt-br">
+    <!doctype html>
+    <html lang="pt-br">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -28,8 +28,19 @@
             </div>
         </header>
 
-        <div class="card-container">
-            <div id="itemsList"></div>
+        <div id="kanban-board">
+            <div class="kanban-column" id="done">
+                <h3>Feitos</h3>
+                <div class="kanban-items" id="done-items"></div>
+            </div>
+            <div class="kanban-column" id="to-do">
+                <h3>A Fazer</h3>
+                <div class="kanban-items" id="to-do-items"></div>
+            </div>
+            <div class="kanban-column" id="in-progress">
+                <h3>Próximas</h3>
+                <div class="kanban-items" id="in-progress-items"></div>
+            </div>
         </div>
 
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -38,4 +49,4 @@
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script type="module" src="producao.js"></script>
     </body>
-</html>
+    </html>

@@ -6,11 +6,11 @@ if (localStorage.getItem("isLoggedIn") !== "true") {
 }
 
 const urlParams = new URLSearchParams(window.location.search);
-const from = urlParams.get('from');
+const from = urlParams.get("from");
 
 document.getElementById("logoutLink").addEventListener("click", function (event) {
   localStorage.clear();
-  if (from === 'home') {
+  if (from === "home") {
     window.location.href = "../home/home.html";
   } else {
     window.location.href = "../login/login.html";
@@ -23,12 +23,21 @@ let maquinaName = localStorage.getItem("maquina") || "MachineName";
 setUserInfo(username);
 setMachineName(maquinaName);
 
-if (from === 'home') {
+if (from === "home") {
   render(maquinaName, username);
 } else {
   render(maquinaName, username);
 }
 
-document.getElementById("darkModeToggle").addEventListener("change", function (e) {
-  document.body.classList.toggle("light-mode", e.target.checked);
-});
+// Função para atualizar o tema
+function updateTheme() {
+  var darkModeToggle = document.getElementById("darkModeToggle");
+  document.body.classList.toggle("light-mode", !darkModeToggle.checked);
+  document.body.classList.toggle("dark-mode", darkModeToggle.checked);
+}
+
+// Atualizar o tema quando a página é carregada
+updateTheme();
+
+// Atualizar o tema quando a caixa de seleção é alterada
+darkModeToggle.addEventListener("change", updateTheme);

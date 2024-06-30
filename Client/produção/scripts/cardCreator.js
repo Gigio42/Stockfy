@@ -5,17 +5,9 @@ import { updateItemStatus } from "../scripts/connections.js";
 /* ============================== */
 export function createCard(item, maquinaName, estado, executor) {
   const card = document.createElement("div");
-  card.className = "col-12 mb-4";
-
-  if (estado === "FEITO") {
-    card.classList.add("finalizado");
-    card.style.order = 3;
-  } else if (estado === "PROXIMAS") {
-    card.classList.add("proxima");
-    card.style.order = 2;
-  } else {
-    card.style.order = 1;
-  }
+  card.className = "kanban-item";
+  card.id = `item-${item.Item.id_item}`;
+  card.dataset.itemId = item.Item.id_item;
 
   const cardContainer = document.createElement("div");
   cardContainer.className = "card h-100";
@@ -72,9 +64,28 @@ export function createCard(item, maquinaName, estado, executor) {
 
   const checkboxes = chapasList.querySelectorAll('input[type="checkbox"]');
   checkboxes.forEach((checkbox) => {
-    checkbox.disabled = estado !== "ATUAL";
-    if (estado === "FEITO") {
-      checkbox.checked = true;
+    if (checkbox.nextSibling && checkbox.nextSibling.classList.contains("checkmark")) {
+      checkbox.parentNode.removeChild(checkbox.nextSibling);
+    }
+
+    checkbox.parentNode.classList.add("custom-checkbox");
+
+    if (estado === "PROXIMAS") {
+      const lockIcon = document.createElement("span");
+      lockIcon.classList.add("checkmark");
+      checkbox.parentNode.insertBefore(lockIcon, checkbox.nextSibling);
+      checkbox.disabled = true;
+    } else {
+      const checkmark = document.createElement("span");
+      checkmark.classList.add("checkmark");
+      checkbox.parentNode.insertBefore(checkmark, checkbox.nextSibling);
+
+      if (estado === "FEITO") {
+        checkbox.checked = true;
+        checkbox.disabled = true;
+      } else {
+        checkbox.disabled = false;
+      }
     }
   });
 
