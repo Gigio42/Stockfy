@@ -68,7 +68,7 @@ function buildModalContent(selectedChapas, selectedSubcards) {
   contentWrapper.style.overflowY = "auto";
 
   const keysChapas = ["id_chapa", "largura", "fornecedor", "qualidade", "quantidade_disponivel"];
-  const keysConjugacoes = ["id_conjugacoes", "medida", "quantidade", "usado"];
+  const keysConjugacoes = ["id_conjugacoes", "medida", "rendimento", "quantidade"];
 
   selectedChapas.forEach((chapa) => contentWrapper.appendChild(createCard(chapa, keysChapas)));
   selectedSubcards.forEach((conjugacao) => contentWrapper.appendChild(createSubcard(conjugacao, keysConjugacoes)));
@@ -111,7 +111,7 @@ function createValueRow(item, keys) {
     valueDiv.className = "card-value-div col text-center value align-items-center justify-content-center rounded";
     valueDiv.style.display = "flex";
     valueDiv.style.whiteSpace = "nowrap";
-    valueDiv.textContent = key === "largura" ? `${item.largura} x ${item.comprimento}` : item[key];
+    valueDiv.textContent = key === "largura" ? `${item.largura} x ${item.comprimento}` : key === "rendimento" ? `${item[key]} x` : item[key];
     valueRow.appendChild(valueDiv);
   });
   return valueRow;
