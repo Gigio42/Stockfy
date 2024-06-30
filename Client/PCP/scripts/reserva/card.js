@@ -1,16 +1,23 @@
 import { createElementWithClass } from "../utils/dom.js";
 import { InfoModal } from "./infoModal.js";
+import { Subcard } from "./subcard.js";
 
 export class Card {
-  constructor(chapa, keys, index, sortKey, onSubcardSelectionChange, isChecked = false) {
+  constructor(chapa, keys, index, sortKey, onSelectionChange, isChecked = false) {
     this.chapa = chapa;
     this.keys = keys;
     this.index = index;
     this.sortKey = sortKey;
-    this.onSubcardSelectionChange = onSubcardSelectionChange;
+    this.onSelectionChange = onSelectionChange;
     this.isChecked = isChecked;
-    this.cards = [];
+    this.subcards = [];
     this.infoModal = new InfoModal();
+    this.disabled = false;
+    this.initSubcards();
+  }
+
+  initSubcards() {
+    this.subcards = this.chapa.conjugacoes.map((conjugacao) => new Subcard(conjugacao, this.onSelectionChange));
   }
 
   createValueDiv(key, value) {
@@ -22,10 +29,8 @@ export class Card {
       if (key.startsWith("data")) {
         let dateParts;
         if (value.includes("/")) {
-          //"dd/mm/yyyy" format
           dateParts = value.split("/");
         } else if (value.includes("-")) {
-          //"yyyy-mm-dd" format
           dateParts = value.split("-");
           dateParts.reverse();
         }
@@ -52,6 +57,9 @@ export class Card {
       }
 
       if (key === "quantidade_disponivel") {
+        let quantidade_comprada = this.chapa.quantidade_comprada;
+        valueDiv.textContent = `${quantidade_comprada} / ${value}`;
+
         if (this.chapa.status.toUpperCase() === "RECEBIDO") {
           valueDiv.style.color = "green";
         } else if (this.chapa.status.toUpperCase() === "COMPRADO") {
@@ -83,7 +91,7 @@ export class Card {
 
   createInfoButton() {
     let infoButton = createElementWithClass("button", "btn btn-sm ml-2 card-info-button");
-    infoButton.innerHTML = '<i class="fas fa-chevron-down"></i>';
+    infoButton.innerHTML = '<i class="fas fa-info-circle"></i>';
 
     infoButton.addEventListener("click", (event) => {
       event.stopPropagation();
@@ -94,24 +102,94 @@ export class Card {
     return infoButton;
   }
 
+  createDropdownButton() {
+    let dropdownButton = createElementWithClass("button", "btn btn-sm ml-2 card-dropdown-button");
+    dropdownButton.innerHTML = '<i class="fas fa-chevron-down"></i>';
+
+    if (this.chapa.conjugacoes.length === 0) {
+      dropdownButton.style.visibility = "hidden";
+    }
+
+    dropdownButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+      event.preventDefault();
+      this.toggleSubcards();
+    });
+
+    return dropdownButton;
+  }
+
   createCardBody() {
     let cardBody = createElementWithClass("div", "body-div card-body rounded d-flex align-items-center");
     cardBody.appendChild(this.createValueRow());
     cardBody.appendChild(this.createInfoButton());
+    let dropdownButton = this.createDropdownButton();
+    if (dropdownButton !== null) {
+      cardBody.appendChild(dropdownButton);
+    }
     return cardBody;
+  }
+
+  createSubcardsContainer() {
+    let subcardsContainer = createElementWithClass("div", "subcards-container");
+
+    this.subcards.sort((a, b) => {
+      if (a.conjugacao.usado && !b.conjugacao.usado) {
+        return 1;
+      }
+      if (!a.conjugacao.usado && b.conjugacao.usado) {
+        return -1;
+      }
+      return 0;
+    });
+
+    this.subcards.forEach((subcard) => subcardsContainer.appendChild(subcard.createSubcard()));
+    subcardsContainer.style.display = "none";
+    return subcardsContainer;
+  }
+
+  toggleSubcards() {
+    let subcardsContainer = this.card.querySelector(".subcards-container");
+    if (subcardsContainer.style.display === "none") {
+      subcardsContainer.style.display = "block";
+      anime({
+        targets: subcardsContainer,
+        opacity: [0, 1],
+        height: ["0px", subcardsContainer.scrollHeight + "px"],
+        duration: 500,
+        easing: "easeOutCubic",
+      });
+    } else {
+      anime({
+        targets: subcardsContainer,
+        opacity: [1, 0],
+        translateY: [0, -10],
+        easing: "easeOutQuad",
+        duration: 500,
+        complete: () => {
+          subcardsContainer.style.display = "none";
+        },
+      });
+    }
   }
 
   createCard() {
     let card = createElementWithClass("div", "card mb-3 shadow-sm");
+    this.card = card;
     card.appendChild(this.createCardBody());
+    card.appendChild(this.createSubcardsContainer());
 
     if (this.isChecked) {
       card.classList.add("selected");
     }
 
-    card.addEventListener("click", (event) => {
-      if (event.target !== this.createInfoButton()) {
-        this.onSubcardSelectionChange(this.chapa, !this.isChecked);
+    if (this.chapa.conjugacoes.length === 0) {
+      card.addEventListener("click", (event) => {
+        if (event.target.closest(".card-info-button, .card-dropdown-button")) {
+          return;
+        }
+
+        this.onSelectionChange(this.chapa, !this.isChecked, "chapa");
         this.isChecked = !this.isChecked;
 
         if (this.isChecked) {
@@ -119,9 +197,14 @@ export class Card {
         } else {
           card.classList.remove("selected");
         }
-      }
-    });
+      });
+    }
 
     return card;
+  }
+
+  deselect() {
+    this.isChecked = false;
+    this.card.classList.remove("selected");
   }
 }

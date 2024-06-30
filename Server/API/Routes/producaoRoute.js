@@ -3,6 +3,18 @@ import ProducaoController from "../Controllers/producaoController.js";
 async function producaoRoute(fastify, options) {
   const producaoController = new ProducaoController(options.db);
 
+  fastify.get("/maquinas", {
+    handler: async (request, reply) => {
+      try {
+        const data = await producaoController.getAllMachines();
+        reply.send(data);
+      } catch (err) {
+        console.log(err.message);
+        reply.code(500).send({ message: "Error retrieving machines from SQLite database", error: err.message });
+      }
+    },
+  });
+
   fastify.get("/maquina/:name/itens/chapas", {
     handler: async (request, reply) => {
       try {

@@ -51,6 +51,15 @@ export class ItemCard {
   createPartNumberDiv() {
     const partNumberDiv = createElementWithClass("div", "btn btn-sm card-part-number");
     partNumberDiv.textContent = this.item.part_number;
+    partNumberDiv.title = "Copiar";
+    partNumberDiv.style.cursor = "copy";
+
+    partNumberDiv.addEventListener("click", () => {
+      navigator.clipboard.writeText(this.item.part_number).catch((err) => {
+        console.error("Erro ao copiar part number: ", err);
+      });
+    });
+
     return partNumberDiv;
   }
 

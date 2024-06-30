@@ -7,6 +7,15 @@ const prisma = new PrismaClient();
 class ProducaoController {
   constructor() {}
 
+  async getAllMachines() {
+    const maquinas = await Maquina.findMany({
+      select: {
+        nome: true,
+      },
+    });
+    return maquinas;
+  }
+
   async getChapasInItemsInMaquinas(name) {
     console.log("name", name);
 

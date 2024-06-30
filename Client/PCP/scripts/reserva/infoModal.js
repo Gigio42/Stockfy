@@ -72,7 +72,7 @@ export class InfoModal {
       col.appendChild(card);
 
       const cardBody = document.createElement("div");
-      cardBody.className = "card-body";
+      cardBody.className = "card-body info-card";
       card.appendChild(cardBody);
 
       const cardTitle = document.createElement("h5");
@@ -82,7 +82,7 @@ export class InfoModal {
 
       const cardText = document.createElement("p");
       cardText.className = "card-text";
-      cardText.textContent = JSON.stringify(value, null, 2);
+      cardText.textContent = typeof value === "string" ? value : JSON.stringify(value, null, 2);
       cardBody.appendChild(cardText);
     });
 

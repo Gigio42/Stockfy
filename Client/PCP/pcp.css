@@ -213,7 +213,7 @@ body {
   height: 100%;
 }
 #container {
-  max-height: 85vh;
+  max-height: 100vh;
   overflow-y: auto;
   scrollbar-width: none;
 }
@@ -223,6 +223,7 @@ body {
 .itemContainer {
   padding-bottom: 0 !important;
 }
+
 /* ====================================== Scrollbar Styles ====================================== */
 ::-webkit-scrollbar {
   width: 10px;
@@ -832,20 +833,74 @@ input[type="checkbox"] {
   background: #e0e0e0;
   color: #333;
 }
-.light-mode .checkbox-button {
-  background: #e0e0e0;
-  border: 1px solid #ccc;
-  color: #333;
-}
-.light-mode .checkbox-button[data-checked="true"] {
-  background-color: #007bff !important;
-  border: #007bff;
-  color: #fff !important;
-}
 /* mudar nome da classe, isso na vdd cuida do preview div do consulta */
 .dark-background {
   background: #5c5c5c23 !important;
   border-radius: 5px;
   border: solid 1px #8a8a8a3d;
   padding: 10px;
+}
+.info-card {
+  background-color: #ffffff;
+  border: 1px solid #c0c0c0;
+  color: black;
+}
+.dark-mode .info-card {
+  background-color: #333333;
+  border: 1px solid #c0c0c0;
+  color: white;
+}
+
+.subcards-container {
+  padding: 10px;
+  overflow: hidden;
+}
+
+.card-dropdown-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.card-dropdown-button i {
+  font-size: 1.2em;
+}
+
+.subcard-body {
+  padding: 10px;
+  background-color: #3b3b3b;
+}
+
+.highlighted {
+  border: 1px solid #ffc1076d;
+  background-color: #ffc10714;
+}
+
+
+
+.light-mode .subcard-body {
+  background-color: #f8f9fa;
+  border: 1px solid #c0c0c0;
+  color: black;
+}
+.light-mode .fas{
+  color: #333;
+}
+
+.usado {
+  border: 1px solid #a72828;
+  pointer-events: none; /* This disables click events */
+}
+
+.subcard {
+  background-color: #3b3b3b;
+  margin-bottom: 10px;
+}
+.light-mode .subcard {
+  background-color: #e6ebf0;
+  color: black;
+}
+
+.light-mode .value-row {
+  color:#0e0e0e;
 }
