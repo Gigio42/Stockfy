@@ -40,8 +40,8 @@ async function postData() {
               create: Array.from({ length: faker.datatype.number({ min: 1, max: 5 }) }, () => {
                 const divisoesLargura = faker.datatype.number({ min: 1, max: medidaChapaLargura / 500 });
                 const divisoesComprimento = faker.datatype.number({ min: 1, max: medidaChapaComprimento / 500 });
-                const largura = medidaChapaLargura / divisoesLargura;
-                const comprimento = medidaChapaComprimento / divisoesComprimento;
+                const largura = Math.floor(medidaChapaLargura / divisoesLargura);
+                const comprimento = Math.floor(medidaChapaComprimento / divisoesComprimento);
                 const rendimento = Math.min(divisoesLargura * divisoesComprimento, ((medidaChapaLargura / largura) * medidaChapaComprimento) / comprimento);
                 return {
                   medida: `${largura}x${comprimento}`,

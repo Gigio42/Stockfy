@@ -209,6 +209,7 @@ async function reserveChapasAndShowFeedback(partNumber, chapas, conjugacoes) {
     const reservedBy = localStorage.getItem("nome");
     const response = await reserveChapas({ partNumber, chapas, conjugacoes, reservedBy });
     showSuccessToast(partNumber);
+    location.reload(); 
   } catch (error) {
     showErrorAlert(error.message);
   } finally {
@@ -219,7 +220,6 @@ async function reserveChapasAndShowFeedback(partNumber, chapas, conjugacoes) {
 function showSuccessToast(partNumber) {
   localStorage.setItem("showSwal", "true");
   localStorage.setItem("partNumber", partNumber);
-  location.reload();
 }
 
 function showErrorAlert(message) {
