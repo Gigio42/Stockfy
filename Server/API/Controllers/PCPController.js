@@ -228,7 +228,7 @@ class PCPController {
   }
 
   // ------------------------------
-  // deleteItemComment Function
+  // delete item
   // ------------------------------
   async deleteItem(itemId) {
     const item = await Item.findUnique({
@@ -239,6 +239,20 @@ class PCPController {
     const operations = [];
 
     for (const chapaItem of item.chapas) {
+      const conjugacoes = await Conjugacoes.findMany({ where: { chapaId: chapaItem.chapaId } });
+
+      for (const conjugacao of conjugacoes) {
+        operations.push(
+          Conjugacoes.update({
+            where: { id_conjugacoes: conjugacao.id_conjugacoes },
+            data: {
+              quantidade_disponivel: { increment: chapaItem.quantidade },
+              usado: false,
+            },
+          }),
+        );
+      }
+
       operations.push(
         Chapas.update({
           where: { id_chapa: chapaItem.chapaId },
@@ -255,7 +269,7 @@ class PCPController {
   }
 
   // ------------------------------
-  // deleteItemComment Function
+  // delete chapa
   // ------------------------------
   async deleteChapaFromItem(itemId, chapaId) {
     const chapaItem = await Chapa_Item.findFirst({
@@ -270,6 +284,20 @@ class PCPController {
     }
 
     const operations = [];
+
+    const conjugacoes = await Conjugacoes.findMany({ where: { chapaId: chapaId } });
+
+    for (const conjugacao of conjugacoes) {
+      operations.push(
+        Conjugacoes.update({
+          where: { id_conjugacoes: conjugacao.id_conjugacoes },
+          data: {
+            quantidade_disponivel: { increment: chapaItem.quantidade },
+            usado: false,
+          },
+        }),
+      );
+    }
 
     operations.push(
       Chapas.update({
