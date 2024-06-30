@@ -29,15 +29,12 @@ if (from === "home") {
   render(maquinaName, username);
 }
 
-// Função para atualizar o tema
 function updateTheme() {
   var darkModeToggle = document.getElementById("darkModeToggle");
   document.body.classList.toggle("light-mode", !darkModeToggle.checked);
   document.body.classList.toggle("dark-mode", darkModeToggle.checked);
 }
 
-// Atualizar o tema quando a página é carregada
 updateTheme();
 
-// Atualizar o tema quando a caixa de seleção é alterada
 darkModeToggle.addEventListener("change", updateTheme);

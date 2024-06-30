@@ -294,49 +294,93 @@ body.light-mode .dark-mode-select option {
   padding: 15px;
 }
 
+#kanban-board {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 15px;
+  transition: flex-direction 0.5s ease-in-out; /* Adiciona transição suave */
+}
+
 .kanban-column {
   width: 32%;
   background-color: #f0f0f0;
   padding: 10px;
   border-radius: 5px;
-}
-body.dark-mode .kanban-column h3 {
-  color: #fff; 
-}
-body.light-mode .kanban-column h3 {
-  color: #000; 
+  transition: width 0.5s ease-in-out; /* Adiciona transição suave */
 }
 
-/* Modo escuro */
+#kanban-board {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 15px;
+}
+
+.kanban-column {
+    width: 32%;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+@media (max-width: 1600px) {
+    #kanban-board {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .kanban-column {
+        width: 80%; 
+    }
+
+    #to-do {
+        order: 1;
+    }
+
+    #in-progress {
+        order: 2;
+    }
+
+    #done {
+        order: 3;
+    }
+}
+
+body.dark-mode .kanban-column h3 {
+  color: #fff;
+}
+body.light-mode .kanban-column h3 {
+  color: #000;
+}
+
 @media (prefers-color-scheme: dark) {
   body .kanban-column {
-    background: rgba(255, 255, 255, 0.1); 
+    background: rgba(255, 255, 255, 0.1);
     border: 3px solid transparent;
     color: #fff;
     backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(10px);
     border-radius: 0.7rem;
     padding: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   }
 }
 
-/* Modo claro */
 @media (prefers-color-scheme: light) {
   body .kanban-column {
-    background: rgba(128, 128, 128, 0.1); 
-    border: 3px solid #000; 
+    background: rgba(128, 128, 128, 0.1);
+    border: 3px solid #000;
     color: #000;
     backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(10px);
     border-radius: 0.7rem;
     padding: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   }
 }
 
 body .kanban-column#done {
-  background: rgba(128, 128, 128, 0.05); 
+  background: rgba(128, 128, 128, 0.05);
   border: 3px solid rgba(128, 128, 128, 0.5);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -345,16 +389,16 @@ body .kanban-column#done {
 }
 
 body .kanban-column#to-do {
-  background: rgba(0, 217, 255, 0.05); 
+  background: rgba(0, 217, 255, 0.05);
   border: 3px solid rgba(0, 195, 255, 0.5);
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px); 
+  -webkit-backdrop-filter: blur(10px);
   border-radius: 0.7rem;
   padding: 10px;
 }
 
 body .kanban-column#in-progress {
-  background: rgba(0, 255, 21, 0.05); 
+  background: rgba(0, 255, 21, 0.05);
   border: 3px solid rgba(0, 255, 21, 0.5);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -385,18 +429,11 @@ body.dark-mode .kanban-item {
 }
 
 .custom-checkbox input[type="checkbox"]:disabled + .checkmark::before {
-  content: "\f023"; 
-  font-family: "Font Awesome 5 Free"; 
-  font-weight: 900; 
+  content: "\f023";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
   font-size: 12px;
   color: red;
   display: block;
   text-align: center;
 }
-
-
-
-
-
-
-
