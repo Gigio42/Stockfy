@@ -199,14 +199,21 @@ class PCPController {
 
         let chapaItem = await Chapa_Item.findFirst({
           where: {
-            AND: [{ chapa: { id_chapa: conjugacao.chapaId } }, { item: { id_item: item.id_item } }],
+            AND: [
+              { chapa: { id_chapa: conjugacao.chapaId } },
+              { item: { id_item: item.id_item } },
+              { conjugacao: { id_conjugacoes: conjugacao.id_conjugacoes } }, // new line
+            ],
           },
         });
 
         if (chapaItem) {
           await Chapa_Item.update({
             where: { id_chapa_item: chapaItem.id_chapa_item },
-            data: { quantidade: { increment: Number(quantity) } },
+            data: {
+              quantidade: { increment: Number(quantity) },
+              conjugacao: { connect: { id_conjugacoes: conjugacao.id_conjugacoes } },
+            },
           });
         } else {
           await Chapa_Item.create({
@@ -214,6 +221,7 @@ class PCPController {
               quantidade: Number(quantity),
               chapa: { connect: { id_chapa: conjugacao.chapaId } },
               item: { connect: { id_item: item.id_item } },
+              conjugacao: { connect: { id_conjugacoes: conjugacao.id_conjugacoes } },
             },
           });
         }

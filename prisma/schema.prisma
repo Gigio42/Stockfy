@@ -20,8 +20,9 @@ model Conjugacoes {
   quantidade_disponivel Int     @default(0)
   usado                 Boolean @default(false)
 
-  chapaId Int
-  chapa   Chapas @relation(fields: [chapaId], references: [id_chapa])
+  chapaId    Int
+  chapa      Chapas       @relation(fields: [chapaId], references: [id_chapa])
+  Chapa_Item Chapa_Item[]
 
   @@index([chapaId])
 }
@@ -63,10 +64,13 @@ model Chapa_Item {
   id_chapa_item Int     @id @default(autoincrement())
   quantidade    Int     @default(0)
   terminado     Boolean @default(false)
-  chapaId       Int
   itemId        Int
-  chapa         Chapas  @relation(fields: [chapaId], references: [id_chapa])
-  item          Item    @relation(fields: [itemId], references: [id_item])
+  chapaId       Int
+  conjugacaoId  Int?
+
+  item  Item   @relation(fields: [itemId], references: [id_item])
+  chapa Chapas @relation(fields: [chapaId], references: [id_chapa])
+  conjugacao Conjugacoes? @relation(fields: [conjugacaoId], references: [id_conjugacoes])
 }
 
 model Item {
