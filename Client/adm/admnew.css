@@ -24,15 +24,14 @@ h1 {
 }
 
 .nomeModal {
-  color:#b3b3b3;
+  color: #b3b3b3;
   padding: 0.7rem;
 }
 
 @media (max-width: 767.98px) {
   .nomeModal {
     display: none;
-}
-  
+  }
 }
 
 .logoStockfy {
@@ -92,17 +91,16 @@ h1 {
   padding: 0;
   border-radius: 0 !important;
   height: 100vh;
-  
 }
 
 @media (max-width: 767.98px) {
   #aside {
-      order: 2;
+    order: 2;
   }
 
   .header {
-      order: 1;
-      width: 100%;
+    order: 1;
+    width: 100%;
   }
 }
 
@@ -111,16 +109,15 @@ h1 {
   background: #2e2e2e;
   width: 100vw;
   height: 5rem;
-padding: 1rem;
-
+  padding: 1rem;
 }
 
 #mobileButtonContainer {
   display: flex;
-  background: #666666;
+  background: #c0c0c0;
   width: 100vw;
   height: 5rem;
-padding: 1rem;
+  padding: 1rem;
 }
 
 .logo {
@@ -147,14 +144,18 @@ padding: 1rem;
 }
 
 .list-unstyled:hover {
-background: #333333;
-padding: 1rem;
+  background: #adadad;
+  padding: 1rem;
+}
+
+.dark-mode .list-unstyled:hover {
+  background: #333333;
 }
 
 .list-unstyled {
   padding: 1rem;
   border-radius: 1rem;
-  }
+}
 
 /* ======================================
        Active Link Styles
@@ -245,7 +246,6 @@ body {
   margin-right: 2rem;
 }
 
-
 #container {
   max-height: 100vh;
   overflow-y: auto;
@@ -259,20 +259,40 @@ body {
 /* ======================================
        Scrollbar Styles
        ====================================== */
+
+.dark-mode {
+  ::-webkit-scrollbar {
+    width: 10px;
+    /* largura da barra de rolagem */
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #424242;
+    /* cor do 'thumb' (a parte que você arrasta) */
+    border-radius: 5px;
+    /* borda arredondada */
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: #212121;
+    /* cor do fundo da barra de rolagem */
+  }
+}
+
 ::-webkit-scrollbar {
   width: 10px;
   /* largura da barra de rolagem */
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #424242;
+  background-color: #848484;
   /* cor do 'thumb' (a parte que você arrasta) */
   border-radius: 5px;
   /* borda arredondada */
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #212121;
+  background-color: #b8b8b8;
   /* cor do fundo da barra de rolagem */
 }
 
@@ -291,7 +311,6 @@ body {
 .dark-mode li {
   color: #cccccc;
 }
-
 
 .logout {
   filter: invert(1);
@@ -355,11 +374,10 @@ body {
   background-color: #2d2d2d;
 }
 
-
-
 #allMaquina {
   overflow-y: auto;
-  max-height: calc(100vh - 50px); /* Ajuste 50px para o tamanho da barra de navegação ou outro elemento */
+  max-height: calc(100vh - 50px);
+  /* Ajuste 50px para o tamanho da barra de navegação ou outro elemento */
 
   box-sizing: border-box;
 }
@@ -419,7 +437,7 @@ body {
   top: 0;
   width: 100%;
   height: 100%;
-max-height: 100%;
+  max-height: 100%;
   background-color: rgba(52, 52, 52, 0.324);
   backdrop-filter: blur(5px);
   flex-direction: column;
@@ -433,7 +451,6 @@ max-height: 100%;
   flex-wrap: wrap;
 
   height: 90%;
-
 }
 
 #stagedItems {
@@ -444,9 +461,8 @@ max-height: 100%;
   margin-bottom: 1rem;
 }
 
-
 .modal-content-2 {
-  padding: 1.5REM;
+  padding: 1.5rem;
   border: none;
   border-radius: 1.5rem;
   position: absolute;
@@ -473,7 +489,12 @@ max-height: 100%;
   display: none;
 }
 
-.modal-content, 
+.dark-mode .modal-content,
+.dark-mode .modal-content1 {
+  background-color: #141414;
+}
+
+.modal-content,
 .modal-content1 {
   padding: 1.5rem !important;
   width: 100vw;
@@ -483,10 +504,9 @@ max-height: 100%;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #141414;
+  background-color: #ffffff;
   z-index: 9999;
   height: 100vh;
-  background-color: #141414;
   padding: 20px;
   justify-content: space-between;
   flex-direction: column;
@@ -494,12 +514,18 @@ max-height: 100%;
 }
 
 .modal-content-3.show {
-  display: block; /* Mostrar quando a classe "show" for adicionada */
+  display: block;
+  /* Mostrar quando a classe "show" for adicionada */
   /* Adicione outros estilos conforme necessário */
 }
 
 .sair {
-  width:30px ;
+  filter: invert(1);
+  width: 30px;
+}
+
+.dark-mode .sair {
+  filter: none;
 }
 
 #voltarModalContentnext,
@@ -511,9 +537,15 @@ max-height: 100%;
   width: fit-content;
   margin-bottom: 1rem;
   border: none;
-  background-color: #1c1c1c;
-  color: #b4b4b4;
+  background-color: #efefef;
   font-size: 1rem;
+}
+
+.dark-mode #voltarModalContentnext,
+#voltarModalContent2,
+#voltarModalContent,
+#voltarModalContent5 {
+  background-color: #1c1c1c;
 }
 
 #voltarModalContent:hover {
@@ -600,7 +632,8 @@ span.item-number {
 
 .item-container.dragging .item-card {
   transform: scale(1.1);
-  transition: transform 0.005s; /* Reduzindo ainda mais a duração da transição */
+  transition: transform 0.005s;
+  /* Reduzindo ainda mais a duração da transição */
 }
 
 .dark-mode .abrirModal:hover {
@@ -611,6 +644,59 @@ span.item-number {
   background: #b4b4b4;
 }
 
+@media (max-width: 920px) {
+  .abrirModal {
+    width: 40px;
+  }
+
+  .cardMaquina {
+    padding: 1.5rem 0.7rem;
+  }
+  .header-custom {
+    padding: 0.7rem;
+    height: 4rem;
+  }
+  h1 {
+    font-size: 1.3rem;
+  }
+
+  .logout {
+    padding: 0;
+  }
+
+  .textButtonli {
+    font-size: 1rem;
+    width: 4.5rem !important;
+    height: 2rem;
+  }
+  #mobileButtonContainer {
+    height: 4rem !important;
+  }
+  #optionsButton {
+    height: 2rem;
+  }
+
+  .imgicon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .maquinaName {
+    font-size: 1.2rem !important;
+  }
+
+  div.card-body {
+    overflow-y: auto;
+    max-height: 30vh;
+  }
+}
+
+.botoesheader{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 .conteudoInterno {
   display: flex;
   justify-content: flex-end;
@@ -619,7 +705,6 @@ span.item-number {
   padding: 1rem;
   border-radius: 2rem;
   overflow-y: auto;
-  
 }
 
 #stagedArea {
@@ -630,26 +715,27 @@ span.item-number {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  max-height:77vh;
+  max-height: 77vh;
+}
+
+.addmachine {
+  margin-right: 2rem;
 }
 
 @media (max-width: 902px) {
   #stagedArea {
     justify-content: space-between;
     height: 49%;
-    max-height:35vh ;
-  } 
+    max-height: 35vh;
+  }
 
   .conteudoInterno {
     overflow-y: auto;
     max-height: 50%;
     height: 40%;
-    margin-bottom: 7REM;
+    margin-bottom: 7rem;
   }
-  
 }
-
-
 
 .stagedCard {
   display: flex;
@@ -657,6 +743,116 @@ span.item-number {
   flex-wrap: wrap;
   gap: 0.5rem;
 }
+
+.addText {
+  font-size: 1.3rem;
+  padding: 0.2rem;
+}
+
+.modal-content-add {
+  width: 70%;
+  height: 70%;
+  background-color: #2c2c2c;
+  margin: 7rem auto;
+  border-radius: 1rem;
+  padding: 3rem;
+}
+
+.textoaddmachine {
+  margin-bottom: 2rem;
+}
+
+.addmachine {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 50%;
+  background: #303030;
+  padding: 2rem;
+  border-radius: 1rem;
+  justify-content: space-between;
+}
+
+.inputadd {
+  flex-direction: column;
+}
+
+.displaymodaladd {
+  display: flex;
+  flex: 1;
+  overflow-y: auto;
+  max-height: 80%;
+}
+
+#maquinaNomeModal{
+  background: #222222;
+  border-radius: 0.5em;
+  border: none;
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.cardMaquinainmodal {
+  display: flex;
+  font-size: 1.7rem;
+  background: #3d3d3d;
+  width: fit-content;
+  margin: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+
+}
+
+
+#modalContentMaquinas{
+  overflow-y: auto;
+  max-height: 40%;
+  display: flex;
+  flex-wrap: wrap;
+  width: 50%;
+}
+.addCard {
+  background: #4fa4ff !important;
+  color:#1E3F63 ;
+
+}
+
+.addCard:hover {
+  background: #4795e9 !important;
+}
+
+.dark-mode .addCard {
+  background: #4fa4ff !important;
+  color:#1E3F63 ;
+
+}
+
+.dark-mode .addCard:hover {
+  background: #4895e7 !important;
+  color:#1E3F63 ;
+
+}
+
+
+#criarMaquinaModalBtn {
+  background: #1b80df6d;
+  border-radius: 0.5em;
+  border: solid 1px #7dbcff;
+  color: #86c1ff;
+  width: fit-content;
+  font-size: 1.5rem;
+  padding: 0.5rem;
+}
+
+/* Estilo para o ícone de deletar */
+.deleteIcon {
+  display: none; /* Inicialmente oculto */
+  cursor: pointer;
+  margin-left: 5px; /* Ajuste conforme necessário */
+}
+
+
 
 .addItem {
   margin-top: 1rem;
@@ -725,7 +921,8 @@ span.item-number {
 }
 
 .ButtonsModal2 button {
-  margin-right: 10px; /* Ajuste conforme necessário */
+  margin-right: 10px;
+  /* Ajuste conforme necessário */
 }
 
 #confirmarOrdem,
@@ -784,7 +981,8 @@ p {
   gap: 1rem;
   flex-grow: 1;
   padding: 10px;
-  margin-left: 10px; /* Espaço entre o ícone e o card */
+  margin-left: 10px;
+  /* Espaço entre o ícone e o card */
 
   flex-wrap: wrap;
 }
@@ -792,14 +990,16 @@ p {
 .item-container {
   display: flex;
   align-items: center;
-  margin-bottom: 10px; /* Ajuste o espaço entre os cards conforme necessário */
- width: fit-content;
+  margin-bottom: 10px;
+  /* Ajuste o espaço entre os cards conforme necessário */
+  width: fit-content;
 }
 
 .drag-icon {
   width: 34px;
   height: 34px;
-  opacity: 0.1; /* Ajuste o valor conforme necessário */
+  opacity: 0.1;
+  /* Ajuste o valor conforme necessário */
   cursor: pointer;
 }
 
@@ -833,7 +1033,7 @@ p {
   flex-direction: column;
 
   border-radius: 1rem;
-  border-radius: 2REM;
+  border-radius: 2rem;
 }
 
 .textoModal {
@@ -864,7 +1064,6 @@ h2 {
   height: 3.5rem;
   width: 30% !important;
   max-width: 200px;
-
 }
 
 .inputPrazo:focus,
@@ -879,11 +1078,10 @@ h2 {
 }
 
 .divConfirm {
-  height:90%;
+  height: 90%;
   flex-direction: column;
-    justify-content: space-between;
+  justify-content: space-between;
 }
-
 
 .title-container {
   display: flex;
@@ -914,18 +1112,23 @@ h2 {
   gap: 0.2rem;
 }
 
+.dark-mode .card {
+  background-color: #1d1d1d00;
+}
+
 .card {
   margin-bottom: 1rem;
   gap: 1rem;
   border-radius: 8px;
-  background-color: #1d1d1d;
+  background-color: #7b7b7b00;
   border-radius: 1rem !important;
   flex-direction: row;
   padding: 0;
   font-size: calc(1vw + 10px);
   align-items: center;
-display: flex;
-
+  display: flex;
+  width: fit-content;
+  border: none;
 }
 
 /* Responsividade para tela menor que 902px */
@@ -960,7 +1163,7 @@ display: flex;
 
   .item-card {
     flex-direction: column;
-    width: 10REM;
+    width: 10rem;
   }
 
   .status-produzindo {
@@ -971,7 +1174,6 @@ display: flex;
   #produzindoItemsList {
     max-height: 70%;
   }
-
 }
 
 .toggle-arrow {
@@ -980,14 +1182,20 @@ display: flex;
 
 .button-container {
   display: flex;
-  margin: 1rem !important;}
+  margin: 1rem !important;
+}
+
+.dark-mode .card-header {
+  background-color: #4f27ff47;
+  color: #9178ff;
+}
 
 .card-header {
   display: flex;
-  background-color: #4f27ff47;
+  background-color: #cdc2ff;
   padding: 0.5rem;
   border-radius: 1rem;
-  color: #9178ff;
+  color: #6d4fff;
   margin: 0;
   border-radius: 1rem !important;
   justify-content: center;
@@ -997,62 +1205,65 @@ display: flex;
   height: 100% !important;
 }
 
-
 #confirmarProcesso {
   padding: 1rem;
   border: none;
   border-radius: 1rem;
   font-size: 150%;
+  color: #292929;
+  background: #cdcdcd;
+  margin-bottom: 2rem;
+}
+.dark-mode #confirmarProcesso {
   color: #b8b8b8;
   background: #292929;
-  margin-bottom: 2rem;
 }
 
 div.card-body {
   display: flex;
-  color: #cccccc;
+
   padding: 0.5rem;
-flex-wrap: wrap;
-background: #1d1d1d;
-gap: 1rem;
-border-radius: 1rem;
+  flex-wrap: wrap;
+  background: #eaeaea;
+  gap: 1rem;
+  border-radius: 1rem;
+}
 
-
+.dark-mode div.card-body {
+  background: #1d1d1d;
 }
 
 .maquina-div {
   display: flex;
   padding: 0.5rem 1rem;
+  background: #64646428;
+  color: #676767;
 
-  background: #5fff8228;
-  color: #5fff82;
-border-radius: 1rem;
+  border-radius: 1rem;
 }
 
 #machineCardsContainer {
-display: flex;
-flex-wrap: wrap;
-background-color: #232323;
-height: fit-content !important;
-border-radius: 1rem;
-gap: 1REM;
-padding: 1rem;
-overflow-y: auto;
-max-height: 100%;
-width: 20%;
-
+  display: flex;
+  flex-wrap: wrap;
+  background-color: #232323;
+  height: fit-content !important;
+  border-radius: 1rem;
+  gap: 1rem;
+  padding: 1rem;
+  overflow-y: auto;
+  max-height: 100%;
+  width: 20%;
 }
 
 .nomeCard {
   padding: 1rem;
   background: #35ff782e;
-  border-radius:1REM;
+  border-radius: 1rem;
 
   color: #35ff78;
   font-size: calc(1vw + 10px);
   display: flex;
-padding: 1rem;
-
+  padding: 1rem;
 }
 
 .add-button {
@@ -1060,31 +1271,40 @@ padding: 1rem;
   height: 30px;
   width: 30px;
   border: none;
-background: #232323;
-color: #9178ff;
-border: none !important;
-margin-right: 1rem;
 
+  background: #eaeaea;
+  color: #7a5cff;
+  border: none !important;
+  margin-right: 1rem;
+}
+
+.dark-mode .add-button {
+  background: #232323;
+  color: #9178ff;
 }
 
 @media (max-width: 902px) {
   .add-button {
-    margin-bottom: 1REM;
+    margin-bottom: 1rem;
     margin-right: 0;
   }
 }
 
-
-
 .add-button:hover {
-  background: #313131;
-  box-shadow: 0 0 30px 1px #876cff;
+  background: #eaeaea;
+  box-shadow: 0 0 30px 1px #6745ff4e;
   color: #9178ff;
-
 }
 
 .add-button:focus {
-  outline: none; /* Remove a borda ao clicar */
+  outline: none;
+  /* Remove a borda ao clicar */
+}
+
+.dark-mode .add-button:hover {
+  background: #313131;
+  box-shadow: 0 0 30px 1px #876cff;
+  color: #9178ff;
 }
 
 #partNumberCardsContainer {
@@ -1094,29 +1314,32 @@ margin-right: 1rem;
 
 #partNumberCardsContainer::-webkit-scrollbar {
   width: 0px;
-  background: transparent; /* opcional: faz a barra de rolagem ficar invisível */
+  background: transparent;
+  /* opcional: faz a barra de rolagem ficar invisível */
 }
 
 #partNumberCardsContainer {
-  -ms-overflow-style: none;  /* IE 10+ */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE 10+ */
+  scrollbar-width: none;
+  /* Firefox */
 }
-
 
 .card-wrapper {
   display: flex;
-gap: 1rem;
+  gap: 1rem;
+  margin-top: 2rem;
 }
 
 .OI {
   flex-direction: column;
-                        align-items: flex-start;
+  align-items: flex-start;
 }
 
 .machine-list {
   position: absolute;
   margin-top: 30rem;
-  background: #1d1d1d;
+  background: #e9e9e9;
   border-radius: 1rem;
   display: flex;
   flex-direction: column;
@@ -1125,12 +1348,15 @@ gap: 1rem;
   padding: 1rem;
   gap: 1rem;
   overflow-y: auto;
-  max-height:20rem ;
+  max-height: 20rem;
+}
 
+.dark-mode .machine-list {
+  background: #1d1d1d;
 }
 
 .empty-card {
-  background: #232323;
+  background: #eaeaea;
   height: 4rem;
   border-radius: 1rem;
   margin: 1rem;
@@ -1140,10 +1366,14 @@ gap: 1rem;
   align-items: center;
   padding: 1rem;
   font-size: calc(1vw + 10px);
-  color: #929292;
+  color: #848484;
   display: flex;
 }
 
+.dark-mode .empty-card {
+  background: #232323;
+  color: #929292;
+}
 
 li::marker {
   visibility: hidden !important;
@@ -1151,13 +1381,50 @@ li::marker {
 }
 
 .machine-card {
-  background-color: #5fff8228;
+  background-color: #5fff82;
   padding: 0.5rem;
   border-radius: 1rem;
-  color: #5fff82;
+  color: #0a9127;
   width: fit-content;
   margin: 0;
   font-size: 1rem;
-border: none;
+  border: none;
   align-content: center;
+}
+
+.dark-mode .machine-card {
+  background-color: #5fff8228;
+  color: #5fff82;
+}
+
+.finalizado {
+  background: #5fff82;
+  color: #0a9127;
+}
+
+.dark-mode .finalizado {
+  background: #5fff8228;
+  color: #5fff82;
+}
+
+.headernext {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.textomodalnext {
+  margin-left: 2rem;
+}
+
+@media (max-width: 920px) {
+  .textomodalnext {
+    font-size: 1.5rem;
+  }
+
+  .card-wrapper {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0;
+  }
 }

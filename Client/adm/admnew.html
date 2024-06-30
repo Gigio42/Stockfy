@@ -12,6 +12,29 @@
         <!-- CSS Personalizado -->
         <link rel="stylesheet" href="admnew.css" />
     </head>
+    <style>
+        .modal-content8 {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 
     <body class="body dark-mode">
         <div class="container-fluid">
@@ -37,10 +60,12 @@
                         <div class="d-flex align-items-center">
                             <h1 class="m-0">Lider de produção</h1>
                         </div>
-                        <a class="logout" href="../home.html"><img class="" src="media\sair (1).png" alt="" /></a>
-                        <div class="dark-mode-toggle">
-                            <input type="checkbox" id="darkModeToggle" />
-                            <label for="darkModeToggle"></label>
+                        <div class="botoesheader">
+                            <div class="dark-mode-toggle">
+                                <input type="checkbox" id="darkModeToggle" />
+                                <label for="darkModeToggle"></label>
+                            </div>
+                            <a class="logout" href="../home.html"><img class="" src="media\sair (1).png" alt="" /></a>
                         </div>
                     </div>
 
@@ -52,10 +77,11 @@
                     <div id="nextProcessModal" class="modal">
                         <div class="modal-content1">
                             <div class="OI d-flex">
-                                <header>
+                                <header class="headernext">
                                     <button id="voltarModalContentnext">
                                         <img class="sair" src="media/sair (1).png" alt="Sair icon" />
                                     </button>
+                                    <h2 class="textomodalnext">Adicione novos processos</h2>
                                 </header>
                                 <div class="cardsMaquina">
                                     <!-- Adicione este container onde deseja exibir os cards -->
@@ -65,6 +91,24 @@
 
                             <!-- O conteúdo dos cards será adicionado aqui -->
                             <button id="confirmarProcesso">Cofirmar Processos</button>
+                        </div>
+                    </div>
+
+                    <!-- Modal HTML -->
+                    <div id="addMaquinaModal" class="modal">
+                        <div class="modal-content-add">
+                            <span class="close">&times;</span>
+                            <h2 class="textoaddmachine">Adicionar Máquina</h2>
+                            <div class="displaymodaladd">
+                                <div class="addmachine">
+                                    <div class="d-flex inputadd">
+                                        <label for="maquinaNomeModal">Nome da Máquina:</label>
+                                        <input type="text" id="maquinaNomeModal" />
+                                    </div>
+                                    <button id="criarMaquinaModalBtn">Criar Máquina</button>
+                                </div>
+                                <div id="modalContentMaquinas"></div>
+                            </div>
                         </div>
                     </div>
 

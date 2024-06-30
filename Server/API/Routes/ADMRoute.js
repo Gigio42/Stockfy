@@ -1,5 +1,6 @@
 import AdmController from "../Controllers/admController.js";
 import { postChapaItemMaquinaSchema, getChapaItemMaquinaSchema, getItemSchema } from "../validators/admValidator.js";
+import { deleteMaquina } from "../Controllers/admController.js"; // Importe a função deleteMaquina
 
 async function admRoute(fastify, options) {
   const admController = new AdmController(options.db);
@@ -100,6 +101,30 @@ async function admRoute(fastify, options) {
     } catch (err) {
       console.error("Erro ao verificar a existência do item_maquina:", err);
       reply.code(500).send({ message: "Erro ao verificar a existência do item_maquina." });
+    }
+  });
+
+  fastify.post("/maquina", async (request, reply) => {
+    try {
+      const { nome } = request.body;
+      const newMaquina = await admController.createMaquina(nome);
+      reply.send(newMaquina);
+    } catch (err) {
+      console.error("Erro ao criar uma nova máquina:", err);
+      reply.code(500).send({ message: "Erro ao criar uma nova máquina", error: err.message });
+    }
+  });
+
+  fastify.delete("/maquina/:id", async (request, reply) => {
+    console.log("Recebida requisição DELETE para /adm/maquina/:id");
+    const maquinaId = parseInt(request.params.id, 10);
+    console.log(`ID da máquina a ser deletada: ${maquinaId}`);
+    try {
+      await deleteMaquina(maquinaId);
+      reply.code(204).send();
+    } catch (err) {
+      console.error("Erro ao deletar a máquina:", err);
+      reply.code(500).send({ message: "Erro ao deletar a máquina", error: err.message });
     }
   });
 }
