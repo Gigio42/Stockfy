@@ -1,16 +1,23 @@
 import { fetchMaquinaData } from "./connections.js";
 import { createCard } from "./cardCreator.js";
 
+// Função para renderizar o quadro Kanban
 export async function render(name, userName) {
   const data = await fetchMaquinaData(name);
   if (data && data.items) {
-    const itemsList = document.getElementById("itemsList");
-    itemsList.style.display = "flex";
-    itemsList.style.flexDirection = "column";
+    const doneColumn = document.getElementById("done-items");
+    const toDoColumn = document.getElementById("to-do-items");
+    const inProgressColumn = document.getElementById("in-progress-items");
 
     data.items.forEach((item) => {
       const card = createCard(item, name, item.estado, userName);
-      itemsList.appendChild(card);
+      if (item.estado === "FEITO") {
+        doneColumn.appendChild(card);
+      } else if (item.estado === "PROXIMAS") {
+        inProgressColumn.appendChild(card);
+      } else {
+        toDoColumn.appendChild(card);
+      }
     });
   }
 }

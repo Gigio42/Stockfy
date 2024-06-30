@@ -1,30 +1,40 @@
 import { reserveChapas } from "../utils/connection.js";
 
-export function reservarModal(getSelectedChapas) {
+export function reservarModal(getSelectedChapasAndConjugacoes) {
   const showSelectedButton = document.getElementById("showSelectedButton");
-  const modalContent = document.getElementById("modalContent");
   const closeModal = document.getElementById("closeModal");
   const popupContainer = document.getElementById("popupContainer");
 
-  removeExistingListener(showSelectedButton);
-  showSelectedButton.onclick = () => {
-    const selectedChapas = getSelectedChapas();
-    if (selectedChapas.length > 0) {
-      const modalHandler = createModalHandler(modalContent, closeModal, () => selectedChapas, popupContainer);
-      modalHandler();
+  setupShowSelectedButton(showSelectedButton, getSelectedChapasAndConjugacoes);
+  setupCloseModalButton(closeModal, popupContainer);
+  setupEventListeners(popupContainer);
+}
+
+function setupShowSelectedButton(button, getSelectedChapasAndConjugacoes) {
+  removeExistingListener(button);
+  button.onclick = () => {
+    const [selectedChapas, selectedSubcards] = getSelectedChapasAndConjugacoes();
+    if (selectedChapas.length > 0 || selectedSubcards.length > 0) {
+      showModal(selectedChapas, selectedSubcards);
     } else {
-      Swal.fire({
-        icon: "error",
-        title: "Nenhuma chapa selecionada.",
-        text: "Precisa selecionar pelo menos 1 chapa!",
-      });
+      showNoSelectionAlert();
     }
   };
-  closeModal.onclick = () => {
+}
+
+function setupCloseModalButton(button, popupContainer) {
+  button.onclick = () => {
     popupContainer.style.display = "none";
   };
+}
 
-  setupEventListeners(popupContainer);
+function showModal(selectedChapas, selectedSubcards) {
+  const modalContent = document.getElementById("modalContent");
+  const popupContainer = document.getElementById("popupContainer");
+  const closeModal = document.getElementById("closeModal");
+
+  const modalHandler = createModalHandler(modalContent, closeModal, () => [selectedChapas, selectedSubcards], popupContainer);
+  modalHandler();
 }
 
 function removeExistingListener(element) {
@@ -33,26 +43,13 @@ function removeExistingListener(element) {
   }
 }
 
-function createModalHandler(modalContent, closeModal, getSelectedChapas, popupContainer) {
+function createModalHandler(modalContent, closeModal, getSelectedChapasAndConjugacoes, popupContainer) {
   return () => {
-    const newContent = document.createElement("div");
-    const contentWrapper = document.createElement("div");
-    contentWrapper.style.maxHeight = "70vh";
-    contentWrapper.style.overflowY = "auto";
-
-    const keys = ["id_chapa", "largura", "fornecedor", "qualidade", "quantidade_disponivel"];
-    const selectedChapas = getSelectedChapas();
-
-    selectedChapas.forEach((chapa) => {
-      contentWrapper.appendChild(createCard(chapa, keys));
-    });
-
-    contentWrapper.appendChild(createButtonFormContainer(selectedChapas));
-    newContent.appendChild(contentWrapper);
+    const [selectedChapas, selectedSubcards] = getSelectedChapasAndConjugacoes();
+    const newContent = buildModalContent(selectedChapas, selectedSubcards);
 
     clearModalContent(modalContent, closeModal);
     modalContent.appendChild(newContent);
-
     popupContainer.style.display = "block";
   };
 }
@@ -65,24 +62,47 @@ function clearModalContent(modalContent, closeModal) {
   });
 }
 
-function createCard(chapa, keys) {
+function buildModalContent(selectedChapas, selectedSubcards) {
+  const contentWrapper = document.createElement("div");
+  contentWrapper.style.maxHeight = "70vh";
+  contentWrapper.style.overflowY = "auto";
+
+  const keysChapas = ["id_chapa", "largura", "fornecedor", "qualidade", "quantidade_disponivel"];
+  const keysConjugacoes = ["id_conjugacoes", "medida", "rendimento", "quantidade"];
+
+  selectedChapas.forEach((chapa) => contentWrapper.appendChild(createCard(chapa, keysChapas)));
+  selectedSubcards.forEach((conjugacao) => contentWrapper.appendChild(createSubcard(conjugacao, keysConjugacoes)));
+
+  contentWrapper.appendChild(createButtonFormContainer(selectedChapas, selectedSubcards));
+  return contentWrapper;
+}
+
+function createCard(item, keys) {
+  return createItemCard(item, keys, "card");
+}
+
+function createSubcard(item, keys) {
+  return createItemCard(item, keys, "subcard");
+}
+
+function createItemCard(item, keys, type) {
   const card = document.createElement("div");
-  card.className = "card mb-3 shadow-sm";
+  card.className = `${type} mb-3 shadow-sm`;
 
   const cardBody = document.createElement("div");
-  cardBody.className = "body-div card-body rounded d-flex align-items-center";
+  cardBody.className = `body-div ${type}-body rounded d-flex align-items-center`;
 
-  const valueRow = createValueRow(chapa, keys);
+  const valueRow = createValueRow(item, keys);
+  const formRow = createFormRow(item);
+
   cardBody.appendChild(valueRow);
-
-  const formRow = createFormRow(chapa);
   cardBody.appendChild(formRow);
-
   card.appendChild(cardBody);
+
   return card;
 }
 
-function createValueRow(chapa, keys) {
+function createValueRow(item, keys) {
   const valueRow = document.createElement("div");
   valueRow.className = "value-row row overflow-auto w-100 align-items-stretch";
 
@@ -90,19 +110,18 @@ function createValueRow(chapa, keys) {
     const valueDiv = document.createElement("div");
     valueDiv.className = "card-value-div col text-center value align-items-center justify-content-center rounded";
     valueDiv.style.display = "flex";
-    valueDiv.style.whiteSpace = "nowrap"; // Adicione esta linha
-    valueDiv.textContent = key === "largura" ? `${chapa.largura} x ${chapa.comprimento}` : chapa[key];
+    valueDiv.style.whiteSpace = "nowrap";
+    valueDiv.textContent = key === "largura" ? `${item.largura} x ${item.comprimento}` : key === "rendimento" ? `${item[key]} x` : item[key];
     valueRow.appendChild(valueDiv);
   });
   return valueRow;
 }
 
-function createFormRow(chapa) {
+function createFormRow(item) {
   const formRow = document.createElement("div");
   formRow.className = "form-row row flex-nowrap overflow-auto w-100 align-items-stretch";
 
-  const quantityInput = createInputCell("number", "Quantidade", `quantityInput-${chapa.id_chapa}`, "formQuantidade");
-
+  const quantityInput = createInputCell("number", "Quantidade", `quantityInput-${item.id_chapa || item.id_conjugacoes}`, "formQuantidade");
   formRow.appendChild(quantityInput);
 
   return formRow;
@@ -134,13 +153,13 @@ function createInputCell(type, placeholder, id, additionalClass = "", styles = {
   return cell;
 }
 
-function createButtonFormContainer(selectedChapas) {
+function createButtonFormContainer(selectedChapas, selectedSubcards) {
   const container = document.createElement("div");
   container.style.display = "flex";
   container.style.justifyContent = "space-between";
 
   container.appendChild(createPartNumberForm());
-  container.appendChild(createReserveButton(selectedChapas));
+  container.appendChild(createReserveButton(selectedChapas, selectedSubcards));
 
   return container;
 }
@@ -158,47 +177,68 @@ function createPartNumberForm() {
   return form;
 }
 
-function createReserveButton(selectedChapas) {
+function createReserveButton(selectedChapas, selectedSubcards) {
   const reserveButton = document.createElement("button");
   reserveButton.textContent = "RESERVAR";
   reserveButton.classList.add("agrupar-button");
-  reserveButton.onclick = async () => {
-    const partNumber = document.getElementById("partNumberInput").value;
-
-    const chapas = selectedChapas.map((chapa) => ({
-      chapaID: chapa.id_chapa,
-      quantity: document.getElementById(`quantityInput-${chapa.id_chapa}`).value,
-      keepRemaining: false,
-    }));
-
-    await handleReserveChapas(partNumber, chapas);
-  };
+  reserveButton.onclick = () => handleReserveButtonClick(selectedChapas, selectedSubcards);
   return reserveButton;
 }
 
-async function handleReserveChapas(partNumber, chapas) {
+async function handleReserveButtonClick(selectedChapas, selectedSubcards) {
+  const partNumber = document.getElementById("partNumberInput").value;
+  const chapas = mapSelectedItems(selectedChapas, "chapa");
+  const conjugacoes = mapSelectedItems(selectedSubcards, "conjugacoes");
+
+  await reserveChapasAndShowFeedback(partNumber, chapas, conjugacoes);
+}
+
+function mapSelectedItems(items, type) {
+  return items.map((item) => ({
+    [`${type}ID`]: item[`id_${type}`],
+    quantity: document.getElementById(`quantityInput-${item[`id_${type}`]}`).value,
+    keepRemaining: false,
+  }));
+}
+
+async function reserveChapasAndShowFeedback(partNumber, chapas, conjugacoes) {
   const loadingSpinner = document.getElementById("loadingSpinner");
   loadingSpinner.style.display = "block";
 
   try {
     const reservedBy = localStorage.getItem("nome");
-    const response = await reserveChapas({ partNumber, chapas, reservedBy });
-    localStorage.setItem("showSwal", "true");
-    localStorage.setItem("partNumber", partNumber);
+    const response = await reserveChapas({ partNumber, chapas, conjugacoes, reservedBy });
+    showSuccessToast(partNumber);
     location.reload();
   } catch (error) {
-    Swal.fire({
-      icon: "error",
-      title: "Oops...",
-      text: error.message,
-    });
+    showErrorAlert(error.message);
   } finally {
     loadingSpinner.style.display = "none";
   }
 }
 
+function showSuccessToast(partNumber) {
+  localStorage.setItem("showSwal", "true");
+  localStorage.setItem("partNumber", partNumber);
+}
+
+function showErrorAlert(message) {
+  Swal.fire({
+    icon: "error",
+    title: "Oops...",
+    text: message,
+  });
+}
+
+function showNoSelectionAlert() {
+  Swal.fire({
+    icon: "error",
+    title: "Nenhuma chapa ou conjugação selecionada.",
+    text: "Precisa selecionar pelo menos 1 chapa ou conjugação!",
+  });
+}
+
 function setupEventListeners(popupContainer) {
-  console.log("Setting up event listeners reservarmodal");
   window.addEventListener("click", (event) => {
     if (event.target === popupContainer) {
       popupContainer.style.display = "none";
@@ -210,29 +250,29 @@ function setupEventListeners(popupContainer) {
       popupContainer.style.display = "none";
     }
   });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const showSwal = localStorage.getItem("showSwal");
+    const partNumber = localStorage.getItem("partNumber");
+
+    if (showSwal === "true") {
+      Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      }).fire({
+        icon: "success",
+        title: `Item ${partNumber} reservado.`,
+      });
+
+      localStorage.removeItem("showSwal");
+      localStorage.removeItem("partNumber");
+    }
+  });
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  const showSwal = localStorage.getItem("showSwal");
-  const partNumber = localStorage.getItem("partNumber");
-
-  if (showSwal === "true") {
-    Swal.mixin({
-      toast: true,
-      position: "top-end",
-      showConfirmButton: false,
-      timer: 5000,
-      timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.addEventListener("mouseenter", Swal.stopTimer);
-        toast.addEventListener("mouseleave", Swal.resumeTimer);
-      },
-    }).fire({
-      icon: "success",
-      title: `Item ${partNumber} reservado.`,
-    });
-
-    localStorage.removeItem("showSwal");
-    localStorage.removeItem("partNumber");
-  }
-});

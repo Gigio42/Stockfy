@@ -22,9 +22,18 @@ class ComprasController {
 
   async createCompra(orderData) {
     const promises = orderData.info_prod_comprados.map(async (chapa) => {
+      chapa = this.extractDimensions(chapa);
+
+      // Define a quantidade_disponivel da Chapa igual à quantidade_comprada
       chapa.quantidade_disponivel = chapa.quantidade_comprada;
 
-      chapa = this.extractDimensions(chapa);
+      // Se existem conjugacoes, define a quantidade_disponivel igual à quantidade
+      if (chapa.conjugacoes && chapa.conjugacoes.create) {
+        chapa.conjugacoes.create = chapa.conjugacoes.create.map((conjugacao) => {
+          conjugacao.quantidade_disponivel = conjugacao.quantidade;
+          return conjugacao;
+        });
+      }
 
       return Chapas.create({ data: chapa });
     });
