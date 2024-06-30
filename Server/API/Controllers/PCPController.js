@@ -65,32 +65,19 @@ class PCPController {
   // ------------------------------
   async getItems(searchQuery = "") {
     const chapaItems = await Chapa_Item.findMany({
-      where: {
-        item: {
-          part_number: {
-            contains: searchQuery,
-          },
-        },
-      },
-      include: {
-        item: true,
-        chapa: true,
-      },
+      where: { item: { part_number: { contains: searchQuery } } },
+      include: { item: true, chapa: { include: { conjugacoes: true } } },
     });
 
-    if (!chapaItems.length) {
-      throw new Error(`Chapas não encontradas para o item ${searchQuery}`);
-    }
+    if (!chapaItems.length) throw new Error(`Chapas não encontradas para o item ${searchQuery}`);
 
-    const items = chapaItems.reduce((acc, chapaItem) => {
-      const { item } = chapaItem;
-      if (!acc[item.id_item]) {
-        acc[item.id_item] = {
-          ...item,
-          chapas: [],
-        };
+    const items = chapaItems.reduce((acc, { item, chapa }) => {
+      acc[item.id_item] = acc[item.id_item] || { ...item, chapas: [] };
+
+      if (!acc[item.id_item].chapas.some(({ id_chapa }) => id_chapa === chapa.id_chapa)) {
+        acc[item.id_item].chapas.push(chapa);
       }
-      acc[item.id_item].chapas.push(chapaItem.chapa);
+
       return acc;
     }, {});
 
