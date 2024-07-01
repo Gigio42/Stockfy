@@ -28,20 +28,20 @@ async function admRoute(fastify, options) {
       const maquinaId = parseInt(request.params.maquinaId, 10);
       const itemId = parseInt(request.params.itemId, 10);
       const { prazo, ordem, medida, op, sistema, cliente, quantidade, colaborador } = request.body;
-  
+
       await admController.changeItemStatusProduzindo(
-        itemId, 
-        maquinaId, 
-        prazo, 
+        itemId,
+        maquinaId,
+        prazo,
         parseInt(ordem, 10),
-        medida, 
-        parseInt(op, 10),  // Convertendo para número
-        sistema, 
-        cliente, 
-        parseInt(quantidade, 10),  // Convertendo para número
-        colaborador
+        medida,
+        parseInt(op, 10), // Convertendo para número
+        sistema,
+        cliente,
+        parseInt(quantidade, 10), // Convertendo para número
+        colaborador,
       );
-  
+
       reply.send({ message: "Status do item atualizado para PRODUZINDO" });
       console.log(`Solicitação POST para /maquina/${maquinaId}/item/${itemId}/produzindo realizada com sucesso`);
     } catch (err) {
@@ -49,8 +49,6 @@ async function admRoute(fastify, options) {
       reply.code(500).send({ message: "Internal Server Error" });
     }
   });
-  
-  
 
   fastify.get("/maquina/:maquinaId/item", async (request, reply) => {
     try {

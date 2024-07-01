@@ -314,7 +314,7 @@ function adicionarItemAoStaged(item, maquinaId) {
   prazoInput.placeholder = "Prazo";
   prazoInput.className = "inputPrazo";
   prazoInput.classList.add("date-icon"); // Adiciona uma classe para estilização do ícone
-  card.appendChild(prazoInput);  
+  card.appendChild(prazoInput);
 
   const medidaInput = document.createElement("input");
   medidaInput.type = "text";
@@ -393,12 +393,12 @@ async function confirmarItensStaged(event) {
 
     const prazo = itemCard.querySelector(".inputPrazo").value;
     const medida = itemCard.querySelector(".inputMedida").value;
-    const op = parseInt(itemCard.querySelector(".inputOp").value, 10);  // Convertendo para número
+    const op = parseInt(itemCard.querySelector(".inputOp").value, 10); // Convertendo para número
     const sistema = itemCard.querySelector(".inputSistema").value;
     const cliente = itemCard.querySelector(".inputCliente").value;
-    const quantidade = parseInt(itemCard.querySelector(".inputQuantidade").value, 10);  // Convertendo para número
+    const quantidade = parseInt(itemCard.querySelector(".inputQuantidade").value, 10); // Convertendo para número
     const colaborador = itemCard.querySelector(".inputColaborador").value;
-    const ordem = 1;  // Define a ordem automaticamente como "1"
+    const ordem = 1; // Define a ordem automaticamente como "1"
 
     try {
       const response = await axios.post(`${BASE_URL}/adm/maquina/${maquinaId}/item/${itemId}/produzindo`, {
@@ -421,7 +421,6 @@ async function confirmarItensStaged(event) {
   document.getElementById("stagedItems").innerHTML = "";
   alert("Itens confirmados com sucesso!");
 }
-
 
 document.getElementById("confirmButton").addEventListener("click", confirmarItensStaged);
 
