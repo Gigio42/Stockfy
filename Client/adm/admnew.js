@@ -42,10 +42,154 @@ async function fetchMaquinas() {
     maquinas.forEach((maquina) => {
       createMaquinaCard(maquina);
     });
+
+    // Adiciona o card para adicionar uma nova máquina
+    createAddMaquinaCard();
   } catch (error) {
     console.error("Houve um erro!", error);
   }
 }
+
+function createAddMaquinaCard() {
+  const allMaquina = document.getElementById("allMaquina");
+  const addCard = document.createElement("div");
+  addCard.className = "cardMaquina addCard";
+
+  const addText = document.createElement("span");
+  addText.textContent = "Add Máquina";
+  addText.className = "addText";
+
+  const addIcon = document.createElement("img");
+  addIcon.src = "media/icons8-add-48 (1).png"; // Ícone de adicionar
+  addIcon.alt = "Add Machine";
+  addIcon.classList.add("svgIcon");
+
+  addCard.appendChild(addText);
+  addCard.appendChild(addIcon);
+
+  addCard.addEventListener("click", () => {
+    openAddMaquinaModal();
+  });
+
+  allMaquina.appendChild(addCard);
+}
+
+async function deleteMaquina(maquinaId) {
+  console.log(`Tentando deletar a máquina com ID: ${maquinaId}`);
+  try {
+    const response = await axios.delete(`${BASE_URL}/adm/maquina/${maquinaId}`);
+    if (response.status === 204) {
+      console.log(`Máquina com ID ${maquinaId} deletada com sucesso.`);
+      return true; // Indica que a deleção foi bem-sucedida
+    } else {
+      throw new Error("Erro ao deletar a máquina: Status " + response.status);
+    }
+  } catch (error) {
+    console.error("Erro ao deletar a máquina:", error);
+
+    // Verifica se o erro é devido a itens associados à máquina
+    if (error.response && error.response.status === 500 && error.response.data.message.includes("Não é possível deletar a máquina porque há itens associados a ela.")) {
+      alert("Não é possível deletar a máquina porque há itens associados a ela.");
+    } else {
+      alert("Não é possível deletar a máquina porque há itens associados a ela.");
+    }
+
+    throw new Error("Erro ao deletar a máquina: " + error.message);
+  }
+}
+
+function createMaquinaCardsInModalWithoutIcons(maquinas) {
+  const modalContent = document.getElementById("modalContentMaquinas");
+  modalContent.innerHTML = ""; // Limpa o conteúdo existente
+
+  // Função para limpar a seleção atual de cards e restaurar o estado inicial
+  function clearSelection() {
+    const cards = document.querySelectorAll(".cardMaquinainmodal");
+    cards.forEach((card) => {
+      const maquinaName = card.querySelector(".maquinaName");
+      const deleteIcon = card.querySelector(".deleteIcon");
+      maquinaName.style.display = "block";
+      deleteIcon.style.display = "none";
+    });
+  }
+
+  maquinas.forEach((maquina) => {
+    const cardMaquina = document.createElement("div");
+    cardMaquina.className = "cardMaquinainmodal";
+
+    const maquinaName = document.createElement("span");
+    maquinaName.textContent = maquina.nome;
+    maquinaName.className = "maquinaName";
+    cardMaquina.appendChild(maquinaName);
+
+    const deleteIcon = document.createElement("img");
+    deleteIcon.src = "media/icons8-delete-48.png"; // Ícone de deletar
+    deleteIcon.alt = "Delete Machine";
+    deleteIcon.classList.add("svgIcon", "deleteIcon");
+    deleteIcon.style.display = "none"; // Inicialmente oculto
+    cardMaquina.appendChild(deleteIcon);
+
+    // Adicionar evento para exibir o ícone de deletar ao clicar no card
+    cardMaquina.addEventListener("click", () => {
+      clearSelection(); // Limpa qualquer seleção existente
+      maquinaName.style.display = "none"; // Esconder o nome da máquina
+      deleteIcon.style.display = "block"; // Mostrar o ícone de deletar
+    });
+
+    // Exemplo de uso no evento de clique do ícone de deletar
+    deleteIcon.addEventListener("click", async (event) => {
+      event.stopPropagation(); // Impede a propagação do evento para o card
+      try {
+        const success = await deleteMaquina(maquina.id_maquina); // Chama a função para deletar a máquina
+        if (success) {
+          cardMaquina.remove(); // Remove o card da interface após a deleção
+        }
+      } catch (error) {
+        console.error("Erro ao deletar a máquina:", error);
+        // Trate o erro, se necessário
+      }
+    });
+
+    modalContent.appendChild(cardMaquina);
+  });
+
+  // Event listener para clicar fora do card e limpar a seleção
+  modalContent.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!target.closest(".cardMaquinainmodal")) {
+      clearSelection(); // Limpa a seleção ao clicar fora do card
+    }
+  });
+}
+
+async function openAddMaquinaModal() {
+  const modal = document.getElementById("addMaquinaModal");
+  modal.style.display = "block";
+
+  try {
+    const response = await axios.get(`${BASE_URL}/adm/maquina`);
+    const maquinas = response.data;
+    createMaquinaCardsInModalWithoutIcons(maquinas);
+  } catch (error) {
+    console.error("Houve um erro ao buscar as máquinas para o modal!", error);
+  }
+}
+
+function closeAddMaquinaModal() {
+  const modal = document.getElementById("addMaquinaModal");
+  modal.style.display = "none";
+}
+
+// Fechar o modal ao clicar no "x"
+document.querySelector(".close").addEventListener("click", closeAddMaquinaModal);
+
+// Fechar o modal ao clicar fora da área do modal
+window.addEventListener("click", (event) => {
+  const modal = document.getElementById("addMaquinaModal");
+  if (event.target === modal) {
+    modal.style.display = "none";
+  }
+});
 
 //============================================
 // Função para criar um card de máquina
@@ -166,22 +310,47 @@ function adicionarItemAoStaged(item, maquinaId) {
   card.appendChild(partNumberInfo);
 
   const prazoInput = document.createElement("input");
-  prazoInput.type = "text";
+  prazoInput.type = "date";
   prazoInput.placeholder = "Prazo";
   prazoInput.className = "inputPrazo";
+  prazoInput.classList.add("date-icon"); // Adiciona uma classe para estilização do ícone
   card.appendChild(prazoInput);
 
   const medidaInput = document.createElement("input");
   medidaInput.type = "text";
-  medidaInput.placeholder = "corte";
+  medidaInput.placeholder = "Medida";
   medidaInput.className = "inputMedida";
   card.appendChild(medidaInput);
 
-  const ordemInput = document.createElement("input");
-  ordemInput.type = "text";
-  ordemInput.placeholder = "Ordem";
-  ordemInput.className = "inputOrdem";
-  card.appendChild(ordemInput);
+  const opInput = document.createElement("input");
+  opInput.type = "text";
+  opInput.placeholder = "OP";
+  opInput.className = "inputOp";
+  card.appendChild(opInput);
+
+  const sistemaInput = document.createElement("input");
+  sistemaInput.type = "text";
+  sistemaInput.placeholder = "Sistema";
+  sistemaInput.className = "inputSistema";
+  card.appendChild(sistemaInput);
+
+  const clienteInput = document.createElement("input");
+  clienteInput.type = "text";
+  clienteInput.placeholder = "Cliente";
+  clienteInput.className = "inputCliente";
+  card.appendChild(clienteInput);
+
+  const quantidadeInput = document.createElement("input");
+  quantidadeInput.type = "number";
+  quantidadeInput.placeholder = "Quantidade";
+  quantidadeInput.className = "inputQuantidade";
+  card.appendChild(quantidadeInput);
+
+  const colaboradorInput = document.createElement("input");
+  colaboradorInput.type = "text";
+  colaboradorInput.placeholder = "Colaborador";
+  colaboradorInput.className = "inputColaborador";
+  card.appendChild(colaboradorInput);
 
   item.chapas.forEach((chapa) => {
     const subcard = document.createElement("div");
@@ -214,7 +383,7 @@ function adicionarItemAoStaged(item, maquinaId) {
 // Função para confirmar os itens na área de "staged"
 //=============================================================
 async function confirmarItensStaged(event) {
-  event.preventDefault(); // Evita a recarga da página
+  event.preventDefault();
 
   const stagedItems = document.getElementById("stagedItems").children;
 
@@ -223,14 +392,24 @@ async function confirmarItensStaged(event) {
     const maquinaId = currentMaquinaId;
 
     const prazo = itemCard.querySelector(".inputPrazo").value;
-    const corte = itemCard.querySelector(".inputMedida").value;
-    const ordem = itemCard.querySelector(".inputOrdem").value;
+    const medida = itemCard.querySelector(".inputMedida").value;
+    const op = parseInt(itemCard.querySelector(".inputOp").value, 10); // Convertendo para número
+    const sistema = itemCard.querySelector(".inputSistema").value;
+    const cliente = itemCard.querySelector(".inputCliente").value;
+    const quantidade = parseInt(itemCard.querySelector(".inputQuantidade").value, 10); // Convertendo para número
+    const colaborador = itemCard.querySelector(".inputColaborador").value;
+    const ordem = 1; // Define a ordem automaticamente como "1"
 
     try {
       const response = await axios.post(`${BASE_URL}/adm/maquina/${maquinaId}/item/${itemId}/produzindo`, {
         prazo: prazo,
-        corte: corte,
         ordem: ordem,
+        medida: medida,
+        op: op,
+        sistema: sistema,
+        cliente: cliente,
+        quantidade: quantidade,
+        colaborador: colaborador,
       });
 
       console.log("Item confirmado:", response.data);
@@ -815,8 +994,8 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchMaquinas();
 });
 
-document.getElementById("criarMaquinaBtn").addEventListener("click", async () => {
-  const nome = document.getElementById("maquinaNome").value;
+document.getElementById("criarMaquinaModalBtn").addEventListener("click", async () => {
+  const nome = document.getElementById("maquinaNomeModal").value;
 
   if (nome.trim() === "") {
     alert("O nome da máquina não pode estar vazio.");
@@ -824,7 +1003,7 @@ document.getElementById("criarMaquinaBtn").addEventListener("click", async () =>
   }
 
   try {
-    const response = await fetch("/maquina", {
+    const response = await fetch(`${BASE_URL}/adm/maquina`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -838,6 +1017,10 @@ document.getElementById("criarMaquinaBtn").addEventListener("click", async () =>
 
     const newMaquina = await response.json();
     alert(`Máquina criada com sucesso: ${newMaquina.nome}`);
+    closeAddMaquinaModal();
+    // Recarrega as máquinas para incluir a nova
+    document.getElementById("allMaquina").innerHTML = "";
+    fetchMaquinas();
   } catch (error) {
     console.error("Erro:", error);
     alert("Erro ao criar a máquina. Verifique o console para mais detalhes.");

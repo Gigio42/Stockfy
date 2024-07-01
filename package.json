@@ -14,7 +14,8 @@
     "chapatest": "node ./Test/generators/gerar_chapas.cjs",
     "start-and-test": "prisma migrate dev --name auto_migration && npm run generate && start-server-and-test startUnix http://localhost:3000 chapatest",
     "studio": "npx prisma studio --port 2943",
-    "render": "npm run migrate && npm run generate && node ./server.js"
+    "render": "npm run migrate && npm run generate && node ./server.js",
+    "reset": "node .\\Test\\resetar_banco_de_dados.cjs && node .\\Test\\seed.cjs"
   },
   "keywords": [],
   "author": "",

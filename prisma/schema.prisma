@@ -11,12 +11,18 @@ datasource db {
 }
 
 model Conjugacoes {
-  id_conjugacoes Int     @id @default(autoincrement())
-  medida         String
-  usado          Boolean @default(false)
+  id_conjugacoes        Int     @id @default(autoincrement())
+  medida                String
+  largura               Int
+  comprimento           Int
+  rendimento            Int     @default(0)
+  quantidade            Int     @default(0)
+  quantidade_disponivel Int     @default(0)
+  usado                 Boolean @default(false)
 
-  chapaId Int
-  chapa   Chapas @relation(fields: [chapaId], references: [id_chapa])
+  chapaId    Int
+  chapa      Chapas       @relation(fields: [chapaId], references: [id_chapa])
+  Chapa_Item Chapa_Item[]
 
   @@index([chapaId])
 }
@@ -58,10 +64,13 @@ model Chapa_Item {
   id_chapa_item Int     @id @default(autoincrement())
   quantidade    Int     @default(0)
   terminado     Boolean @default(false)
-  chapaId       Int
   itemId        Int
-  chapa         Chapas  @relation(fields: [chapaId], references: [id_chapa])
-  item          Item    @relation(fields: [itemId], references: [id_item])
+  chapaId       Int
+  conjugacaoId  Int?
+
+  item  Item   @relation(fields: [itemId], references: [id_item])
+  chapa Chapas @relation(fields: [chapaId], references: [id_chapa])
+  conjugacao Conjugacoes? @relation(fields: [conjugacaoId], references: [id_conjugacoes])
 }
 
 model Item {
@@ -81,12 +90,20 @@ model Item_Maquina {
   ordemTotal      Int?
   executor        String?
   finalizado      Boolean @default(false)
-  corte           String?
+  medida          String?
   maquinaId       Int
   itemId          Int
   maquina         Maquina @relation(fields: [maquinaId], references: [id_maquina])
   Item            Item    @relation(fields: [itemId], references: [id_item])
+  
+  // Novos campos
+  op              Int?
+  sistema         String?
+  cliente         String?
+  quantidade      Int?
+  colaborador     String?
 }
+
 
 model Maquina {
   id_maquina Int            @id @default(autoincrement())

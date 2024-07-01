@@ -46,7 +46,8 @@ class AdmController {
 
     return Object.values(items);
   }
-  async changeItemStatusProduzindo(itemId, maquinaId, prazo, ordem, corte) {
+
+  async changeItemStatusProduzindo(itemId, maquinaId, prazo, ordem, medida, op, sistema, cliente, quantidade, colaborador) {
     try {
       await Item.update({
         where: { id_item: itemId },
@@ -57,13 +58,20 @@ class AdmController {
         data: {
           maquinaId: maquinaId,
           itemId: itemId,
-          prazo: prazo, // Adicionando prazo ao criar o registro
-          ordem: ordem, // Adicionando ordem ao criar o registro
-          corte: corte, // Adicionando corte ao criar o registro
+          prazo: prazo,
+          ordem: parseInt(ordem, 10),
+          medida: medida,
+          op: parseInt(op, 10), // Convertendo para número
+          sistema: sistema,
+          cliente: cliente,
+          quantidade: parseInt(quantidade, 10), // Convertendo para número
+          colaborador: colaborador,
         },
       });
 
-      console.log(`Item ${itemId} atualizado para status PRODUZINDO com prazo ${prazo} e ordem ${ordem} e corte ${corte}`);
+      console.log(
+        `Item ${itemId} atualizado para status PRODUZINDO com prazo ${prazo}, ordem ${ordem}, medida ${medida}, op ${op}, sistema ${sistema}, cliente ${cliente}, quantidade ${quantidade}, colaborador ${colaborador}`,
+      );
     } catch (error) {
       console.error("Erro ao atualizar o status do item para PRODUZINDO:", error);
       throw new Error("Erro ao atualizar o status do item para PRODUZINDO: " + error.message);
@@ -221,4 +229,43 @@ class AdmController {
   }
 }
 
+async function deleteMaquina(maquinaId) {
+  console.log(`Tentando deletar a máquina com ID: ${maquinaId}`);
+  try {
+    // Verifica se a máquina possui itens associados
+    const maquina = await Maquina.findUnique({
+      where: {
+        id_maquina: maquinaId,
+      },
+      include: {
+        items: true, // Inclui os itens associados à máquina
+      },
+    });
+
+    if (!maquina) {
+      throw new Error(`Máquina com ID ${maquinaId} não encontrada.`);
+    }
+
+    // Verifica se há itens associados à máquina
+    if (maquina.items.length > 0) {
+      // Lança um erro indicando que a máquina possui itens associados
+      throw new Error("Não é possível deletar a máquina porque há itens associados a ela.");
+    }
+
+    // Remove a máquina se não houver itens associados
+    const deletedMaquina = await Maquina.delete({
+      where: {
+        id_maquina: maquinaId,
+      },
+    });
+
+    console.log(`Máquina com ID ${maquinaId} deletada com sucesso.`);
+  } catch (error) {
+    console.error("Erro ao deletar a máquina no controlador:", error);
+    // Lança o erro novamente para que seja capturado no local onde a função deleteMaquina é chamada
+    throw error;
+  }
+}
+
 export default AdmController;
+export { deleteMaquina };
