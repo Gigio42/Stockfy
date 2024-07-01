@@ -48,35 +48,35 @@ class AdmController {
   }
 
   async changeItemStatusProduzindo(itemId, maquinaId, prazo, ordem, medida, op, sistema, cliente, quantidade, colaborador) {
-  try {
-    await Item.update({
-      where: { id_item: itemId },
-      data: { status: "PRODUZINDO" },
-    });
+    try {
+      await Item.update({
+        where: { id_item: itemId },
+        data: { status: "PRODUZINDO" },
+      });
 
-    await Item_Maquina.create({
-      data: {
-        maquinaId: maquinaId,
-        itemId: itemId,
-        prazo: prazo,
-        ordem: parseInt(ordem, 10),
-        medida: medida,
-        op: parseInt(op, 10),  // Convertendo para número
-        sistema: sistema,
-        cliente: cliente,
-        quantidade: parseInt(quantidade, 10),  // Convertendo para número
-        colaborador: colaborador,
-      },
-    });
+      await Item_Maquina.create({
+        data: {
+          maquinaId: maquinaId,
+          itemId: itemId,
+          prazo: prazo,
+          ordem: parseInt(ordem, 10),
+          medida: medida,
+          op: parseInt(op, 10), // Convertendo para número
+          sistema: sistema,
+          cliente: cliente,
+          quantidade: parseInt(quantidade, 10), // Convertendo para número
+          colaborador: colaborador,
+        },
+      });
 
-    console.log(`Item ${itemId} atualizado para status PRODUZINDO com prazo ${prazo}, ordem ${ordem}, medida ${medida}, op ${op}, sistema ${sistema}, cliente ${cliente}, quantidade ${quantidade}, colaborador ${colaborador}`);
-  } catch (error) {
-    console.error("Erro ao atualizar o status do item para PRODUZINDO:", error);
-    throw new Error("Erro ao atualizar o status do item para PRODUZINDO: " + error.message);
+      console.log(
+        `Item ${itemId} atualizado para status PRODUZINDO com prazo ${prazo}, ordem ${ordem}, medida ${medida}, op ${op}, sistema ${sistema}, cliente ${cliente}, quantidade ${quantidade}, colaborador ${colaborador}`,
+      );
+    } catch (error) {
+      console.error("Erro ao atualizar o status do item para PRODUZINDO:", error);
+      throw new Error("Erro ao atualizar o status do item para PRODUZINDO: " + error.message);
+    }
   }
-}
-
-  
 
   async getAllItemsByMaquina(maquinaId) {
     try {
