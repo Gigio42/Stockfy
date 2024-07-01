@@ -560,15 +560,22 @@ body {
   border-radius: 1rem;
 }
 
-.nomemaquina {
+span.nomemaquina {
+  display: flex;
   background: #1eff053e;
   border: solid 1px #6eec0790;
   color: #81ff1a;
   padding: 0.5rem;
   border-radius: 1rem;
-  width: fit-content;
-  height: fit-content;
   font-size: 1.5rem;
+  height: 3.5rem;
+  margin-left: 1rem;
+}
+
+
+.nameandbtn {
+  display: flex;
+  flex-direction: row;
 }
 
 .cardItem {
@@ -613,9 +620,29 @@ h3 {
   width: fit-content;
   margin: 0;
   font-size: 1.4rem;
-
   align-content: center;
 }
+
+@media (max-width:920px) {
+  
+h3 {
+  font-size: 1rem;
+}
+
+#allMaquina {
+  overflow-y: auto;
+  max-height: 80vh;
+  /* Ajuste 50px para o tamanho da barra de navegação ou outro elemento */
+
+  box-sizing: border-box;
+}
+
+div.cardsMaquina {
+  width: 90vw;
+}
+}
+
+
 
 span.item-number {
   display: flex;
@@ -752,7 +779,7 @@ span.item-number {
 .modal-content-add {
   width: 70%;
   height: 70%;
-  background-color: #2c2c2c;
+  background-color: #262626;
   margin: 7rem auto;
   border-radius: 1rem;
   padding: 3rem;
@@ -763,11 +790,11 @@ span.item-number {
 }
 
 .addmachine {
-  flex: 1;
+
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 50%;
+  width: 40%;
   background: #303030;
   padding: 2rem;
   border-radius: 1rem;
@@ -791,6 +818,7 @@ span.item-number {
   border: none;
   margin-bottom: 0.5rem;
   font-size: 1.5rem;
+  width: 90%;
 }
 
 .cardMaquinainmodal {
@@ -804,13 +832,55 @@ span.item-number {
 
 }
 
+@media (max-width:920px) {
+.modal-content-add{
+  margin: 2rem auto;
+  width: 90%;
+  height: 90%;
+  padding: 1.5rem;
+}
+
+.addmachine {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  background: #303030;
+  padding: 2rem;
+  border-radius: 1rem;
+  justify-content: space-between;
+  height: 50%;
+}
+
+#modalContentMaquinas {
+
+  overflow-y: auto;
+  max-height: 40%;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.displaymodaladd {
+  display: flex;
+  flex: 1;
+  overflow-y: auto;
+  max-height: 100%;
+  height: 90%;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100%;
+  overflow-x: hidden;
+  justify-content: space-between;
+}
+}
 
 #modalContentMaquinas{
   overflow-y: auto;
   max-height: 40%;
   display: flex;
   flex-wrap: wrap;
-  width: 50%;
+  width: 100%;
 }
 .addCard {
   background: #4fa4ff !important;
@@ -1054,7 +1124,12 @@ h2 {
 
 .inputPrazo,
 .inputMedida,
-.inputOrdem {
+.inputOrdem,
+.inputOp,
+.inputSistema,
+.inputCliente,
+.inputQuantidade,
+.inputColaborador {
   border-radius: 1rem;
   border: none;
   background-color: #262626;
@@ -1062,15 +1137,24 @@ h2 {
   color: #9178ff;
   font-size: 1rem;
   height: 3.5rem;
-  width: 30% !important;
+  width: 30%;
   max-width: 200px;
+  transition: border-color 0.3s ease; /* Transição suave para a cor da borda */
 }
 
 .inputPrazo:focus,
 .inputMedida:focus,
-.inputOrdem:focus {
-  outline: solid 1px #9178ff;
+.inputOrdem:focus,
+.inputOp:focus,
+.inputSistema:focus,
+.inputCliente:focus,
+.inputQuantidade:focus,
+.inputColaborador:focus {
+  outline: none; /* Remove a borda padrão do foco */
+  border-color: #9178ff; /* Cor da borda quando em foco */
+  box-shadow: 0 0 0 2px rgba(145, 120, 255, 0.5); /* Sombra para indicar foco */
 }
+
 
 .HeaderModal2 {
   display: flex;
@@ -1162,13 +1246,16 @@ h2 {
   }
 
   .item-card {
-    flex-direction: column;
-    width: 10rem;
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+    align-items: center;
   }
 
   .status-produzindo {
-    padding: 0.7rem;
+    padding: 0.5rem;
     width: fit-content;
+    font-size: 0.9rem;
   }
 
   #produzindoItemsList {
@@ -1308,21 +1395,20 @@ div.card-body {
 }
 
 #partNumberCardsContainer {
+  display: flex;
   overflow-y: auto;
   max-height: 60vh;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 1rem;
 }
 
 #partNumberCardsContainer::-webkit-scrollbar {
   width: 0px;
   background: transparent;
   /* opcional: faz a barra de rolagem ficar invisível */
-}
-
-#partNumberCardsContainer {
-  -ms-overflow-style: none;
-  /* IE 10+ */
-  scrollbar-width: none;
-  /* Firefox */
 }
 
 .card-wrapper {
@@ -1426,5 +1512,6 @@ li::marker {
     display: flex;
     gap: 1rem;
     margin-top: 0;
+    flex-wrap: wrap;
   }
 }

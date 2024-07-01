@@ -90,12 +90,20 @@ model Item_Maquina {
   ordemTotal      Int?
   executor        String?
   finalizado      Boolean @default(false)
-  corte           String?
+  medida          String?
   maquinaId       Int
   itemId          Int
   maquina         Maquina @relation(fields: [maquinaId], references: [id_maquina])
   Item            Item    @relation(fields: [itemId], references: [id_item])
+  
+  // Novos campos
+  op              Int?
+  sistema         String?
+  cliente         String?
+  quantidade      Int?
+  colaborador     String?
 }
+
 
 model Maquina {
   id_maquina Int            @id @default(autoincrement())

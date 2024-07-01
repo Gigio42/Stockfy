@@ -310,22 +310,47 @@ function adicionarItemAoStaged(item, maquinaId) {
   card.appendChild(partNumberInfo);
 
   const prazoInput = document.createElement("input");
-  prazoInput.type = "text";
+  prazoInput.type = "date";
   prazoInput.placeholder = "Prazo";
   prazoInput.className = "inputPrazo";
+  prazoInput.classList.add("date-icon"); // Adiciona uma classe para estilização do ícone
   card.appendChild(prazoInput);
 
   const medidaInput = document.createElement("input");
   medidaInput.type = "text";
-  medidaInput.placeholder = "corte";
+  medidaInput.placeholder = "Medida";
   medidaInput.className = "inputMedida";
   card.appendChild(medidaInput);
 
-  const ordemInput = document.createElement("input");
-  ordemInput.type = "text";
-  ordemInput.placeholder = "Ordem";
-  ordemInput.className = "inputOrdem";
-  card.appendChild(ordemInput);
+  const opInput = document.createElement("input");
+  opInput.type = "text";
+  opInput.placeholder = "OP";
+  opInput.className = "inputOp";
+  card.appendChild(opInput);
+
+  const sistemaInput = document.createElement("input");
+  sistemaInput.type = "text";
+  sistemaInput.placeholder = "Sistema";
+  sistemaInput.className = "inputSistema";
+  card.appendChild(sistemaInput);
+
+  const clienteInput = document.createElement("input");
+  clienteInput.type = "text";
+  clienteInput.placeholder = "Cliente";
+  clienteInput.className = "inputCliente";
+  card.appendChild(clienteInput);
+
+  const quantidadeInput = document.createElement("input");
+  quantidadeInput.type = "number";
+  quantidadeInput.placeholder = "Quantidade";
+  quantidadeInput.className = "inputQuantidade";
+  card.appendChild(quantidadeInput);
+
+  const colaboradorInput = document.createElement("input");
+  colaboradorInput.type = "text";
+  colaboradorInput.placeholder = "Colaborador";
+  colaboradorInput.className = "inputColaborador";
+  card.appendChild(colaboradorInput);
 
   item.chapas.forEach((chapa) => {
     const subcard = document.createElement("div");
@@ -358,7 +383,7 @@ function adicionarItemAoStaged(item, maquinaId) {
 // Função para confirmar os itens na área de "staged"
 //=============================================================
 async function confirmarItensStaged(event) {
-  event.preventDefault(); // Evita a recarga da página
+  event.preventDefault();
 
   const stagedItems = document.getElementById("stagedItems").children;
 
@@ -367,14 +392,24 @@ async function confirmarItensStaged(event) {
     const maquinaId = currentMaquinaId;
 
     const prazo = itemCard.querySelector(".inputPrazo").value;
-    const corte = itemCard.querySelector(".inputMedida").value;
-    const ordem = itemCard.querySelector(".inputOrdem").value;
+    const medida = itemCard.querySelector(".inputMedida").value;
+    const op = parseInt(itemCard.querySelector(".inputOp").value, 10); // Convertendo para número
+    const sistema = itemCard.querySelector(".inputSistema").value;
+    const cliente = itemCard.querySelector(".inputCliente").value;
+    const quantidade = parseInt(itemCard.querySelector(".inputQuantidade").value, 10); // Convertendo para número
+    const colaborador = itemCard.querySelector(".inputColaborador").value;
+    const ordem = 1; // Define a ordem automaticamente como "1"
 
     try {
       const response = await axios.post(`${BASE_URL}/adm/maquina/${maquinaId}/item/${itemId}/produzindo`, {
         prazo: prazo,
-        corte: corte,
         ordem: ordem,
+        medida: medida,
+        op: op,
+        sistema: sistema,
+        cliente: cliente,
+        quantidade: quantidade,
+        colaborador: colaborador,
       });
 
       console.log("Item confirmado:", response.data);

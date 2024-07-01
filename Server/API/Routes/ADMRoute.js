@@ -25,12 +25,23 @@ async function admRoute(fastify, options) {
 
   fastify.post("/maquina/:maquinaId/item/:itemId/produzindo", async (request, reply) => {
     try {
-      const maquinaId = parseInt(request.params.maquinaId, 10); // Captura o ID da máquina da URL
-      const itemId = parseInt(request.params.itemId, 10); // Captura o ID do item da URL
-      const prazo = request.body.prazo; // Extrai o valor de prazo do corpo da solicitação
-      const ordem = parseInt(request.body.ordem, 10); // Converte a ordem para um número inteiro
-      const corte = request.body.corte; // Extrai o valor de corte do corpo da solicitação
-      await admController.changeItemStatusProduzindo(itemId, maquinaId, prazo, ordem, corte); // Chama a função no controlador para atualizar o status
+      const maquinaId = parseInt(request.params.maquinaId, 10);
+      const itemId = parseInt(request.params.itemId, 10);
+      const { prazo, ordem, medida, op, sistema, cliente, quantidade, colaborador } = request.body;
+
+      await admController.changeItemStatusProduzindo(
+        itemId,
+        maquinaId,
+        prazo,
+        parseInt(ordem, 10),
+        medida,
+        parseInt(op, 10), // Convertendo para número
+        sistema,
+        cliente,
+        parseInt(quantidade, 10), // Convertendo para número
+        colaborador,
+      );
+
       reply.send({ message: "Status do item atualizado para PRODUZINDO" });
       console.log(`Solicitação POST para /maquina/${maquinaId}/item/${itemId}/produzindo realizada com sucesso`);
     } catch (err) {
