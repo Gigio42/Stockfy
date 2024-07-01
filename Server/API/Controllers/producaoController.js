@@ -33,8 +33,8 @@ class ProducaoController {
             medida: true,
             finalizado: true,
             op: true, //adicionado V
-            sistema: true, 
-            cliente: true, 
+            sistema: true,
+            cliente: true,
             quantidade: true,
             colaborador: true, // adicionado A
             itemId: true,
