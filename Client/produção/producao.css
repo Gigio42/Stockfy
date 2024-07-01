@@ -330,7 +330,7 @@ body.light-mode .dark-mode-select option {
     }
 
     .kanban-column {
-        width: 80%; 
+        width: 50%; 
     }
 
     #to-do {
