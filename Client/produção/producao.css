@@ -15,7 +15,19 @@ body.dark-mode .kanban-item {
   color: #fff;
 }
 
+/* REMOVÍVEL (faz os cards parecerem que está em um jogo kkkkk */
+.card-body {
+  background-color: rgba(255, 255, 255, 0.068);
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+}
+
 .info-div {
+  background-color: rgba(255, 255, 255, 0.068);
   border: 1px solid #2a2a2a;
   border-radius: 10px;
   padding: 5px;
@@ -162,22 +174,6 @@ body.dark-mode .kanban-item {
   opacity: 0.5;
 }
 
-.proxima {
-  position: relative;
-}
-
-.proxima::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 15px;
-  right: 15px;
-  bottom: 0;
-  background: rgba(61, 167, 40, 0.151);
-  border-radius: 10px;
-  z-index: 1;
-}
-
 /* ======================================
    Chapa Card Styles
 ====================================== */
@@ -187,7 +183,14 @@ body.dark-mode .kanban-item {
 }
 
 .chapa-card .card-body {
+  background-color: rgba(255, 255, 255, 0.068);
   padding: 10px;
+}
+
+.chapa-details {
+  display: flex;
+  justify-content: space-between;
+  width: 70%;
 }
 
 /* ======================================
@@ -361,7 +364,7 @@ body .kanban-column#in-progress {
   background-color: #8080801f;
   border-radius: 5px;
   overflow-y: auto;
-  height: 80vh;
+  height: 90%;
   padding: 10px;
   margin: 10px;
 }
