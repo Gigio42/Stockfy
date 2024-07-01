@@ -46,29 +46,37 @@ class AdmController {
 
     return Object.values(items);
   }
-  async changeItemStatusProduzindo(itemId, maquinaId, prazo, ordem, corte) {
-    try {
-      await Item.update({
-        where: { id_item: itemId },
-        data: { status: "PRODUZINDO" },
-      });
 
-      await Item_Maquina.create({
-        data: {
-          maquinaId: maquinaId,
-          itemId: itemId,
-          prazo: prazo, // Adicionando prazo ao criar o registro
-          ordem: ordem, // Adicionando ordem ao criar o registro
-          corte: corte, // Adicionando corte ao criar o registro
-        },
-      });
+  async changeItemStatusProduzindo(itemId, maquinaId, prazo, ordem, medida, op, sistema, cliente, quantidade, colaborador) {
+  try {
+    await Item.update({
+      where: { id_item: itemId },
+      data: { status: "PRODUZINDO" },
+    });
 
-      console.log(`Item ${itemId} atualizado para status PRODUZINDO com prazo ${prazo} e ordem ${ordem} e corte ${corte}`);
-    } catch (error) {
-      console.error("Erro ao atualizar o status do item para PRODUZINDO:", error);
-      throw new Error("Erro ao atualizar o status do item para PRODUZINDO: " + error.message);
-    }
+    await Item_Maquina.create({
+      data: {
+        maquinaId: maquinaId,
+        itemId: itemId,
+        prazo: prazo,
+        ordem: parseInt(ordem, 10),
+        medida: medida,
+        op: parseInt(op, 10),  // Convertendo para número
+        sistema: sistema,
+        cliente: cliente,
+        quantidade: parseInt(quantidade, 10),  // Convertendo para número
+        colaborador: colaborador,
+      },
+    });
+
+    console.log(`Item ${itemId} atualizado para status PRODUZINDO com prazo ${prazo}, ordem ${ordem}, medida ${medida}, op ${op}, sistema ${sistema}, cliente ${cliente}, quantidade ${quantidade}, colaborador ${colaborador}`);
+  } catch (error) {
+    console.error("Erro ao atualizar o status do item para PRODUZINDO:", error);
+    throw new Error("Erro ao atualizar o status do item para PRODUZINDO: " + error.message);
   }
+}
+
+  
 
   async getAllItemsByMaquina(maquinaId) {
     try {

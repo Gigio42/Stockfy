@@ -779,7 +779,7 @@ span.item-number {
 .modal-content-add {
   width: 70%;
   height: 70%;
-  background-color: #2c2c2c;
+  background-color: #262626;
   margin: 7rem auto;
   border-radius: 1rem;
   padding: 3rem;
@@ -1124,7 +1124,12 @@ h2 {
 
 .inputPrazo,
 .inputMedida,
-.inputOrdem {
+.inputOrdem,
+.inputOp,
+.inputSistema,
+.inputCliente,
+.inputQuantidade,
+.inputColaborador {
   border-radius: 1rem;
   border: none;
   background-color: #262626;
@@ -1132,15 +1137,24 @@ h2 {
   color: #9178ff;
   font-size: 1rem;
   height: 3.5rem;
-  width: 30% !important;
+  width: 30%;
   max-width: 200px;
+  transition: border-color 0.3s ease; /* Transição suave para a cor da borda */
 }
 
 .inputPrazo:focus,
 .inputMedida:focus,
-.inputOrdem:focus {
-  outline: solid 1px #9178ff;
+.inputOrdem:focus,
+.inputOp:focus,
+.inputSistema:focus,
+.inputCliente:focus,
+.inputQuantidade:focus,
+.inputColaborador:focus {
+  outline: none; /* Remove a borda padrão do foco */
+  border-color: #9178ff; /* Cor da borda quando em foco */
+  box-shadow: 0 0 0 2px rgba(145, 120, 255, 0.5); /* Sombra para indicar foco */
 }
+
 
 .HeaderModal2 {
   display: flex;
