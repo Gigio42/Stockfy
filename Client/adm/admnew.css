@@ -636,7 +636,13 @@ h3 {
 
   box-sizing: border-box;
 }
+
+div.cardsMaquina {
+  width: 90vw;
 }
+}
+
+
 
 span.item-number {
   display: flex;
@@ -1374,21 +1380,20 @@ div.card-body {
 }
 
 #partNumberCardsContainer {
+  display: flex;
   overflow-y: auto;
   max-height: 60vh;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 1rem;
 }
 
 #partNumberCardsContainer::-webkit-scrollbar {
   width: 0px;
   background: transparent;
   /* opcional: faz a barra de rolagem ficar invisível */
-}
-
-#partNumberCardsContainer {
-  -ms-overflow-style: none;
-  /* IE 10+ */
-  scrollbar-width: none;
-  /* Firefox */
 }
 
 .card-wrapper {
@@ -1492,5 +1497,6 @@ li::marker {
     display: flex;
     gap: 1rem;
     margin-top: 0;
+    flex-wrap: wrap;
   }
 }
