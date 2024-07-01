@@ -560,15 +560,22 @@ body {
   border-radius: 1rem;
 }
 
-.nomemaquina {
+span.nomemaquina {
+  display: flex;
   background: #1eff053e;
   border: solid 1px #6eec0790;
   color: #81ff1a;
   padding: 0.5rem;
   border-radius: 1rem;
-  width: fit-content;
-  height: fit-content;
   font-size: 1.5rem;
+  height: 3.5rem;
+  margin-left: 1rem;
+}
+
+
+.nameandbtn {
+  display: flex;
+  flex-direction: row;
 }
 
 .cardItem {
@@ -613,8 +620,22 @@ h3 {
   width: fit-content;
   margin: 0;
   font-size: 1.4rem;
-
   align-content: center;
+}
+
+@media (max-width:920px) {
+  
+h3 {
+  font-size: 1rem;
+}
+
+#allMaquina {
+  overflow-y: auto;
+  max-height: 45vh;
+  /* Ajuste 50px para o tamanho da barra de navegação ou outro elemento */
+
+  box-sizing: border-box;
+}
 }
 
 span.item-number {
@@ -1204,13 +1225,16 @@ h2 {
   }
 
   .item-card {
-    flex-direction: column;
-    width: 10rem;
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+    align-items: center;
   }
 
   .status-produzindo {
-    padding: 0.7rem;
+    padding: 0.5rem;
     width: fit-content;
+    font-size: 0.9rem;
   }
 
   #produzindoItemsList {
