@@ -45,18 +45,19 @@ export function criarTable(table, chapaData) {
     dataPrevistaCell.innerHTML = `<input type='date' value='${formattedDataPrevista}'>`;
 
     let copiarCell = row.insertCell(-1);
-    let copiarButton = document.createElement("button");
+    let copiarButton = document.createElement("img");
+    copiarButton.src = "icons8-copy-48 (2).png"; // Update the path to the correct location of your image
+    copiarButton.alt = "Copiar";
     copiarButton.className = "recebido";
-    copiarButton.textContent = "Copiar";
     copiarButton.addEventListener("click", function () {
       copiarParaRecebimento(this);
     });
     copiarCell.appendChild(copiarButton);
-  } else if (table.id === "recebimento") {
+    } else if (table.id === "recebimento") {
     let dataRecebimentoCell = row.insertCell(-1);
     let todayDate = new Date().toISOString().slice(0, 10);
     dataRecebimentoCell.innerHTML = `<input type='date' value='${todayDate}'>`;
-
+    
     const updateCell = row.insertCell(-1);
     let updateButton = document.createElement("button");
     updateButton.className = "update-button";
