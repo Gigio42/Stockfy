@@ -122,14 +122,31 @@ aside button {
     align-items: center;
     width: fit-content;
     padding: 1rem;
-
 }
+
+
+#tableBody2 input
+ {
+    color: #3168ff !important;
+}
+
+
 
 #recebimento {
-    background-color: #0e0e0e !important;
+    background-color: #3168ff2b !important;
     margin: 2rem !important;
     padding: 1rem !important;
+    margin-top: 0 !important;
+    border-radius: 1rem;
 }
+
+#recebimento select {
+    color: #3168ff;
+}
+#recebimento th {
+    color: #3168ff;
+}
+
 
 #tableBody {
     display: flex;
@@ -218,15 +235,30 @@ main {
 }
 
 .titulo {
-    width: 100%;
+    width: 15%;
     display: flex;
     justify-content: center;
     margin: 0 !important;
+    margin-bottom: 10px !important    ;
+    color: #ccc;
+}
+
+.titulorecebimento {
+    width: 15%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px !important    ;
+    color: #ccc;
+    margin-left: 2rem;
+}
+
+.recebido{
+    width: 25px;
 }
 
 #tables {
     width: 100%;
-    margin-top: 40px;
+    margin-top: 10px;
     /* Espaço para o contêiner do botão */
 }
 
@@ -244,6 +276,8 @@ table {
     border-radius: 1rem;
     flex-direction: column;
     padding: 1rem;
+    margin-top: 0;
+    margin-bottom:0;
 }
 
 thead tr {
@@ -295,11 +329,47 @@ select {
 
 .bancoDadosButton {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     margin-top: 1%;
-
+    margin: 2rem;
+    margin-top: 0;
+    flex-direction: row;
+    height: fit-content;
+    align-items: center;
+    margin-bottom: 0;
 }
 
+.headercomprado {
+display: flex;
+align-items: center;
+margin: 0.5rem 2rem;
+justify-content: space-between;
+background-color: #232323;
+padding: 0.5rem;
+border-radius: 1rem;
+}
+
+.COPYEVERYTHING {
+    width: 25px;
+    margin-left: 1rem;
+}
+
+h4{
+    color: #8a8a8a;
+}
+
+h2 {
+    margin: 0;
+}
+
+.botsocopytd {
+    display: flex;
+    height: 2rem;
+    align-items: center;
+    background-color: #292929;
+    padding: 0.5rem;
+    border-radius: 1rem;
+}
 .recebimentoButton {
     display: flex;
     justify-content: space-between;
