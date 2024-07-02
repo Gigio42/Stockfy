@@ -22,7 +22,8 @@
                     <input type="checkbox" id="darkModeToggle" checked />
                     <label for="darkModeToggle"></label>
                 </div>
-                <button id="logout-button" class="logout">Logout</button>
+                <a class="logout" href="../home.html"><img class="" src="sair (1).png" alt="" /></a>
+
             </header>
 
             <aside id="button-container">
@@ -62,12 +63,7 @@
                     <div id="tables" style="display: none" class="scrollable-table">
                         <div class="headercomprado">
                             <h2 class="titulo">Comprado</h2>
-                            <div class="bancoDadosButton">
-                                <div class="botsocopytd">
-                                    <h4>copiar tudo</h4>
-                                    <img class="COPYEVERYTHING" src="icons8-copy-48 (3).png" id="copiarTudo" />
-                                </div>
-                            </div>
+                                    <button id="add-line-button">copiar tudo<img class="COPYEVERYTHING" src="icons8-copy-48 (3).png" id="copiarTudo" /></button>
                         </div>
                         <table id="bancoDados">
                             <thead class="headertable">
@@ -90,6 +86,10 @@
                         <table id="recebimento">
                             <div class="titulorecebimento headercomprado">
                                 <h2>Recebimento</h2>
+                                <div class="recebimentoButton">
+                                    <button id="add-line-button">addLine <img class="COPYEVERYTHING" src="icons8-add-48.png" alt="addline"></button>
+                                    <button id="enviarTudo">Atualizar tudo</button>
+                                </div>
                             </div>
                             <thead>
                                 <tr>
@@ -109,13 +109,11 @@
                             </thead>
                             <tbody id="tableBody2"></tbody>
                         </table>
-                        <div class="recebimentoButton">
-                            <button id="add-line-button">addLine</button>
-                            <button id="enviarTudo">Atualizar tudo</button>
-                        </div>
+                    
                     </div>
                 </div>
             </div>
+            <div class="divmargin"></div>
         </main>
 
         <div id="message-container"></div>

@@ -5,20 +5,27 @@
     --text-color: #ccc;
     --aside-color: #333333;
     --button-color: #404040;
-    --button2-color: #335c30;
+    --button2-color: #2c2c2c;
     /* Cor de fundo do aside para o tema escuro */
     --tabelacompra-color: rgb(255, 40, 40);
+    --hoverbtnheader-color: rgb(44, 44, 44);
+    --header-titulos-color: #232323;
+    --btnhover-color:#1c1c1c;
+
 }
 
 [data-theme="light"] {
     --header-color: #ccc;
+    --hoverbtnheader-color: rgb(187, 187, 187);
     /* Cor do cabeçalho para o tema claro */
     --background-color: #f5f5f5;
     --text-color: #1e1e1e;
     --aside-color: #eeeeee;
     --button-color: #d5d5d5;
-    --button2-color: #335c30;
+    --button2-color: #747474;
     /* Cor de fundo do aside para o tema claro */
+    --header-titulos-color: #979797;
+    --btnhover-color:#4e4e4e;
 
 }
 
@@ -121,7 +128,7 @@ aside button {
     flex-direction: column;
     align-items: center;
     width: fit-content;
-    padding: 1rem;
+
 }
 
 
@@ -130,14 +137,37 @@ aside button {
     color: #3168ff !important;
 }
 
+.logout {
+    padding: 0.5rem;
+  border-radius: 0.5rem;
+}
 
 
-#recebimento {
+
+a {
+    margin: 0.5rem;
+    display: flex;
+align-items: center;
+justify-content: center;
+color: var(    --header-color);
+
+}
+
+.logout:hover {
+    background:var(--hoverbtnheader-color);
+
+}
+
+
+table#recebimento {
+    display: flex;
     background-color: #3168ff2b !important;
-    margin: 2rem !important;
-    padding: 1rem !important;
-    margin-top: 0 !important;
+    margin: 2rem;
     border-radius: 1rem;
+    flex-direction: column;
+    padding: 1rem;
+    margin-top: 0;
+    margin-bottom:0;
 }
 
 #recebimento select {
@@ -147,6 +177,28 @@ aside button {
     color: #3168ff;
 }
 
+.divmargin {
+   height: 2rem; 
+}
+
+
+::-webkit-scrollbar {
+    width: 10px;
+    /* largura da barra de rolagem */
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #848484;
+    /* cor do 'thumb' (a parte que você arrasta) */
+    border-radius: 5px;
+    /* borda arredondada */
+  }
+  
+  ::-webkit-scrollbar-track {
+    background-color: #b8b8b8;
+    /* cor do fundo da barra de rolagem */
+  }
+  
 
 #tableBody {
     display: flex;
@@ -244,10 +296,7 @@ main {
 }
 
 .titulorecebimento {
-    width: 15%;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px !important    ;
+
     color: #ccc;
     margin-left: 2rem;
 }
@@ -260,6 +309,7 @@ main {
     width: 100%;
     margin-top: 10px;
     /* Espaço para o contêiner do botão */
+  
 }
 
 table {
@@ -286,6 +336,16 @@ thead tr {
     flex-direction: row;
     justify-content: space-around;
 }
+tbody tr:hover {
+    padding: 0.5rem;
+    background-color: rgba(0, 0, 0, 0.102);
+
+}
+
+tbody tr {
+border-radius: 1rem;
+}
+
 
 th {
     padding: 1rem !important;
@@ -299,6 +359,11 @@ th {
 
 tr td {
     width: fit-content !important;
+}
+.recebido:hover {
+padding: 0.5rem;
+    background-color: rgba(255, 45, 87, 0.257);
+    border-radius: 1rem;
 }
 
 th {
@@ -344,8 +409,8 @@ display: flex;
 align-items: center;
 margin: 0.5rem 2rem;
 justify-content: space-between;
-background-color: #232323;
-padding: 0.5rem;
+background-color: var(--header-titulos-color);
+padding: 1rem;
 border-radius: 1rem;
 }
 
@@ -362,39 +427,41 @@ h2 {
     margin: 0;
 }
 
-.botsocopytd {
-    display: flex;
-    height: 2rem;
-    align-items: center;
-    background-color: #292929;
-    padding: 0.5rem;
-    border-radius: 1rem;
-}
+
 .recebimentoButton {
     display: flex;
     justify-content: space-between;
     margin-top: 1%;
+    gap: 1rem;
 }
 
 .block2 button {
+    display: flex;
     padding: 10px 20px;
     background-color: var(--button2-color);
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 1rem;
     cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    align-items: center;
 }
 
 .block2 button:hover {
-    background-color: #2b4d28;
+    background-color: var(--btnhover-color);
 }
 
 .update-button {
-    display: block;
-    margin: auto;
+width: 25px;
 }
 
+.update-button:hover {
+    width: 25px;
+    padding: 0.5rem;
+    background-color: #3168ff2b;
+    border-radius: 1rem;
+    }
+    
 
 
 header {
@@ -425,27 +492,13 @@ header {
 }
 
 
-.logout {
-    position: relative;
-    top: 20%;
-    right: 0.5%;
-    display: block;
-    width: 60px;
-    height: 34px;
-    border-radius: 5%;
-    color: var(--text-color);
-    border: none;
-    background-color: var(--button2-color);
-    cursor: pointer;
-}
-
 .dark-mode-toggle label {
     top: 20%;
     right: 15%;
     display: block;
-    width: 60px;
-    height: 34px;
-    background-color: #6eec07;
+    width: 2.7rem;
+    height: 1.5rem;
+    background-color: #007bff;
     /* Green for active state */
     border-radius: 50px;
     position: relative;
@@ -455,13 +508,13 @@ header {
 .dark-mode-toggle label:after {
     content: "";
     display: block;
-    width: 26px;
-    height: 26px;
+    width: 1.4rem;
+    height: 1.4rem;
     background-color: #fff;
     border-radius: 50%;
     position: absolute;
-    top: 4px;
-    left: 4px;
+    top: 1px;
+    left: -6px;
     transition: transform 0.3s ease-in-out;
 }
 
@@ -533,9 +586,7 @@ header {
         margin-left: 0;
     }
 
-    .logout {
-        top: 0%;
-    }
+
 
     aside {
         width: 100%;

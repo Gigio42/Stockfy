@@ -13,8 +13,6 @@ function buscarChapa() {
 
 document.getElementById("copiarTudo").addEventListener("click", copiarTudo);
 
-document.getElementById("logout-button").addEventListener("click", logout);
-
 document.getElementById("add-line-button").addEventListener("click", addLine);
 
 document.getElementById("toggle-drop-zone").addEventListener("click", hideDropZone);

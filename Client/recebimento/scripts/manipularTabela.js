@@ -59,9 +59,9 @@ export function criarTable(table, chapaData) {
     dataRecebimentoCell.innerHTML = `<input type='date' value='${todayDate}'>`;
 
     const updateCell = row.insertCell(-1);
-    let updateButton = document.createElement("button");
+    let updateButton = document.createElement("img");
+    updateButton.src = "icons8-synchronize-48.png"
     updateButton.className = "update-button";
-    updateButton.textContent = "Atualizar";
     updateCell.appendChild(updateButton);
   }
 
