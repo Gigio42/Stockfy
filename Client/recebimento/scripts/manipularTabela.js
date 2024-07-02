@@ -60,7 +60,7 @@ export function criarTable(table, chapaData) {
 
     const updateCell = row.insertCell(-1);
     let updateButton = document.createElement("img");
-    updateButton.src = "icons8-synchronize-48.png"
+    updateButton.src = "icons8-synchronize-48.png";
     updateButton.className = "update-button";
     updateCell.appendChild(updateButton);
   }
