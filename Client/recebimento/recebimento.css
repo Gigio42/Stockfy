@@ -1,19 +1,32 @@
 :root {
-    --header-color: #0f0f0f;  /* Cor do cabeçalho para o tema escuro */
+    --header-color: #0f0f0f;
+    /* Cor do cabeçalho para o tema escuro */
     --background-color: #1e1e1e;
     --text-color: #ccc;
     --aside-color: #333333;
     --button-color: #404040;
-    --button2-color: #335c30; /* Cor de fundo do aside para o tema escuro */
+    --button2-color: #2c2c2c;
+    /* Cor de fundo do aside para o tema escuro */
+    --tabelacompra-color: rgb(255, 40, 40);
+    --hoverbtnheader-color: rgb(44, 44, 44);
+    --header-titulos-color: #232323;
+    --btnhover-color:#1c1c1c;
+
 }
 
 [data-theme="light"] {
-    --header-color: #ccc;     /* Cor do cabeçalho para o tema claro */
+    --header-color: #ccc;
+    --hoverbtnheader-color: rgb(187, 187, 187);
+    /* Cor do cabeçalho para o tema claro */
     --background-color: #f5f5f5;
     --text-color: #1e1e1e;
     --aside-color: #eeeeee;
     --button-color: #d5d5d5;
-    --button2-color: #335c30;    /* Cor de fundo do aside para o tema claro */
+    --button2-color: #747474;
+    /* Cor de fundo do aside para o tema claro */
+    --header-titulos-color: #979797;
+    --btnhover-color:#4e4e4e;
+
 }
 
 
@@ -36,16 +49,26 @@ body {
     padding: 0;
     display: flex;
     flex-direction: row;
-    height: 100vh; /* Faz o corpo da página ocupar toda a altura da tela */
-    overflow-x: hidden; /* Remove a barra de rolagem se não for necessário */
+    height: 100vh;
+    /* Faz o corpo da página ocupar toda a altura da tela */
+    overflow-x: hidden;
+    /* Remove a barra de rolagem se não for necessário */
 }
 
-body, table, td, th, input[type="text"], input[type="date"], select{
+body,
+input[type="date"] {
     background-color: var(--background-color);
-    color: var(--text-color);
+    color: rgb(255, 39, 82);
 }
 
-.logo-container{
+input[type="text"],
+select {
+    background-color: var(--background-color);
+    color: rgb(255, 39, 82);
+    font-size: 0.7rem;
+}
+
+.logo-container {
     background-color: var(--header-color);
     display: absolute;
     flex-grow: 1;
@@ -55,7 +78,8 @@ body, table, td, th, input[type="text"], input[type="date"], select{
     border-bottom: solid 1px #6a6a6a45;
 }
 
-h5, P {
+h5,
+P {
     margin: 0.5REM;
 }
 
@@ -67,21 +91,28 @@ h5, P {
 
 
 aside {
-    position: fixed; /* Fixa o aside na posição, fazendo-o não rolar com o resto da página */
-    top: 0; /* Posiciona o topo do aside no topo da viewport */
-    left: 0; /* Posiciona o lado esquerdo do aside na lateral esquerda da viewport */
-    height: 100vh; /* Faz o aside ocupar toda a altura da viewport */
-    width: 18%; /* Define uma largura fixa para o aside */
+    position: fixed;
+    /* Fixa o aside na posição, fazendo-o não rolar com o resto da página */
+    top: 0;
+    /* Posiciona o topo do aside no topo da viewport */
+    left: 0;
+    /* Posiciona o lado esquerdo do aside na lateral esquerda da viewport */
+    height: 100vh;
+    /* Faz o aside ocupar toda a altura da viewport */
+    width: 18%;
+    /* Define uma largura fixa para o aside */
     background-color: var(--aside-color);
     color: var(--text-color);
-    border: solid 1px #6a6a6a45; /* Adiciona uma borda apenas no lado direito */
+    border: solid 1px #6a6a6a45;
+    /* Adiciona uma borda apenas no lado direito */
     display: flex;
     flex-direction: column;
     align-items: center;
-    z-index: 1000; /* Assegura que o aside fique sobre outros elementos */
+    z-index: 1000;
+    /* Assegura que o aside fique sobre outros elementos */
 }
 
-aside button{
+aside button {
     width: 100%;
     font-size: 1.6rem;
     background-color: transparent;
@@ -92,19 +123,102 @@ aside button{
     margin: 1%;
 }
 
+#tableBody2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: fit-content;
 
-aside button:hover{
+}
+
+
+#tableBody2 input
+ {
+    color: #3168ff !important;
+}
+
+.logout {
+    padding: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+
+
+a {
+    margin: 0.5rem;
+    display: flex;
+align-items: center;
+justify-content: center;
+color: var(    --header-color);
+
+}
+
+.logout:hover {
+    background:var(--hoverbtnheader-color);
+
+}
+
+
+table#recebimento {
+    display: flex;
+    background-color: #3168ff2b !important;
+    margin: 2rem;
+    border-radius: 1rem;
+    flex-direction: column;
+    padding: 1rem;
+    margin-top: 0;
+    margin-bottom:0;
+}
+
+#recebimento select {
+    color: #3168ff;
+}
+#recebimento th {
+    color: #3168ff;
+}
+
+.divmargin {
+   height: 2rem; 
+}
+
+
+::-webkit-scrollbar {
+    width: 10px;
+    /* largura da barra de rolagem */
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #848484;
+    /* cor do 'thumb' (a parte que você arrasta) */
+    border-radius: 5px;
+    /* borda arredondada */
+  }
+  
+  ::-webkit-scrollbar-track {
+    background-color: #b8b8b8;
+    /* cor do fundo da barra de rolagem */
+  }
+  
+
+#tableBody {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: fit-content;
+}
+
+aside button:hover {
     cursor: pointer;
     background-color: var(--button-color);
     color: var(--text-color);
 }
 
-.buscar{
+.buscar {
     display: flex;
     flex-direction: row;
 }
 
-#id_compra{
+#id_compra {
     text-align: center;
     color: var(--text-color);
     background-color: transparent !important;
@@ -113,7 +227,7 @@ aside button:hover{
     width: 40%;
 }
 
-#buscarChapa{
+#buscarChapa {
     color: var(--text-color);
     display: flex;
     justify-content: center;
@@ -121,9 +235,7 @@ aside button:hover{
 }
 
 
-
-
-.buttonsBlock{
+.buttonsBlock {
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -131,7 +243,7 @@ aside button:hover{
 }
 
 
-main{
+main {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -139,13 +251,17 @@ main{
 }
 
 .block1 {
-    margin-left: 18%; /* Empurra o block1 para começar após o aside */
-    flex-grow: 1;  /* Permite que o block1 use o espaço restante */
-    height: 100vh;  /* Ocupa a altura total da viewport */
-    overflow: auto; /* Adiciona rolagem se o conteúdo exceder a altura da tela */
+    margin-left: 18%;
+    /* Empurra o block1 para começar após o aside */
+    flex-grow: 1;
+    /* Permite que o block1 use o espaço restante */
+    height: 100vh;
+    /* Ocupa a altura total da viewport */
+    overflow-X: hidden;
+    /* Adiciona rolagem se o conteúdo exceder a altura da tela */
 }
 
-.block2{
+.block2 {
     height: 100%;
 }
 
@@ -156,7 +272,7 @@ main{
     display: flex;
     flex-direction: row;
     justify-content: center;
-    
+
 }
 
 #drop-zoneText {
@@ -170,74 +286,187 @@ main{
     align-items: center;
 }
 
-.titulo{
-    width: 100%;
-    display: flex; 
+.titulo {
+    width: 15%;
+    display: flex;
     justify-content: center;
+    margin: 0 !important;
+    margin-bottom: 10px !important    ;
+    color: #ccc;
+}
+
+.titulorecebimento {
+
+    color: #ccc;
+    margin-left: 2rem;
+}
+
+.recebido{
+    width: 25px;
 }
 
 #tables {
     width: 100%;
-    margin-top: 40px; /* Espaço para o contêiner do botão */
+    margin-top: 10px;
+    /* Espaço para o contêiner do botão */
+  
 }
 
 table {
-    width: 100%;
-    border-collapse: collapse; /* Colapsa as bordas das células para uma borda única */
-    background-color: #f5f5f5; /* Fundo claro para a tabela */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Sombra leve ao redor da tabela para melhor definição */
+    border-collapse: collapse;
+    /* Colapsa as bordas das células para uma borda única */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Sombra leve ao redor da tabela para melhor definição */
+}
+
+#bancoDados {
+    display: flex;
+    background-color: rgba(220, 20, 60, 0.224) !important;
+    margin: 2rem;
+    border-radius: 1rem;
+    flex-direction: column;
+    padding: 1rem;
+    margin-top: 0;
+    margin-bottom:0;
+}
+
+thead tr {
+    display: flex;
+    width: 100% !important;
+    flex-direction: row;
+    justify-content: space-around;
+}
+tbody tr:hover {
+    padding: 0.5rem;
+    background-color: rgba(0, 0, 0, 0.102);
+
+}
+
+tbody tr {
+border-radius: 1rem;
 }
 
 
 th {
-    white-space: nowrap; /* Evita que o texto quebre para a próxima linha */
-    padding: 2px; /* Mantém um padding uniforme */
-    min-width: 60px; /* Define uma largura mínima para cada célula */
-    text-align: center; /* Centraliza texto em cabeçalhos e células */   
+    padding: 1rem !important;
+    font-size: 0.6rem;
+    color: rgb(255, 45, 87);
 }
 
-input[type="text"], input[type="date"], select {
-    width: 100%; /* Faz os inputs ocuparem toda a célula */
-    border: none; /* Remove as bordas dos inputs */
-    text-align: center; /* Centraliza o texto dentro dos inputs */
-    background-color: transparent; /* Remove o fundo para igualar ao fundo da célula */
-    padding: 5px; /* Espaçamento interno para conforto visual */
-    box-sizing: border-box; /* Inclui padding no cálculo de width */
+.headertable {
+    width: 100% !important;
 }
-.bancoDadosButton{
+
+tr td {
+    width: fit-content !important;
+}
+.recebido:hover {
+padding: 0.5rem;
+    background-color: rgba(255, 45, 87, 0.257);
+    border-radius: 1rem;
+}
+
+th {
+    white-space: nowrap;
+    /* Evita que o texto quebre para a próxima linha */
+    padding: 2px;
+    /* Define uma largura mínima para cada célula */
+    text-align: center;
+    /* Centraliza texto em cabeçalhos e células */
+}
+
+input[type="text"],
+input[type="date"],
+select {
+    width: 100%;
+    /* Faz os inputs ocuparem toda a célula */
+    border: none;
+    /* Remove as bordas dos inputs */
+    text-align: center;
+    /* Centraliza o texto dentro dos inputs */
+    background-color: transparent;
+    /* Remove o fundo para igualar ao fundo da célula */
+    padding: 5px;
+    /* Espaçamento interno para conforto visual */
+    box-sizing: border-box;
+    /* Inclui padding no cálculo de width */
+}
+
+.bancoDadosButton {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1%;
+    margin: 2rem;
+    margin-top: 0;
+    flex-direction: row;
+    height: fit-content;
+    align-items: center;
+    margin-bottom: 0;
+}
+
+.headercomprado {
+display: flex;
+align-items: center;
+margin: 0.5rem 2rem;
+justify-content: space-between;
+background-color: var(--header-titulos-color);
+padding: 1rem;
+border-radius: 1rem;
+}
+
+.COPYEVERYTHING {
+    width: 25px;
+    margin-left: 1rem;
+}
+
+h4{
+    color: #8a8a8a;
+}
+
+h2 {
+    margin: 0;
+}
+
+
+.recebimentoButton {
     display: flex;
     justify-content: space-between;
     margin-top: 1%;
-
-}
-
-.recebimentoButton{
-    display: flex;
-    justify-content: space-between;
-    margin-top: 1%;
+    gap: 1rem;
 }
 
 .block2 button {
+    display: flex;
     padding: 10px 20px;
     background-color: var(--button2-color);
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 1rem;
     cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+    align-items: center;
 }
 
 .block2 button:hover {
-    background-color: #2b4d28;
+    background-color: var(--btnhover-color);
 }
 
 .update-button {
-    display: block;
-    margin: auto;
+width: 25px;
 }
 
-header{
-    margin-left: 18%; /* Empurra o block1 para começar após o aside */
+.update-button:hover {
+    width: 25px;
+    padding: 0.5rem;
+    background-color: #3168ff2b;
+    border-radius: 1rem;
+    }
+    
+
+
+header {
+    margin-left: 18%;
+    /* Empurra o block1 para começar após o aside */
     background-color: var(--header-color);
     color: var(--text-color);
     display: flex;
@@ -245,8 +474,8 @@ header{
     max-height: 63px;
 }
 
-.text-content{
-    padding: 1% ;
+.text-content {
+    padding: 1%;
     top: 20%;
     right: 0.5%;
     width: 100%;
@@ -256,34 +485,21 @@ header{
 
 }
 
-.userBlock{
+.userBlock {
     display: flex;
     flex-direction: row;
-    padding-right:15%;
+    padding-right: 15%;
 }
 
-
-.logout{
-    position: relative;
-    top: 20%;
-    right: 0.5%;
-    display: block;
-    width: 60px;
-    height: 34px;
-    border-radius: 5%;
-    color: var(--text-color);
-    border: none;
-    background-color: var(--button2-color);
-    cursor: pointer;
-}
 
 .dark-mode-toggle label {
     top: 20%;
     right: 15%;
     display: block;
-    width: 60px;
-    height: 34px;
-    background-color: #6eec07; /* Green for active state */
+    width: 2.7rem;
+    height: 1.5rem;
+    background-color: #007bff;
+    /* Green for active state */
     border-radius: 50px;
     position: relative;
     cursor: pointer;
@@ -292,131 +508,149 @@ header{
 .dark-mode-toggle label:after {
     content: "";
     display: block;
-    width: 26px;
-    height: 26px;
+    width: 1.4rem;
+    height: 1.4rem;
     background-color: #fff;
     border-radius: 50%;
     position: absolute;
-    top: 4px;
-    left: 4px;
+    top: 1px;
+    left: -6px;
     transition: transform 0.3s ease-in-out;
 }
 
-.dark-mode-toggle input[type="checkbox"]:not(:checked) + label {
+.dark-mode-toggle input[type="checkbox"]:not(:checked)+label {
     background-color: #ddd;
 }
 
-.dark-mode-toggle input[type="checkbox"]:not(:checked) + label:after {
+.dark-mode-toggle input[type="checkbox"]:not(:checked)+label:after {
     transform: translateX(0);
 }
 
-.dark-mode-toggle input[type="checkbox"]:checked + label:after {
+.dark-mode-toggle input[type="checkbox"]:checked+label:after {
     transform: translateX(26px);
 }
 
-.dark-mode-toggle input[type="checkbox"]:checked ~ #button-container .logo img {
+.dark-mode-toggle input[type="checkbox"]:checked~#button-container .logo img {
     filter: invert(100%);
 }
 
-#darkModeToggle{
+#darkModeToggle {
     display: none;
 }
 
 
 
 @media (max-width: 768px) {
-    
+
     :root {
         --aside-color: #1e1e1e;
-        --button-color: #292929; /* Cor de fundo do aside para o tema escuro */
+        --button-color: #292929;
+        /* Cor de fundo do aside para o tema escuro */
     }
-    
+
     [data-theme="light"] {
         --aside-color: #f5f5f5;
-        --button-color: #e3e3e3;   /* Cor de fundo do aside para o tema claro */
+        --button-color: #e3e3e3;
+        /* Cor de fundo do aside para o tema claro */
     }
-    
-    main{
-        
+
+    main {
+
         flex-direction: column;
         align-items: center;
     }
-    
+
     header {
         margin-left: 0;
-        width: 100%; /* Ajusta a largura para cobrir toda a tela */
+        width: 100%;
+        /* Ajusta a largura para cobrir toda a tela */
         height: 10vh;
-        position: static; /* Mudança para 'static' para se ajustar ao fluxo normal */
+        position: static;
+        /* Mudança para 'static' para se ajustar ao fluxo normal */
         display: flex;
         align-items: center;
         justify-content: space-between;
     }
-    
-    .userBlock{
+
+    .userBlock {
         padding-right: 20%;
     }
 
-    .logo-container{
+    .logo-container {
         display: flex;
         justify-content: center;
     }
 
-    .logo{
+    .logo {
         margin-top: 0;
         margin-left: 0;
     }
 
-    .logout{
-        top: 0%;
-    }
-    
+
+
     aside {
-        width: 100%; /* Ajusta a largura para cobrir toda a tela */
+        width: 100%;
+        /* Ajusta a largura para cobrir toda a tela */
         /* O aside vem após o header e logo */
-        position: static; /* Mudança para 'static' para alinhar corretamente */
+        position: static;
+        /* Mudança para 'static' para alinhar corretamente */
         flex-direction: column;
         align-items: center;
-        height: auto; /* Altura automática para conter todos os botões */
-        border: none; /* Remove a borda que não é mais necessária */
+        height: auto;
+        /* Altura automática para conter todos os botões */
+        border: none;
+        /* Remove a borda que não é mais necessária */
     }
-    
-    aside button{
+
+    aside button {
         font-size: 1rem;
         background-color: var(--button-color);
         padding: 5%;
         margin: 1%;
     }
-    
+
     .block1 {
-        margin-left: 0; /* Remove a margem esquerda */
-        width: 100%; /* Ajusta a largura para cobrir toda a tela */
+        margin-left: 0;
+        /* Remove a margem esquerda */
+        width: 100%;
+        /* Ajusta a largura para cobrir toda a tela */
     }
-    
+
     .block2 {
-        
-        padding-top: 10px; /* Adiciona um espaço entre o header e o conteúdo */
+
+        padding-top: 10px;
+        /* Adiciona um espaço entre o header e o conteúdo */
     }
-    
+
     #tables {
         width: 100%;
-        margin-top: 20px; /* Ajuste para garantir que a tabela não seja coberta */
+        margin-top: 20px;
+        /* Ajuste para garantir que a tabela não seja coberta */
     }
-    
-    
+
+    thead {
+        max-width: 100% !important;
+    }
+
     th {
-        white-space: nowrap; /* Evita que o texto quebre para a próxima linha */
-        padding: 8px; /* Mantém um padding uniforme */
-        min-width: 60px; /* Define uma largura mínima para cada célula */
+        white-space: nowrap;
+        /* Evita que o texto quebre para a próxima linha */
+        padding: 8px;
+        /* Mantém um padding uniforme */
+        min-width: 60px;
+        /* Define uma largura mínima para cada célula */
     }
-    
+
     .scrollable-table {
-        overflow-x: auto; /* Permite rolagem horizontal */
-        overflow-y: hidden; /* Evita rolagem vertical dentro da tabela */
+        overflow-x: auto;
+        /* Permite rolagem horizontal */
+        overflow-y: hidden;
+        /* Evita rolagem vertical dentro da tabela */
     }
 }
 
 @media (max-width: 460px) {
-    .text-content{
+    .text-content {
         font-size: 1.2rem;
     }
 

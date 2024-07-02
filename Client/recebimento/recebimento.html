@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="recebimento.css" />
         <style></style>
     </head>
+
     <body>
         <main>
             <header>
@@ -21,7 +22,7 @@
                     <input type="checkbox" id="darkModeToggle" checked />
                     <label for="darkModeToggle"></label>
                 </div>
-                <button id="logout-button" class="logout">Logout</button>
+                <a class="logout" href="../home.html"><img class="" src="sair (1).png" alt="" /></a>
             </header>
 
             <aside id="button-container">
@@ -59,37 +60,36 @@
                     </div>
 
                     <div id="tables" style="display: none" class="scrollable-table">
-                        <div>
-                            <h2 class="titulo">Informações no Sistema</h2>
+                        <div class="headercomprado">
+                            <h2 class="titulo">Comprado</h2>
+                            <button id="add-line-button">copiar tudo<img class="COPYEVERYTHING" src="icons8-copy-48 (3).png" id="copiarTudo" /></button>
                         </div>
                         <table id="bancoDados">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Fornecedor</th>
-                                    <th>Id_compra</th>
-                                    <th>Quantidade</th>
-                                    <th>Qualidade</th>
-                                    <th>Largura</th>
-                                    <th>Comprimento</th>
-                                    <th>Onda</th>
-                                    <th>Vincos</th>
-                                    <th>Status</th>
-                                    <th>Data prevista</th>
-                                    <th>Copiar</th>
-                                </tr>
+                            <thead class="headertable">
+                                <th>ID</th>
+                                <th>Fornecedor</th>
+                                <th>Id_compra</th>
+                                <th>Quantidade</th>
+                                <th>Qualidade</th>
+                                <th>Largura</th>
+                                <th>Comprimento</th>
+                                <th>Onda</th>
+                                <th>Vincos</th>
+                                <th>Status</th>
+                                <th>Data prevista</th>
+                                <th>Copiar</th>
                             </thead>
                             <tbody id="tableBody"></tbody>
                         </table>
-                        <div class="bancoDadosButton">
-                            <div></div>
-                            <button id="copiarTudo">copiar tudo</button>
-                        </div>
-                        <div style="height: 10px"></div>
-                        <div class="titulo">
-                            <h2>Recebimento</h2>
-                        </div>
+
                         <table id="recebimento">
+                            <div class="titulorecebimento headercomprado">
+                                <h2>Recebimento</h2>
+                                <div class="recebimentoButton">
+                                    <button id="add-line-button">addLine <img class="COPYEVERYTHING" src="icons8-add-48.png" alt="addline" /></button>
+                                    <button id="enviarTudo">Atualizar tudo</button>
+                                </div>
+                            </div>
                             <thead>
                                 <tr>
                                     <th>ID</th>
@@ -108,13 +108,10 @@
                             </thead>
                             <tbody id="tableBody2"></tbody>
                         </table>
-                        <div class="recebimentoButton">
-                            <button id="add-line-button">addLine</button>
-                            <button id="enviarTudo">Atualizar tudo</button>
-                        </div>
                     </div>
                 </div>
             </div>
+            <div class="divmargin"></div>
         </main>
 
         <div id="message-container"></div>

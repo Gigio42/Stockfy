@@ -45,9 +45,10 @@ export function criarTable(table, chapaData) {
     dataPrevistaCell.innerHTML = `<input type='date' value='${formattedDataPrevista}'>`;
 
     let copiarCell = row.insertCell(-1);
-    let copiarButton = document.createElement("button");
+    let copiarButton = document.createElement("img");
+    copiarButton.src = "icons8-copy-48 (2).png"; // Update the path to the correct location of your image
+    copiarButton.alt = "Copiar";
     copiarButton.className = "recebido";
-    copiarButton.textContent = "Copiar";
     copiarButton.addEventListener("click", function () {
       copiarParaRecebimento(this);
     });
@@ -58,9 +59,9 @@ export function criarTable(table, chapaData) {
     dataRecebimentoCell.innerHTML = `<input type='date' value='${todayDate}'>`;
 
     const updateCell = row.insertCell(-1);
-    let updateButton = document.createElement("button");
+    let updateButton = document.createElement("img");
+    updateButton.src = "icons8-synchronize-48.png";
     updateButton.className = "update-button";
-    updateButton.textContent = "Atualizar";
     updateCell.appendChild(updateButton);
   }
 
