@@ -56,13 +56,16 @@ function handleFile(file) {
   reader.onload = function (event) {
     console.log("Arquivo lido com sucesso:", file.name);
     var pdfData = new Uint8Array(event.target.result);
-    pdfjsLib.getDocument({ data: pdfData }).promise.then(function (pdf) {
-      console.log("PDF processado com sucesso:", file.name);
-      extractPdfData(pdf);
-    }).finally(function () {
-      dropEnabled = true; // Reativa o evento de solta (drop) no documento
-      console.log("Evento de solta reativado.");
-    });
+    pdfjsLib
+      .getDocument({ data: pdfData })
+      .promise.then(function (pdf) {
+        console.log("PDF processado com sucesso:", file.name);
+        extractPdfData(pdf);
+      })
+      .finally(function () {
+        dropEnabled = true; // Reativa o evento de solta (drop) no documento
+        console.log("Evento de solta reativado.");
+      });
   };
 
   reader.readAsArrayBuffer(file);
@@ -80,9 +83,11 @@ function extractPdfData(pdf) {
   pdf.getPage(1).then(function (page) {
     page.getTextContent().then(function (textContent) {
       var items = textContent.items;
-      var fullText = items.map(function (item) {
-        return item.str.trim().toLowerCase();
-      }).join(" ");
+      var fullText = items
+        .map(function (item) {
+          return item.str.trim().toLowerCase();
+        })
+        .join(" ");
 
       parsePdfContent(items, fullText, infoPedido, infoProdComprados, prodComprado, lineNumber, isInfoPedido, isInfoProdComprados, isValoresExpressos);
     });
@@ -294,8 +299,6 @@ function showModal() {
     console.error("Modal não encontrado.");
   }
 }
-
-
 
 function sendJSONDataToBackend() {
   let url = `${BASE_URL}/compras`;
