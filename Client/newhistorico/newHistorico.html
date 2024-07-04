@@ -1,191 +1,190 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gerenciamento de Histórico</title>
-<style>
-    body {
-        margin: 0;
-        padding: 0;
-        background-color: #2B2B2B;
-        color: white;
-        font-family: Arial, sans-serif;
-    }
-    aside {
-        position: absolute;
-        width: 20%;
-        height: 100vh;
-        background-color: #222222;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        border-right: 2px solid #444444;
-    }
-    button {
-        width: 80%;
-        padding: 10px;
-        margin-bottom: 10px;
-        background-color: #333333;
-        color: white;
-        border: none;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-    button:hover {
-        background-color: #555555;
-    }
-    main {
-        margin-left: 20%;
-        padding: 20px;
-    }
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    th, td {
-        padding: 8px;
-        text-align: left;
-        border-bottom: 1px solid #444444;
-    }
-    th {
-        background-color: #333333;
-    }
-    .data h1 {
-        cursor: pointer;
-        display: inline-block;
-        margin-right: 10px;
-    }
-    .data h1:hover {
-        color: #888888;
-    }
-</style>
-</head>
-<body>
-<aside>
-    <button id="btnHistoricoItem">Buscar Histórico Item</button>
-    <button id="btnHistoricoChapa">Buscar Histórico Chapa</button>
-</aside>
-<main>
-    <header>
-        <h1>Gerenciador de Histórico</h1>
-    </header>
-
-    <div class="data">
-        <h1 id="week">semana</h1>
-        <h1 id="month">mes</h1>
-        <h1 id="year">ano</h1>
-    </div>
-    <div id="idsContainer">Ids: </div> 
-
-    <table id="resultsTable" border="1">
-        <thead>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-</main>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const apiUrl = 'http://localhost:3000/newhistorico/';
-        let currentModel = 'historicoItem'; // Default model
-    
-        function fetchData(model, extraPath = '', params = {}) {
-            let url = new URL(apiUrl + model + extraPath);
-            Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
-            
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    updateTable(data, model);
-                })
-                .catch(error => console.error('Error:', error));
-        }
-    
-        function updateTable(data, model) {
-            const table = document.getElementById('resultsTable');
-            const thead = table.getElementsByTagName('thead')[0];
-            const tbody = table.getElementsByTagName('tbody')[0];
-            tbody.innerHTML = '';
-            thead.innerHTML = '';
-    
-            const idsContainer = document.getElementById('idsContainer');
-            idsContainer.textContent = "Ids: "; // Limpar IDs imediatamente quando atualiza a tabela
-    
-            let headers = [];
-            let jsonKeys = [];
-            if (model === 'historicoItem') {
-                headers = ["ID Item", "Quantidade", "Modificação", "Modificado Por", "Data Modificação", "Máquina", "Ordem", "Pedido Venda"];
-                jsonKeys = ["id_item", "quantidade", "modificacao", "modificado_por", "data_modificacao", "maquina", "ordem", "pedido_venda"];
-            } else if (model === 'historicoChapa') {
-                headers = ["ID Chapa", "Quantidade", "Modificação", "Modificado Por", "Data Modificação", "Part Number"];
-                jsonKeys = ["id_chapa", "quantidade", "modificacao", "modificado_por", "data_modificacao", "part_number"];
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Gerenciamento de Histórico</title>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                background-color: #2b2b2b;
+                color: white;
+                font-family: Arial, sans-serif;
             }
-    
-            let row = thead.insertRow();
-            headers.forEach(header => {
-                let th = document.createElement('th');
-                th.textContent = header;
-                row.appendChild(th);
-            });
-    
-            if (data.length > 0) {
-                data.forEach(item => {
-                    let row = tbody.insertRow();
-                    jsonKeys.forEach(key => {
-                        const cell = row.insertCell();
-                        let value = item[key];
-                        if (value === undefined || value === null) value = 'N/A';
-                        cell.textContent = value;
+            aside {
+                position: absolute;
+                width: 20%;
+                height: 100vh;
+                background-color: #222222;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                border-right: 2px solid #444444;
+            }
+            button {
+                width: 80%;
+                padding: 10px;
+                margin-bottom: 10px;
+                background-color: #333333;
+                color: white;
+                border: none;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+            button:hover {
+                background-color: #555555;
+            }
+            main {
+                margin-left: 20%;
+                padding: 20px;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            th,
+            td {
+                padding: 8px;
+                text-align: left;
+                border-bottom: 1px solid #444444;
+            }
+            th {
+                background-color: #333333;
+            }
+            .data h1 {
+                cursor: pointer;
+                display: inline-block;
+                margin-right: 10px;
+            }
+            .data h1:hover {
+                color: #888888;
+            }
+        </style>
+    </head>
+    <body>
+        <aside>
+            <button id="btnHistoricoItem">Buscar Histórico Item</button>
+            <button id="btnHistoricoChapa">Buscar Histórico Chapa</button>
+        </aside>
+        <main>
+            <header>
+                <h1>Gerenciador de Histórico</h1>
+            </header>
+
+            <div class="data">
+                <h1 id="week">semana</h1>
+                <h1 id="month">mes</h1>
+                <h1 id="year">ano</h1>
+            </div>
+            <div id="idsContainer">Ids:</div>
+
+            <table id="resultsTable" border="1">
+                <thead></thead>
+                <tbody></tbody>
+            </table>
+        </main>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const apiUrl = "http://localhost:3000/newhistorico/";
+                let currentModel = "historicoItem"; // Default model
+
+                function fetchData(model, extraPath = "", params = {}) {
+                    let url = new URL(apiUrl + model + extraPath);
+                    Object.keys(params).forEach((key) => url.searchParams.append(key, params[key]));
+
+                    fetch(url)
+                        .then((response) => response.json())
+                        .then((data) => {
+                            updateTable(data, model);
+                        })
+                        .catch((error) => console.error("Error:", error));
+                }
+
+                function updateTable(data, model) {
+                    const table = document.getElementById("resultsTable");
+                    const thead = table.getElementsByTagName("thead")[0];
+                    const tbody = table.getElementsByTagName("tbody")[0];
+                    tbody.innerHTML = "";
+                    thead.innerHTML = "";
+
+                    const idsContainer = document.getElementById("idsContainer");
+                    idsContainer.textContent = "Ids: "; // Limpar IDs imediatamente quando atualiza a tabela
+
+                    let headers = [];
+                    let jsonKeys = [];
+                    if (model === "historicoItem") {
+                        headers = ["ID Item", "Quantidade", "Modificação", "Modificado Por", "Data Modificação", "Máquina", "Ordem", "Pedido Venda"];
+                        jsonKeys = ["id_item", "quantidade", "modificacao", "modificado_por", "data_modificacao", "maquina", "ordem", "pedido_venda"];
+                    } else if (model === "historicoChapa") {
+                        headers = ["ID Chapa", "Quantidade", "Modificação", "Modificado Por", "Data Modificação", "Part Number"];
+                        jsonKeys = ["id_chapa", "quantidade", "modificacao", "modificado_por", "data_modificacao", "part_number"];
+                    }
+
+                    let row = thead.insertRow();
+                    headers.forEach((header) => {
+                        let th = document.createElement("th");
+                        th.textContent = header;
+                        row.appendChild(th);
                     });
+
+                    if (data.length > 0) {
+                        data.forEach((item) => {
+                            let row = tbody.insertRow();
+                            jsonKeys.forEach((key) => {
+                                const cell = row.insertCell();
+                                let value = item[key];
+                                if (value === undefined || value === null) value = "N/A";
+                                cell.textContent = value;
+                            });
+                        });
+                        // Só atualizar os IDs se houver dados
+                        updateIds(data, model);
+                    }
+                }
+
+                function updateIds(data, model) {
+                    const idsContainer = document.getElementById("idsContainer");
+                    const key = model === "historicoItem" ? "id_item" : "id_chapa";
+                    const ids = data.map((item) => item[key]).join(", ");
+                    idsContainer.textContent = "Ids: " + ids;
+                }
+
+                document.getElementById("btnHistoricoItem").addEventListener("click", function () {
+                    currentModel = "historicoItem";
+                    fetchData(currentModel);
                 });
-                // Só atualizar os IDs se houver dados
-                updateIds(data, model);
-            }
-        }
 
-        function updateIds(data, model) {
-            const idsContainer = document.getElementById('idsContainer');
-            const key = model === 'historicoItem' ? 'id_item' : 'id_chapa';
-            const ids = data.map(item => item[key]).join(', ');
-            idsContainer.textContent = "Ids: " + ids;
-        }
-    
-        document.getElementById('btnHistoricoItem').addEventListener('click', function () {
-            currentModel = 'historicoItem';
-            fetchData(currentModel);
-        });
-    
-        document.getElementById('btnHistoricoChapa').addEventListener('click', function () {
-            currentModel = 'historicoChapa';
-            fetchData(currentModel);
-        });
+                document.getElementById("btnHistoricoChapa").addEventListener("click", function () {
+                    currentModel = "historicoChapa";
+                    fetchData(currentModel);
+                });
 
-        // Handling date buttons
-        document.getElementById('week').addEventListener('click', () => handleDateClick('week'));
-        document.getElementById('month').addEventListener('click', () => handleDateClick('month'));
-        document.getElementById('year').addEventListener('click', () => handleDateClick('year'));
+                // Handling date buttons
+                document.getElementById("week").addEventListener("click", () => handleDateClick("week"));
+                document.getElementById("month").addEventListener("click", () => handleDateClick("month"));
+                document.getElementById("year").addEventListener("click", () => handleDateClick("year"));
 
-        function handleDateClick(period) {
-            const now = new Date();
-            let startDate;
-            switch (period) {
-                case 'week':
-                    startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7);
-                    break;
-                case 'month':
-                    startDate = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
-                    break;
-                case 'year':
-                    startDate = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate());
-                    break;
-            }
-            const endDate = now.toISOString().split('T')[0]; // Format as YYYY-MM-DD
-            startDate = startDate.toISOString().split('T')[0];
-            fetchData(currentModel, '/by-date', { startDate, endDate });
-        }
-    });
-</script>
-</body>
+                function handleDateClick(period) {
+                    const now = new Date();
+                    let startDate;
+                    switch (period) {
+                        case "week":
+                            startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7);
+                            break;
+                        case "month":
+                            startDate = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+                            break;
+                        case "year":
+                            startDate = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate());
+                            break;
+                    }
+                    const endDate = now.toISOString().split("T")[0]; // Format as YYYY-MM-DD
+                    startDate = startDate.toISOString().split("T")[0];
+                    fetchData(currentModel, "/by-date", { startDate, endDate });
+                }
+            });
+        </script>
+    </body>
 </html>
