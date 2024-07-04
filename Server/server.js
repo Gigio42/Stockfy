@@ -7,7 +7,7 @@ import configureAjv from "./ajv.js";
 import registerRoutes from "./API/Routes/index.js";
 
 const fastify = Fastify({ logger: log });
-const ajv = configureAjv(); 
+const ajv = configureAjv();
 
 fastify.setValidatorCompiler(({ schema, method, url, httpPart }) => {
   return ajv.compile(schema);
