@@ -182,6 +182,8 @@ function handleProdCompradoLine(line, prodComprado, lineNumber) {
 }
 
 function parseMedidas(line, prodComprado) {
+  console.log("Linha recebida:", line); // Adicionado para depuração
+  
   if (line.includes("-")) {
     var parts = line.split("-");
     if (parts.length >= 2) {
@@ -197,13 +199,13 @@ function parseMedidas(line, prodComprado) {
         prodComprado["comprimento"] = comprimento; // Armazenar comprimento
         prodComprado["vincos"] = vincos;
       } else {
-        console.error("Formato de linha inválido para a medida:", line);
+        console.error("Formato de linha inválido para a medida (números):", line);
         prodComprado["largura"] = "";
         prodComprado["comprimento"] = "";
         prodComprado["vincos"] = "";
       }
     } else {
-      console.error("Formato de linha inválido para a medida:", line);
+      console.error("Formato de linha inválido para a medida (partes):", line);
       prodComprado["largura"] = "";
       prodComprado["comprimento"] = "";
       prodComprado["vincos"] = "";

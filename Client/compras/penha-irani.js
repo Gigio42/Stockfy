@@ -73,7 +73,7 @@ function handleFile(file) {
 
 function extractPdfData(pdf) {
   var infoPedido = {};
-  var infoProdComprados = [];
+  var infoProdComprados = []; // Definir infoProdComprados aqui
   var prodComprado = {};
   var lineNumber = 1;
   var isInfoPedido = false;
@@ -95,8 +95,14 @@ function extractPdfData(pdf) {
 }
 
 function parsePdfContent(items, fullText, infoPedido, infoProdComprados, prodComprado, lineNumber, isInfoPedido, isInfoProdComprados, isValoresExpressos) {
+  var parsedLines = []; // Array para armazenar as linhas formatadas com número
+
   items.forEach(function (item, index) {
     var line = item.str.trim();
+    var lineNumber = index + 1; // Número da linha
+
+    // Adiciona a linha formatada ao array para exibir no console
+    parsedLines.push({ lineNumber: lineNumber, content: line });
 
     if (isValoresExpressos) return; // Saímos do loop se chegarmos aos valores expressos
 
@@ -130,11 +136,13 @@ function parsePdfContent(items, fullText, infoPedido, infoProdComprados, prodCom
         return;
       }
       if (isInfoProdComprados) {
-        handleProdCompradoLine(line, prodComprado, lineNumber);
+        handleProdCompradoLine(line, prodComprado, lineNumber, isInfoPedido, isInfoProdComprados, infoProdComprados); // Passando infoProdComprados como parâmetro
       }
     }
-    lineNumber++;
   });
+
+  // Mostra todas as linhas formatadas no console como um objeto
+  console.log("Linhas formatadas:", parsedLines);
 
   var pedidoCompra = extractPedidoCompra(fullText);
   handleExpectedDateChange(pedidoCompra, infoPedido, infoProdComprados);
@@ -146,42 +154,67 @@ function parsePdfContent(items, fullText, infoPedido, infoProdComprados, prodCom
   showModal();
 }
 
-function handleProdCompradoLine(line, prodComprado, lineNumber) {
+function handleProdCompradoLine(line, prodComprado, lineNumber, isInfoPedido, isInfoProdComprados, infoProdComprados) {
+  // Verifica se a linha contém o padrão específico para finalizar o conjunto
+  if (line.includes(" X ")) {
+    console.log("Encontrou o padrão 'X' no final do conjunto:", line);
+    // Se encontrarmos o padrão, finalizamos o conjunto atual
+    if (Object.keys(prodComprado).length !== 0) {
+      infoProdComprados.push(renameProperties(removeEmptyProperties(prodComprado)));
+      prodComprado = {};
+    }
+    isInfoPedido = false;
+    isInfoProdComprados = true;
+    return;
+  }
+
+  // Lógica para tratar os diferentes campos do produto comprado
   switch ((lineNumber - 56) % 19) {
     case 1:
-      prodComprado.cliente = line;
+      if (line.length === 10) {
+        prodComprado.cliente = line;
+      } else {
+        prodComprado.cliente = line; // Atribui normalmente se não tiver 10 caracteres
+      }
       break;
     case 3:
-      prodComprado["quantidade_comprada"] = line;
+      if (prodComprado.cliente && line.trim() !== "") {
+        prodComprado.cliente += " " + line.trim();
+      } else {
+        console.error("Segundo valor vazio ou primeiro valor não definido:", line);
+      }
       break;
     case 5:
-      prodComprado.unidade = line;
+      prodComprado["quantidade_comprada"] = line;
       break;
     case 7:
-      prodComprado["qualidade"] = line;
+      prodComprado.unidade = line;
       break;
     case 9:
-      prodComprado.onda = line;
+      prodComprado["qualidade"] = line;
       break;
     case 11:
-      prodComprado["gramatura"] = line;
+      prodComprado.onda = line;
       break;
     case 13:
-      prodComprado["peso_total"] = line;
+      prodComprado["gramatura"] = line;
       break;
     case 15:
-      prodComprado["valor_kilo"] = line;
+      prodComprado["peso_total"] = line;
       break;
     case 17:
-      prodComprado["valor_total"] = line;
+      prodComprado["valor_kilo"] = line;
       break;
     case 18:
-      parseMedidas(line, prodComprado);
+      prodComprado["valor_total"] = line;
       break;
   }
 }
 
+
 function parseMedidas(line, prodComprado) {
+  console.log("Linha recebida no parseMedidas:", line); // Adicionado para depuração
+
   if (line.includes("-")) {
     var parts = line.split("-");
     if (parts.length >= 2) {
@@ -197,13 +230,13 @@ function parseMedidas(line, prodComprado) {
         prodComprado["comprimento"] = comprimento; // Armazenar comprimento
         prodComprado["vincos"] = vincos;
       } else {
-        console.error("Formato de linha inválido para a medida:", line);
+        console.error("Formato de linha inválido para a medida (números):", line);
         prodComprado["largura"] = "";
         prodComprado["comprimento"] = "";
         prodComprado["vincos"] = "";
       }
     } else {
-      console.error("Formato de linha inválido para a medida:", line);
+      console.error("Formato de linha inválido para a medida (partes):", line);
       prodComprado["largura"] = "";
       prodComprado["comprimento"] = "";
       prodComprado["vincos"] = "";
