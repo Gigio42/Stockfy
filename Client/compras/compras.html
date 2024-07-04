@@ -36,11 +36,8 @@
                 <div class="modal-content">
                     <div class="fecharbtn d-flex justify-content-between align-items-center">
                         <h2>Confirme as informações dos itens que chegaram</h2>
-                        <!-- Adicione a mesma classe ao botão de fechar -->
-
                         <button id="backButton" class="btn voltar btn-primary closeButton">Voltar</button>
                     </div>
-                    <!-- Tabela para mostrar os dados -->
                     <div class="table-container">
                         <table id="dataTable" class="table mt-4"></table>
                         <div id="form-container"></div>
@@ -64,14 +61,14 @@
         <div id="mModal" class="modal">
             <div class="modal-content-m">
                 <div class="fecharbtn d-flex justify-content-between align-items-center">
-                    <h2>Adcione as informações dos itens comprados</h2>
+                    <h2>Adicione as informações dos itens comprados</h2>
                     <a class="logout" href="../home.html"><img class="" src="media\sair (1).png" alt="" /></a>
-
                     <button id="backButton" class="btn voltar btn-primary closeButton">Voltar</button>
                 </div>
                 <div class="formAndcard">
                     <div id="form-container">
                         <form id="purchaseForm">
+                            <!-- Campos do formulário -->
                             <div class="form-group">
                                 <input type="number" id="customerNumber" name="customerNumber" class="form-control inputform" placeholder="Cliente" inputmode="numeric" />
                             </div>
@@ -138,7 +135,6 @@
         <div id="errorModal" class="errormodal">
             <div class="modal-content-error">
                 <div class="header-button">
-                    <!-- Adicione uma classe diferente para estilização -->
                     <button id="closeErrorModal" class="closeButton .btn-primary">Fechar</button>
                 </div>
                 <div class="alert">
@@ -153,6 +149,9 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
         <script>
+            // Definindo o workerSrc para evitar avisos de depreciação
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
+
             flatpickr("#expectedDate", {
                 dateFormat: "Y-m-d",
             });
@@ -166,26 +165,21 @@
             function toggleDetails(event) {
                 const target = event.target;
 
-                // Verifica se o clique ocorreu na seta (.toggle-arrow) dentro do parágrafo
                 if (target && target.classList.contains("toggle-arrow")) {
-                    // Encontra o card pai onde os detalhes estão contidos
                     const cardBody = target.closest(".card-body");
 
                     if (cardBody) {
-                        // Encontra o elemento que contém os detalhes (div com a classe 'card-details')
                         const details = cardBody.querySelector(".card-details");
 
                         if (details) {
-                            // Encontra a imagem da seta
                             const toggleArrow = target;
 
-                            // Alterna a visibilidade dos detalhes
                             if (details.style.display === "none" || details.style.display === "") {
                                 details.style.display = "block";
-                                toggleArrow.style.transform = "rotate(180deg)"; // Gira a seta para cima
+                                toggleArrow.style.transform = "rotate(180deg)";
                             } else {
                                 details.style.display = "none";
-                                toggleArrow.style.transform = "rotate(0deg)"; // Gira a seta para a direita
+                                toggleArrow.style.transform = "rotate(0deg)";
                             }
                         }
                     }
@@ -193,77 +187,71 @@
             }
 
             function editCard(event) {
-                // Lógica para editar o card
                 console.log("Editar card");
-                event.preventDefault(); // Evita que o link seja seguido
+                event.preventDefault();
             }
 
             function deleteCard(event) {
-                // Lógica para excluir o card
                 console.log("Excluir card");
-                event.preventDefault(); // Evita que o link seja seguido
+                event.preventDefault();
             }
 
             $(document).ready(function () {
                 $("#errorModal").hide();
-                // Função para exibir a notificação
+
                 function showNotification(message) {
                     $("#notificationMessage").text(message);
                     $("#notification").show();
 
-                    // Fechar a notificação após 5 segundos
                     setTimeout(function () {
                         $("#notification").hide();
                     }, 5000);
                 }
 
-                function lerTextoPdf(arquivoUrl, fornecedor) {
-                    // Carrega o arquivo PDF
+                function lerTextoPdf(arquivoUrl) {
+                    // Carrega o documento PDF
                     pdfjsLib.getDocument(arquivoUrl).promise.then(function (pdf) {
-                        // Lê o texto de todas as páginas do PDF
                         var textoCompleto = "";
-                        for (var i = 1; i <= pdf.numPages; i++) {
-                            pdf.getPage(i).then(function (page) {
-                                page.getTextContent().then(function (textContent) {
-                                    // Concatena o texto da página ao texto completo
-                                    textoCompleto += textContent.items
-                                        .map(function (s) {
-                                            return s.str;
-                                        })
-                                        .join(" ");
-                                });
-                            });
+                        var numPages = pdf.numPages;
+
+                        // Cria uma promessa para ler o conteúdo de cada página
+                        var leituraPaginaPromessas = [];
+                        for (var i = 1; i <= numPages; i++) {
+                            leituraPaginaPromessas.push(
+                                pdf.getPage(i).then(function (page) {
+                                    return page.getTextContent().then(function (textContent) {
+                                        var textoPagina = textContent.items
+                                            .map(function (s) {
+                                                return s.str;
+                                            })
+                                            .join(" ");
+                                        textoCompleto += textoPagina;
+                                    });
+                                })
+                            );
                         }
 
-                        // Espera um curto período de tempo para garantir que todo o texto seja lido
-                        setTimeout(function () {
-                            // Define a palavra-chave com base no fornecedor selecionado
-                            var palavraChave;
-                            if (fornecedor === "fernandez") {
-                                palavraChave = "FERNANDEZ";
-                            } else if (fornecedor === "penha") {
-                                palavraChave = "PENHA";
-                            } else if (fornecedor === "irani") {
-                                palavraChave = "IRANI";
-                            }
+                        // Processa todas as páginas e verifica o texto
+                        Promise.all(leituraPaginaPromessas).then(function () {
+                            textoCompleto = textoCompleto.toUpperCase();
 
-                            // Verifica se o texto do PDF contém a palavra-chave correspondente ao fornecedor selecionado
-                            var fornecedorEncontrado = textoCompleto.toUpperCase().includes(palavraChave);
-
-                            if (fornecedorEncontrado) {
-                                // Continua com o processamento do PDF...
-                                console.log("Fornecedor encontrado no PDF.");
-                            } else {
-                                // Exibe um modal com a mensagem de erro se o fornecedor não for encontrado no PDF
-                                console.log("Esse pedido de compra não corresponde ao fornecedor selecionado.");
-                                $("#errorMessage").text("Esse pedido de compra não corresponde ao fornecedor selecionado.");
+                            // Verifica se o texto contém "PENHA" ou "IRANI"
+                            if (textoCompleto.includes("PENHA") || textoCompleto.includes("IRANI")) {
+                                carregarScript("penha-irani.js", arquivoUrl);
+                            } 
+                            // Verifica se o texto contém "FERNANDEZ"
+                            else if (textoCompleto.includes("FERNANDEZ")) {
+                                carregarScript("fernandez.js", arquivoUrl);
+                            } 
+                            // Se nenhuma palavra-chave for encontrada, exibe um erro
+                            else {
+                                $("#errorMessage").text("Esse pedido de compra não corresponde a nenhum fornecedor conhecido.");
                                 $("#errorModal").show();
                             }
-                        }, 1000); // Tempo de espera em milissegundos
+                        });
                     });
                 }
 
-                // Função para limpar o conteúdo carregado e estar pronto para carregar outro PDF
                 function limparConteudo() {
                     $("#dataTable").html("");
                     $("#jsonContent").text("");
@@ -273,84 +261,39 @@
 
                 $("#backButton").on("click", function () {
                     limparConteudo();
-                    window.location.reload(); // Recarrega a página
+                    window.location.reload();
                 });
 
-                // Evento de clique para fechar o modal mModal e recarregar a página
                 $(".closeButton").on("click", function () {
                     $("#errorModal").hide();
                     $("#myModal").hide();
                     $("#mModal").hide();
-                    window.location.reload(); // Recarrega a página
-                });
-
-                // Função para carregar o script correspondente ao fornecedor selecionado
-                function carregarScriptParaFornecedor(fornecedor) {
-                    const scriptUrl = obterScriptUrlFornecedor(fornecedor);
-                    if (scriptUrl) {
-                        carregarScript(scriptUrl);
-                    }
-                }
-
-                $("#fornecedor").on("change", function (event) {
-                    const fornecedorSelecionado = $(this).val();
-                    if (!fornecedorSelecionado) {
-                        showNotification("Por favor, selecione um fornecedor.", "error");
-                        return;
-                    }
-                    if (fornecedorSelecionado === "Adicionar Manualmente") {
-                        carregarScript("adicionar_manualmente.js");
-                        return;
-                    }
-                    carregarScriptParaFornecedor(fornecedorSelecionado);
-                });
-
-                // Evento de clique para fechar a notificação
-                $("#closeNotification").on("click", function () {
-                    $("#notification").hide();
+                    window.location.reload();
                 });
 
                 $("#dropzone").on("drop", function (event) {
                     event.preventDefault();
                     const arquivo = event.originalEvent.dataTransfer.files[0];
-                    const fornecedor = $("#fornecedor").val();
 
-                    if (arquivo && arquivo.type == "application/pdf" && fornecedor) {
-                        lerTextoPdf(URL.createObjectURL(arquivo), fornecedor);
-                    } else if (!fornecedor) {
-                        showNotification("Por favor, selecione um fornecedor.", "error");
+                    if (arquivo && arquivo.type == "application/pdf") {
+                        const arquivoUrl = URL.createObjectURL(arquivo);
+                        lerTextoPdf(arquivoUrl);
                     } else {
                         showNotification("Por favor, carregue um arquivo PDF.", "error");
                     }
                 });
 
-                function carregarScript(url) {
-                    const existingScript = document.querySelector("script[data-fornecedor]");
-                    if (existingScript) {
-                        existingScript.parentNode.removeChild(existingScript);
-                    }
-
-                    const script = document.createElement("script");
-                    script.onload = function () {
-                        console.log("Script carregado:", url);
-                    };
-                    script.src = url;
-                    script.setAttribute("data-fornecedor", "");
-                    script.type = "module";
-                    document.head.appendChild(script);
-                }
-
-                function obterScriptUrlFornecedor(fornecedor) {
-                    const scripts = {
-                        penha: "penha-irani.js",
-                        fernandez: "fernandez.js",
-                        irani: "penha-irani.js",
-                    };
-                    return scripts[fornecedor];
-                }
-
                 $("#dropzone").on("dragover", function (event) {
                     event.preventDefault();
+                });
+
+                $("#fornecedor").on("change", function (event) {
+                    const fornecedorSelecionado = $(this).val();
+                    if (fornecedorSelecionado === "Adicionar Manualmente") {
+                        $("#mModal").show();
+                    } else {
+                        $("#mModal").hide();
+                    }
                 });
 
                 window.onclick = function (event) {
@@ -359,33 +302,36 @@
                         limparConteudo();
                     }
                 };
-            });
-            // Definição global da função carregarScript
-            function carregarScript(url) {
-                const existingScript = document.querySelector("script[data-fornecedor]");
-                if (existingScript) {
-                    existingScript.parentNode.removeChild(existingScript);
+
+                function carregarScript(url, arquivoUrl) {
+                    const existingScript = document.querySelector("script[data-fornecedor]");
+                    if (existingScript) {
+                        existingScript.parentNode.removeChild(existingScript);
+                    }
+
+                    const script = document.createElement("script");
+                    script.onload = function () {
+                        console.log("Script carregado:", url);
+                        // Chama handleFile diretamente após o carregamento do script
+                        if (typeof window.handleFile === "function") {
+                            window.handleFile(arquivoUrl);
+                        } else {
+                            console.error("handleFile não está definido.");
+                        }
+                    };
+                    script.src = url;
+                    script.setAttribute("data-fornecedor", "");
+                    script.type = "module";
+                    document.head.appendChild(script);
                 }
+            });
 
-                const script = document.createElement("script");
-                script.onload = function () {
-                    console.log("Script carregado:", url);
-                };
-                script.src = url;
-                script.setAttribute("data-fornecedor", "");
-                script.type = "module";
-                document.head.appendChild(script);
-            }
-
-            // Verifica se o dispositivo é um dispositivo móvel (largura menor que 768 pixels, por exemplo)
             if (window.innerWidth < 768) {
-                // Exibe o modal de adicionar manualmente
                 const modal = document.getElementById("myModal");
                 if (modal) {
                     modal.style.display = "block";
                 }
 
-                // Carrega o script específico para adicionar manualmente
                 carregarScript("adicionar_manualmente.js");
             }
         </script>
