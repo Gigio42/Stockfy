@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_POSTGRE_URL")
 }
 
 model Conjugacoes {
@@ -65,8 +65,8 @@ model Chapa_Item {
   chapaId       Int
   conjugacaoId  Int?
 
-  item       Item         @relation(fields: [itemId], references: [id_item])
-  chapa      Chapas       @relation(fields: [chapaId], references: [id_chapa])
+  item  Item   @relation(fields: [itemId], references: [id_item])
+  chapa Chapas @relation(fields: [chapaId], references: [id_chapa])
   conjugacao Conjugacoes? @relation(fields: [conjugacaoId], references: [id_conjugacoes])
 }
 
@@ -92,14 +92,15 @@ model Item_Maquina {
   itemId          Int
   maquina         Maquina @relation(fields: [maquinaId], references: [id_maquina])
   Item            Item    @relation(fields: [itemId], references: [id_item])
-
+  
   // Novos campos
-  op          Int?
-  sistema     String?
-  cliente     String?
-  quantidade  Int?
-  colaborador String?
+  op              Int?
+  sistema         String?
+  cliente         String?
+  quantidade      Int?
+  colaborador     String?
 }
+
 
 model Maquina {
   id_maquina Int            @id @default(autoincrement())

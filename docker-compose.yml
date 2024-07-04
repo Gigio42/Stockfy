@@ -4,30 +4,31 @@ services:
   client:
     build:
       context: .
-      dockerfile: Dockerfile.client
+      dockerfile: client.dockerfile
     ports:
       - "80:80"
-    depends_on:
-      - server
 
   server:
     build:
       context: .
-      dockerfile: Dockerfile.server
+      dockerfile: server.dockerfile
     ports:
       - "3000:3000"
     depends_on:
       - db
     environment:
-      DATABASE_URL: "postgresql://postgres:password@db:5432/mydatabase"
+      DATABASE_POSTGRE_URL: ${DATABASE_POSTGRE_URL}
+      HOST: ${HOST}
+    command: >
+      sh -c "npx prisma db push && node Server/server.js"
 
   db:
     build:
       context: .
-      dockerfile: Dockerfile.db
+      dockerfile: database.dockerfile
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: mydatabase
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5432:5432"
