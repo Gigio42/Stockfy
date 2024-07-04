@@ -150,7 +150,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
         <script>
             // Definindo o workerSrc para evitar avisos de depreciação
-            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
+            pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js";
 
             flatpickr("#expectedDate", {
                 dateFormat: "Y-m-d",
@@ -227,7 +227,7 @@
                                             .join(" ");
                                         textoCompleto += textoPagina;
                                     });
-                                })
+                                }),
                             );
                         }
 
@@ -238,11 +238,11 @@
                             // Verifica se o texto contém "PENHA" ou "IRANI"
                             if (textoCompleto.includes("PENHA") || textoCompleto.includes("IRANI")) {
                                 carregarScript("penha-irani.js", arquivoUrl);
-                            } 
+                            }
                             // Verifica se o texto contém "FERNANDEZ"
                             else if (textoCompleto.includes("FERNANDEZ")) {
                                 carregarScript("fernandez.js", arquivoUrl);
-                            } 
+                            }
                             // Se nenhuma palavra-chave for encontrada, exibe um erro
                             else {
                                 $("#errorMessage").text("Esse pedido de compra não corresponde a nenhum fornecedor conhecido.");
