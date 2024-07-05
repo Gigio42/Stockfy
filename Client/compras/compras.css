@@ -80,7 +80,7 @@ body {
 
 .fecharbtn {
   padding: 0.7rem 1rem;
-  background: #333333;
+  background: #69656500;
   color: #959595;
   width: 100%;
   z-index: 5;
@@ -131,6 +131,10 @@ body {
 
 .edit-icon {
   background: #ff434300 !important;
+}
+
+.modal-backdrop {
+    display: none;
 }
 
 .jsonshow {
@@ -381,8 +385,17 @@ body button.edit.disabled {
 .closeButton {
   border-radius: 0.7rem;
   border: none;
-  width: 5rem;
-  background: #232323;
+  width: 3rem;
+  background: #23232300;
+}
+
+.closeButton:hover {
+    background: #23232360;
+  }
+  
+
+.imgback {
+    width: 25px;
 }
 
 @media screen and (max-width: 902px) {
@@ -522,14 +535,13 @@ th {
 }
 
 .modal-content-m {
-  max-height: 85vh; /* Define a altura máxima do conteúdo do modal */
   overflow-y: auto; /* Adiciona o scroll vertical */
   background: #131313;
 }
 
 .formAndcard {
   display: flex;
-  margin-top: 2rem;
+
   flex-direction: column;
   justify-content: space-around;
   align-items: flex-start;
@@ -588,7 +600,7 @@ th {
 }
 
 .enviarManual {
-  font-size: 1.5rem;
+padding: 1rem;
   border-radius: 1rem;
   background: #2ab14a61;
   color: #39ea62;
@@ -608,6 +620,24 @@ th {
   padding: 0.5rem;
 }
 
+
+@media (min-width:400px) {
+    .aside-lateral {
+        display: none;
+    }
+
+    .logo-container {
+        width: 40%;
+    }
+
+    .logostockfy {
+        width: 5rem;
+    }
+
+    .modal-content-m {
+
+    }
+}
 /* Remove a borda branca ao clicar */
 input[type="date"]::-webkit-inner-spin-button,
 input[type="date"]::-webkit-clear-button {
