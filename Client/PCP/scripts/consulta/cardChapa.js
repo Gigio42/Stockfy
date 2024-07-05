@@ -1,8 +1,8 @@
 import { createElementWithClass } from "../utils/dom.js";
 import { deleteChapaFromItem } from "../utils/connection.js";
-import { ConjugacaoCard } from "./ConjugacaoCard.js";
+import { CardConjugacao } from "./cardConjugacao.js";
 
-export class ChapaCard {
+export class CardChapa {
   constructor(chapa, itemStatus, itemId) {
     this.chapa = chapa;
     this.itemStatus = itemStatus;
@@ -101,7 +101,7 @@ export class ChapaCard {
     const conjugacoesContainer = createElementWithClass("div", "conjugacoes-container w-100");
     conjugacoesContainer.style.display = "none";
     this.chapa.conjugacoes.forEach((conjugacao) => {
-      const conjugacaoCard = new ConjugacaoCard(conjugacao);
+      const conjugacaoCard = new CardConjugacao(conjugacao);
       conjugacoesContainer.appendChild(conjugacaoCard.render());
     });
     cardBody.appendChild(conjugacoesContainer);

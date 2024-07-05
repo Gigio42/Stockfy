@@ -1,6 +1,6 @@
 import { reserveChapas } from "../utils/connection.js";
 
-export function reservarModal(getSelectedChapasAndConjugacoes) {
+export function modalReservar(getSelectedChapasAndConjugacoes) {
   const showSelectedButton = document.getElementById("showSelectedButton");
   const closeModal = document.getElementById("closeModal");
   const popupContainer = document.getElementById("popupContainer");
@@ -231,7 +231,7 @@ async function reserveChapasAndShowFeedback(partNumber, pedidoVenda, chapas, con
 
   try {
     const reservedBy = localStorage.getItem("nome");
-    const response = await reserveChapas({ partNumber, pedidoVenda, chapas, conjugacoes, reservedBy });
+    await reserveChapas({ partNumber, pedidoVenda, chapas, conjugacoes, reservedBy });
     showSuccessToast(partNumber);
     location.reload();
   } catch (error) {

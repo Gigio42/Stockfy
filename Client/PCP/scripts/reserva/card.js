@@ -1,5 +1,5 @@
 import { createElementWithClass } from "../utils/dom.js";
-import { InfoModal } from "./infoModal.js";
+import { ModalInfo } from "./modalInfo.js";
 import { Subcard } from "./subcard.js";
 
 export class Card {
@@ -11,7 +11,7 @@ export class Card {
     this.onSelectionChange = onSelectionChange;
     this.isChecked = isChecked;
     this.subcards = [];
-    this.infoModal = new InfoModal();
+    this.infoModal = new ModalInfo();
     this.disabled = false;
     this.initSubcards();
   }

@@ -1,5 +1,5 @@
 import { Card } from "./card.js";
-import { reservarModal } from "./modal.js";
+import { modalReservar } from "./modalReservar.js";
 import { fetchChapas } from "../utils/connection.js";
 
 export class Reservar {
@@ -44,7 +44,7 @@ export class Reservar {
     this.populateCards();
   }
 
-  async onSortOrderClick(event) {
+  async onSortOrderClick() {
     this.toggleSortOrder();
     this.sortOrderElement.disabled = true;
 
@@ -86,7 +86,7 @@ export class Reservar {
         this.animationExecuted = true;
       }
 
-      reservarModal(() => {
+      modalReservar(() => {
         const selectedChapas = Array.from(this.selectedChapas.values());
         const selectedSubcards = Array.from(this.selectedSubcards.values());
         return [selectedChapas, selectedSubcards];

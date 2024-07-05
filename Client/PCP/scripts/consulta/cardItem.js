@@ -1,8 +1,8 @@
 import { createElementWithClass } from "../utils/dom.js";
 import { deleteItem } from "../utils/connection.js";
-import { ChapaCard } from "./ChapaCard.js";
+import { CardChapa } from "./cardChapa.js";
 
-export class ItemCard {
+export class CardItem {
   constructor(item) {
     this.item = item;
   }
@@ -39,7 +39,7 @@ export class ItemCard {
 
     const deleteButton = this.createDeleteButton();
     buttonContainer.appendChild(deleteButton);
-    if (this.item.status.toLowerCase() != "reservado") {
+    if (this.item.status.toLowerCase() !== "reservado") {
       deleteButton.disabled = true;
       deleteButton.classList.remove("btn-danger");
       deleteButton.classList.add("btn-secondary");
@@ -108,7 +108,7 @@ export class ItemCard {
     const chapasContainer = createElementWithClass("div", "card-body chapas-container");
     chapasContainer.style.display = "none";
     this.item.chapas.forEach((chapa) => {
-      const chapaCard = new ChapaCard(chapa, this.item.status, this.item.id_item);
+      const chapaCard = new CardChapa(chapa, this.item.status, this.item.id_item);
       const chapaCardElement = chapaCard.render();
       chapaCardElement.classList.add("chapa-card-element");
       chapasContainer.appendChild(chapaCardElement);

@@ -1,4 +1,4 @@
-export class InfoModal {
+export class ModalInfo {
   constructor() {
     this.modal = document.getElementById("infoModal");
     this.modalContent = document.getElementById("infoContainer");
@@ -7,7 +7,7 @@ export class InfoModal {
   }
 
   initialize() {
-    if (this.initialized) return; // Garantir que a inicialização só ocorra uma vez
+    if (this.initialized) return;
 
     if (!this.closeInfoModalButton) {
       this.closeInfoModalButton = document.getElementById("closeInfoModal");
