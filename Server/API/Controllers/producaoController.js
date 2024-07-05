@@ -23,7 +23,6 @@ class ProducaoController {
   // GetItemsInMaquinas Function
   // ------------------------------
   async getChapasInItemsInMaquinas(name) {
-
     // Fetch the machine details
     const maquina = await prisma.maquina.findFirst({
       where: { nome: name },
