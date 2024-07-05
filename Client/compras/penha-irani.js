@@ -290,7 +290,7 @@ function sendJSONDataToBackend() {
 
   var jsonDataToSend = JSON.parse(JSON.stringify(jsonData), function (key, value) {
     if (typeof value === "string" && !isNaN(value) && value !== "") {
-      var intValue = parseInt(value.replace(/\./g, ""));
+      var intValue = parseInt(value.replace(/\./g, ""), 10);
       return intValue;
     }
     return value;
@@ -311,6 +311,7 @@ function sendJSONDataToBackend() {
     });
 }
 
+
 function removeEmptyProperties(obj) {
   for (var prop in obj) {
     if (obj[prop] === "") {
@@ -322,7 +323,7 @@ function removeEmptyProperties(obj) {
 
 function renameProperties(obj) {
   var newObj = {};
-  newObj["numero_cliente"] = obj.cliente;
+  newObj["numero_cliente"] = parseInt(obj.cliente, 10); // Converter para inteiro
   newObj["quantidade_comprada"] = obj["quantidade_comprada"];
   newObj["unidade"] = obj["unidade"];
   newObj["qualidade"] = obj["qualidade"];
