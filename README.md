@@ -68,8 +68,3 @@ Se quiser mesclar sua branch com a main sem passar por um pull request (ñ recom
 ```
 git merge origin/main
 ```
-
-
-
-
-
