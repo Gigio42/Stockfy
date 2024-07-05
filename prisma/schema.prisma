@@ -71,13 +71,15 @@ model Chapa_Item {
 }
 
 model Item {
-  id_item       Int            @id @default(autoincrement())
-  part_number   String         @unique @default("0")
+  id_item       Int     @id @default(autoincrement())
+  part_number   String  @unique @default("0")
+  pedido_venda  Int     @default(0)
   prioridade    Int?
-  status        String         @default("")
+  status        String  @default("")
   reservado_por String?
-  chapas        Chapa_Item[]
-  maquinas      Item_Maquina[]
+
+  chapas   Chapa_Item[]
+  maquinas Item_Maquina[]
 }
 
 model Item_Maquina {
@@ -88,24 +90,24 @@ model Item_Maquina {
   executor        String?
   finalizado      Boolean @default(false)
   medida          String?
+  op              Int?
+  sistema         String?
+  cliente         String?
+  quantidade      Int?
+  colaborador     String?
   maquinaId       Int
   itemId          Int
-  maquina         Maquina @relation(fields: [maquinaId], references: [id_maquina])
-  Item            Item    @relation(fields: [itemId], references: [id_item])
 
-  // Novos campos
-  op          Int?
-  sistema     String?
-  cliente     String?
-  quantidade  Int?
-  colaborador String?
+  maquina Maquina @relation(fields: [maquinaId], references: [id_maquina])
+  Item    Item    @relation(fields: [itemId], references: [id_item])
 }
 
 model Maquina {
-  id_maquina Int            @id @default(autoincrement())
-  nome       String         @default("")
-  items      Item_Maquina[]
-  usuarios   Usuarios[]
+  id_maquina Int    @id @default(autoincrement())
+  nome       String @default("")
+
+  items    Item_Maquina[]
+  usuarios Usuarios[]
 }
 
 model Usuarios {

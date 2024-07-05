@@ -1,5 +1,5 @@
 import { createModalContent } from "../utils/modalUtil.js";
-import { ItemCard } from "./ItemCard.js";
+import { CardItem } from "./cardItem.js";
 import { fetchItems } from "../utils/connection.js";
 
 export class ItemModal {
@@ -102,7 +102,7 @@ export class ItemModal {
     searchContainer.appendChild(this.searchButton);
 
     items.forEach((item) => {
-      const itemCard = new ItemCard(item);
+      const itemCard = new CardItem(item);
       fragment.appendChild(itemCard.render());
     });
 

@@ -1,6 +1,6 @@
-import { ItemModal } from "./scripts/consulta/mainConsulta.js";
-import { Reservar } from "./scripts/reserva/mainForm.js";
-import { InfoModal } from "./scripts/reserva/infoModal.js";
+import { ItemModal } from "./scripts/consulta/modalConsulta.js";
+import { Reservar } from "./scripts/reserva/cardHandler.js";
+import { ModalInfo } from "./scripts/reserva/modalInfo.js";
 
 const LOGIN_URL = "../login/login.html";
 const HOME_URL = "../home.html";
@@ -40,7 +40,7 @@ const highlightCurrentPage = () => {
 const initializeModules = () => {
   new Reservar().initialize();
   new ItemModal().initialize();
-  new InfoModal().initialize();
+  new ModalInfo().initialize();
 };
 
 const initializeDarkMode = (darkModeToggle, body, themeElement) => {

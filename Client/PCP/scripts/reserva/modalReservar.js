@@ -1,6 +1,6 @@
 import { reserveChapas } from "../utils/connection.js";
 
-export function reservarModal(getSelectedChapasAndConjugacoes) {
+export function modalReservar(getSelectedChapasAndConjugacoes) {
   const showSelectedButton = document.getElementById("showSelectedButton");
   const closeModal = document.getElementById("closeModal");
   const popupContainer = document.getElementById("popupContainer");
@@ -158,7 +158,14 @@ function createButtonFormContainer(selectedChapas, selectedSubcards) {
   container.style.display = "flex";
   container.style.justifyContent = "space-between";
 
-  container.appendChild(createPartNumberForm());
+  const formContainer = document.createElement("div");
+  formContainer.style.display = "flex";
+  formContainer.style.flexGrow = "1";
+
+  formContainer.appendChild(createPartNumberForm());
+  formContainer.appendChild(createPedidoVendaForm());
+
+  container.appendChild(formContainer);
   container.appendChild(createReserveButton(selectedChapas, selectedSubcards));
 
   return container;
@@ -177,6 +184,22 @@ function createPartNumberForm() {
   return form;
 }
 
+function createPedidoVendaForm() {
+  const form = document.createElement("form");
+  const input = document.createElement("input");
+  input.type = "text";
+  input.id = "pedidoVendaInput";
+  input.placeholder = "PEDIDO DE VENDA";
+
+  input.addEventListener("input", function () {
+    this.value = this.value.replace(/[^0-9]/g, "");
+  });
+
+  form.appendChild(input);
+
+  return form;
+}
+
 function createReserveButton(selectedChapas, selectedSubcards) {
   const reserveButton = document.createElement("button");
   reserveButton.textContent = "RESERVAR";
@@ -187,10 +210,11 @@ function createReserveButton(selectedChapas, selectedSubcards) {
 
 async function handleReserveButtonClick(selectedChapas, selectedSubcards) {
   const partNumber = document.getElementById("partNumberInput").value;
+  const pedidoVenda = document.getElementById("pedidoVendaInput").value;
   const chapas = mapSelectedItems(selectedChapas, "chapa");
   const conjugacoes = mapSelectedItems(selectedSubcards, "conjugacoes");
 
-  await reserveChapasAndShowFeedback(partNumber, chapas, conjugacoes);
+  await reserveChapasAndShowFeedback(partNumber, pedidoVenda, chapas, conjugacoes);
 }
 
 function mapSelectedItems(items, type) {
@@ -201,13 +225,13 @@ function mapSelectedItems(items, type) {
   }));
 }
 
-async function reserveChapasAndShowFeedback(partNumber, chapas, conjugacoes) {
+async function reserveChapasAndShowFeedback(partNumber, pedidoVenda, chapas, conjugacoes) {
   const loadingSpinner = document.getElementById("loadingSpinner");
   loadingSpinner.style.display = "block";
 
   try {
     const reservedBy = localStorage.getItem("nome");
-    const response = await reserveChapas({ partNumber, chapas, conjugacoes, reservedBy });
+    await reserveChapas({ partNumber, pedidoVenda, chapas, conjugacoes, reservedBy });
     showSuccessToast(partNumber);
     location.reload();
   } catch (error) {

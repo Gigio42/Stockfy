@@ -7,6 +7,9 @@ const prisma = new PrismaClient();
 class ProducaoController {
   constructor() {}
 
+  // ------------------------------
+  // Allmaquinas Function
+  // ------------------------------
   async getAllMachines() {
     const maquinas = await Maquina.findMany({
       select: {
@@ -16,9 +19,10 @@ class ProducaoController {
     return maquinas;
   }
 
+  // ------------------------------
+  // GetItemsInMaquinas Function
+  // ------------------------------
   async getChapasInItemsInMaquinas(name) {
-    console.log("name", name);
-
     // Fetch the machine details
     const maquina = await prisma.maquina.findFirst({
       where: { nome: name },
@@ -92,6 +96,7 @@ class ProducaoController {
     Object.values(groupedItems).forEach((items) => {
       items.sort((a, b) => a.ordem - b.ordem);
       const ordemTotal = items.length;
+      console.log(items);
       let currentItem = items.find((item) => !item.finalizado);
 
       items.forEach((item) => {
@@ -100,7 +105,7 @@ class ProducaoController {
           item.estado = "FEITO";
         } else if (item === currentItem) {
           item.estado = "ATUAL";
-          currentItem = null; // Mark current item so no future items are marked as current
+          currentItem = null;
         } else {
           item.estado = "PROXIMAS";
         }
@@ -119,10 +124,12 @@ class ProducaoController {
       }
     });
 
-    console.log("maquina ", maquina);
     return maquina;
   }
 
+  // ------------------------------
+  // MarkAsFinalizado Function
+  // ------------------------------
   async markItemAsFinalizado(itemId, maquinaName, executor) {
     const maquina = await Maquina.findFirst({
       where: {
@@ -176,12 +183,15 @@ class ProducaoController {
     });
 
     if (remainingOrders.length === 0) {
-      await Item.update({
+      await Item_Maquina.deleteMany({
+        where: {
+          itemId: itemId,
+        },
+      });
+
+      await Item.delete({
         where: {
           id_item: itemId,
-        },
-        data: {
-          status: "FINALIZADO", //TODO talvez mudar para AGUARDANDO futuramente? para confirmar que foi a última ordem mesmo.
         },
       });
     }
