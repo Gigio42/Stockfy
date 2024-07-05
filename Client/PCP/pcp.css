@@ -570,6 +570,31 @@ button:hover {
   color: #a865ff;
   background-color: #801eff48 !important;
 }
+#pedidoVendaInput {
+  background-color: #80ff8048 !important;
+  border: solid 1px #3eee8a;
+  padding: 1rem;
+  border-radius: 1rem;
+  outline: none;
+  font-size: 1rem;
+  color: #69ffaa;
+  margin-left: 10px;
+}
+.light-mode #pedidoVendaInput {
+  background-color: #80ff8048 !important;
+  border: solid 1px #17d268;
+  padding: 1rem;
+  border-radius: 1rem;
+  outline: none;
+  font-size: 1rem;
+}
+#pedidoVendaInput::placeholder {
+  color: #69ffaa;
+}
+#pedidoVendaInput:focus {
+  color: #65ffa8;
+  background-color: #80ff8048 !important;
+}
 .selected {
   border: 1px solid #007bff6d;
   background-color: #007bff14;

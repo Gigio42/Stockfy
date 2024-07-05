@@ -97,13 +97,14 @@ class PCPController {
     });
   }
 
-  async findOrCreateItem(partNumber, reservedBy) {
+  async findOrCreateItem(partNumber, pedidoVenda, reservedBy) {
     let item = await Item.findUnique({ where: { part_number: partNumber } });
 
     if (!item) {
       item = await Item.create({
         data: {
           part_number: partNumber,
+          pedido_venda: parseInt(pedidoVenda),
           status: "RESERVADO",
           reservado_por: reservedBy,
         },
@@ -204,11 +205,11 @@ class PCPController {
   async createItemWithChapa(body) {
     try {
       console.log(body);
-      const { partNumber, chapas, conjugacoes, reservedBy } = body;
+      const { partNumber, pedidoVenda, chapas, conjugacoes, reservedBy } = body; // Add pedidoVenda here
 
       await this.validateQuantities(chapas, conjugacoes);
 
-      const item = await this.findOrCreateItem(partNumber, reservedBy);
+      const item = await this.findOrCreateItem(partNumber, pedidoVenda, reservedBy); // Pass pedidoVenda here
 
       for (const { chapaID, quantity } of chapas) {
         await this.updateChapa(chapaID, quantity);

@@ -1,6 +1,6 @@
 import { createElementWithClass } from "../utils/dom.js";
 
-export class ConjugacaoCard {
+export class CardConjugacao {
   constructor(conjugacao) {
     this.conjugacao = conjugacao;
   }
