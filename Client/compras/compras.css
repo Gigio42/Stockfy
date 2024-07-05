@@ -621,7 +621,7 @@ padding: 1rem;
 }
 
 
-@media (min-width:400px) {
+@media (max-width:920px) {
     .aside-lateral {
         display: none;
     }
