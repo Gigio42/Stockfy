@@ -1,70 +1,96 @@
 # Sistema de Gerenciamento de Estoque
 
+![Logistics Cartoon](https://cdn.dribbble.com/users/1138853/screenshots/4834993/06_08_gif.gif)
 
 
+## Visão Geral
+Sistema de Gerenciamento de Estoque desenvolvido para uma empresa gerenciar seu estoque de forma eficiente. O sistema permite aos usuários realizar várias operações relacionadas ao estoque, incluindo rastreamento, atualização e gerenciamento dos itens.
 
-Para começar, se quiserem fazer alterações nesse documento, existem 2 formas:
+## Funcionalidades
+- **Rastreamento de Estoque**: Monitora as quantidades dos itens em estoque.
+- **Gerenciamento de Estoque**: Atualiza e gerencia os detalhes do inventário.
+- **Interface de Usuário**: Front-end interativo e amigável para fácil operação.
+- **Sincronização de Dados**: Garante a consistência e integridade dos dados através de operações transacionais.
+- **Filtragem e Ordenação**: Filtra e ordena itens do inventário com base em vários critérios.
 
-Todas elas começam tendo que clonar o repositório para ter na sua maquina:
+## Tecnologias Utilizadas
+- **Cliente**: JavaScript, HTML, CSS
+- **Servidor**: Node.js, Express.js
+- **Banco de Dados**: SQL Server
+- **ORM**: Prisma
+- **Containerização**: Docker
 
-```
-git clone https://github.com/jucalast/PiSegundoSem.git
-```
-(Lembre-se que quando vcs usarem o shell para clonar, ele vai clonar para onde vc está)
+## Começando
 
+### Pré-requisitos
+- Node.js
+- Docker
+- SQL Server
 
-E também sempre que alguém modificar o repositório original (main branch), vamos precisar sincronizar com ele manualmente na nossa máquina por meio de pull:
-```
-git pull origin main
-```
+### Instalação
 
-Modificar por branch /pull request (mais seguro e recomendável se vc fez muita coisa)
----
-Crie uma branch (Galho) que vai ser uma ramificação sua do projeto original com suas alterações separadas
-```
-git checkout -b [nome da sua branch]
-```
-Faça commit pelo vscode mesmo ou pelo terminal que seria:
-```
-git add .
-git commit -m "as alterações q vc fez"
-```
-Faça um push para o galho que vc criou:
-```
-git push origin [branch q vc criou]
-```
-Depois é possível pedir um pull request entre a main e a branch que vc criou no site do github para agnt conseguir analisar e fazer merge.
+1. Clone o repositório:
+    ```sh
+    git clone https://github.com/Gigio42/PiSegundoSem.git
+    cd PiSegundoSem
+    ```
 
+2. Configure o cliente:
+    ```sh
+    cd Client
+    npm install
+    ```
 
+3. Configure o servidor:
+    ```sh
+    cd ../Server
+    npm install
+    ```
 
-Modificar direto por push:
----
-Faça como usualmente vc faria, depois de ter clonado, se vc estiver pelo vscode, vc clica em commit e depois dá sync ou:
-```
-git add .
-git commit -m "as alterações q vc fez"
-git push origin main
-```
+4. Configure o banco de dados:
+    ```sh
+    cd ../prisma
+    npx prisma migrate dev --name init
+    ```
 
-Comandos para ter em mente
----
-Lista as branches do repo
-```
-git branch
-```
-Muda vc de uma branch para outra, se colocar -b vc cria e já muda para ela
-```
-git checkout [branch de sua escolha]
-```
-Mostra as modificações q tdmundo está fazendo no arquivo original do projeto, (se quiser sair é a tecla 'q')
-```
-git log origin/main
-```
-Se quiser saber se houve mudanças na main, pode usar o fetch
-```
-git fetch origin main
-```
-Se quiser mesclar sua branch com a main sem passar por um pull request (ñ recomendado), primeiro vc precisa estar na branch q vc criou, depois fazer o merge:
-```
-git merge origin/main
-```
+5. Execute os containers Docker:
+    ```sh
+    docker-compose up
+    ```
+
+### Executando a Aplicação
+
+1. Inicie o servidor:
+    ```sh
+    cd Server
+    npm start
+    ```
+
+2. Inicie o cliente com Live Server.
+
+3. Acesse a aplicação em `http://localhost:3000`.
+
+## Uso
+
+### Filtragem e Ordenação
+- Utilize as opções de filtro para restringir os itens do inventário.
+- Clique no botão de ordenação para ordenar os itens de forma ascendente ou descendente com base no critério selecionado.
+
+### Gerenciamento de Estoque
+- Adicione novos itens ao inventário.
+- Atualize os detalhes dos itens existentes.
+- Remova itens do inventário.
+
+## Desenvolvimento
+
+### Contribuindo
+
+1. Faça um fork do repositório.
+2. Crie uma nova branch (`git checkout -b feature/SuaFuncionalidade`).
+3. Faça suas alterações.
+4. Comite suas alterações (`git commit -m 'Adicione uma funcionalidade'`).
+5. Faça o push para a branch (`git push origin feature/SuaFuncionalidade`).
+6. Abra um pull request.
+
+## Licença
+Este projeto está licenciado sob a Licença MIT.

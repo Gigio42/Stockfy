@@ -168,6 +168,8 @@ function handleProdCompradoLine(line, prodComprado, lineNumber) {
 }
 
 function parseMedidas(line, prodComprado) {
+  console.log("Linha recebida:", line); // Adicionado para depuração
+  
   if (line.includes("-")) {
     var parts = line.split("-");
     if (parts.length >= 2) {
@@ -183,13 +185,13 @@ function parseMedidas(line, prodComprado) {
         prodComprado["comprimento"] = comprimento;
         prodComprado["vincos"] = vincos;
       } else {
-        console.error("Formato de linha inválido para a medida:", line);
+        console.error("Formato de linha inválido para a medida (números):", line);
         prodComprado["largura"] = "";
         prodComprado["comprimento"] = "";
         prodComprado["vincos"] = "";
       }
     } else {
-      console.error("Formato de linha inválido para a medida:", line);
+      console.error("Formato de linha inválido para a medida (partes):", line);
       prodComprado["largura"] = "";
       prodComprado["comprimento"] = "";
       prodComprado["vincos"] = "";
@@ -288,7 +290,7 @@ function sendJSONDataToBackend() {
 
   var jsonDataToSend = JSON.parse(JSON.stringify(jsonData), function (key, value) {
     if (typeof value === "string" && !isNaN(value) && value !== "") {
-      var intValue = parseInt(value.replace(/\./g, ""));
+      var intValue = parseInt(value.replace(/\./g, ""), 10);
       return intValue;
     }
     return value;
@@ -309,6 +311,7 @@ function sendJSONDataToBackend() {
     });
 }
 
+
 function removeEmptyProperties(obj) {
   for (var prop in obj) {
     if (obj[prop] === "") {
@@ -320,7 +323,7 @@ function removeEmptyProperties(obj) {
 
 function renameProperties(obj) {
   var newObj = {};
-  newObj["numero_cliente"] = obj.cliente;
+  newObj["numero_cliente"] = parseInt(obj.cliente, 10); // Converter para inteiro
   newObj["quantidade_comprada"] = obj["quantidade_comprada"];
   newObj["unidade"] = obj["unidade"];
   newObj["qualidade"] = obj["qualidade"];

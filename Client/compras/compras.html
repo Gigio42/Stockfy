@@ -1,32 +1,30 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Compras</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="compras.css" />
-        <!-- Inclua o CSS do Flatpickr -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
-        <!-- Vue.js -->
-        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    </head>
 
-    <body>
-        <div class="header-principal d-flex flex-row align-items-center">
-            <select id="fornecedor" name="fornecedor" class="form-control mb-2">
-                <option value="" disabled selected>fornecedor</option>
-                <option value="penha">Penha</option>
-                <option value="fernandez">Fernandez</option>
-                <option value="irani">Irani</option>
-                <option value="Adicionar Manualmente">Adicionar Manualmente</option>
-            </select>
-            <div class="logocontainer">
-                <img class="logostockfy" src="media/logoTransparente.png" alt="" />
-            </div>
-            <a class="logout" href="../home.html"><img class="" src="media/sair (1).png" alt="" /></a>
-        </div>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Compras</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="compras.css" />
+    <!-- Inclua o CSS do Flatpickr -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <header class="header-principal ">
+        <div class="logo-container"><img class="logostockfy" src="./media/logoTransparente.png" alt=""></div>
+        <a class="logout" href="../home.html"><img class="" src="media\sair (1).png" alt="" /></a>
+    </header>
+
+    <div class="foracontainer">
+        <aside class="aside-lateral">
+            <!-- Botão para abrir modal de adicionar manualmente -->
+            <button id="btnAdicionarManualmente">Adicionar Manualmente</button>
+        </aside>
 
         <div class="container">
             <div id="dropzone" class="dropzone text-center mt-4">Arraste e solte o arquivo PDF aqui</div>
@@ -34,306 +32,130 @@
             <!-- Modal -->
             <div id="myModal" class="modal">
                 <div class="modal-content">
-                    <div class="fecharbtn d-flex justify-content-between align-items-center">
-                        <h2>Confirme as informações dos itens que chegaram</h2>
-                        <button id="backButton" class="btn voltar btn-primary closeButton">Voltar</button>
+                    <div>
+                        <div class="fecharbtn d-flex justify-content-between align-items-center">
+                            <h2>Confirme as informações dos itens que chegaram</h2>
+                            <button id="backButton" class="btn voltar btn-primary closeButton"><img class="imgback" src="./media/icons8-à-esquerda-dentro-de-um-círculo-60.png" alt=""></button>
+                        </div>
+                        <div class="table-container">
+                            <table id="dataTable" class="table mt-4"></table>
+                            <div id="form-container"></div>
+                        </div>
                     </div>
-                    <div class="table-container">
-                        <table id="dataTable" class="table mt-4"></table>
-                        <div id="form-container"></div>
-                    </div>
-                    <pre id="jsonContent" style="display: none"></pre>
                     <div class="btninferior mt-4 d-flex justify-content-end">
                         <div class="date-input-container">
                             <input type="text" id="expectedDate" placeholder="Data Prevista" />
                         </div>
                         <button id="sendButton" class="btn btn-success mr-2">Enviar</button>
-                        <button id="editButton" class="btn btn-warning">Editar</button>
-                        <div class="jsonshow">
-                            <pre id="jsonContent"></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div id="mModal" class="modal">
+                <div class="modal-content-m">
+                    <div>
+                        <div class="fecharbtn d-flex justify-content-between align-items-center">
+                            
+                            <button id="backButton" class="btn voltar btn-primary closeButton"><img class="imgback" src="./media/icons8-à-esquerda-dentro-de-um-círculo-60.png" alt=""></button>
+                        </div>
+                        <div class="formAndcard">
+                            <div id="form-container">
+                                <form id="purchaseForm">
+                                    <!-- Campos do formulário -->
+                                    <div class="form-group">
+                                        <input type="number" id="customerNumber" name="customerNumber"
+                                            class="form-control inputform" placeholder="Cliente" inputmode="numeric" />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="number" id="quantity" name="quantity"
+                                            class="form-control inputform" placeholder="Quantidade"
+                                            inputmode="numeric" />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" id="quality" name="quality" class="form-control inputform"
+                                            placeholder="Qualidade" />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" id="wave" name="wave" class="form-control inputform"
+                                            placeholder="Onda" />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="number" id="weight" name="weight" class="form-control inputform"
+                                            placeholder="Gramatura" inputmode="numeric" />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="number" id="totalWeight" name="totalWeight"
+                                            class="form-control inputform" placeholder="Peso" inputmode="numeric" />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" id="unitPrice" name="unitPrice"
+                                            class="form-control inputform" placeholder="Valor Uni."
+                                            inputmode="numeric" />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" id="totalPrice" name="totalPrice"
+                                            class="form-control inputform" placeholder="Valor Tot."
+                                            inputmode="numeric" />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="number" id="width" name="width" class="form-control inputform"
+                                            placeholder="Largura" inputmode="numeric" />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="number" id="length" name="length" class="form-control inputform"
+                                            placeholder="Comprimento" inputmode="numeric" />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" id="creases" name="creases" class="form-control inputform"
+                                            placeholder="Vincos" inputmode="numeric" />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" id="buyer" name="buyer" class="form-control inputform"
+                                            placeholder="Comprador" />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" id="purchaseDate" name="purchaseDate"
+                                            class="form-control inputform" placeholder="Data Compra" />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" id="supplier" name="supplier" class="form-control inputform"
+                                            placeholder="Fornecedor" />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="number" id="purchaseID" name="purchaseID"
+                                            class="form-control inputform" placeholder="ID Compra"
+                                            inputmode="numeric" />
+                                    </div>
+                                    <div class="form-group">
+                                        <button id="addPlateButton" type="button" class="btn btn-primary">Adicionar
+                                            Chapa</button>
+                                    </div>
+                                    <button id="confirmEditButton" style="display: none">Confirmar Edição</button>
+                                </form>
+                            </div>
+                            <div id="cardsContainer" class="cardsContainer"></div>
                         </div>
                     </div>
+                    <div class="btninferior mt-4 d-flex justify-content-end">
+                        <div class="date-input-container">
+                            <input type="text" id="expectedDateManual" placeholder="Data Prevista" />
+                        </div>
+                        <button id="sendbutton" class="btn btn-success mr-2 enviarManual">Enviar</button>
+                    </div>
                 </div>
+
             </div>
         </div>
 
-        <!-- Modal -->
-        <div id="mModal" class="modal">
-            <div class="modal-content-m">
-                <div class="fecharbtn d-flex justify-content-between align-items-center">
-                    <h2>Adicione as informações dos itens comprados</h2>
-                    <a class="logout" href="../home.html"><img class="" src="media\sair (1).png" alt="" /></a>
-                    <button id="backButton" class="btn voltar btn-primary closeButton">Voltar</button>
-                </div>
-                <div class="formAndcard">
-                    <div id="form-container">
-                        <form id="purchaseForm">
-                            <!-- Campos do formulário -->
-                            <div class="form-group">
-                                <input type="number" id="customerNumber" name="customerNumber" class="form-control inputform" placeholder="Cliente" inputmode="numeric" />
-                            </div>
-                            <div class="form-group">
-                                <input type="number" id="quantity" name="quantity" class="form-control inputform" placeholder="Quantidade" inputmode="numeric" />
-                            </div>
-                            <div class="form-group">
-                                <input type="text" id="quality" name="quality" class="form-control inputform" placeholder="Qualidade" />
-                            </div>
-                            <div class="form-group">
-                                <input type="text" id="wave" name="wave" class="form-control inputform" placeholder="Onda" />
-                            </div>
-                            <div class="form-group">
-                                <input type="number" id="weight" name="weight" class="form-control inputform" placeholder="Gramatura" inputmode="numeric" />
-                            </div>
-                            <div class="form-group">
-                                <input type="number" id="totalWeight" name="totalWeight" class="form-control inputform" placeholder="Peso" inputmode="numeric" />
-                            </div>
-                            <div class="form-group">
-                                <input type="text" id="unitPrice" name="unitPrice" class="form-control inputform" placeholder="Valor Uni." inputmode="numeric" />
-                            </div>
-                            <div class="form-group">
-                                <input type="text" id="totalPrice" name="totalPrice" class="form-control inputform" placeholder="Valor Tot." inputmode="numeric" />
-                            </div>
-                            <div class="form-group">
-                                <input type="number" id="width" name="width" class="form-control inputform" placeholder="Largura" inputmode="numeric" />
-                            </div>
-                            <div class="form-group">
-                                <input type="number" id="length" name="length" class="form-control inputform" placeholder="Comprimento" inputmode="numeric" />
-                            </div>
-                            <div class="form-group">
-                                <input type="text" id="creases" name="creases" class="form-control inputform" placeholder="Vincos" inputmode="numeric" />
-                            </div>
-                            <div class="form-group">
-                                <input type="text" id="buyer" name="buyer" class="form-control inputform" placeholder="Comprador" />
-                            </div>
-                            <div class="form-group">
-                                <input type="text" id="purchaseDate" name="purchaseDate" class="form-control inputform" placeholder="Data Compra" />
-                            </div>
-                            <div class="form-group">
-                                <input type="text" id="supplier" name="supplier" class="form-control inputform" placeholder="Fornecedor" />
-                            </div>
-                            <div class="form-group">
-                                <input type="number" id="purchaseID" name="purchaseID" class="form-control inputform" placeholder="ID Compra" inputmode="numeric" />
-                            </div>
-                            <div class="form-group">
-                                <button id="addPlateButton" type="button" class="btn btn-primary">Adicionar Chapa</button>
-                            </div>
-                            <button id="confirmEditButton" style="display: none">Confirmar Edição</button>
-                        </form>
-                    </div>
-                    <div id="cardsContainer" class="cardsContainer"></div>
-                </div>
-                <div class="btninferior mt-4 d-flex justify-content-end">
-                    <div class="date-input-container">
-                        <input type="text" id="expectedDateManual" placeholder="Data Prevista" />
-                    </div>
-                    <button id="sendbutton" class="btn btn-success mr-2 enviarManual">Enviar</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal para exibir a mensagem de erro -->
-        <div id="errorModal" class="errormodal">
-            <div class="modal-content-error">
-                <div class="header-button">
-                    <button id="closeErrorModal" class="closeButton .btn-primary">Fechar</button>
-                </div>
-                <div class="alert">
-                    <img class="alertimg" width="150" height="150" src="media/danger-sign_8376179.png" alt="siren" />
-                    <span id="errorMessage"></span>
-                </div>
-            </div>
-        </div>
-        <!-- Inclua o JS do Flatpickr -->
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <!-- Conteúdo da página -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
-        <script>
-            // Definindo o workerSrc para evitar avisos de depreciação
-            pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js";
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script type="module" src="./Firstvalidation/toggleDropzone.js"></script>
+        <script type="module" src="./Firstvalidation/pdfHandler.js"></script>
+        <script type="module" src="./Firstvalidation/firstvalidation.js"></script>
+</body>
 
-            flatpickr("#expectedDate", {
-                dateFormat: "Y-m-d",
-            });
-            flatpickr("#expectedDateManual", {
-                dateFormat: "Y-m-d",
-            });
-            flatpickr("#purchaseDate", {
-                dateFormat: "Y-m-d",
-            });
-
-            function toggleDetails(event) {
-                const target = event.target;
-
-                if (target && target.classList.contains("toggle-arrow")) {
-                    const cardBody = target.closest(".card-body");
-
-                    if (cardBody) {
-                        const details = cardBody.querySelector(".card-details");
-
-                        if (details) {
-                            const toggleArrow = target;
-
-                            if (details.style.display === "none" || details.style.display === "") {
-                                details.style.display = "block";
-                                toggleArrow.style.transform = "rotate(180deg)";
-                            } else {
-                                details.style.display = "none";
-                                toggleArrow.style.transform = "rotate(0deg)";
-                            }
-                        }
-                    }
-                }
-            }
-
-            function editCard(event) {
-                console.log("Editar card");
-                event.preventDefault();
-            }
-
-            function deleteCard(event) {
-                console.log("Excluir card");
-                event.preventDefault();
-            }
-
-            $(document).ready(function () {
-                $("#errorModal").hide();
-
-                function showNotification(message) {
-                    $("#notificationMessage").text(message);
-                    $("#notification").show();
-
-                    setTimeout(function () {
-                        $("#notification").hide();
-                    }, 5000);
-                }
-
-                function lerTextoPdf(arquivoUrl) {
-                    // Carrega o documento PDF
-                    pdfjsLib.getDocument(arquivoUrl).promise.then(function (pdf) {
-                        var textoCompleto = "";
-                        var numPages = pdf.numPages;
-
-                        // Cria uma promessa para ler o conteúdo de cada página
-                        var leituraPaginaPromessas = [];
-                        for (var i = 1; i <= numPages; i++) {
-                            leituraPaginaPromessas.push(
-                                pdf.getPage(i).then(function (page) {
-                                    return page.getTextContent().then(function (textContent) {
-                                        var textoPagina = textContent.items
-                                            .map(function (s) {
-                                                return s.str;
-                                            })
-                                            .join(" ");
-                                        textoCompleto += textoPagina;
-                                    });
-                                }),
-                            );
-                        }
-
-                        // Processa todas as páginas e verifica o texto
-                        Promise.all(leituraPaginaPromessas).then(function () {
-                            textoCompleto = textoCompleto.toUpperCase();
-
-                            // Verifica se o texto contém "PENHA" ou "IRANI"
-                            if (textoCompleto.includes("PENHA") || textoCompleto.includes("IRANI")) {
-                                carregarScript("penha-irani.js", arquivoUrl);
-                            }
-                            // Verifica se o texto contém "FERNANDEZ"
-                            else if (textoCompleto.includes("FERNANDEZ")) {
-                                carregarScript("fernandez.js", arquivoUrl);
-                            }
-                            // Se nenhuma palavra-chave for encontrada, exibe um erro
-                            else {
-                                $("#errorMessage").text("Esse pedido de compra não corresponde a nenhum fornecedor conhecido.");
-                                $("#errorModal").show();
-                            }
-                        });
-                    });
-                }
-
-                function limparConteudo() {
-                    $("#dataTable").html("");
-                    $("#jsonContent").text("");
-                    $("#myModal").modal("hide");
-                    $("#mModal").modal("hide");
-                }
-
-                $("#backButton").on("click", function () {
-                    limparConteudo();
-                    window.location.reload();
-                });
-
-                $(".closeButton").on("click", function () {
-                    $("#errorModal").hide();
-                    $("#myModal").hide();
-                    $("#mModal").hide();
-                    window.location.reload();
-                });
-
-                $("#dropzone").on("drop", function (event) {
-                    event.preventDefault();
-                    const arquivo = event.originalEvent.dataTransfer.files[0];
-
-                    if (arquivo && arquivo.type == "application/pdf") {
-                        const arquivoUrl = URL.createObjectURL(arquivo);
-                        lerTextoPdf(arquivoUrl);
-                    } else {
-                        showNotification("Por favor, carregue um arquivo PDF.", "error");
-                    }
-                });
-
-                $("#dropzone").on("dragover", function (event) {
-                    event.preventDefault();
-                });
-
-                $("#fornecedor").on("change", function (event) {
-                    const fornecedorSelecionado = $(this).val();
-                    if (fornecedorSelecionado === "Adicionar Manualmente") {
-                        $("#mModal").show();
-                    } else {
-                        $("#mModal").hide();
-                    }
-                });
-
-                window.onclick = function (event) {
-                    const modal = document.getElementById("myModal");
-                    if (event.target == modal) {
-                        limparConteudo();
-                    }
-                };
-
-                function carregarScript(url, arquivoUrl) {
-                    const existingScript = document.querySelector("script[data-fornecedor]");
-                    if (existingScript) {
-                        existingScript.parentNode.removeChild(existingScript);
-                    }
-
-                    const script = document.createElement("script");
-                    script.onload = function () {
-                        console.log("Script carregado:", url);
-                        // Chama handleFile diretamente após o carregamento do script
-                        if (typeof window.handleFile === "function") {
-                            window.handleFile(arquivoUrl);
-                        } else {
-                            console.error("handleFile não está definido.");
-                        }
-                    };
-                    script.src = url;
-                    script.setAttribute("data-fornecedor", "");
-                    script.type = "module";
-                    document.head.appendChild(script);
-                }
-            });
-
-            if (window.innerWidth < 768) {
-                const modal = document.getElementById("myModal");
-                if (modal) {
-                    modal.style.display = "block";
-                }
-
-                carregarScript("adicionar_manualmente.js");
-            }
-        </script>
-    </body>
 </html>
