@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: client.dockerfile
+    image: ghcr.io/gigio42/pisegundosem/client:latest
     ports:
       - "80:80"
 
@@ -12,6 +13,7 @@ services:
     build:
       context: .
       dockerfile: server.dockerfile
+    image: ghcr.io/gigio42/pisegundosem/server:latest
     ports:
       - "3000:3000"
     depends_on:
@@ -26,6 +28,7 @@ services:
     build:
       context: .
       dockerfile: database.dockerfile
+    image: ghcr.io/gigio42/pisegundosem/database:latest
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
