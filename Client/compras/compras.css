@@ -14,7 +14,7 @@ body {
   justify-content: space-between;
   overflow-y: hidden;
 }
-
+#btnConjugar,
 #btnAdicionarManualmente {
     border: none ;
     padding: 1rem;
@@ -22,12 +22,27 @@ body {
     border-radius: 1rem;
     background-color: #232323;
     color: #585858;
+    margin-bottom: 1rem;
 }
 
+#btnConjugar:hover,
 #btnAdicionarManualmente:hover {
-    border: solid 1px #b52aff ;
-    color: #af00d6;
+    background: #1c1c1c;
 }
+
+/* Estilos para a classe AddConjugação */
+.AddConjugação {
+  background: #9178ff !important;
+  color: #4d25ff !important;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Transição suave de 0.3 segundos */
+  border: none;
+}
+
+/* Estilos para a classe AddConjugação */
+.AddConjugação:hover {
+  border: none !important;
+}
+
 
 
 ::-webkit-scrollbar {
@@ -113,7 +128,6 @@ body {
   color: #c2c2c2;
   border-top: none;
   text-align: center;
-  background: #232323;
   justify-content: center;
   align-items: center;
   font-size: 1.5rem;
@@ -503,6 +517,11 @@ th {
   font-size: 1rem;
   color: #b52aff;
 }
+
+.selected {
+  background-color: #323232 !important; /* Altere a cor conforme necessário */
+}
+
 
 @media screen and (max-width: 902px) {
   .inputform {

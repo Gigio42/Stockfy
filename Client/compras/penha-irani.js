@@ -264,7 +264,29 @@ function addTableRow(dataTable, prod, index) {
   });
 
   row.classList.add(index % 2 === 0 ? "even-row" : "odd-row");
+
+  // Adiciona evento de clique para selecionar a linha
+  row.addEventListener("click", () => {
+    // Remove a classe 'selected' de todas as linhas
+    const rows = dataTable.getElementsByTagName("tr");
+    for (let i = 0; i < rows.length; i++) {
+      rows[i].classList.remove("selected");
+    }
+    // Adiciona a classe 'selected' à linha clicada
+    row.classList.add("selected");
+
+    // Adiciona a classe 'AddConjugação' ao botão com id 'btnConjugar'
+    const btnConjugar = document.getElementById("btnConjugar");
+    if (btnConjugar) {
+      btnConjugar.classList.add("AddConjugação");
+    }
+
+    // Adiciona um console.log() para indicar que a linha foi clicada
+    console.log("Linha clicada:", prod); // Aqui você pode modificar o que deseja exibir no console
+  });
 }
+
+
 
 function populateTable(infoProdComprados) {
   const dataTable = document.getElementById("dataTable");
@@ -274,6 +296,7 @@ function populateTable(infoProdComprados) {
     infoProdComprados.forEach((prod, index) => addTableRow(dataTable, prod, index));
   }
 }
+
 
 function showModal() {
   var modal = document.getElementById("myModal");
@@ -354,19 +377,4 @@ if (sendButton) {
   });
 } else {
   console.error("Botão 'Enviar' não encontrado.");
-}
-
-var editButton = document.getElementById("editButton");
-if (editButton) {
-  editButton.addEventListener("click", function () {
-    var jsonContent = document.getElementById("jsonContent");
-    if (jsonContent) {
-      jsonContent.textContent = JSON.stringify(jsonData, null, 2);
-      jsonContent.style.display = "block";
-    } else {
-      console.error("Elemento 'jsonContent' não encontrado.");
-    }
-  });
-} else {
-  console.error("Botão 'Editar' não encontrado.");
 }

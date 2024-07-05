@@ -24,6 +24,8 @@
         <aside class="aside-lateral">
             <!-- Botão para abrir modal de adicionar manualmente -->
             <button id="btnAdicionarManualmente">Adicionar Manualmente</button>
+            <!-- Novo botão para abrir um novo modal -->
+            <button id="btnConjugar">Adicionar conjugação</button>
         </aside>
 
         <div class="container">
@@ -47,6 +49,24 @@
                             <input type="text" id="expectedDate" placeholder="Data Prevista" />
                         </div>
                         <button id="sendButton" class="btn btn-success mr-2">Enviar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Novo Modal -->
+            <div id="conjugarModal" class="modal">
+                <div class="modal-content">
+                    <div>
+                        <div class="fecharbtn d-flex justify-content-between align-items-center">
+                            <h2>Novo Modal</h2>
+                            <button id="closeNovoModalButton" class="btn voltar btn-primary closeButton"><img class="imgback" src="./media/icons8-à-esquerda-dentro-de-um-círculo-60.png" alt=""></button>
+                        </div>
+                        <div class="table-container">
+                            <p>Conteúdo do novo modal.</p>
+                        </div>
+                    </div>
+                    <div class="btninferior mt-4 d-flex justify-content-end">
+                        <button id="closeNovoModalButton2" class="btn btn-success mr-2">Fechar</button>
                     </div>
                 </div>
             </div>
@@ -156,6 +176,28 @@
         <script type="module" src="./Firstvalidation/toggleDropzone.js"></script>
         <script type="module" src="./Firstvalidation/pdfHandler.js"></script>
         <script type="module" src="./Firstvalidation/firstvalidation.js"></script>
+        <script>
+            // JavaScript para abrir e fechar o novo modal
+            document.getElementById('btnConjugar').addEventListener('click', function () {
+                document.getElementById('conjugarModal').style.display = 'block';
+            });
+
+            document.getElementById('closeNovoModalButton').addEventListener('click', function () {
+                document.getElementById('conjugarModal').style.display = 'none';
+            });
+
+            document.getElementById('closeNovoModalButton2').addEventListener('click', function () {
+                document.getElementById('conjugarModal').style.display = 'none';
+            });
+
+
+            document.querySelectorAll('.closeButton').forEach(button => {
+                button.addEventListener('click', function () {
+                    document.getElementById('mModal').style.display = 'none';
+                    document.getElementById('myModal').style.display = 'none';
+                });
+            });
+        </script>
 </body>
 
 </html>
