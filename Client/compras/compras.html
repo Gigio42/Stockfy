@@ -37,7 +37,8 @@
                     <div>
                         <div class="fecharbtn d-flex justify-content-between align-items-center">
                             <h2>Confirme as informações dos itens que chegaram</h2>
-                            <button id="backButton" class="btn voltar btn-primary closeButton"><img class="imgback" src="./media/icons8-à-esquerda-dentro-de-um-círculo-60.png" alt=""></button>
+                            <button id="backButton" class="btn voltar btn-primary closeButton"><img class="imgback"
+                                    src="./media/icons8-à-esquerda-dentro-de-um-círculo-60.png" alt=""></button>
                         </div>
                         <div class="table-container">
                             <table id="dataTable" class="table mt-4"></table>
@@ -53,31 +54,30 @@
                 </div>
             </div>
 
-            <!-- Novo Modal -->
-            <div id="conjugarModal" class="modal">
-                <div class="modal-content">
-                    <div>
-                        <div class="fecharbtn d-flex justify-content-between align-items-center">
-                            <h2>Novo Modal</h2>
-                            <button id="closeNovoModalButton" class="btn voltar btn-primary closeButton"><img class="imgback" src="./media/icons8-à-esquerda-dentro-de-um-círculo-60.png" alt=""></button>
-                        </div>
-                        <div class="table-container">
-                            <p>Conteúdo do novo modal.</p>
-                        </div>
-                    </div>
-                    <div class="btninferior mt-4 d-flex justify-content-end">
-                        <button id="closeNovoModalButton2" class="btn btn-success mr-2">Fechar</button>
-                    </div>
+            <div id="conjugarModal" class="modalconjugar">
+                <div id="modal-content-conjugação" class="modal-content-conjugação">
+                  <button id="fecharModalconjug" class="sairModalConjg">
+                    x
+                  </button>
+                  <pre></pre>
+                  <div id="cardboardRepresentation" class="cardboard-representation"></div>
                 </div>
-            </div>
+              </div>
+              
+              
+              
+              
+
+
 
             <!-- Modal -->
             <div id="mModal" class="modal">
                 <div class="modal-content-m">
                     <div>
                         <div class="fecharbtn d-flex justify-content-between align-items-center">
-                            
-                            <button id="backButton" class="btn voltar btn-primary closeButton"><img class="imgback" src="./media/icons8-à-esquerda-dentro-de-um-círculo-60.png" alt=""></button>
+
+                            <button id="backButton" class="btn voltar btn-primary closeButton"><img class="imgback"
+                                    src="./media/icons8-à-esquerda-dentro-de-um-círculo-60.png" alt=""></button>
                         </div>
                         <div class="formAndcard">
                             <div id="form-container">
@@ -182,11 +182,7 @@
                 document.getElementById('conjugarModal').style.display = 'block';
             });
 
-            document.getElementById('closeNovoModalButton').addEventListener('click', function () {
-                document.getElementById('conjugarModal').style.display = 'none';
-            });
-
-            document.getElementById('closeNovoModalButton2').addEventListener('click', function () {
+            document.getElementById('fecharModalconjug').addEventListener('click', function () {
                 document.getElementById('conjugarModal').style.display = 'none';
             });
 
@@ -197,6 +193,8 @@
                     document.getElementById('myModal').style.display = 'none';
                 });
             });
+
+
         </script>
 </body>
 

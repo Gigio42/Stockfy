@@ -480,6 +480,62 @@ th {
   text-align: center;
 }
 
+.cardboard-sheet {
+  border: 1px solid #dc8834;
+  padding: 10px;
+  margin-top: 10px;
+  background: #dc883432;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #dc8834;
+  font-size: 1.5rem;
+
+}
+
+#fecharModalconjug {
+  border:none;
+  background: #212121;
+  padding: 0.5rem;
+  color: #585858;
+  border-radius: 1rem;
+}
+
+.cardboard-dimensions {
+  font-weight: bold;
+}
+
+pre {
+  display: none;
+}
+
+
+.modalconjugar {
+  position: fixed;
+  display: none;
+  z-index: 99999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  background-color: rgba(52, 52, 52, 0.324);
+  backdrop-filter: blur(5px);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content-conjugação {
+width: 90%;
+height: 90%;
+background-color: #282828;
+margin: 2% auto;
+border-radius: 1rem;
+padding: 2rem;
+}
+
 /* Define o estilo do input para ocupar 100% da altura da célula e estar centralizado */
 
 /* Classe para bordas arredondadas nas linhas da tabela */

@@ -169,7 +169,7 @@ function handleProdCompradoLine(line, prodComprado, lineNumber) {
 
 function parseMedidas(line, prodComprado) {
   console.log("Linha recebida:", line); // Adicionado para depuração
-  
+
   if (line.includes("-")) {
     var parts = line.split("-");
     if (parts.length >= 2) {
@@ -275,16 +275,42 @@ function addTableRow(dataTable, prod, index) {
     // Adiciona a classe 'selected' à linha clicada
     row.classList.add("selected");
 
-    // Adiciona a classe 'AddConjugação' ao botão com id 'btnConjugar'
-    const btnConjugar = document.getElementById("btnConjugar");
-    if (btnConjugar) {
-      btnConjugar.classList.add("AddConjugação");
-    }
+    // Atualiza o conteúdo do <pre> com o JSON da linha clicada
+    const modalContent = document.getElementById("modal-content-conjugação");
+    const preElement = modalContent.querySelector("pre");
+    preElement.textContent = JSON.stringify(prod, null, 2);
 
-    // Adiciona um console.log() para indicar que a linha foi clicada
-    console.log("Linha clicada:", prod); // Aqui você pode modificar o que deseja exibir no console
+    // Atualiza a representação da chapa de papelão
+    updateCardboardRepresentation(prod);
   });
 }
+function updateCardboardRepresentation(prod) {
+  const cardboardDiv = document.getElementById("cardboardRepresentation");
+
+  // Obtém largura e comprimento do JSON
+  const comprimento = parseInt(prod.comprimento);
+  const largura = parseInt(prod.largura);
+
+  // Define o fator de escala (por exemplo, 0.8 para reduzir em 20%)
+  const scale = 0.3;
+
+  // Converte para pixels (assumindo 1 pixel = 1 mm)
+  const larguraPx = comprimento * scale;
+  const comprimentoPx = largura * scale;
+
+  // Cria a representação da chapa de papelão em pixels
+  cardboardDiv.innerHTML = `
+    <div class="cardboard-sheet" style="width: ${larguraPx}px; height: ${comprimentoPx}px;">
+      <div class="cardboard-dimensions">
+        ${largura} X ${comprimento}
+      </div>
+    </div>
+  `;
+}
+
+
+
+
 
 
 
@@ -296,6 +322,8 @@ function populateTable(infoProdComprados) {
     infoProdComprados.forEach((prod, index) => addTableRow(dataTable, prod, index));
   }
 }
+
+
 
 
 function showModal() {
@@ -333,7 +361,6 @@ function sendJSONDataToBackend() {
       console.error("Erro ao enviar dados:", error);
     });
 }
-
 
 function removeEmptyProperties(obj) {
   for (var prop in obj) {
