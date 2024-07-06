@@ -21,11 +21,12 @@ services:
       - "3000:3000"
     depends_on:
       - db
-    environment:
-      DATABASE_POSTGRE_URL: ${DATABASE_POSTGRE_URL}
-      HOST: 0.0.0.0
+    env_file:
+      - .env.docker
     command: >
-      sh -c "npx prisma migrate deploy && node Server/server.js"
+      sh -c "dockerize -wait tcp://db:5432 -timeout 20s &&
+      npx prisma migrate deploy &&
+      node Server/server.js"
     networks:
       - app-network
     restart: unless-stopped
@@ -35,10 +36,8 @@ services:
       context: .
       dockerfile: database.dockerfile
     image: ghcr.io/gigio42/pisegundosem/database:latest
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+    env_file:
+      - .env.docker
     ports:
       - "5432:5432"
     volumes:
