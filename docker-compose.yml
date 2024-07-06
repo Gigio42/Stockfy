@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: client.dockerfile
-    image: ghcr.io/gigio42/pisegundosem/client:latest
+    image: client:dev
     ports:
       - "5500:8080"
     networks:
@@ -16,7 +16,7 @@ services:
     build:
       context: .
       dockerfile: server.dockerfile
-    image: ghcr.io/gigio42/pisegundosem/server:latest
+    image: server:dev
     ports:
       - "3000:3000"
     depends_on:
@@ -35,7 +35,7 @@ services:
     build:
       context: .
       dockerfile: database.dockerfile
-    image: ghcr.io/gigio42/pisegundosem/database:latest
+    image: database:dev
     env_file:
       - .env.docker
     ports:
