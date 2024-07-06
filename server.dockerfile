@@ -1,15 +1,30 @@
-FROM node:16-alpine
+# ---- Build Stage ----
+FROM node:20-alpine AS build
 
 WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm install
+ENV NODE_ENV=production
+
+RUN npm ci
 
 COPY Server ./Server
 COPY prisma/postgresql ./prisma
 
 RUN npx prisma generate
+
+# ---- Run Stage ----
+FROM node:20-alpine
+
+WORKDIR /usr/src/app
+
+COPY --from=build /usr/src/app .
+
+RUN adduser -D appuser
+RUN chown -R appuser /usr/src/app
+
+USER appuser
 
 EXPOSE 3000
 

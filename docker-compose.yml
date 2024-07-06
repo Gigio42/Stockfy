@@ -7,7 +7,10 @@ services:
       dockerfile: client.dockerfile
     image: ghcr.io/gigio42/pisegundosem/client:latest
     ports:
-      - "80:80"
+      - "5500:8080"
+    networks:
+      - app-network
+    restart: unless-stopped
 
   server:
     build:
@@ -20,9 +23,12 @@ services:
       - db
     environment:
       DATABASE_POSTGRE_URL: ${DATABASE_POSTGRE_URL}
-      HOST: ${HOST}
+      HOST: 0.0.0.0
     command: >
-      sh -c "npx prisma db push && node Server/server.js"
+      sh -c "npx prisma migrate deploy && node Server/server.js"
+    networks:
+      - app-network
+    restart: unless-stopped
 
   db:
     build:
@@ -35,3 +41,14 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5432:5432"
+    volumes:
+      - estoque-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    restart: unless-stopped
+
+volumes:
+  estoque-data:
+
+networks:
+  app-network:
