@@ -2,10 +2,7 @@ version: "3.8"
 
 services:
   client:
-    build:
-      context: .
-      dockerfile: client.dockerfile
-    image: client:dev
+    image: ghcr.io/gigio42/pisegundosem/client:latest
     ports:
       - "5500:8080"
     networks:
@@ -13,10 +10,7 @@ services:
     restart: unless-stopped
 
   server:
-    build:
-      context: .
-      dockerfile: server.dockerfile
-    image: server:dev
+    image: ghcr.io/gigio42/pisegundosem/server:latest
     ports:
       - "3000:3000"
     depends_on:
@@ -32,10 +26,7 @@ services:
     restart: unless-stopped
 
   db:
-    build:
-      context: .
-      dockerfile: database.dockerfile
-    image: database:dev
+    image: ghcr.io/gigio42/pisegundosem/database:latest
     env_file:
       - .env.docker
     ports:
