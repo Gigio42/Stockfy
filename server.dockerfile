@@ -21,11 +21,19 @@
     
     COPY --from=build /usr/src/app .
     
-    # Install dockerize
+    # Instalação do Dockerize
     ENV DOCKERIZE_VERSION v0.6.1
-    RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
-        && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
-        && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+    
+    # Verifique a arquitetura e baixe a versão apropriada do Dockerize
+    RUN if [ "$(uname -m)" = "x86_64" ]; then \
+            wget https://github.com/jwilder/dockerize/releases/download/${DOCKERIZE_VERSION}/dockerize-linux-amd64-${DOCKERIZE_VERSION}.tar.gz \
+            && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-${DOCKERIZE_VERSION}.tar.gz \
+            && rm dockerize-linux-amd64-${DOCKERIZE_VERSION}.tar.gz; \
+        else \
+            wget https://github.com/jwilder/dockerize/releases/download/${DOCKERIZE_VERSION}/dockerize-linux-armhf-${DOCKERIZE_VERSION}.tar.gz \
+            && tar -C /usr/local/bin -xzvf dockerize-linux-armhf-${DOCKERIZE_VERSION}.tar.gz \
+            && rm dockerize-linux-armhf-${DOCKERIZE_VERSION}.tar.gz; \
+        fi
     
     RUN adduser -D appuser
     RUN chown -R appuser /usr/src/app
