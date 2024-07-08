@@ -120,28 +120,20 @@ model Usuarios {
   @@index([id_usuario])
 }
 
-model HistoricoChapa {
-  id_historico_chapa  Int       @id @default(autoincrement())
+model Historico {
+  id_historico  Int       @id @default(autoincrement())
   id_chapa            Int
   quantidade          Int
   modificacao         String
   modificado_por      String
   data_modificacao    String
-  part_number         String
-
-  @@index([id_chapa])
-}
-
-model HistoricoItem {
-  id_historico_item   Int       @id @default(autoincrement())
-  id_item             Int
-  quantidade          Int
-  modificacao         String
-  modificado_por      String
-  data_modificacao    String
-  maquina             String
-  ordem               Int
+  part_number         String?
+  maquina             String?
+  ordem               Int?
+  conjulgacao         String?
   pedido_venda        String
 
-  @@index([id_item])
+
+  @@index([id_historico])
 }
+
