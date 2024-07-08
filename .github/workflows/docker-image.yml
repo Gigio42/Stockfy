@@ -29,7 +29,7 @@ jobs:
         context: .
         file: ./client.dockerfile
         push: true
-        platforms: linux/amd64,linux/arm64,linux/arm/v7
+        platforms: linux/amd64,linux/arm64
         tags: ghcr.io/gigio42/pisegundosem/client:latest
 
     - name: Build and push server Docker image
@@ -38,7 +38,7 @@ jobs:
         context: .
         file: ./server.dockerfile
         push: true
-        platforms: linux/amd64,linux/arm64,linux/arm/v7
+        platforms: linux/amd64,linux/arm64
         tags: ghcr.io/gigio42/pisegundosem/server:latest
 
     - name: Build and push database Docker image
@@ -47,5 +47,5 @@ jobs:
         context: .
         file: ./database.dockerfile
         push: true
-        platforms: linux/amd64,linux/arm64,linux/arm/v7
+        platforms: linux/amd64,linux/arm64
         tags: ghcr.io/gigio42/pisegundosem/database:latest
