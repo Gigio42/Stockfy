@@ -16,25 +16,27 @@ body {
 }
 #btnConjugar,
 #btnAdicionarManualmente {
-    border: none ;
-    padding: 1rem;
-    width: 100%;
-    border-radius: 1rem;
-    background-color: #232323;
-    color: #585858;
-    margin-bottom: 1rem;
+  border: none;
+  padding: 1rem;
+  width: 100%;
+  border-radius: 1rem;
+  background-color: #232323;
+  color: #585858;
+  margin-bottom: 1rem;
 }
 
 #btnConjugar:hover,
 #btnAdicionarManualmente:hover {
-    background: #1c1c1c;
+  background: #1c1c1c;
 }
 
 /* Estilos para a classe AddConjugação */
 .AddConjugação {
   background: #9178ff !important;
   color: #4d25ff !important;
-  transition: background-color 0.3s ease, color 0.3s ease; /* Transição suave de 0.3 segundos */
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease; /* Transição suave de 0.3 segundos */
   border: none;
 }
 
@@ -43,32 +45,24 @@ body {
   border: none !important;
 }
 
-
-
 ::-webkit-scrollbar {
-    width: 10px;
-    /* largura da barra de rolagem */
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: #424242;
-    /* cor do 'thumb' (a parte que você arrasta) */
-    border-radius: 5px;
-    /* borda arredondada */
-  }
-
-  ::-webkit-scrollbar-track {
-    background-color: #212121;
-    /* cor do fundo da barra de rolagem */
-  }
-
-.container {
-  display: flex;
-  width: 80%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
+  width: 10px;
+  /* largura da barra de rolagem */
 }
+
+::-webkit-scrollbar-thumb {
+  background-color: #424242;
+  /* cor do 'thumb' (a parte que você arrasta) */
+  border-radius: 5px;
+  /* borda arredondada */
+}
+
+::-webkit-scrollbar-track {
+  background-color: #212121;
+  /* cor do fundo da barra de rolagem */
+}
+
+
 
 .dropzone {
   line-height: 10rem;
@@ -77,6 +71,7 @@ body {
   align-content: center;
   color: #363636;
   width: 100%;
+  height: 90%;
 }
 
 .dropzone:hover {
@@ -148,7 +143,7 @@ body {
 }
 
 .modal-backdrop {
-    display: none;
+  display: none;
 }
 
 .jsonshow {
@@ -157,7 +152,7 @@ body {
 }
 
 .btninferior {
-    position: fixed;
+  position: fixed;
   bottom: 0;
   left: 0; /* ou right: 0; para alinhamento à direita */
   width: 100%;
@@ -214,18 +209,11 @@ body {
 }
 
 .logostockfy {
-  width: 100px;
+  width: 70px;
+  margin-left: 3rem;
+
 }
 
-.logo-container {
-  width: 20%;
-  height: 100%;
-  display: flex;
-  background: #292929;
-  align-items: center;
-  align-content: center;
-  flex-direction: column;
-}
 
 @media (max-width: 576px) {
   .btninferior {
@@ -291,16 +279,42 @@ body button.confirm:hover {
   display: flex;
   flex-direction: row;
   height: 100%;
-  width: 100%;
+  width: 100vw !important;
+  align-items: self-end;
 }
 
 .header-principal {
   display: flex;
-  background-color: #232323;
+  background-color: rgb(39, 39, 39);
   justify-content: space-between;
-  height: 5rem;
+  height: 10%;
   flex-direction: row;
   align-items: center;
+  position:fixed;
+  z-index: 5;
+  width: 100vw;
+}
+
+#stagedCardsContainer {
+  gap: 1rem !important;
+  display: flex;
+  flex-direction: row;
+  width: fit-content;
+  align-content: flex-start;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.gridcards {
+  width: 100%;
+  display: flex;
+  margin-top: 2rem;
+}
+
+.staged-card {
+  margin: 1rem;
+  margin-top: 0;
+  margin-left: 0;
 }
 
 #fornecedor {
@@ -378,15 +392,6 @@ body button.edit.disabled {
   background-color: #a02525;
 }
 
-.errormodal {
-  background-color: #1212126e;
-  z-index: 9999999;
-  height: 100vh;
-  width: 100vw;
-  position: fixed;
-  backdrop-filter: blur(7px);
-}
-
 .header-button {
   display: flex;
   display: flex;
@@ -404,12 +409,11 @@ body button.edit.disabled {
 }
 
 .closeButton:hover {
-    background: #23232360;
-  }
-  
+  background: #23232360;
+}
 
 .imgback {
-    width: 25px;
+  width: 25px;
 }
 
 @media screen and (max-width: 902px) {
@@ -427,7 +431,10 @@ body button.edit.disabled {
   background-color: #2c2c2c;
   padding: 20px;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  z-index: 9999;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .logocontainer img {
@@ -435,12 +442,17 @@ body button.edit.disabled {
 }
 
 .logout {
-  width: 3.5rem;
-  padding: 1rem;
+  padding: 0.5rem;
   border-radius: 0.5rem;
   height: 60%;
   display: flex;
   margin-right: 2rem;
+  align-items: center;
+}
+
+.logoutimg {
+  width: 20px;
+  height: 20px;
 }
 
 .logout:hover {
@@ -482,24 +494,172 @@ th {
 
 .cardboard-sheet {
   border: 1px solid #dc8834;
-  padding: 10px;
-  margin-top: 10px;
   background: #dc883432;
-  border-radius: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #dc8834;
   font-size: 1.5rem;
-
+  margin-right: 2rem;
 }
 
+.bodyconjug {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  height: 70%;
+  padding: 2rem;
+  flex-wrap: nowrap;
+  overflow-y: auto;
+  max-height: 75%;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  width: 97%;
+  border: solid 1px #232323;
+  border-radius: 1rem;
+  background: #161616;
+}
+
+#quantidade,
+#largura,
+#comprimento,
+#quantasvezes {
+  background: #232323;
+  border: none;
+  border-radius: 1rem;
+  color: #dc8834;
+  padding-left: 1rem;
+  height: 3rem;
+  margin-bottom: 1rem;
+  width: 95% !important;
+}
+
+/* Ajusta o grid para os cardboard-dimensions dentro do full-cardboard */
+.full-cardboard {
+  display: grid;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+}
+
+.inside-dimensions {
+  background-color: #f0f0f0;
+  border: 1px solid #999;
+  padding: 5px;
+  text-align: center;
+}
+
+#quantidade:focus,
+#largura:focus,
+#comprimento:focus,
+#quantasvezes:focus {
+  outline: none; /* Remove a borda de foco */
+}
+
+/* Estilizando os placeholders */
+#quantidade::placeholder,
+#largura::placeholder,
+#comprimento::placeholder,
+#quantasvezes::placeholder {
+  color: #666; /* Cor do texto do placeholder */
+}
+
+/* Alterando a cor do placeholder ao focar */
+#quantidade:focus::placeholder,
+#largura:focus::placeholder,
+#comprimento:focus::placeholder,
+#quantasvezes:focus::placeholder {
+  color: #999; /* Cor do texto do placeholder ao focar */
+  font-style: normal; /* Estilo do texto do placeholder ao focar */
+}
+
+#adicionarMedidasForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.medidaConjugações {
+  width: 20%;
+  height: 100%;
+  width: 20%;
+  background: #1b1b1b;
+  border-radius: 1rem;
+  padding: 1rem;
+  display:flex ;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#conjugacoesstaged {
+  gap: 1REM ;
+  display: flex;
+  border: solid 1px #232323;
+  border-radius: 1rem;
+  background: #161616;
+  padding: 1rem;
+  width: 81%;
+  height: 3.7rem;
+}
+
+.conjugmedidasstaged {
+  display: flex;
+  flex-direction: ro;
+}
+
+.delete-button,
+#refazerChapa,
+#desfazerChapa,
+#AddConjugStaged,
 #fecharModalconjug {
-  border:none;
+  border: none;
   background: #212121;
   padding: 0.5rem;
-  color: #585858;
+  color: #686868;
   border-radius: 1rem;
+  width: fit-content;
+  min-width: 3rem;
+}
+/* Estilos para os elementos quando estão sendo hoverizados */
+.delete-button:hover,
+#refazerChapa:hover,
+#desfazerChapa:hover,
+#AddConjugStaged:hover,
+#fecharModalconjug:hover {
+  border: none;
+  background: #2e2e2e;
+  padding: 0.5rem;
+  color: #8d8d8d;
+  border-radius: 1rem;
+  width: fit-content;
+  min-width: 3rem;
+}
+
+/* Estilos para os elementos quando estão em foco (focus) */
+
+.delete-button:focus,
+#refazerChapa:focus,
+#desfazerChapa:focus,
+#AddConjugStaged:focus,
+#fecharModalconjug:focus {
+  border: none;
+  background: #2e2e2e;
+  padding: 0.5rem;
+  color: #8d8d8d;
+  border-radius: 1rem;
+  width: fit-content;
+  min-width: 3rem;
+  outline: none; /* Remove o outline padrão (contorno) */
+  box-shadow: 0 0 20px 2px #ffffff4f;
+}
+
+
+.staged-card {
+  background-color: #ffffff08;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
 }
 
 .cardboard-dimensions {
@@ -507,14 +667,64 @@ th {
 }
 
 pre {
-  display: none;
+display: none;
+}
+.cardinconjug {
+  background: #dc883432;
+  align-items: center;
+  justify-content: center;
+  color: #dc8834;
+  font-size: 1rem;
+  flex: 0 0 auto;
+  border: solid 1px #dc8834;
+  display: flex;
+  justify-content: space-around;
+
+  box-sizing: border-box; /* Faz com que o tamanho total inclua padding e borda */
 }
 
+.cardMedidaConjug {
+  background: #dc883432;
+  align-items: center;
+  justify-content: center;
+  color: #dc8834;
+  font-size: 1rem;
+  flex: 0 0 auto;
+  border: solid 1px #dc8834;
+  display: flex;
+  justify-content: space-around;
+  border-radius: 0.5rem;
+  padding: 0 1rem;
+}
+
+
+.stagedEndOriginCard {
+  width: 80%;
+}
+
+.remove-card-btn {
+  display: flex;
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  background: #dc883463;
+  color: #dc8834;
+  align-items: flex-end;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.button-container {
+  gap: 1rem;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+}
 
 .modalconjugar {
   position: fixed;
   display: none;
-  z-index: 99999;
+  z-index: 8;
   left: 0;
   top: 0;
   width: 100%;
@@ -528,12 +738,14 @@ pre {
 }
 
 .modal-content-conjugação {
-width: 90%;
-height: 90%;
-background-color: #282828;
-margin: 2% auto;
-border-radius: 1rem;
-padding: 2rem;
+  width: 90%;
+  height: 90%;
+  background-color: #181818;
+  margin: 2% auto;
+  border-radius: 1rem;
+  padding: 2rem;
+  display: flex;
+  justify-content: space-between;
 }
 
 /* Define o estilo do input para ocupar 100% da altura da célula e estar centralizado */
@@ -555,7 +767,7 @@ padding: 2rem;
   border-radius: 2rem;
   padding-right: 0;
   overflow-y: auto;
-  max-height: 75VH;
+  max-height: 75vh;
   width: 100%;
 }
 
@@ -578,7 +790,6 @@ padding: 2rem;
   background-color: #323232 !important; /* Altere a cor conforme necessário */
 }
 
-
 @media screen and (max-width: 902px) {
   .inputform {
     width: 8rem;
@@ -589,7 +800,7 @@ padding: 2rem;
   }
 
   #purchaseForm {
-    align-content: flex-start
+    align-content: flex-start;
   }
 }
 
@@ -637,7 +848,7 @@ padding: 2rem;
   align-items: flex-start;
 }
 
-@media (max-width:920px) {
+@media (max-width: 920px) {
   .container {
     width: 100vw;
   }
@@ -658,8 +869,9 @@ padding: 2rem;
   margin-bottom: 5rem;
 }
 
+
 #purchaseID {
-  background-color: #ff3a3a5e;
+  background-color: #ff3a3a35;
   border-color: #ff3a3a;
   color: #ff3a3a;
 }
@@ -695,11 +907,21 @@ padding: 2rem;
   background: #232323;
 }
 
+
+#adicionarMedidaBtn,
 .enviarManual {
-padding: 1rem;
+  padding: 1rem;
   border-radius: 1rem;
   background: #2ab14a61;
   color: #39ea62;
+  border: solid 1px #3bf867;
+}
+
+.confirm-button {
+  border-radius: 1rem;
+  background: #2ab14a61;
+  color: #39ea62;
+  border: solid 1px #3bf867;
 }
 
 .enviarManual:hover {
@@ -716,23 +938,17 @@ padding: 1rem;
   padding: 0.5rem;
 }
 
+@media (max-width: 920px) {
+  .aside-lateral {
+    display: none;
+  }
 
-@media (max-width:920px) {
-    .aside-lateral {
-        display: none;
-    }
+  .logostockfy {
+    width: 5rem;
+  }
 
-    .logo-container {
-        width: 40%;
-    }
-
-    .logostockfy {
-        width: 5rem;
-    }
-
-    .modal-content-m {
-
-    }
+  .modal-content-m {
+  }
 }
 /* Remove a borda branca ao clicar */
 input[type="date"]::-webkit-inner-spin-button,
@@ -781,6 +997,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .modal {
   position: relative;
+  z-index: 5;
 }
 
 h2 {
