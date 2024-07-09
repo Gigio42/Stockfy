@@ -1,5 +1,221 @@
 <!doctype html>
 <html lang="en">
+<<<<<<< HEAD
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Compras</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="compras.css" />
+    <!-- Inclua o CSS do Flatpickr -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/draggable/1.2.3/draggable.bundle.legacy.min.js"></script>
+
+
+</head>
+
+<body>
+    <header class="header-principal ">
+        <img class="logostockfy" src="./media/logoTransparente.png" alt="">
+        <a class="logout" href="../home.html"><img class="logoutimg" src="media\sair (1).png" alt="" /></a>
+    </header>
+
+    <div class="foracontainer">
+        <aside class="aside-lateral">
+            <!-- Botão para abrir modal de adicionar manualmente -->
+            <button id="btnAdicionarManualmente">Adicionar Manualmente</button>
+            <!-- Novo botão para abrir um novo modal -->
+            <button id="btnConjugar">Adicionar conjugação</button>
+        </aside>
+
+        <div id="dropzone" class="dropzone text-center mt-4">Arraste e solte o arquivo PDF aqui</div>
+
+        <!-- Modal -->
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <div>
+                    <div class="fecharbtn d-flex justify-content-between align-items-center">
+                        <h2>Confirme as informações dos itens que chegaram</h2>
+                        <button id="backButton" class="btn voltar btn-primary closeButton"><img class="imgback"
+                                src="./media/icons8-à-esquerda-dentro-de-um-círculo-60.png" alt=""></button>
+                    </div>
+                    <div class="table-container">
+                        <table id="dataTable" class="table mt-4"></table>
+                        <div id="form-container"></div>
+                    </div>
+                </div>
+                <div class="btninferior mt-4 d-flex justify-content-end">
+                    <div class="date-input-container">
+                        <input type="text" id="expectedDate" placeholder="Data Prevista" />
+                    </div>
+                    <button id="sendButton" class="btn btn-success mr-2">Enviar</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="conjugarModal" class="modalconjugar">
+
+            <div id="modal-content-conjugação" class="modal-content-conjugação">
+                <div class="stagedEndOriginCard">
+                    <button id="fecharModalconjug" class="sairModalConjg">x</button>
+                    <button id="AddConjugStaged" class="AddConjugStaged">+ Add Area de montagem</button>
+                    <button id="refazerChapa" class="refazer-Chapa">
+                        << /button>
+                            <button id="desfazerChapa" class="desfazer-Chapa">></button>
+                            <pre></pre>
+                            <div class="bodyconjug">
+                                <div id="cardboardRepresentation" class="cardboard-representation"></div>
+                                <div class="gridcards">
+                                    <div id="stagedCardsContainer"></div>
+                                </div>
+                            </div>
+                            <div class="conjugmedidasstaged">
+                                <button type="button" id="confirmarConjugBtn">Comfirmar Conjug.</button>
+                                <div id="conjugacoesstaged"></div>
+                            </div>
+                </div>
+                <div class="medidaConjugações">
+                    <form id="adicionarMedidasForm">
+                        <input type="number" id="largura" name="largura" placeholder="Largura" required>
+                        <input type="number" id="comprimento" name="comprimento" placeholder="Comprimento" required>
+                        <input type="number" id="quantasvezes" name="quantas vezes?" placeholder="Quantas vezes?" required>
+                        <input type="number" id="quantidade" name="quantidade" placeholder="Quantidade" required>
+                    </form>
+                    <button type="button" id="adicionarMedidaBtn">Adicionar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div id="mModal" class="modal">
+            <div class="modal-content-m">
+                <div>
+                    <div class="fecharbtn d-flex justify-content-between align-items-center">
+
+                        <button id="backButton" class="btn voltar btn-primary closeButton"><img class="imgback"
+                                src="./media/icons8-à-esquerda-dentro-de-um-círculo-60.png" alt=""></button>
+                    </div>
+                    <div class="formAndcard">
+                        <div id="form-container">
+                            <form id="purchaseForm">
+                                <!-- Campos do formulário -->
+                                <div class="form-group">
+                                    <input type="number" id="customerNumber" name="customerNumber"
+                                        class="form-control inputform" placeholder="Cliente" inputmode="numeric" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="number" id="quantity" name="quantity" class="form-control inputform"
+                                        placeholder="Quantidade" inputmode="numeric" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="quality" name="quality" class="form-control inputform"
+                                        placeholder="Qualidade" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="wave" name="wave" class="form-control inputform"
+                                        placeholder="Onda" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="number" id="weight" name="weight" class="form-control inputform"
+                                        placeholder="Gramatura" inputmode="numeric" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="number" id="totalWeight" name="totalWeight"
+                                        class="form-control inputform" placeholder="Peso" inputmode="numeric" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="unitPrice" name="unitPrice" class="form-control inputform"
+                                        placeholder="Valor Uni." inputmode="numeric" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="totalPrice" name="totalPrice" class="form-control inputform"
+                                        placeholder="Valor Tot." inputmode="numeric" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="number" id="width" name="width" class="form-control inputform"
+                                        placeholder="Largura" inputmode="numeric" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="number" id="length" name="length" class="form-control inputform"
+                                        placeholder="Comprimento" inputmode="numeric" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="creases" name="creases" class="form-control inputform"
+                                        placeholder="Vincos" inputmode="numeric" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="buyer" name="buyer" class="form-control inputform"
+                                        placeholder="Comprador" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="purchaseDate" name="purchaseDate"
+                                        class="form-control inputform" placeholder="Data Compra" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="supplier" name="supplier" class="form-control inputform"
+                                        placeholder="Fornecedor" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="number" id="purchaseID" name="purchaseID"
+                                        class="form-control inputform" placeholder="ID Compra" inputmode="numeric" />
+                                </div>
+                                <div class="form-group">
+                                    <button id="addPlateButton" type="button" class="btn btn-primary">Adicionar
+                                        Chapa</button>
+                                </div>
+                                <button id="confirmEditButton" style="display: none">Confirmar Edição</button>
+                            </form>
+                        </div>
+                        <div id="cardsContainer" class="cardsContainer"></div>
+                    </div>
+                </div>
+                <div class="btninferior mt-4 d-flex justify-content-end">
+                    <div class="date-input-container">
+                        <input type="text" id="expectedDateManual" placeholder="Data Prevista" />
+                    </div>
+                    <button id="sendbutton" class="btn btn-success mr-2 enviarManual">Enviar</button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Conteúdo da página -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script type="module" src="./Firstvalidation/toggleDropzone.js"></script>
+        <script type="module" src="./Firstvalidation/pdfHandler.js"></script>
+        <script type="module" src="./Firstvalidation/firstvalidation.js"></script>
+        <script type="module" src="./js/main.js"></script>
+
+        <script>
+            // JavaScript para abrir e fechar o novo modal
+            document.getElementById('btnConjugar').addEventListener('click', function () {
+                document.getElementById('conjugarModal').style.display = 'block';
+            });
+
+            document.getElementById('fecharModalconjug').addEventListener('click', function () {
+                document.getElementById('conjugarModal').style.display = 'none';
+            });
+
+
+            document.querySelectorAll('.closeButton').forEach(button => {
+                button.addEventListener('click', function () {
+                    document.getElementById('mModal').style.display = 'none';
+                    document.getElementById('myModal').style.display = 'none';
+                });
+            });
+
+
+        </script>
+</body>
+
+=======
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -156,4 +372,5 @@
             <script type="module" src="./Firstvalidation/pdfHandler.js"></script>
             <script type="module" src="./Firstvalidation/firstvalidation.js"></script>
     </body>    
+>>>>>>> 76968b764bf3c7d11286b252268285d4a3298971
 </html>

@@ -1,4 +1,5 @@
-import { toggleDropzoneVisibility } from './toggleDropzone.js';
+
+
 
 export function lerTextoPdf(arquivoUrl) {
     pdfjsLib.getDocument(arquivoUrl).promise.then(function (pdf) {
