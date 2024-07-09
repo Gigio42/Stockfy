@@ -11,6 +11,7 @@
     "start": "nodemon .\\Server\\server.js",
     "startUnix": "nodemon ./Server/server.js",
     "prisma": "npm run migrate && npm run generate && npm run start",
+    "prisma-postgre": "prisma migrate dev --schema prisma/postgresql/schema.prisma && prisma generate --schema prisma/postgresql/schema.prisma && nodemon ./Server/server.js",
     "chapatest": "node ./Test/generators/gerar_chapas.cjs",
     "start-and-test": "prisma migrate dev --name auto_migration && npm run generate && start-server-and-test startUnix http://localhost:3000 chapatest",
     "studio": "npx prisma studio --port 2943",
