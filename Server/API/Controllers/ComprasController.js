@@ -1,5 +1,6 @@
 import Chapas from "../Models/chapasModel.js";
-
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 class ComprasController {
   constructor() {}
 
@@ -35,7 +36,32 @@ class ComprasController {
         });
       }
 
-      return Chapas.create({ data: chapa });
+      // Inserir a chapa no banco de dados
+      const createdChapa = await prisma.chapas.create({
+        data: {
+          ...chapa,
+          medida: `${chapa.largura}x${chapa.comprimento}`,
+        }
+      });
+
+      // Criação do ID da chapa para o histórico
+      const idChapaHistorico = `${chapa.largura} X ${chapa.comprimento} - ${chapa.vincos} - ${chapa.qualidade}/${chapa.onda}`;
+
+      // Adicionar uma entrada no histórico
+      await prisma.historico.create({
+        data: {
+          id_chapa: idChapaHistorico,
+          quantidade: chapa.quantidade_comprada,
+          modificacao: chapa.status,
+          modificado_por: chapa.comprador,
+          data_modificacao: chapa.data_compra,
+          part_number: null, // Assumindo que não há part_number nesse contexto
+          maquina: null, // Assumindo que não há maquina nesse contexto
+          ordem: null, // Assumindo que não há ordem nesse contexto
+          conjulgacao: null, // ou outro valor conforme necessário
+          pedido_venda: chapa.numero_cliente.toString()
+        }
+      });
     });
 
     return await Promise.all(promises);
