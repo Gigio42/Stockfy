@@ -4,8 +4,9 @@ import { medidasConjugConfimed } from "./form.js";
 // Variável para gerar identificadores únicos incrementais
 let cardIdCounter = 0;
 
+// Função para adicionar o card staged com as medidas selecionadas
 export function addStagedCard(selectedCardboard) {
-  // Obtém largura e comprimento do JSON
+  // Obtém largura e comprimento do JSON selecionado
   const comprimento = parseInt(selectedCardboard.comprimento);
   const largura = parseInt(selectedCardboard.largura);
 
