@@ -40,6 +40,27 @@ class ComprasController {
 
     return await Promise.all(promises);
   }
+
+  async listarChapasEmEstoque() {
+    try {
+      // Consulta todas as chapas em estoque no banco de dados
+      const chapas = await Chapas.findMany({
+        select: {
+          id_chapa: true,
+          medida: true,
+          largura: true,
+          comprimento: true,
+          quantidade_comprada: true,
+          qualidade: true,
+          fornecedor: true,
+        },
+      });
+
+      return chapas;
+    } catch (error) {
+      throw new Error(`Erro ao listar chapas em estoque: ${error.message}`);
+    }
+  }
 }
 
 export default ComprasController;
