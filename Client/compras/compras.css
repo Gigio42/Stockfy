@@ -79,13 +79,14 @@ body {
 }
 
 .modal-content {
-  background-color: #141414;
+  background-color: #191919;
   border: none;
   display: flex;
   flex-direction: column;
   width: 100% !important;
   height: 100%;
   justify-content: space-between;
+  
 }
 
 .fecharbtn {
@@ -116,7 +117,6 @@ body {
 .table-container {
   max-height: calc(100vh - 200px); /* 100px para margem inferior ou altura de elementos fixos */
   overflow-y: auto; /* Adiciona rolagem vertical quando necessário */
-  background: #141414;
 }
 
 .table td {
@@ -573,6 +573,75 @@ th {
   font-style: normal; /* Estilo do texto do placeholder ao focar */
 }
 
+#chapasinstoque {
+  width: 100%;
+
+}
+
+.chapa-item { 
+  display: flex;
+  justify-content:space-around ;
+  width: 100%;
+  background: #1d1d1d;
+  padding: 1rem;
+  margin-top: 0.5rem;
+  border-radius: 1REM;
+  color:#636363
+}
+
+.header-row {
+  display: flex;
+  width: 100%;
+  border-radius: 1rem;
+  background: #4d25ff3e;
+
+  border: solid 1px #4d25ff;
+}
+
+.table-row {
+  display: flex;
+  border-radius: 1rem;
+  background: #1010103e;
+  padding: 1rem;
+  border: solid 1px #2e2e2e;
+}
+
+.table-cell {
+  width: 25%;
+  text-align: center;
+  color: #969696;
+}
+
+.table-container {
+  width: 100%;
+  padding: 1rem;
+}
+
+.table-header {
+  width: 25%;
+  padding:1rem;
+ border: none;
+ color: #4d25ff;
+}
+
+#dataTable {
+  width: 100%;
+}
+
+.header-chapas {
+  display: flex;  
+  width: 100%;
+  padding: 1rem;
+  background-color: #4d25ff3e;
+  border: solid 1px #4d25ff;
+  color:#4d25ff ;
+  border-radius: 1rem;
+}
+
+.celulaLinha {
+  width: 25%;
+}
+
 #adicionarMedidasForm {
   display: flex;
   flex-direction: column;
@@ -787,7 +856,11 @@ display: none;
 }
 
 .selected {
-  background-color: #323232 !important; /* Altere a cor conforme necessário */
+  background-color: #232323 !important; /* Altere a cor conforme necessário */
+  border-radius: 0 1rem 1rem 0;
+  border-left: solid 3px #4d25ff;
+  box-sizing: border-box;
+  color:#acacac;
 }
 
 @media screen and (max-width: 902px) {
@@ -998,6 +1071,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .modal {
   position: relative;
   z-index: 5;
+  align-items: center;
+  justify-content: center;
+  height: 90%;
 }
 
 h2 {

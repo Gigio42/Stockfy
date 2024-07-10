@@ -4,11 +4,12 @@ import { updateCardboardRepresentation } from "./modules/cardboard.js";
 import { handleAddMeasureBtnClick } from "./modules/form.js";
 import { openFilePicker } from "./modules/openfile.js";
 import { undoChanges, redoChanges } from "./modules/undoRedo.js";
+import {sendJSONDataToBackend} from "../sendToBackend.js"
 
 document.addEventListener("DOMContentLoaded", () => {
   var dropEnabled = true;
   var dropzone = document.getElementById("dropzone");
-  var jsonData = {
+ var jsonData = {
     infoPedido: {},
     infoProdComprados: [], // Inicializando como array vazio
   };

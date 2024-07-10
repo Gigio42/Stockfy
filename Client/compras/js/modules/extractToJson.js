@@ -1,6 +1,9 @@
 import { populateTable } from "./table.js";  
 import { showModal } from "./utils.js";  
 
+
+let jsonData = {};
+
 export function extractPdfData(pdf, jsonData) {
     var infoPedido = {};
     var infoProdComprados = [];
@@ -30,7 +33,7 @@ export function extractPdfData(pdf, jsonData) {
   
     expectedDateInput.addEventListener("change", function () {
       var dateValue = expectedDateInput.value;
-      jsonData = {
+       jsonData = {
         info_prod_comprados: infoProdComprados.map(function (prod) {
           return {
             ...prod,
@@ -45,6 +48,8 @@ export function extractPdfData(pdf, jsonData) {
       console.log(jsonData);
     });
   }
+
+  
   
   export function parsePdfContent(items, fullText, infoPedido, infoProdComprados, prodComprado, lineNumber, isInfoPedido, isInfoProdComprados, isValoresExpressos, jsonData) {
     items.forEach(function (item, index) {
@@ -219,4 +224,6 @@ export function extractPedidoCompra(fullText) {
     }
     return obj;
   }
+
+  export {jsonData}
   

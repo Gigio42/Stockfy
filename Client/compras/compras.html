@@ -37,11 +37,6 @@
         <div id="myModal" class="modal">
             <div class="modal-content">
                 <div>
-                    <div class="fecharbtn d-flex justify-content-between align-items-center">
-                        <h2>Confirme as informações dos itens que chegaram</h2>
-                        <button id="backButton" class="btn voltar btn-primary closeButton"><img class="imgback"
-                                src="./media/icons8-à-esquerda-dentro-de-um-círculo-60.png" alt=""></button>
-                    </div>
                     <div class="table-container">
                         <table id="dataTable" class="table mt-4"></table>
                         <div id="form-container"></div>
@@ -62,11 +57,17 @@
                 <div class="stagedEndOriginCard">
                     <button id="fecharModalconjug" class="sairModalConjg">x</button>
                     <button id="AddConjugStaged" class="AddConjugStaged">+ Add Area de montagem</button>
-                    <button id="refazerChapa" class="refazer-Chapa">
-                        << /button>
+                    <button id="refazerChapa" class="refazer-Chapa"><</button>
                             <button id="desfazerChapa" class="desfazer-Chapa">></button>
                             <pre></pre>
                             <div class="bodyconjug">
+                                <div class= "header-chapas">
+                                    <div class="celulaLinha">Medida</div>
+                                    <div class="celulaLinha">Quantidade</div>
+                                    <div class="celulaLinha">Qualidade</div>
+                                    <div class="celulaLinha">Fornecedor</div>
+                                </div>
+                                <div id="chapasinstoque"></div>
                                 <div id="cardboardRepresentation" class="cardboard-representation"></div>
                                 <div class="gridcards">
                                     <div id="stagedCardsContainer"></div>
