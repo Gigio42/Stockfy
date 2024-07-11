@@ -64,13 +64,15 @@ export function criarListaDeChapas(chapas) {
 
 // Variável para armazenar as medidas da última chapa selecionada
 let selectedCardboard = {
+    id_chapa: null,
     largura: null,
     comprimento: null
   };
   
-  export function marcarComoSelecionada(chapa, chapaElement, chapasInstoqueDiv) {
+export function marcarComoSelecionada(chapa, chapaElement, chapasInstoqueDiv) {
     // Limpa os valores antigos de selectedCardboard
     selectedCardboard = {
+      id_chapa: null,
       largura: null,
       comprimento: null
     };
@@ -104,7 +106,8 @@ let selectedCardboard = {
     // Atualiza a representação da chapa de papelão
     updateCardboardRepresentation(chapa);
   
-    // Atualiza as medidas da chapa selecionada
+    // Atualiza os detalhes da chapa selecionada
+    selectedCardboard.id_chapa = chapa.id_chapa;
     selectedCardboard.largura = chapa.largura;
     selectedCardboard.comprimento = chapa.comprimento;
     console.log(`Medidas da chapa selecionada: largura ${selectedCardboard.largura}, comprimento ${selectedCardboard.comprimento}`);
@@ -120,16 +123,13 @@ let selectedCardboard = {
     addConjugStagedButton.addEventListener("click", onClickAddStagedCard);
   }
   
-  // Função de callback para adicionar o card staged
-  function onClickAddStagedCard() {
+// Função de callback para adicionar o card staged
+function onClickAddStagedCard() {
     addStagedCard(selectedCardboard);
-  }
+}
   
-  
-  
-  
-  // Função para mostrar todas as chapas novamente e o header-chapas
-  function mostrarTodasAsChapas(chapasInstoqueDiv) {
+// Função para mostrar todas as chapas novamente e o header-chapas
+function mostrarTodasAsChapas(chapasInstoqueDiv) {
     const chapas = chapasInstoqueDiv.getElementsByClassName("chapa-item");
     for (let i = 0; i < chapas.length; i++) {
       chapas[i].style.display = "flex"; // Mostra todas as chapas novamente
@@ -140,5 +140,4 @@ let selectedCardboard = {
     if (headerChapas) {
       headerChapas.style.display = "flex";
     }
-  }
-  
+}

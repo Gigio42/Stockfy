@@ -23,7 +23,6 @@ async function comprasRoutes(fastify, options) {
     try {
       console.log('Recebida requisição para listar chapas em estoque...');
       const chapasEmEstoque = await comprasController.listarChapasEmEstoque();
-      console.log('Chapas em estoque encontradas:', chapasEmEstoque);
       reply.send(chapasEmEstoque);
     } catch (error) {
       console.error('Erro ao buscar chapas em estoque:', error);
