@@ -4,7 +4,8 @@ body {
   color: #ffffff;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Centraliza verticalmente */
+  justify-content: center;
+  /* Centraliza verticalmente */
   height: 100vh;
 }
 
@@ -14,6 +15,20 @@ body {
   justify-content: space-between;
   overflow-y: hidden;
 }
+
+.imgheaderchapas {
+  width: 25px;
+  transition: width 0.01s ease; /* Adiciona uma transição suave de 0.3 segundos */
+}
+
+
+.chapaselecionada {
+  width:50%;
+}
+
+
+
+
 #btnConjugar,
 #btnAdicionarManualmente {
   border: none;
@@ -36,7 +51,8 @@ body {
   color: #4d25ff !important;
   transition:
     background-color 0.3s ease,
-    color 0.3s ease; /* Transição suave de 0.3 segundos */
+    color 0.3s ease;
+  /* Transição suave de 0.3 segundos */
   border: none;
 }
 
@@ -86,7 +102,7 @@ body {
   width: 100% !important;
   height: 100%;
   justify-content: space-between;
-  
+
 }
 
 .fecharbtn {
@@ -115,8 +131,10 @@ body {
 }
 
 .table-container {
-  max-height: calc(100vh - 200px); /* 100px para margem inferior ou altura de elementos fixos */
-  overflow-y: auto; /* Adiciona rolagem vertical quando necessário */
+  max-height: calc(100vh - 200px);
+  /* 100px para margem inferior ou altura de elementos fixos */
+  overflow-y: auto;
+  /* Adiciona rolagem vertical quando necessário */
 }
 
 .table td {
@@ -148,13 +166,15 @@ body {
 
 .jsonshow {
   max-height: 20vh;
-  overflow-y: auto; /* Adiciona rolagem vertical quando necessário */
+  overflow-y: auto;
+  /* Adiciona rolagem vertical quando necessário */
 }
 
 .btninferior {
   position: fixed;
   bottom: 0;
-  left: 0; /* ou right: 0; para alinhamento à direita */
+  left: 0;
+  /* ou right: 0; para alinhamento à direita */
   width: 100%;
   padding: 1rem;
   background-color: #1c1c1c;
@@ -196,9 +216,11 @@ body {
   0% {
     border-color: transparent;
   }
+
   50% {
     border-color: red;
   }
+
   100% {
     border-color: transparent;
   }
@@ -229,8 +251,10 @@ body {
 
 .edit {
   display: flex;
-  background-color: #ff43434b; /* Cor de fundo geral */
-  border: none; /* Cor da borda geral */
+  background-color: #ff43434b;
+  /* Cor de fundo geral */
+  border: none;
+  /* Cor da borda geral */
   border-radius: 1rem;
 
   padding: 0.2;
@@ -257,7 +281,8 @@ body button.edit:hover {
 
 .confirm {
   background: #38ff4230;
-  border: none; /* Cor da borda geral */
+  border: none;
+  /* Cor da borda geral */
   border-radius: 1rem;
 }
 
@@ -290,7 +315,7 @@ body button.confirm:hover {
   height: 10%;
   flex-direction: row;
   align-items: center;
-  position:fixed;
+  position: fixed;
   z-index: 5;
   width: 100vw;
 }
@@ -331,18 +356,23 @@ body button.confirm:hover {
   text-align: center;
   position: relative;
   z-index: 1;
-  width: 200px; /* largura personalizada */
-  cursor: pointer; /* cursor personalizado */
-  outline: none; /* remova a borda de foco padrão */
+  width: 200px;
+  /* largura personalizada */
+  cursor: pointer;
+  /* cursor personalizado */
+  outline: none;
+  /* remova a borda de foco padrão */
   margin: 0;
 }
 
 #fornecedor:hover {
-  background-color: #2a2a2a; /* Mudar a cor de fundo ao passar o mouse */
+  background-color: #2a2a2a;
+  /* Mudar a cor de fundo ao passar o mouse */
 }
 
 #fornecedor:focus {
-  border: none; /* borda personalizada quando focado */
+  border: none;
+  /* borda personalizada quando focado */
 }
 
 option {
@@ -356,8 +386,10 @@ h1 {
 }
 
 body button.edit.disabled {
-  background-color: #ccc !important; /* Cor de fundo cinza */
-  cursor: default; /* Cursor padrão */
+  background-color: #ccc !important;
+  /* Cor de fundo cinza */
+  cursor: default;
+  /* Cursor padrão */
 }
 
 .notification {
@@ -553,7 +585,8 @@ th {
 #largura:focus,
 #comprimento:focus,
 #quantasvezes:focus {
-  outline: none; /* Remove a borda de foco */
+  outline: none;
+  /* Remove a borda de foco */
 }
 
 /* Estilizando os placeholders */
@@ -561,7 +594,8 @@ th {
 #largura::placeholder,
 #comprimento::placeholder,
 #quantasvezes::placeholder {
-  color: #666; /* Cor do texto do placeholder */
+  color: #666;
+  /* Cor do texto do placeholder */
 }
 
 /* Alterando a cor do placeholder ao focar */
@@ -569,8 +603,10 @@ th {
 #largura:focus::placeholder,
 #comprimento:focus::placeholder,
 #quantasvezes:focus::placeholder {
-  color: #999; /* Cor do texto do placeholder ao focar */
-  font-style: normal; /* Estilo do texto do placeholder ao focar */
+  color: #999;
+  /* Cor do texto do placeholder ao focar */
+  font-style: normal;
+  /* Estilo do texto do placeholder ao focar */
 }
 
 #chapasinstoque {
@@ -578,15 +614,19 @@ th {
 
 }
 
-.chapa-item { 
+.chapa-item {
   display: flex;
-  justify-content:space-around ;
+  justify-content: space-around;
   width: 100%;
   background: #1d1d1d;
   padding: 1rem;
   margin-top: 0.5rem;
   border-radius: 1REM;
-  color:#636363
+  color: #636363
+}
+
+.chapa-item:hover {
+  background: #292929;
 }
 
 .header-row {
@@ -594,8 +634,7 @@ th {
   width: 100%;
   border-radius: 1rem;
   background: #4d25ff3e;
-
-  border: solid 1px #4d25ff;
+  border: solid 1px #6744ff;
 }
 
 .table-row {
@@ -619,9 +658,9 @@ th {
 
 .table-header {
   width: 25%;
-  padding:1rem;
- border: none;
- color: #4d25ff;
+  padding: 1rem;
+  border: none;
+  color: #866bff;
 }
 
 #dataTable {
@@ -629,12 +668,12 @@ th {
 }
 
 .header-chapas {
-  display: flex;  
+  display: flex;
   width: 100%;
   padding: 1rem;
   background-color: #4d25ff3e;
   border: solid 1px #4d25ff;
-  color:#4d25ff ;
+  color: #7353ff;
   border-radius: 1rem;
 }
 
@@ -656,13 +695,13 @@ th {
   background: #1b1b1b;
   border-radius: 1rem;
   padding: 1rem;
-  display:flex ;
+  display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
 #conjugacoesstaged {
-  gap: 1REM ;
+  gap: 1REM;
   display: flex;
   border: solid 1px #232323;
   border-radius: 1rem;
@@ -690,6 +729,7 @@ th {
   width: fit-content;
   min-width: 3rem;
 }
+
 /* Estilos para os elementos quando estão sendo hoverizados */
 .delete-button:hover,
 #refazerChapa:hover,
@@ -719,7 +759,8 @@ th {
   border-radius: 1rem;
   width: fit-content;
   min-width: 3rem;
-  outline: none; /* Remove o outline padrão (contorno) */
+  outline: none;
+  /* Remove o outline padrão (contorno) */
   box-shadow: 0 0 20px 2px #ffffff4f;
 }
 
@@ -736,8 +777,9 @@ th {
 }
 
 pre {
-display: none;
+  display: none;
 }
+
 .cardinconjug {
   background: #dc883432;
   align-items: center;
@@ -749,7 +791,8 @@ display: none;
   display: flex;
   justify-content: space-around;
 
-  box-sizing: border-box; /* Faz com que o tamanho total inclua padding e borda */
+  box-sizing: border-box;
+  /* Faz com que o tamanho total inclua padding e borda */
 }
 
 .cardMedidaConjug {
@@ -855,12 +898,28 @@ display: none;
   color: #b52aff;
 }
 
+.imgheaderctainer {
+  background: #212121;
+  padding: 0.4rem;
+  border-radius: 1rem;
+  margin-left: 1rem;
+}
+
+.headermodalconjug {
+  justify-content: space-between;
+  width: 95%;
+}
+
 .selected {
-  background-color: #232323 !important; /* Altere a cor conforme necessário */
+  background-color: #232323 !important;
+  /* Altere a cor conforme necessário */
   border-radius: 0 1rem 1rem 0;
   border-left: solid 3px #4d25ff;
   box-sizing: border-box;
-  color:#acacac;
+  color: #acacac;
+  margin-top: 0;
+  padding:0.5rem;
+  margin-left: 1rem;
 }
 
 @media screen and (max-width: 902px) {
@@ -909,7 +968,8 @@ display: none;
 }
 
 .modal-content-m {
-  overflow-y: auto; /* Adiciona o scroll vertical */
+  overflow-y: auto;
+  /* Adiciona o scroll vertical */
   background: #131313;
 }
 
@@ -928,7 +988,8 @@ display: none;
 }
 
 .card-details {
-  display: none; /* Esconde os detalhes adicionais inicialmente */
+  display: none;
+  /* Esconde os detalhes adicionais inicialmente */
   background: #bebebe;
   padding: 2rem;
   border-radius: 2rem;
@@ -972,8 +1033,10 @@ display: none;
 }
 
 .expand-icon {
-  width: 34px; /* Defina a largura desejada */
-  height: 34px; /* Defina a altura desejada */
+  width: 34px;
+  /* Defina a largura desejada */
+  height: 34px;
+  /* Defina a altura desejada */
 }
 
 #addPlateButton {
@@ -1020,9 +1083,9 @@ display: none;
     width: 5rem;
   }
 
-  .modal-content-m {
-  }
+  .modal-content-m {}
 }
+
 /* Remove a borda branca ao clicar */
 input[type="date"]::-webkit-inner-spin-button,
 input[type="date"]::-webkit-clear-button {
@@ -1047,14 +1110,18 @@ input[type="date"]:focus {
   background-color: #161616;
   border-left: solid 7px #b52aff;
   box-shadow: none !important;
-  outline: none; /* Remove a borda de foco padrão */
+  outline: none;
+  /* Remove a borda de foco padrão */
 }
 
 /* Estiliza o indicador do calendário (botão) no Webkit (Chrome, Safari) */
 input[type="date"]::-webkit-calendar-picker-indicator {
-  background-color: #4caf50; /* Cor de fundo do indicador */
-  padding: 5px; /* Espaçamento interno do indicador */
-  border-radius: 5px; /* Cantos arredondados do indicador */
+  background-color: #4caf50;
+  /* Cor de fundo do indicador */
+  padding: 5px;
+  /* Espaçamento interno do indicador */
+  border-radius: 5px;
+  /* Cantos arredondados do indicador */
 }
 
 @media (max-width: 902px) {
@@ -1062,6 +1129,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     font-size: 1rem;
     width: 7rem;
   }
+
   h2,
   h1.text-center {
     font-size: 1.5rem;
