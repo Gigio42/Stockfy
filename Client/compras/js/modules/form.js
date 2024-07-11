@@ -88,5 +88,5 @@ export function handleAddMeasureBtnClick() {
 // Função para processar as medidas conjugadas
 function processarMedidasConjug(medidasConjug) {
     console.log("Medidas conjugadas confirmadas:", medidasConjug);
-    // Aqui você pode realizar outras operações com as medidas, como enviar para o servidor ou atualizar outra parte da interface
+    
 }
