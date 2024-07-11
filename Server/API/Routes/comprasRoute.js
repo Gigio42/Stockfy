@@ -29,6 +29,20 @@ async function comprasRoutes(fastify, options) {
       reply.code(500).send({ error: "Erro ao buscar chapas em estoque." });
     }
   });
+
+// Rota para receber as medidas conjugadas do cliente
+fastify.post("/conjugacoes/confirmed", async (request, reply) => {
+  const medidasConjugadas = request.body;
+
+  try {
+      const resultado = await comprasController.adicionarMedidasConjugadas(medidasConjugadas);
+      reply.send({ message: 'Medidas conjugadas recebidas com sucesso', data: resultado });
+  } catch (error) {
+      console.error('Erro ao processar medidas conjugadas:', error);
+      reply.code(500).send({ error: 'Erro ao processar medidas conjugadas' });
+  }
+});
+
 }
 
 export default comprasRoutes;

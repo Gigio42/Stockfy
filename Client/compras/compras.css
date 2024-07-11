@@ -26,7 +26,13 @@ body {
   width:50%;
 }
 
-
+#confirmarConjugBtn {
+  background: #39ea6252;
+  border: solid 1px #39ea62;
+  border-radius: 1rem;
+  color: #39ea62;
+  padding: 1rem;
+}
 
 
 #btnConjugar,
@@ -1055,9 +1061,9 @@ pre {
 
 .confirm-button {
   border-radius: 1rem;
-  background: #2ab14a61;
-  color: #39ea62;
-  border: solid 1px #3bf867;
+  background: rgba(29, 135, 255, 0.156);
+  color: rgb(29, 135, 255);
+  border: solid 1px rgb(29, 135, 255);
 }
 
 .enviarManual:hover {

@@ -1,6 +1,7 @@
 import BASE_URL from "../utils/config.js";
 import { jsonData } from "./js/modules/extractToJson.js";
 import { criarListaDeChapas } from "./js/modules/createListofchapas.js";
+import { medidasConjugConfimed } from "./js/modules/form.js";
 
 export function sendJSONDataToBackend() {
   let url = `${BASE_URL}/compras`;
@@ -56,4 +57,30 @@ export async function listarChapasEmEstoque() {
 // Chamada para listar as chapas em estoque quando o DOM estiver carregado
 document.addEventListener("DOMContentLoaded", async () => {
   await listarChapasEmEstoque();
+});
+
+
+// Função para enviar as medidas confirmadas para o backend
+export async function enviarMedidasConjugadas() {
+  try {
+      console.log("Enviando medidas conjugadas para o backend...");
+      const response = await axios.post(`${BASE_URL}/compras/conjugacoes/confirmed`, medidasConjugConfimed, {
+          headers: {
+              "Content-Type": "application/json",
+          },
+      });
+      console.log("Medidas conjugadas enviadas com sucesso:", response.data);
+      // Aqui você pode realizar qualquer ação adicional após o envio bem-sucedido
+  } catch (error) {
+      console.error("Erro ao enviar medidas conjugadas:", error);
+      // Trate os erros conforme necessário
+  }
+}
+
+// Associar a função ao botão de confirmação
+document.addEventListener("DOMContentLoaded", () => {
+  const confirmarConjugBtn = document.getElementById('confirmarConjugBtn');
+  if (confirmarConjugBtn) {
+      confirmarConjugBtn.addEventListener('click', enviarMedidasConjugadas);
+  }
 });
