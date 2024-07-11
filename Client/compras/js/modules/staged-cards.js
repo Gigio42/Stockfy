@@ -90,7 +90,6 @@ export function addStagedCard(selectedCardboard) {
   console.log(`ID da Chapa: ${id_chapa}`); // Mostra o id_chapa no console
 }
 
-
 function updateConjugacoesStaged() {
   const conjugacoesStaged = document.getElementById("conjugacoesstaged");
 

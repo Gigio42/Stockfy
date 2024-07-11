@@ -91,4 +91,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+
+
 export { handleExpectedDateChange, convertToInteger, populateTable, addTableHeader, addTableRow, updateCardboardRepresentation, handleAddMeasureBtnClick };

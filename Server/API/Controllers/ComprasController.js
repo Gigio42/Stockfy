@@ -87,6 +87,61 @@ class ComprasController {
       throw new Error(`Erro ao listar chapas em estoque: ${error.message}`);
     }
   }
+
+  async adicionarMedidasConjugadas(medida) {
+    try {
+      // Crie uma nova conjugação no banco de dados usando Prisma
+      const novaConjugacao = await prisma.conjugacoes.create({
+        data: {
+          medida: medida.medida,
+          largura: medida.largura,
+          comprimento: medida.comprimento,
+          quantidade: medida.quantidade,
+          rendimento: 0, // Defina conforme necessário
+          quantidade_disponivel: 0, // Defina conforme necessário
+          usado: false, // Defina conforme necessário
+          chapaId: medida.chapaId,
+        },
+      });
+
+      console.log("Nova conjugação criada:", novaConjugacao);
+
+      return novaConjugacao;
+    } catch (error) {
+      console.error("Erro ao adicionar medidas conjugadas:", error);
+      throw error;
+    }
+  }
+
+  async adicionarMedidasConjugadas(medidasConjugadas) {
+    try {
+        const resultados = await Promise.all(medidasConjugadas.map(medida => {
+            // Concatenando largura e comprimento como medida
+            const medidaText = `${medida.largura} X ${medida.comprimento}`;
+            
+            return prisma.conjugacoes.create({
+                data: {
+                    medida: medidaText,
+                    largura: medida.largura,
+                    comprimento: medida.comprimento,
+                    quantidade: medida.quantidade,
+                    rendimento: medida.quantasVezes,
+                    quantidade_disponivel: 0,
+                    usado: false,
+                    chapaId: parseInt(medida.chapa),
+                },
+            });
+        }));
+
+        console.log('Medidas conjugadas adicionadas:', resultados);
+        return resultados;
+    } catch (error) {
+        console.error('Erro ao adicionar medidas conjugadas:', error);
+        throw error;
+    }
+}
+
+
 }
 
 export default ComprasController;
