@@ -56,39 +56,42 @@
             <div id="modal-content-conjugação" class="modal-content-conjugação">
                 <div class="stagedEndOriginCard">
                     <div class="headermodalconjug d-flex">
-                    <button id="fecharModalconjug" class="sairModalConjg">x</button>
-                    <button id="AddConjugStaged" class="AddConjugStaged">+ Add Area de montagem</button>
-                    <button id="refazerChapa" class="refazer-Chapa"><</button>
-                            <button id="desfazerChapa" class="desfazer-Chapa">></button>
-                            <div class="chapaselecionada"></div>
-                            <div class="imgheaderctainer"> <img class="imgheaderchapas" src="./media/icons8-visível-48 (1).png" alt=""></div>
-                        </div>
+                        <button id="fecharModalconjug" class="sairModalConjg">x</button>
+                        <button id="AddConjugStaged" class="AddConjugStaged">+ Add Area de montagem</button>
+                        <button id="refazerChapa" class="refazer-Chapa">
+                            << /button>
+                                <button id="desfazerChapa" class="desfazer-Chapa">></button>
+                                <div class="chapaselecionada"></div>
+                                <div class="imgheaderctainer"> <img class="imgheaderchapas"
+                                        src="./media/icons8-visível-48 (1).png" alt=""></div>
+                    </div>
 
-                            <pre></pre>
-                            <div class="bodyconjug">
-                                <div class= "header-chapas">
-                                    <div class="celulaLinha">Medida</div>
-                                    <div class="celulaLinha">Quantidade</div>
-                                    <div class="celulaLinha">Qualidade</div>
-                                    <div class="celulaLinha">Fornecedor</div>
-                                    
-                                </div>
-                                <div id="chapasinstoque"></div>
-                                <div id="cardboardRepresentation" class="cardboard-representation"></div>
-                                <div class="gridcards">
-                                    <div id="stagedCardsContainer"></div>
-                                </div>
-                            </div>
-                            <div class="conjugmedidasstaged">
-                                <button type="button" id="confirmarConjugBtn">Comfirmar Conjug.</button>
-                                <div id="conjugacoesstaged"></div>
-                            </div>
+                    <pre></pre>
+                    <div class="bodyconjug">
+                        <div class="header-chapas">
+                            <div class="celulaLinha">Medida</div>
+                            <div class="celulaLinha">Quantidade</div>
+                            <div class="celulaLinha">Qualidade</div>
+                            <div class="celulaLinha">Fornecedor</div>
+
+                        </div>
+                        <div id="chapasinstoque"></div>
+                        <div id="cardboardRepresentation" class="cardboard-representation"></div>
+                        <div class="gridcards">
+                            <div id="stagedCardsContainer"></div>
+                        </div>
+                    </div>
+                    <div class="conjugmedidasstaged">
+                        <button type="button" id="confirmarConjugBtn">Comfirmar Conjug.</button>
+                        <div id="conjugacoesstaged"></div>
+                    </div>
                 </div>
                 <div class="medidaConjugações">
                     <form id="adicionarMedidasForm">
                         <input type="number" id="largura" name="largura" placeholder="Largura" required>
                         <input type="number" id="comprimento" name="comprimento" placeholder="Comprimento" required>
-                        <input type="number" id="quantasvezes" name="quantas vezes?" placeholder="Quantas vezes?" required>
+                        <input type="number" id="quantasvezes" name="quantas vezes?" placeholder="Quantas vezes?"
+                            required>
                         <input type="number" id="quantidade" name="quantidade" placeholder="Quantidade" required>
                     </form>
                     <button type="button" id="adicionarMedidaBtn">Adicionar</button>
@@ -158,7 +161,7 @@
                                         placeholder="Comprador" />
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" id="purchaseDate" name="purchaseDate"
+                                    <input type="date" id="purchaseDate" name="purchaseDate"
                                         class="form-control inputform" placeholder="Data Compra" />
                                 </div>
                                 <div class="form-group">
@@ -176,12 +179,14 @@
                                 <button id="confirmEditButton" style="display: none">Confirmar Edição</button>
                             </form>
                         </div>
-                        <div id="cardsContainer" class="cardsContainer"></div>
+                        <div id="cardsContainer" class="cardsContainer">
+                            <div id="jsonContent"></div>
+                        </div>
                     </div>
                 </div>
                 <div class="btninferior mt-4 d-flex justify-content-end">
                     <div class="date-input-container">
-                        <input type="text" id="expectedDateManual" placeholder="Data Prevista" />
+                        <input type="date" id="expectedDateManual" placeholder="Data Prevista" />
                     </div>
                     <button id="sendbutton" class="btn btn-success mr-2 enviarManual">Enviar</button>
                 </div>
@@ -194,12 +199,37 @@
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-        <script type="module" src="./Firstvalidation/toggleDropzone.js"></script>
-        <script type="module" src="./Firstvalidation/pdfHandler.js"></script>
-        <script type="module" src="./Firstvalidation/firstvalidation.js"></script>
         <script type="module" src="./js/main.js"></script>
 
         <script>
+            // Wait until the DOM is fully loaded
+            document.addEventListener('DOMContentLoaded', (event) => {
+                // Get references to the button, modal, and dropzone
+                const btnAdicionarManualmente = document.getElementById('btnAdicionarManualmente');
+                const mModal = document.getElementById('mModal');
+                const dropzone = document.getElementById('dropzone');
+
+                // Add a click event listener to the button
+                btnAdicionarManualmente.addEventListener('click', () => {
+                    // Show the modal
+                    mModal.style.display = 'block';
+
+                    // Hide the dropzone
+                    dropzone.style.display = 'none';
+
+                    // Dynamically load the adicionar_manualmente.js script
+                    const script = document.createElement('script');
+                    script.type = 'module';
+                    script.src = 'adicionar_manualmente.js';
+                    script.onload = () => {
+                        console.log('adicionar_manualmente.js loaded successfully');
+                    };
+                    script.onerror = () => {
+                        console.error('Failed to load adicionar_manualmente.js');
+                    };
+                    document.body.appendChild(script);
+                });
+            });
             // JavaScript para abrir e fechar o novo modal
             document.getElementById('btnConjugar').addEventListener('click', function () {
                 document.getElementById('conjugarModal').style.display = 'block';

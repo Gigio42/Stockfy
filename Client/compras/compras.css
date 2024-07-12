@@ -961,20 +961,43 @@ pre {
   background-color: #141414;
 }
 
+#jsonContent {
+  display:none;
+}
+
 .card-body {
-  color: #131313;
-  background: #e4e4e4;
-  border-radius: 2rem;
-  padding: 2rem;
+  display: flex;
+  color: #e2e2e2;
+  background: #232323;
+  border-radius: 1rem;
+  width: 100%;
+  height: 4rem;
+  flex-direction: row;
+  justify-content: space-between;
+  border: none;
+  align-items: center;
+}
+
+.card-text,
+.card-title {
+  margin: 0;
 }
 
 .card {
-  border-radius: 2rem;
+  display: flex;
+  border-radius: 1rem;
   margin-top: 1.5rem;
+  width: 100%;
+  border: none;
+  background: rgb(42, 42, 42);
+  padding: 1rem;
+  width: 90%;
+
 }
 
 .modal-content-m {
   overflow-y: auto;
+  max-height: 85%;
   /* Adiciona o scroll vertical */
   background: #131313;
 }
@@ -994,11 +1017,14 @@ pre {
 }
 
 .card-details {
+  flex-wrap: wrap;
+  background: #292929;
+  padding: 1rem;
+  border-radius: 1rem;
+  width: 100%;
   display: none;
-  /* Esconde os detalhes adicionais inicialmente */
-  background: #bebebe;
-  padding: 2rem;
-  border-radius: 2rem;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .cardsContainer {
@@ -1007,6 +1033,7 @@ pre {
   flex-wrap: wrap;
   margin-left: 2rem;
   margin-bottom: 5rem;
+  width: 90%;
 }
 
 
@@ -1072,7 +1099,7 @@ pre {
 }
 
 .icon:hover {
-  background-color: #c7c7c7;
+  background-color: #303030;
   border-radius: 0.5rem;
 }
 
@@ -1090,6 +1117,10 @@ pre {
   }
 
   .modal-content-m {}
+}
+
+.toggle-button{
+  margin: 0;
 }
 
 /* Remove a borda branca ao clicar */
