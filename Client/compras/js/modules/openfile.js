@@ -6,11 +6,13 @@ export function openFilePicker() {
       fileInput.type = "file";
       fileInput.accept = ".pdf";
       fileInput.style.display = "none";
+ 
   
       fileInput.addEventListener("change", function (event) {
         var file = event.target.files[0];
         console.log("Arquivo selecionado:", file.name);
         handleFile(URL.createObjectURL(file));
+        dropzone.style.display = "none";
       });
   
       fileInput.click();
