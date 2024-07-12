@@ -1,22 +1,34 @@
 import BASE_URL from "../utils/config.js";
 
+// Função para formatar a data no formato "dd/mm/aaaa"
+function formatarDataParaEnvio(data) {
+  const date = new Date(data);
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Os meses começam do zero
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+}
+
 // Variável global para armazenar o ID do cartão sendo editado
 let cardIDBeingEdited = null;
 let cardCounter = 0; // Contador para gerar IDs únicos para os cartões
 
-document.addEventListener("DOMContentLoaded", () => {
-  const toggleArrow = document.querySelector(".toggle-arrow");
-  const cardDetails = document.querySelector(".card-details");
-
-  toggleArrow.addEventListener("click", () => {
-      if (cardDetails.style.display === "flex") {
-          cardDetails.style.display = "none";
-      } else {
-          cardDetails.style.display = "flex";
-      }
-  });
-});
-
+// Função para alternar a exibição dos detalhes do cartão
+window.toggleCardDetails = function (cardId) {
+  const cardDetails = document.querySelector(`#card-${cardId} .card-details`);
+  if (cardDetails) {
+    if (
+      cardDetails.style.display === "none" ||
+      cardDetails.style.display === ""
+    ) {
+      cardDetails.style.display = "flex";
+    } else {
+      cardDetails.style.display = "none";
+    }
+  } else {
+    console.error(`Detalhes do cartão com ID ${cardId} não encontrados.`);
+  }
+};
 
 // Função para abrir o modal
 function abrirModal() {
@@ -29,59 +41,87 @@ function abrirModal() {
 }
 abrirModal();
 
-document.getElementById("addPlateButton").addEventListener("click", function () {
-  const form = document.getElementById("purchaseForm");
+document
+  .getElementById("addPlateButton")
+  .addEventListener("click", function () {
+    const form = document.getElementById("purchaseForm");
 
-  // Capturando os valores do formulário
-  const data = {
-    numero_cliente: parseInt(form.customerNumber.value) || 0,
-    quantidade_comprada: parseInt(form.quantity.value) || 0,
-    unidade: "CH",
-    qualidade: form.quality.value,
-    onda: form.wave.value,
-    gramatura: parseFloat(form.weight.value) || 0,
-    peso_total: parseFloat(form.totalWeight.value) || 0,
-    valor_unitario: form.unitPrice.value,
-    valor_total: form.totalPrice.value,
-    largura: parseInt(form.width.value) || 0,
-    comprimento: parseInt(form.length.value) || 0,
-    vincos: form.creases.value,
-    status: "COMPRADO",
-    comprador: form.buyer.value,
-    data_compra: form.purchaseDate.value,
-    fornecedor: form.supplier.value,
-    id_compra: parseInt(form.purchaseID.value) || 0,
-    data_prevista: document.getElementById("expectedDateManual").value,
-  };
+    // Capturando os valores do formulário
+    const data = {
+      numero_cliente: parseInt(form.customerNumber.value) || 0,
+      quantidade_comprada: parseInt(form.quantity.value) || 0,
+      unidade: "CH",
+      qualidade: form.quality.value, // Certifique-se que este campo está sendo capturado corretamente
+      onda: form.wave.value,
+      gramatura: parseFloat(form.weight.value) || 0,
+      peso_total: parseFloat(form.totalWeight.value) || 0,
+      valor_unitario: form.unitPrice.value,
+      valor_total: form.totalPrice.value,
+      largura: parseInt(form.width.value) || 0,
+      comprimento: parseInt(form.length.value) || 0,
+      vincos: form.creases.value,
+      status: "COMPRADO",
+      comprador: form.buyer.value,
+      data_compra: form.purchaseDate.value,
+      fornecedor: form.supplier.value,
+      id_compra: parseInt(form.purchaseID.value) || 0,
+      data_prevista: document.getElementById("expectedDateManual").value,
+    };
 
-  // Adiciona os dados ao JSON
-  const jsonData = {
-    info_prod_comprados: [data],
-  };
+    // Verifique se todos os campos obrigatórios estão preenchidos corretamente
+    if (
+      !data.numero_cliente ||
+      !data.quantidade_comprada ||
+      !data.qualidade ||
+      !data.largura ||
+      !data.comprimento ||
+      !data.vincos ||
+      !data.comprador ||
+      !data.data_compra ||
+      !data.fornecedor
+    ) {
+      console.error("Todos os campos obrigatórios devem ser preenchidos.");
+      return;
+    }
 
-  // Exibe o JSON no elemento pre
-  document.getElementById("jsonContent").textContent = JSON.stringify(jsonData, null, 2);
+    // Exibe os dados capturados no console para debug
+    console.log("Dados capturados do formulário:", data);
 
-  // Adiciona um novo cartão no cardsContainer
-  const cardContainer = document.getElementById("cardsContainer");
-  const card = document.createElement("div");
-  card.className = "card";
-  card.dataset.cardId = cardCounter++; // Adiciona um ID único ao cartão
-  card.innerHTML = `
-    <div class="card-body">
-      <p class="card-title">${data.numero_cliente}</p>
-      <p class="card-text"> ${data.largura}</p>
-      <p class="card-text"> ${data.comprimento}</p>
-      <p class="card-text">${data.qualidade}</p>
-      <p class="card-text">${data.quantidade_comprada}</p>
-      <p class="card-text"> ${data.vincos}</p>
-     <p class="toggle-button"">
-    <img src="media/seta-para-a-direita.png" class="toggle-arrow icon" />
-    <a href="#"><img src="media/icons8-editar-64.png" class="expand-icon icon" onclick="editCard(event)" /></a>
-    <a href="#"><img src="media/icons8-delete-48.png" class="expand-icon icon" onclick="deleteCard(event)" /></a>
-</p>
-</div>
+    // Adiciona os dados ao JSON
+    const jsonData = {
+      info_prod_comprados: [data],
+    };
 
+    // Exibe o JSON no console
+    console.log("JSON criado ao adicionar um novo card:", jsonData);
+
+    // Exibe o JSON no elemento pre
+    document.getElementById("jsonContent").textContent = JSON.stringify(
+      jsonData,
+      null,
+      2
+    );
+
+    // Adiciona um novo cartão no cardsContainer
+    const cardContainer = document.getElementById("cardsContainer");
+    const card = document.createElement("div");
+    card.className = "card";
+    card.dataset.cardId = cardCounter++; // Adiciona um ID único ao cartão
+    card.innerHTML = `
+    <div id="card-${card.dataset.cardId}" class="card">
+      <div class="card-body">
+        <p class="card-title">${data.numero_cliente}</p>
+        <p class="card-text"> ${data.largura}</p>
+        <p class="card-text"> ${data.comprimento}</p>
+        <p class="card-text">${data.qualidade}</p>
+        <p class="card-text">${data.quantidade_comprada}</p>
+        <p class="card-text"> ${data.vincos}</p>
+        <p class="toggle-button">
+          <img src="media/seta-para-a-direita.png" class="toggle-arrow icon" onclick="toggleCardDetails(${card.dataset.cardId})" />
+          <a href="#"><img src="media/icons8-editar-64.png" class="expand-icon icon" onclick="editCard(event)" /></a>
+          <a href="#"><img src="media/icons8-delete-48.png" class="expand-icon icon" onclick="deleteCard(event)" /></a>
+        </p>
+      </div>
       <div class="card-details" style="display: none;">
         <p class="card-text">${data.onda}</p>
         <p class="card-text">${data.gramatura}</p>
@@ -95,12 +135,10 @@ document.getElementById("addPlateButton").addEventListener("click", function () 
         <p class="card-text"> ${data.id_compra}</p>
         <p class="card-text"> ${data.data_prevista}</p>
       </div>
-  
+    </div>
   `;
-  cardContainer.appendChild(card);
-
-  console.log("JSON criado ao adicionar um novo card:", jsonData);
-});
+    cardContainer.appendChild(card);
+  });
 
 // Função para obter o conteúdo de texto de um elemento com um seletor específico
 function getTextContent(selector, context) {
@@ -108,60 +146,18 @@ function getTextContent(selector, context) {
   return element ? element.textContent.trim().split(": ")[1] : "";
 }
 
-
 // Evento de clique para enviar os dados do formulário manualmente
 document.getElementById("sendbutton").addEventListener("click", function () {
   console.log("Botão clicado!");
   sendJSONDataToBackend();
 });
 
-// Função para enviar os dados JSON ao backend
-function sendJSONDataToBackend() {
-  let jsonData = {
-    info_prod_comprados: [],
-  };
 
-  const cards = document.querySelectorAll(".card");
 
-  if (cards.length === 0) {
-    console.error("Nenhum card encontrado para enviar.");
-    return;
-  }
 
-  cards.forEach((card) => {
-    let data = {
-      numero_cliente: parseInt(getTextContent(".card-title", card)) || 0,
-      quantidade_comprada: parseInt(getTextContent(".card-text:nth-of-type(5)", card)) || 0,
-      unidade: "CH",
-      qualidade: getTextContent(".card-text:nth-of-type(4)", card),
-      onda: getTextContent(".card-details .card-text:nth-of-type(1)", card),
-      gramatura: parseFloat(getTextContent(".card-details .card-text:nth-of-type(2)", card)) || 0,
-      peso_total: parseFloat(getTextContent(".card-details .card-text:nth-of-type(3)", card)) || 0,
-      valor_unitario: getTextContent(".card-details .card-text:nth-of-type(4)", card) || "",
-      valor_total: getTextContent(".card-details .card-text:nth-of-type(5)", card) || "",
-      largura: parseInt(getTextContent(".card-text:nth-of-type(2)", card)) || 0,
-      comprimento: parseInt(getTextContent(".card-text:nth-of-type(3)", card)) || 0,
-      vincos: getTextContent(".card-text:nth-of-type(6)", card) || "",
-      status: "COMPRADO",
-      comprador: getTextContent(".card-details .card-text:nth-of-type(7)", card) || "",
-      data_compra: formatarDataParaEnvio(getTextContent(".card-details .card-text:nth-of-type(8)", card)) || "",
-      fornecedor: getTextContent(".card-details .card-text:nth-of-type(9)", card) || "",
-      id_compra: parseInt(getTextContent(".card-details .card-text:nth-of-type(10)", card)) || 0,
-      data_prevista: formatarDataParaEnvio(document.getElementById("expectedDateManual").value),
-    };
 
-    // Remova campos inválidos ou não definidos
-    for (let key in data) {
-      if (data[key] === null || data[key] === undefined || data[key] === "") {
-        delete data[key];
-      }
-    }
 
-    jsonData.info_prod_comprados.push(data);
-  });
 
-  sendData(jsonData);
-}
 
 // Função para enviar dados usando Axios
 function sendData(jsonData) {
@@ -178,6 +174,8 @@ function sendData(jsonData) {
     })
     .catch((error) => {
       console.error("Erro ao enviar dados:", error);
-      alert("Erro ao enviar dados para o servidor. Por favor, tente novamente mais tarde.");
+      alert(
+        "Erro ao enviar dados para o servidor. Por favor, tente novamente mais tarde."
+      );
     });
 }

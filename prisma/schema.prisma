@@ -31,7 +31,7 @@ model Chapas {
   fornecedor            String?
   comprador             String?
   unidade               String?
-  qualidade             String
+  qualidade             String?
   medida                String?
   largura               Int?
   comprimento           Int?
