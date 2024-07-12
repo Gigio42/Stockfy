@@ -1,6 +1,6 @@
-import Chapas from "../Models/chapasModel.js";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
+
 class ComprasController {
   constructor() {}
 
@@ -22,55 +22,54 @@ class ComprasController {
   }
 
   async createCompra(orderData) {
-    const promises = orderData.info_prod_comprados.map(async (chapa) => {
-      chapa = this.extractDimensions(chapa);
-
-      // Define a quantidade_disponivel da Chapa igual à quantidade_comprada
-      chapa.quantidade_disponivel = chapa.quantidade_comprada;
-
-      // Se existem conjugacoes, define a quantidade_disponivel igual à quantidade
-      if (chapa.conjugacoes && chapa.conjugacoes.create) {
-        chapa.conjugacoes.create = chapa.conjugacoes.create.map((conjugacao) => {
-          conjugacao.quantidade_disponivel = conjugacao.quantidade;
-          return conjugacao;
+    try {
+      const promises = orderData.info_prod_comprados.map(async (chapaData) => {
+        // Extração e formatação das dimensões da chapa
+        const chapa = this.extractDimensions(chapaData);
+  
+        // Definindo a quantidade_disponivel da Chapa igual à quantidade_comprada
+        chapa.quantidade_disponivel = chapa.quantidade_comprada;
+  
+        // Inserindo a chapa no banco de dados usando Prisma
+        const createdChapa = await prisma.chapas.create({
+          data: {
+            medida: chapa.medida,
+            largura: chapa.largura,
+            comprimento: chapa.comprimento,
+            quantidade_comprada: chapa.quantidade_comprada,
+            qualidade: chapa.qualidade, // Certifique-se de passar qualidade se estiver presente
+            fornecedor: chapa.fornecedor,
+            // Adicione outros campos conforme necessário
+          },
         });
-      }
-
-      // Inserir a chapa no banco de dados
-      const createdChapa = await prisma.chapas.create({
-        data: {
-          ...chapa,
-          medida: `${chapa.largura}x${chapa.comprimento}`,
-        }
+  
+        // Criando uma entrada no histórico para a chapa
+        const idChapaHistorico = `${chapa.largura} X ${chapa.comprimento} - ${chapa.vincos} - ${chapa.qualidade}/${chapa.onda}`;
+        await prisma.historico.create({
+          data: {
+            id_chapa: idChapaHistorico,
+            quantidade: chapa.quantidade_comprada,
+            modificacao: chapa.status,
+            modificado_por: chapa.comprador,
+            data_modificacao: chapa.data_compra,
+            // Adicione outros campos conforme necessário
+          },
+        });
       });
-
-      // Criação do ID da chapa para o histórico
-      const idChapaHistorico = `${chapa.largura} X ${chapa.comprimento} - ${chapa.vincos} - ${chapa.qualidade}/${chapa.onda}`;
-
-      // Adicionar uma entrada no histórico
-      await prisma.historico.create({
-        data: {
-          id_chapa: idChapaHistorico,
-          quantidade: chapa.quantidade_comprada,
-          modificacao: chapa.status,
-          modificado_por: chapa.comprador,
-          data_modificacao: chapa.data_compra,
-          part_number: null, // Assumindo que não há part_number nesse contexto
-          maquina: null, // Assumindo que não há maquina nesse contexto
-          ordem: null, // Assumindo que não há ordem nesse contexto
-          conjulgacao: null, // ou outro valor conforme necessário
-          pedido_venda: chapa.numero_cliente.toString()
-        }
-      });
-    });
-
-    return await Promise.all(promises);
+  
+      return Promise.all(promises);
+    } catch (error) {
+      console.error('Erro ao processar dados de compra:', error);
+      throw error; // Propaga o erro para o caller lidar com ele
+    }
   }
-
+  
+  
+  
   async listarChapasEmEstoque() {
     try {
-      // Consulta todas as chapas em estoque no banco de dados
-      const chapas = await Chapas.findMany({
+      // Consulta todas as chapas em estoque no banco de dados usando Prisma
+      const chapas = await prisma.chapas.findMany({
         select: {
           id_chapa: true,
           medida: true,
@@ -79,6 +78,7 @@ class ComprasController {
           quantidade_comprada: true,
           qualidade: true,
           fornecedor: true,
+          // Adicione outros campos conforme necessário
         },
       });
 
@@ -88,60 +88,36 @@ class ComprasController {
     }
   }
 
-  async adicionarMedidasConjugadas(medida) {
+  async adicionarMedidasConjugadas(medidasConjugadas) {
     try {
-      // Crie uma nova conjugação no banco de dados usando Prisma
-      const novaConjugacao = await prisma.conjugacoes.create({
-        data: {
-          medida: medida.medida,
-          largura: medida.largura,
-          comprimento: medida.comprimento,
-          quantidade: medida.quantidade,
-          rendimento: 0, // Defina conforme necessário
-          quantidade_disponivel: 0, // Defina conforme necessário
-          usado: false, // Defina conforme necessário
-          chapaId: medida.chapaId,
-        },
-      });
+      const resultados = await Promise.all(medidasConjugadas.map(async (medida) => {
+        // Concatenando largura e comprimento como medida
+        const medidaText = `${medida.largura} X ${medida.comprimento}`;
+        
+        // Criando uma nova conjugação no banco de dados usando Prisma
+        const novaConjugacao = await prisma.conjugacoes.create({
+          data: {
+            medida: medidaText,
+            largura: medida.largura,
+            comprimento: medida.comprimento,
+            quantidade: medida.quantidade,
+            rendimento: medida.rendimento || 0,
+            quantidade_disponivel: medida.quantidade_disponivel || 0,
+            usado: medida.usado || false,
+            chapaId: medida.chapaId,
+          },
+        });
 
-      console.log("Nova conjugação criada:", novaConjugacao);
+        return novaConjugacao;
+      }));
 
-      return novaConjugacao;
+      console.log('Medidas conjugadas adicionadas:', resultados);
+      return resultados;
     } catch (error) {
-      console.error("Erro ao adicionar medidas conjugadas:", error);
+      console.error('Erro ao adicionar medidas conjugadas:', error);
       throw error;
     }
   }
-
-  async adicionarMedidasConjugadas(medidasConjugadas) {
-    try {
-        const resultados = await Promise.all(medidasConjugadas.map(medida => {
-            // Concatenando largura e comprimento como medida
-            const medidaText = `${medida.largura} X ${medida.comprimento}`;
-            
-            return prisma.conjugacoes.create({
-                data: {
-                    medida: medidaText,
-                    largura: medida.largura,
-                    comprimento: medida.comprimento,
-                    quantidade: medida.quantidade,
-                    rendimento: medida.quantasVezes,
-                    quantidade_disponivel: 0,
-                    usado: false,
-                    chapaId: parseInt(medida.chapa),
-                },
-            });
-        }));
-
-        console.log('Medidas conjugadas adicionadas:', resultados);
-        return resultados;
-    } catch (error) {
-        console.error('Erro ao adicionar medidas conjugadas:', error);
-        throw error;
-    }
-}
-
-
 }
 
 export default ComprasController;
