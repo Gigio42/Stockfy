@@ -118,31 +118,36 @@ class ComprasController {
     }
   }
 
-  async adicionarMedidasConjugadas(medidasConjugadas) {
+  async adicionarMedidasConjugadas(medidasConjugConfimed) {
     try {
       const resultados = await Promise.all(
-        medidasConjugadas.map(async (medida) => {
+        medidasConjugConfimed.map(async (medida) => {
           // Concatenando largura e comprimento como medida
           const medidaText = `${medida.largura} X ${medida.comprimento}`;
-
+  
+          // Preparando os dados para a criação
+          const data = {
+            medida: medidaText,
+            largura: medida.largura,
+            comprimento: medida.comprimento,
+            quantidade: medida.quantidade,
+            rendimento: medida.rendimento || 0,
+            quantidade_disponivel: medida.quantidade_disponivel || 0,
+            usado: medida.usado || false,
+          };
+  
+          // Verificando se 'chapa' está presente e adicionando a referência
+          if (medida.chapa) {
+            data.chapaId = parseInt(medida.chapa, 10);
+          }
+  
           // Criando uma nova conjugação no banco de dados usando Prisma
-          const novaConjugacao = await prisma.conjugacoes.create({
-            data: {
-              medida: medidaText,
-              largura: medida.largura,
-              comprimento: medida.comprimento,
-              quantidade: medida.quantidade,
-              rendimento: medida.rendimento || 0,
-              quantidade_disponivel: medida.quantidade_disponivel || 0,
-              usado: medida.usado || false,
-              chapaId: medida.chapaId,
-            },
-          });
-
+          const novaConjugacao = await prisma.conjugacoes.create({ data });
+  
           return novaConjugacao;
         })
       );
-
+  
       console.log("Medidas conjugadas adicionadas:", resultados);
       return resultados;
     } catch (error) {
@@ -150,6 +155,7 @@ class ComprasController {
       throw error;
     }
   }
+  
 }
 
 export default ComprasController;
