@@ -9,7 +9,7 @@ async function comprasRoutes(fastify, options) {
     handler: async (request, reply) => {
       console.log(request.body);
       try {
-        await comprasController.createCompra(request.body);
+        await comprasController.criarChapas(request.body);
         reply.send({ message: "Data received and inserted into SQLite database successfully" });
       } catch (err) {
         console.log(err.message);

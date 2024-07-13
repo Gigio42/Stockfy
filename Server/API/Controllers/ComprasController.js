@@ -65,7 +65,7 @@ class ComprasController {
   }*/
   
    // Função para adicionar os cartões criados ao banco de dados
-   async adicionarCartoesCriados(cartoes) {
+   async criarChapas(cartoes) {
     try {
       const resultados = await prisma.chapas.createMany({
         data: cartoes.info_prod_comprados.map(cartao => ({
