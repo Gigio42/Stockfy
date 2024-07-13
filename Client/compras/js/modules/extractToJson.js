@@ -1,28 +1,32 @@
 import { populateTable } from "./table.js";  
 import { showModal } from "./utils.js";  
 
+
+let jsonData = {};
+
 export function extractPdfData(pdf, jsonData) {
-    var infoPedido = {};
-    var infoProdComprados = [];
-    var prodComprado = {};
-    var lineNumber = 1;
-    var isInfoPedido = false;
-    var isInfoProdComprados = false;
-    var isValoresExpressos = false;
-  
-    pdf.getPage(1).then(function (page) {
-      page.getTextContent().then(function (textContent) {
-        var items = textContent.items;
-        var fullText = items
-          .map(function (item) {
-            return item.str.trim().toLowerCase();
-          })
-          .join(" ");
-  
-        parsePdfContent(items, fullText, infoPedido, infoProdComprados, prodComprado, lineNumber, isInfoPedido, isInfoProdComprados, isValoresExpressos, jsonData);
-      });
+  var infoPedido = {};
+  var infoProdComprados = [];
+  var prodComprado = {};
+  var lineNumber = 1;
+  var isInfoPedido = false;
+  var isInfoProdComprados = false;
+  var isValoresExpressos = false;
+
+  pdf.getPage(1).then(function (page) {
+    page.getTextContent().then(function (textContent) {
+      var items = textContent.items;
+      var fullText = items
+        .map(function (item) {
+          return item.str.trim().toLowerCase();
+        })
+        .join(" ");
+
+      parsePdfContent(items, fullText, infoPedido, infoProdComprados, prodComprado, lineNumber, isInfoPedido, isInfoProdComprados, isValoresExpressos, jsonData);
     });
-  }
+  });
+}
+
 
   
  export function handleExpectedDateChange(pedidoCompra, infoPedido, infoProdComprados) {
@@ -30,7 +34,7 @@ export function extractPdfData(pdf, jsonData) {
   
     expectedDateInput.addEventListener("change", function () {
       var dateValue = expectedDateInput.value;
-      jsonData = {
+       jsonData = {
         info_prod_comprados: infoProdComprados.map(function (prod) {
           return {
             ...prod,
@@ -45,9 +49,19 @@ export function extractPdfData(pdf, jsonData) {
       console.log(jsonData);
     });
   }
+
+  
   
   export function parsePdfContent(items, fullText, infoPedido, infoProdComprados, prodComprado, lineNumber, isInfoPedido, isInfoProdComprados, isValoresExpressos, jsonData) {
-    items.forEach(function (item, index) {
+    let hasFernandez = false;
+    
+    // Verifica se a palavra "FERNANDEZ" está presente em algum lugar do PDF
+    if (fullText.includes("fernandez")) {
+        hasFernandez = true;
+        console.log("A palavra 'FERNANDEZ' foi encontrada no PDF.");
+    }
+  
+    items.forEach(function (item) {
       var line = item.str.trim();
   
       if (isValoresExpressos) return;
@@ -69,7 +83,8 @@ export function extractPdfData(pdf, jsonData) {
           }
         }
       } else if (!isValoresExpressos) {
-        if ((lineNumber - 56) % 19 === 0) {
+        const adjustedLineNumber = hasFernandez ? lineNumber - 54 : lineNumber - 56;
+        if (adjustedLineNumber % 19 === 0) {
           isInfoPedido = false;
           isInfoProdComprados = true;
           if (Object.keys(prodComprado).length !== 0) {
@@ -82,59 +97,64 @@ export function extractPdfData(pdf, jsonData) {
           return;
         }
         if (isInfoProdComprados) {
-          handleProdCompradoLine(line, prodComprado, lineNumber);
+          handleProdCompradoLine(line, prodComprado, lineNumber, hasFernandez);
         }
       }
       lineNumber++;
     });
-  
+    
     var pedidoCompra = extractPedidoCompra(fullText);
     handleExpectedDateChange(pedidoCompra, infoPedido, infoProdComprados);
     populateTable(infoProdComprados);
-
-     // Atualiza jsonData
-     jsonData.infoPedido = infoPedido;
-     jsonData.infoProdComprados = infoProdComprados;
+  
+    // Atualiza jsonData
+    jsonData.infoPedido = infoPedido;
+    jsonData.infoProdComprados = infoProdComprados;
   
     console.log("JSON extraído:", { infoPedido, infoProdComprados });
   
     showModal(jsonData);
   }
+  
 
-  export function handleProdCompradoLine(line, prodComprado, lineNumber) {
-    switch ((lineNumber - 56) % 19) {
-      case 1:
-        prodComprado.cliente = line;
-        break;
-      case 3:
-        prodComprado["quantidade_comprada"] = line;
-        break;
-      case 5:
-        prodComprado.unidade = line;
-        break;
-      case 7:
-        prodComprado["qualidade"] = line;
-        break;
-      case 9:
-        prodComprado.onda = line;
-        break;
-      case 11:
-        prodComprado["gramatura"] = line;
-        break;
-      case 13:
-        prodComprado["peso_total"] = line;
-        break;
-      case 15:
-        prodComprado["valor_kilo"] = line;
-        break;
-      case 17:
-        prodComprado["valor_total"] = line;
-        break;
-      case 18:
-        parseMedidas(line, prodComprado);
-        break;
-    }
+export function handleProdCompradoLine(line, prodComprado, lineNumber, hasFernandez) {
+  const adjustedLineNumber = hasFernandez ? lineNumber - 54 : lineNumber - 56;
+
+  switch (adjustedLineNumber % 19) {
+    case 1:
+      prodComprado.cliente = line;
+      break;
+    case 3:
+      prodComprado["quantidade_comprada"] = line;
+      break;
+    case 5:
+      prodComprado.unidade = line;
+      break;
+    case 7:
+      prodComprado["qualidade"] = line;
+      break;
+    case 9:
+      prodComprado.onda = line;
+      break;
+    case 11:
+      prodComprado["gramatura"] = line;
+      break;
+    case 13:
+      prodComprado["peso_total"] = line;
+      break;
+    case 15:
+      prodComprado["valor_kilo"] = line;
+      break;
+    case 17:
+      prodComprado["valor_total"] = line;
+      break;
+    case 18:
+      parseMedidas(line, prodComprado);
+      break;
   }
+}
+
+
 
   export function parseMedidas(line, prodComprado) {
     console.log("Linha recebida:", line); // Adicionado para depuração
@@ -206,10 +226,12 @@ export function extractPedidoCompra(fullText) {
     newObj["valor_total"] = obj["valor_total"];
     newObj["largura"] = obj["largura"];
     newObj["comprimento"] = obj["comprimento"];
+    newObj["medida"] = `${obj.largura} X ${obj.comprimento}`; // Concatenando largura e comprimento
     newObj["vincos"] = obj["vincos"];
     newObj["status"] = "COMPRADO";
     return newObj;
   }
+  
 
   export function removeEmptyProperties(obj) {
     for (var prop in obj) {
@@ -219,4 +241,6 @@ export function extractPedidoCompra(fullText) {
     }
     return obj;
   }
+
+  export {jsonData}
   

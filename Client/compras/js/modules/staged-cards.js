@@ -4,10 +4,10 @@ import { medidasConjugConfimed } from "./form.js";
 // Variável para gerar identificadores únicos incrementais
 let cardIdCounter = 0;
 
+// Função para adicionar o card staged com as medidas selecionadas
 export function addStagedCard(selectedCardboard) {
-  // Obtém largura e comprimento do JSON
-  const comprimento = parseInt(selectedCardboard.comprimento);
-  const largura = parseInt(selectedCardboard.largura);
+  // Obtém largura, comprimento e id_chapa do JSON selecionado
+  const { comprimento, largura, id_chapa } = selectedCardboard;
 
   // Verifica se largura e comprimento são números válidos
   if (isNaN(comprimento) || isNaN(largura)) {
@@ -32,6 +32,7 @@ export function addStagedCard(selectedCardboard) {
   const stagedCard = document.createElement("div");
   stagedCard.className = "staged-card";
   stagedCard.id = cardId;
+  stagedCard.dataset.idChapa = id_chapa; // Adiciona o id_chapa como atributo data
   stagedCard.style.width = `${comprimentoPx}px`; // Define a largura do card
   stagedCard.style.height = `${larguraPx}px`; // Define a altura do card
   stagedCard.innerHTML = `
@@ -86,22 +87,33 @@ export function addStagedCard(selectedCardboard) {
 
   // Log de confirmação após adicionar o card ao DOM
   console.log(`Card staged adicionado ao contêiner para largura: ${largura} e comprimento: ${comprimento}, com ID: ${cardId}`);
+  console.log(`ID da Chapa: ${id_chapa}`); // Mostra o id_chapa no console
 }
 
-// Função para atualizar as conjugações staged com as dimensões dos cards confirmados
 function updateConjugacoesStaged() {
   const conjugacoesStaged = document.getElementById("conjugacoesstaged");
 
   // Limpa o conteúdo atual para evitar duplicatas
   conjugacoesStaged.innerHTML = "";
-  // Itera sobre o array de medidas confirmadas
-  medidasConjugConfimed.forEach(({ largura, comprimento }) => {
-    // Cria um novo elemento para exibir as dimensões
-    const dimensionElement = document.createElement("div");
-    dimensionElement.className = "cardMedidaConjug";
-    dimensionElement.textContent = `${largura} X ${comprimento}`;
 
-    // Adiciona o novo elemento ao container
-    conjugacoesStaged.appendChild(dimensionElement);
+  // Usa um Set para armazenar combinações únicas de id_chapa, largura e comprimento
+  const uniqueDimensions = new Set();
+
+  // Itera sobre o array de medidas confirmadas
+  medidasConjugConfimed.forEach(({ id_chapa, largura, comprimento }) => {
+    const dimensionKey = `${id_chapa}-${largura}x${comprimento}`;
+
+    // Apenas adiciona ao DOM se a combinação ainda não estiver no Set
+    if (!uniqueDimensions.has(dimensionKey)) {
+      uniqueDimensions.add(dimensionKey);
+
+      // Cria um novo elemento para exibir as dimensões
+      const dimensionElement = document.createElement("div");
+      dimensionElement.className = "cardMedidaConjug";
+      dimensionElement.textContent = `${largura} x ${comprimento}`;
+
+      // Adiciona o novo elemento ao container
+      conjugacoesStaged.appendChild(dimensionElement);
+    }
   });
 }

@@ -206,7 +206,7 @@ function createMaquinaCard(maquina) {
   cardMaquina.appendChild(maquinaName);
 
   const svgIcon = document.createElement("img");
-  svgIcon.src = "media/icons8-link-externo.svg";
+  svgIcon.src = "media/icons8-link-externo-48.png";
   svgIcon.alt = "External link icon";
   svgIcon.classList.add("svgIcon", "abrirModal");
   cardMaquina.appendChild(svgIcon);
