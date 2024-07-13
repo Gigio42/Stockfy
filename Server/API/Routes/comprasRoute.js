@@ -30,16 +30,16 @@ async function comprasRoutes(fastify, options) {
     }
   });
 
-// Rota para receber as medidas conjugadas do cliente
-fastify.post("/conjugacoes/confirmed", async (request, reply) => {
-  const medidasConjugadas = request.body;
+// Rota para receber os cartões criados do cliente
+fastify.post("/compras/cartoes", async (request, reply) => {
+  const cartoesCriados = request.body;
 
   try {
-      const resultado = await comprasController.adicionarMedidasConjugadas(medidasConjugadas);
-      reply.send({ message: 'Medidas conjugadas recebidas com sucesso', data: resultado });
+    const resultado = await comprasController.adicionarCartoesCriados(cartoesCriados);
+    reply.send({ message: 'Cartões criados recebidos com sucesso', data: resultado });
   } catch (error) {
-      console.error('Erro ao processar medidas conjugadas:', error);
-      reply.code(500).send({ error: 'Erro ao processar medidas conjugadas' });
+    console.error('Erro ao processar cartões criados:', error);
+    reply.code(500).send({ error: 'Erro ao processar cartões criados' });
   }
 });
 
