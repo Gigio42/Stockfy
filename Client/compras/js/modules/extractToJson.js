@@ -226,10 +226,12 @@ export function extractPedidoCompra(fullText) {
     newObj["valor_total"] = obj["valor_total"];
     newObj["largura"] = obj["largura"];
     newObj["comprimento"] = obj["comprimento"];
+    newObj["medida"] = `${obj.largura} X ${obj.comprimento}`; // Concatenando largura e comprimento
     newObj["vincos"] = obj["vincos"];
     newObj["status"] = "COMPRADO";
     return newObj;
   }
+  
 
   export function removeEmptyProperties(obj) {
     for (var prop in obj) {

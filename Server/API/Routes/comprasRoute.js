@@ -43,6 +43,19 @@ fastify.post("/compras/cartoes", async (request, reply) => {
   }
 });
 
+// Rota para receber os cartões criados do cliente
+fastify.post("/conjugacoes/confirmed", async (request, reply) => {
+  const medidasConjugConfimed = request.body;
+
+  try {
+    const resultado = await comprasController.adicionarMedidasConjugadas(medidasConjugConfimed);
+    reply.send({ message: 'Cartões criados recebidos com sucesso', data: resultado });
+  } catch (error) {
+    console.error('Erro ao processar cartões criados:', error);
+    reply.code(500).send({ error: 'Erro ao processar cartões criados' });
+  }
+});
+
 }
 
 export default comprasRoutes;
