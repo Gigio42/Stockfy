@@ -27,21 +27,22 @@ async function admRoute(fastify, options) {
     try {
       const maquinaId = parseInt(request.params.maquinaId, 10);
       const itemId = parseInt(request.params.itemId, 10);
-      const { prazo, ordem, medida, op, sistema, cliente, quantidade, colaborador } = request.body;
-
+      const { prazo, ordem, medida, op, sistema, cliente, quantidade, colaborador, prioridade } = request.body; // Incluir prioridade aqui
+  
       await admController.changeItemStatusProduzindo(
         itemId,
         maquinaId,
         prazo,
         parseInt(ordem, 10),
         medida,
-        parseInt(op, 10), // Convertendo para número
+        parseInt(op, 10),
         sistema,
         cliente,
-        parseInt(quantidade, 10), // Convertendo para número
+        parseInt(quantidade, 10),
         colaborador,
+        parseInt(prioridade, 10) // Passar prioridade como um inteiro
       );
-
+  
       reply.send({ message: "Status do item atualizado para PRODUZINDO" });
       console.log(`Solicitação POST para /maquina/${maquinaId}/item/${itemId}/produzindo realizada com sucesso`);
     } catch (err) {
@@ -49,6 +50,7 @@ async function admRoute(fastify, options) {
       reply.code(500).send({ message: "Internal Server Error" });
     }
   });
+  
 
   fastify.get("/maquina/:maquinaId/item", async (request, reply) => {
     try {
@@ -60,18 +62,22 @@ async function admRoute(fastify, options) {
     }
   });
 
-  fastify.post("/atualizar-prioridades", async (request, reply) => {
+  fastify.post("/itens/prioridades", async (request, reply) => {
     try {
-      const newPriorities = request.body;
-      console.log("Dados recebidos na rota /atualizar-prioridades:", newPriorities);
-      await admController.updateItemPriorities(newPriorities);
-      reply.send({ message: "Prioridades atualizadas com sucesso" });
-      console.log("Prioridades atualizadas com sucesso");
+      const { ids } = request.body;
+  
+      // Busca os itens com as prioridades pelos IDs fornecidos
+      const items = await admController.getAllItemsPriorities(ids);
+  
+      reply.send(items);
     } catch (err) {
-      console.error("Erro ao atualizar as prioridades:", err);
-      reply.code(500).send({ message: "Erro ao atualizar as prioridades" });
+      console.error("Erro ao buscar prioridades dos itens existentes:", err);
+      reply.code(500).send({ message: "Erro ao buscar prioridades dos itens existentes." });
     }
   });
+  
+
+
 
   fastify.get("/item_maquina", async (request, reply) => {
     try {
@@ -96,6 +102,7 @@ async function admRoute(fastify, options) {
       reply.code(500).send({ message: "Erro ao criar Itens_Maquina." });
     }
   });
+
 
   fastify.get("/item_maquina/existence-check", async (request, reply) => {
     try {

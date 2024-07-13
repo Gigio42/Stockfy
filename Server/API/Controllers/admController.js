@@ -47,13 +47,18 @@ class AdmController {
     return Object.values(items);
   }
 
-  async changeItemStatusProduzindo(itemId, maquinaId, prazo, ordem, medida, op, sistema, cliente, quantidade, colaborador) {
+  async changeItemStatusProduzindo(itemId, maquinaId, prazo, ordem, medida, op, sistema, cliente, quantidade, colaborador, prioridade) {
     try {
+      console.log(`Prioridade recebida no servidor: ${prioridade}`); // Verifique se está sendo recebido corretamente
+  
       await Item.update({
         where: { id_item: itemId },
-        data: { status: "PRODUZINDO" },
+        data: { 
+          status: "PRODUZINDO",
+          prioridade: prioridade, // Certifique-se de que prioridade está sendo corretamente utilizada aqui
+        },
       });
-
+  
       await Item_Maquina.create({
         data: {
           maquinaId: maquinaId,
@@ -68,13 +73,36 @@ class AdmController {
           colaborador: colaborador,
         },
       });
-
+  
       console.log(
-        `Item ${itemId} atualizado para status PRODUZINDO com prazo ${prazo}, ordem ${ordem}, medida ${medida}, op ${op}, sistema ${sistema}, cliente ${cliente}, quantidade ${quantidade}, colaborador ${colaborador}`,
+        `Item ${itemId} atualizado para status PRODUZINDO com prazo ${prazo}, ordem ${ordem}, medida ${medida}, op ${op}, sistema ${sistema}, cliente ${cliente}, quantidade ${quantidade}, colaborador ${colaborador}, prioridade ${prioridade}`,
       );
     } catch (error) {
       console.error("Erro ao atualizar o status do item para PRODUZINDO:", error);
       throw new Error("Erro ao atualizar o status do item para PRODUZINDO: " + error.message);
+    }
+  }
+  
+  
+
+  async getAllItemsPriorities(itemIds) {
+    try {
+      // Busca os itens pelos IDs fornecidos com suas prioridades
+      const items = await Item.findMany({
+        where: {
+          id_item: {
+            in: itemIds,
+          },
+        },
+        select: {
+          id_item: true,
+          prioridade: true,
+        },
+      });
+  
+      return items;
+    } catch (error) {
+      throw new Error("Erro ao buscar itens e suas prioridades: " + error.message);
     }
   }
 
