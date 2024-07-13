@@ -164,7 +164,7 @@ class PCPController {
     if (allUsed) {
       await Chapas.update({
         where: { id_chapa: conjugacao.chapaId },
-        data: { quantidade_disponivel: { decrement: Math.min(...allConjugacoes.map((c) => c.quantidade_disponivel)) } },
+        data: { status: "USADO" },
       });
     }
 
@@ -205,11 +205,11 @@ class PCPController {
   async createItemWithChapa(body) {
     try {
       console.log(body);
-      const { partNumber, pedidoVenda, chapas, conjugacoes, reservedBy } = body; // Add pedidoVenda here
+      const { partNumber, pedidoVenda, chapas, conjugacoes, reservedBy } = body;
 
       await this.validateQuantities(chapas, conjugacoes);
 
-      const item = await this.findOrCreateItem(partNumber, pedidoVenda, reservedBy); // Pass pedidoVenda here
+      const item = await this.findOrCreateItem(partNumber, pedidoVenda, reservedBy);
 
       for (const { chapaID, quantity } of chapas) {
         await this.updateChapa(chapaID, quantity);
@@ -250,7 +250,7 @@ class PCPController {
               quantidade_disponivel: { increment: chapaItem.quantidade },
               usado: false,
             },
-          }),
+          })
         );
       }
 
@@ -258,7 +258,7 @@ class PCPController {
         Chapas.update({
           where: { id_chapa: chapaItem.chapaId },
           data: { quantidade_estoque: { increment: chapaItem.quantidade } },
-        }),
+        })
       );
 
       operations.push(Chapa_Item.delete({ where: { id_chapa_item: chapaItem.id_chapa_item } }));
@@ -296,7 +296,7 @@ class PCPController {
             quantidade_disponivel: { increment: chapaItem.quantidade },
             usado: false,
           },
-        }),
+        })
       );
     }
 
@@ -304,7 +304,7 @@ class PCPController {
       Chapas.update({
         where: { id_chapa: chapaId },
         data: { quantidade_estoque: { increment: chapaItem.quantidade } },
-      }),
+      })
     );
 
     operations.push(Chapa_Item.delete({ where: { id_chapa_item: chapaItem.id_chapa_item } }));
