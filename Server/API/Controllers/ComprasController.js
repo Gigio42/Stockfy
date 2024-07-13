@@ -63,12 +63,12 @@ class ComprasController {
       throw error; // Propaga o erro para o caller lidar com ele
     }
   }*/
-  
-   // Função para adicionar os cartões criados ao banco de dados
-   async criarChapas(cartoes) {
+
+  // Função para adicionar os cartões criados ao banco de dados
+  async criarChapas(cartoes) {
     try {
       const resultados = await prisma.chapas.createMany({
-        data: cartoes.info_prod_comprados.map(cartao => ({
+        data: cartoes.info_prod_comprados.map((cartao) => ({
           numero_cliente: cartao.numero_cliente,
           quantidade_comprada: cartao.quantidade_comprada,
           unidade: cartao.unidade,
@@ -80,6 +80,7 @@ class ComprasController {
           valor_total: cartao.valor_total,
           largura: cartao.largura,
           comprimento: cartao.comprimento,
+          medida: `${cartao.largura} X ${cartao.comprimento}`, // Concatenando largura e comprimento
           vincos: cartao.vincos,
           status: cartao.status,
           comprador: cartao.comprador,
@@ -94,7 +95,7 @@ class ComprasController {
       throw new Error(`Erro ao adicionar cartões criados: ${error.message}`);
     }
   }
-  
+
   async listarChapasEmEstoque() {
     try {
       // Consulta todas as chapas em estoque no banco de dados usando Prisma
@@ -119,31 +120,33 @@ class ComprasController {
 
   async adicionarMedidasConjugadas(medidasConjugadas) {
     try {
-      const resultados = await Promise.all(medidasConjugadas.map(async (medida) => {
-        // Concatenando largura e comprimento como medida
-        const medidaText = `${medida.largura} X ${medida.comprimento}`;
-        
-        // Criando uma nova conjugação no banco de dados usando Prisma
-        const novaConjugacao = await prisma.conjugacoes.create({
-          data: {
-            medida: medidaText,
-            largura: medida.largura,
-            comprimento: medida.comprimento,
-            quantidade: medida.quantidade,
-            rendimento: medida.rendimento || 0,
-            quantidade_disponivel: medida.quantidade_disponivel || 0,
-            usado: medida.usado || false,
-            chapaId: medida.chapaId,
-          },
-        });
+      const resultados = await Promise.all(
+        medidasConjugadas.map(async (medida) => {
+          // Concatenando largura e comprimento como medida
+          const medidaText = `${medida.largura} X ${medida.comprimento}`;
 
-        return novaConjugacao;
-      }));
+          // Criando uma nova conjugação no banco de dados usando Prisma
+          const novaConjugacao = await prisma.conjugacoes.create({
+            data: {
+              medida: medidaText,
+              largura: medida.largura,
+              comprimento: medida.comprimento,
+              quantidade: medida.quantidade,
+              rendimento: medida.rendimento || 0,
+              quantidade_disponivel: medida.quantidade_disponivel || 0,
+              usado: medida.usado || false,
+              chapaId: medida.chapaId,
+            },
+          });
 
-      console.log('Medidas conjugadas adicionadas:', resultados);
+          return novaConjugacao;
+        })
+      );
+
+      console.log("Medidas conjugadas adicionadas:", resultados);
       return resultados;
     } catch (error) {
-      console.error('Erro ao adicionar medidas conjugadas:', error);
+      console.error("Erro ao adicionar medidas conjugadas:", error);
       throw error;
     }
   }
