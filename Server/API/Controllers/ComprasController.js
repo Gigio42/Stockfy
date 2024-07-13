@@ -21,7 +21,7 @@ class ComprasController {
     return chapa;
   }
 
-  async createCompra(orderData) {
+  /* async createCompra(orderData) {
     try {
       const promises = orderData.info_prod_comprados.map(async (chapaData) => {
         // Extração e formatação das dimensões da chapa
@@ -62,9 +62,38 @@ class ComprasController {
       console.error('Erro ao processar dados de compra:', error);
       throw error; // Propaga o erro para o caller lidar com ele
     }
+  }*/
+  
+   // Função para adicionar os cartões criados ao banco de dados
+   async criarChapas(cartoes) {
+    try {
+      const resultados = await prisma.chapas.createMany({
+        data: cartoes.info_prod_comprados.map(cartao => ({
+          numero_cliente: cartao.numero_cliente,
+          quantidade_comprada: cartao.quantidade_comprada,
+          unidade: cartao.unidade,
+          qualidade: cartao.qualidade,
+          onda: cartao.onda,
+          gramatura: cartao.gramatura,
+          peso_total: cartao.peso_total,
+          valor_unitario: cartao.valor_unitario,
+          valor_total: cartao.valor_total,
+          largura: cartao.largura,
+          comprimento: cartao.comprimento,
+          vincos: cartao.vincos,
+          status: cartao.status,
+          comprador: cartao.comprador,
+          data_compra: cartao.data_compra,
+          fornecedor: cartao.fornecedor,
+          id_compra: cartao.id_compra,
+          data_prevista: cartao.data_prevista,
+        })),
+      });
+      return resultados;
+    } catch (error) {
+      throw new Error(`Erro ao adicionar cartões criados: ${error.message}`);
+    }
   }
-  
-  
   
   async listarChapasEmEstoque() {
     try {

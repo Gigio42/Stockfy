@@ -663,6 +663,11 @@ span.item-number {
   /* Reduzindo ainda mais a duração da transição */
 }
 
+.abrirModal {
+  width: 35px;
+  height: 35px;
+}
+
 .dark-mode .abrirModal:hover {
   background: #353535;
 }
