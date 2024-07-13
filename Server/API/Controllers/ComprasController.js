@@ -71,6 +71,7 @@ class ComprasController {
         data: cartoes.info_prod_comprados.map((cartao) => ({
           numero_cliente: cartao.numero_cliente,
           quantidade_comprada: cartao.quantidade_comprada,
+          quantidade_disponivel: cartao.quantidade_comprada,
           unidade: cartao.unidade,
           qualidade: cartao.qualidade,
           onda: cartao.onda,
@@ -95,6 +96,7 @@ class ComprasController {
       throw new Error(`Erro ao adicionar cartões criados: ${error.message}`);
     }
   }
+
 
   async listarChapasEmEstoque() {
     try {
@@ -131,8 +133,8 @@ class ComprasController {
             largura: medida.largura,
             comprimento: medida.comprimento,
             quantidade: medida.quantidade,
-            rendimento: medida.rendimento || 0,
-            quantidade_disponivel: medida.quantidade_disponivel || 0,
+            rendimento: medida.quantasVezes || 0,
+            quantidade_disponivel: medida.quantidade || 0,
             usado: medida.usado || false,
           };
   
