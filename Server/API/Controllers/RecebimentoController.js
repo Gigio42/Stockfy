@@ -23,7 +23,7 @@ class RecebimentoController {
         throw new Error(`Chapa with id ${item.id_chapa} not found`);
       }
 
-      return prisma.chapas.update({
+      await prisma.chapas.update({
         where: { id_chapa: id_chapa_int },
         data: {
           data_recebimento: item.data_recebimento,
@@ -36,6 +36,18 @@ class RecebimentoController {
           status: item.status,
         },
       });
+
+      await prisma.historico.createMany({
+        data: {
+          chapa: `${item.largura} X ${item.comprimento} - ${item.vincos} - ${item.qualidade}/${item.onda}`,
+          quantidade: item.quantidade_recebida,
+          modificacao: item.status,
+          modificado_por: item.senderName, // usuario login
+          data_modificacao: item.data_recebimento,
+        }
+      });
+
+      return 0
     });
 
     return await Promise.all(promises);

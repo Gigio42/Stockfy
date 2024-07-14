@@ -93,4 +93,4 @@ Sistema de Gerenciamento de Estoque desenvolvido para uma empresa gerenciar seu 
 6. Abra um pull request.
 
 ## Licença
-Este projeto está licenciado sob a Licença MIT.
+Este projeto está licenciado sob a Licença GNU AFFERO.

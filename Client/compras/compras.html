@@ -12,7 +12,7 @@
     <!-- Vue.js -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/draggable/1.2.3/draggable.bundle.legacy.min.js"></script>
+    
 
 
 </head>
@@ -25,6 +25,13 @@
 
     <div class="foracontainer">
         <aside class="aside-lateral">
+            <div class="userdiv">
+                <img class="mr-3 align-self-center" alt="Profile Pic" id="profilePic" style="width: 50px; height: 50px; border-radius: 50%" />
+                <div class="media-body">
+                    <h5 class="mt-0 mb-0" id="user-name">Username</h5>
+                    <p class="mb-0 text-muted" id="role">Administrador</p>
+                </div>
+            </div>
             <!-- Botão para abrir modal de adicionar manualmente -->
             <button id="btnAdicionarManualmente">Adicionar Manualmente</button>
             <!-- Novo botão para abrir um novo modal -->
@@ -44,7 +51,7 @@
                 </div>
                 <div class="btninferior mt-4 d-flex justify-content-end">
                     <div class="date-input-container">
-                        <input type="text" id="expectedDate" placeholder="Data Prevista" />
+                        <input type="date" id="expectedDate" placeholder="Data Prevista" />
                     </div>
                     <button id="sendButton" class="btn btn-success mr-2">Enviar</button>
                 </div>
