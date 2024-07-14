@@ -62,17 +62,17 @@ class AdmController {
   ) {
     try {
       console.log(`Prioridade recebida no servidor: ${prioridade}`); // Verifique se está sendo recebido corretamente
-
+  
       const status = prioridade === 1 ? "PRODUZINDO" : "PROGRAMADO";
-
-      await Item.update({
+  
+      await prisma.Item.update({
         where: { id_item: itemId },
         data: {
           status: status, // Define o status com base na prioridade
         },
       });
-
-      await Item_Maquina.create({
+  
+      await prisma.item_Maquina.create({
         data: {
           maquinaId: maquinaId,
           itemId: itemId,
@@ -87,7 +87,38 @@ class AdmController {
           prioridade: prioridade, // Certifique-se de que prioridade está sendo corretamente utilizada aqui
         },
       });
-
+  
+      // const part_number = await prisma.item.findUnique({
+      //   where: {
+      //     id_item: itemId, // Supondo que 'id_item' é a chave primária para identificar o item
+      //   },
+      //   select: {
+      //     part_number: true,
+      //     pedido_venda: true, // Adicione todos os campos necessários aqui
+      //   },
+      // });
+  
+      // const chapa_items = await prisma.chapa_item.findMany({
+      //   where: {
+      //     itemId: itemId, // Supondo que 'itemId' é o campo que referencia o item
+      //   },
+      // });
+  
+      // for (const chapa of chapa_items) {
+      //   await prisma.historico.create({
+      //     data: {
+      //       chapa: `${chapa.largura} X ${chapa.comprimento} - ${chapa.vincos} - ${chapa.qualidade}/${chapa.onda}`,
+      //       part_number: part_number.part_number,
+      //       quantidade: parseInt(quantidade, 10),
+      //       modificacao: "reservar_maquina",
+      //       modificado_por: colaborador, // usuário login
+      //       data_modificacao: new Date(), // Adicione a data atual ou formate-a conforme necessário
+      //       prazo: prazo,
+      //       pedido_venda: part_number.pedido_venda,
+      //     },
+      //   });
+      // }
+  
       console.log(
         `Item ${itemId} atualizado para status ${status} com prazo ${prazo}, ordem ${ordem}, medida ${medida}, op ${op}, sistema ${sistema}, cliente ${cliente}, quantidade ${quantidade}, colaborador ${colaborador}, prioridade ${prioridade}`
       );
@@ -101,6 +132,7 @@ class AdmController {
       );
     }
   }
+  
 
   async getAllItemsPriorities(existingItemMaquinaIds) {
     try {

@@ -5,7 +5,7 @@ if (localStorage.getItem("isLoggedIn") !== "true") {
 }
 
 $("#user-name").text(localStorage.getItem("nome") || "UserName");
-var name = localStorage.getItem("nome");
+export var name = localStorage.getItem("nome");
 var profilePic = $("#profilePic");
 profilePic.attr("src", "https://api.dicebear.com/8.x/shapes/svg?seed=" + name);
 

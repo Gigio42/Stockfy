@@ -1,8 +1,8 @@
-import BASE_URL from "../utils/config.js";
-import { alterarTema, hideDropZone, logout } from "./scripts/utils.js";
+import {  alterarTema, hideDropZone, logout } from "./scripts/utils.js";
 import { fetchChapas } from "./scripts/connections.js";
-import { comparar, addLine, copiarTudo } from "./scripts/manipularTabela.js";
+import { addLine, copiarTudo } from "./scripts/manipularTabela.js";
 import { processPDF, processXML } from "./scripts/processFile.js";
+
 
 document.getElementById("buscarChapa").addEventListener("click", buscarChapa);
 

@@ -1,7 +1,7 @@
 import BASE_URL from "../../utils/config.js";
 import { clearTable } from "./manipularTabela.js";
 import { criarTable } from "./manipularTabela.js";
-import { verifyIdChapa, rowDataObj } from "./utils.js";
+import { name, verifyIdChapa, rowDataObj } from "./utils.js";
 
 export function fetchChapas(xPed) {
   clearTable();
@@ -30,6 +30,7 @@ export function fetchChapas(xPed) {
 export async function sendDataToServer(row) {
   try {
     var data = [rowDataObj(row)]; // Enviar como array de objetos
+    data.forEach(d => d.senderName = name); // Adiciona o nome à cada objeto no array
     console.log("Data to send:", data); // Verifique o dado que está sendo enviado
     const response = await axios.put(`${BASE_URL}/recebimento`, data);
     alert("Dados atualizados com sucesso!");
@@ -45,6 +46,8 @@ export async function sendAllDataToServer() {
   const allData = rows
     .filter((row) => verifyIdChapa(row)) // Verifica se as 7 primeiras colunas não são vazias e se as 3 primeiras colunas não são vazias
     .map((row) => rowDataObj(row));
+
+  allData.forEach(d => d.senderName = name); // Adiciona o nome à cada objeto no array
 
   try {
     console.log("Data to send:", allData); // Verifique o dado que está sendo enviado

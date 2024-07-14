@@ -74,13 +74,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const headers = {
             'part_number': ["Part Number", "Quantidade", "Modificação", "Modificado Por", "Data Modificação", "Máquina", "Ordem", "Pedido Venda", "Conjulgação", "Chapas"],
-            'chapa': ["Chapa", "Quantidade", "Modificação", "Modificado Por", "Data Modificação", "Part Number"],
+            'chapa': ["Chapa", "Quantidade", "Modificação", "Modificado Por", "Data recebimento", "Data Modificação", "Part Number"],
             'maquina': ["Máquina", "Part Number", "Quantidade", "Modificação", "Modificado Por", "Data Modificação", "Ordem", "Pedido Venda", "Conjulgação", "Chapas"]
         }[displayType];
 
         const jsonKeys = {
             'part_number': ["part_number", "quantidade", "modificacao", "modificado_por", "data_modificacao", "maquina", "ordem", "pedido_venda", "conjulgacao"],
-            'chapa': ["id_chapa", "quantidade", "modificacao", "modificado_por", "data_modificacao", "part_number"],
+            'chapa': ["chapa", "quantidade", "modificacao", "modificado_por", "data_prevista", "data_modificacao", "part_number"],
             'maquina': ["maquina", "part_number", "quantidade", "modificacao", "modificado_por", "data_modificacao", "ordem", "pedido_venda", "conjulgacao"]
         }[displayType];
 
@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         data.forEach(item => {
             if (!item[jsonKeys[0]] || item[jsonKeys[0]].toString().trim() === "") {
-                return; // Não adiciona linhas com part_number ou id_chapa vazio
+                return; // Não adiciona linhas com part_number ou chapa vazio
             }
             let row = tbody.insertRow();
             jsonKeys.forEach(key => {
@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', function () {
                    parseDate(item.data_modificacao) <= parseDate(dataModificacao);
         });
 
-        const uniqueChapas = new Set(filteredChapas.map(chapa => chapa.id_chapa));
+        const uniqueChapas = new Set(filteredChapas.map(chapa => chapa.chapa));
         console.log('Filtered chapas:', filteredChapas);
         console.log('Unique chapas:', uniqueChapas);
 
@@ -186,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const chapaId = this.getAttribute('data-id');
                 console.log('Clicked chapa ID:', chapaId);
                 updateDisplay('chapa'); // Muda o display para chapa
-                displayFilteredData(chapaId, 'id_chapa');
+                displayFilteredData(chapaId, 'chapa');
             });
         });
     }
@@ -229,8 +229,8 @@ document.addEventListener('DOMContentLoaded', function () {
         data.forEach(item => {
             if (currentDisplay === 'part_number' && item.part_number) {
                 uniqueIds.add(item.part_number);
-            } else if (currentDisplay === 'chapa' && item.id_chapa) {
-                uniqueIds.add(item.id_chapa);
+            } else if (currentDisplay === 'chapa' && item.chapa) {
+                uniqueIds.add(item.chapa);
             } else if (currentDisplay === 'maquina' && item.maquina) {
                 uniqueIds.add(item.maquina);
             }
@@ -244,7 +244,7 @@ document.addEventListener('DOMContentLoaded', function () {
             idDiv.textContent = id;
             idDiv.addEventListener('click', function() {
                 console.log('Clicked ID button:', id);
-                displayFilteredData(id, currentDisplay === 'part_number' ? 'part_number' : currentDisplay === 'chapa' ? 'id_chapa' : 'maquina');
+                displayFilteredData(id, currentDisplay === 'part_number' ? 'part_number' : currentDisplay === 'chapa' ? 'chapa' : 'maquina');
             });
             idsContainer.appendChild(idDiv);
         });
@@ -254,7 +254,7 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log('Display filtered data for ID:', id, 'Type:', type);
         const keyMap = {
             'part_number': 'part_number',
-            'id_chapa': 'id_chapa',
+            'chapa': 'chapa',
             'maquina': 'maquina'
         };
         const filteredData = historicoGeral.filter(item => {
