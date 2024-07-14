@@ -130,7 +130,7 @@ class ProducaoController {
     // Mark the highest priority item as available and others as blocked
     let highestPriorityItem = true;
     maquina.items.forEach((item) => {
-      if (highestPriorityItem) {
+      if (highestPriorityItem && item.estado !== "FEITO") {
         item.disponivel = true;
         highestPriorityItem = false;
       } else {
