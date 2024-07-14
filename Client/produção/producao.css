@@ -316,7 +316,7 @@ body.dark-mode .kanban-item {
 }
 
 .kanban-column {
-  width: 90%;
+  width: 75%;
   background-color: #f0f0f0;
   padding: 10px;
   border-radius: 5px;
@@ -324,28 +324,22 @@ body.dark-mode .kanban-item {
   height: 87vh;
 }
 
-@media (max-width: 1600px) {
-  #kanban-board {
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-  }
+#kanban-board {
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
 
-  .kanban-column {
-    width: 90%;
-  }
+#to-do {
+  order: 1;
+}
 
-  #to-do {
-    order: 1;
-  }
+#in-progress {
+  order: 2;
+}
 
-  #in-progress {
-    order: 2;
-  }
-
-  #done {
-    order: 3;
-  }
+#done {
+  order: 3;
 }
 
 body.dark-mode .kanban-column h3 {
