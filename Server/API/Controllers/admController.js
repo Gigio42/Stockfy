@@ -3,6 +3,8 @@ import Chapa_Item from "../Models/chapa_itemModel.js";
 import Item from "../Models/itemModel.js";
 import Item_Maquina from "../Models/item_maquinaModel.js";
 
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 class AdmController {
   constructor(prisma) {
     this.prisma = prisma;
@@ -65,7 +67,7 @@ class AdmController {
   
       const status = prioridade === 1 ? "PRODUZINDO" : "PROGRAMADO";
   
-      await prisma.Item.update({
+      await prisma.item.update({
         where: { id_item: itemId },
         data: {
           status: status, // Define o status com base na prioridade
@@ -88,36 +90,49 @@ class AdmController {
         },
       });
   
-      // const part_number = await prisma.item.findUnique({
-      //   where: {
-      //     id_item: itemId, // Supondo que 'id_item' é a chave primária para identificar o item
-      //   },
-      //   select: {
-      //     part_number: true,
-      //     pedido_venda: true, // Adicione todos os campos necessários aqui
-      //   },
-      // });
+      const part_number = await prisma.item.findUnique({
+        where: {
+          id_item: itemId, // Supondo que 'id_item' é a chave primária para identificar o item
+        },
+        select: {
+          part_number: true,
+          pedido_venda: true, // Adicione todos os campos necessários aqui
+        },
+      });
   
-      // const chapa_items = await prisma.chapa_item.findMany({
-      //   where: {
-      //     itemId: itemId, // Supondo que 'itemId' é o campo que referencia o item
-      //   },
-      // });
+      const chapa_items = await prisma.chapa_Item.findMany({
+        where: {
+          itemId: itemId, // Supondo que 'itemId' é o campo que referencia o item
+        },
+      });
+
+      const maquina = await prisma.maquina.findMany({
+        where: {
+          id_maquina: maquinaId, // Supondo que 'itemId' é o campo que referencia o item
+        },
+      });
+
+      // Verifica se chapa_items retornou algum resultado
+      if (!chapa_items.length) {
+        throw new Error(`No Chapa_Item found for itemId ${itemId}`);
+      }
   
-      // for (const chapa of chapa_items) {
-      //   await prisma.historico.create({
-      //     data: {
-      //       chapa: `${chapa.largura} X ${chapa.comprimento} - ${chapa.vincos} - ${chapa.qualidade}/${chapa.onda}`,
-      //       part_number: part_number.part_number,
-      //       quantidade: parseInt(quantidade, 10),
-      //       modificacao: "reservar_maquina",
-      //       modificado_por: colaborador, // usuário login
-      //       data_modificacao: new Date(), // Adicione a data atual ou formate-a conforme necessário
-      //       prazo: prazo,
-      //       pedido_venda: part_number.pedido_venda,
-      //     },
-      //   });
-      // }
+      for (const chapa of chapa_items) {
+        await prisma.historico.create({
+          data: {
+            chapa: `${chapa.largura} X ${chapa.comprimento} - ${chapa.vincos} - ${chapa.qualidade}/${chapa.onda}`,
+            part_number: part_number.part_number,
+            quantidade: parseInt(quantidade, 10),
+            modificacao: "reservar_maquina",
+            modificado_por: colaborador, // usuário login
+            data_modificacao: new Date().toISOString(), // Convertendo a data para string
+            data_prevista: prazo,
+            pedido_venda: part_number.pedido_venda.toString(),
+            ordem: parseInt(ordem, 10),
+            maquina: maquina.nome // Convertendo para string
+          },
+        });
+      }
   
       console.log(
         `Item ${itemId} atualizado para status ${status} com prazo ${prazo}, ordem ${ordem}, medida ${medida}, op ${op}, sistema ${sistema}, cliente ${cliente}, quantidade ${quantidade}, colaborador ${colaborador}, prioridade ${prioridade}`
@@ -132,7 +147,6 @@ class AdmController {
       );
     }
   }
-  
 
   async getAllItemsPriorities(existingItemMaquinaIds) {
     try {
