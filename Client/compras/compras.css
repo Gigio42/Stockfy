@@ -1,6 +1,6 @@
 html,
 body {
-  background-color: #131313;
+  background-color: #191919;
   color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -41,14 +41,15 @@ body {
   padding: 1rem;
   width: 100%;
   border-radius: 1rem;
-  background-color: #232323;
-  color: #585858;
+  background-color:transparent;
+  color: #a7a7a7;
   margin-bottom: 1rem;
+  font-size: 1.5rem;
 }
 
 #btnConjugar:hover,
 #btnAdicionarManualmente:hover {
-  background: #1c1c1c;
+  background: #343434;
 }
 
 /* Estilos para a classe AddConjugação */
@@ -98,6 +99,7 @@ body {
 
 .dropzone:hover {
   border: dashed 2px #84e789;
+  color: #84e789;
 }
 
 .modal-content {
@@ -179,14 +181,16 @@ body {
 .btninferior {
   position: fixed;
   bottom: 0;
-  left: 0;
-  /* ou right: 0; para alinhamento à direita */
-  width: 100%;
+  right: 0; /* Garante que comece da borda esquerda */
+  width: 80%; /* Ocupa toda a largura disponível */
   padding: 1rem;
-  background-color: #1c1c1c;
+  background-color: transparent;
   height: 5rem;
-  align-items: center;
+  display: flex; /* Para alinhar conteúdo verticalmente */
+  align-items: center; /* Alinha o conteúdo verticalmente */
+  justify-content: center; /* Centraliza horizontalmente o conteúdo */
 }
+
 
 #jsonContent,
 #jsonContentManual {
@@ -316,7 +320,7 @@ body button.confirm:hover {
 
 .header-principal {
   display: flex;
-  background-color: rgb(39, 39, 39);
+  background-color: #0f0f0f;
   justify-content: space-between;
   height: 10%;
   flex-direction: row;
@@ -466,7 +470,7 @@ body button.edit.disabled {
   left: 0;
   width: 20%;
   height: 100%;
-  background-color: #2c2c2c;
+  background-color: #9a9a9a27;
   padding: 20px;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   z-index: 4;
@@ -494,7 +498,7 @@ body button.edit.disabled {
 }
 
 .logout:hover {
-  background: #313131;
+  background: #1f1f1f;
 }
 
 .alert {
@@ -930,7 +934,11 @@ pre {
 }
 
 .userdiv {
-  background: #4a4a4a;
+  background: #252525;
+  color: #bdbdbd;
+}
+
+.userdiv {
   display: flex;
   align-content: center;
   align-items: center;

@@ -185,6 +185,25 @@
   html {
     height: 100%;
   }
+
+  .dark-mode .userdiv {
+    background: #252525;
+    color: #bdbdbd;
+  }
+
+  .userdiv {
+    background: #cecece;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    padding: 1rem;
+    border-radius: 1rem;
+    margin-bottom: 2REM;
+    color: #212121;
+  }
+  
   
   body {
     background: #ffffff;
