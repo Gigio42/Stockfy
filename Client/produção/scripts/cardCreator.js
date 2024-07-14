@@ -19,7 +19,7 @@ export function createCard(item, maquinaName, estado, executor) {
   contentDiv.style.display = "flex";
   contentDiv.style.justifyContent = "space-between";
 
-  const chapasList = createChapasList(item.Item.chapas, item);
+  const chapasList = createChapasList(item.Item.chapas, item, item.disponivel);
   cardBody.appendChild(chapasList);
 
   const buttonContainer = document.createElement("div");
@@ -56,9 +56,10 @@ export function createCard(item, maquinaName, estado, executor) {
 
     checkbox.parentNode.classList.add("custom-checkbox");
 
-    if (estado === "PROXIMAS") {
+    if (estado === "PROXIMAS" || !item.disponivel) {
       const lockIcon = document.createElement("span");
       lockIcon.classList.add("checkmark");
+      lockIcon.classList.add("lock-icon"); // Adiciona uma classe para ícone de cadeado
       checkbox.parentNode.insertBefore(lockIcon, checkbox.nextSibling);
       checkbox.disabled = true;
     } else {
@@ -147,8 +148,7 @@ function createChapasHeader(keys) {
   return chapaCard;
 }
 
-
-export function createChapasList(chapas, item) {
+export function createChapasList(chapas, item, disponivel) {
   const chapasContainer = document.createElement("div");
   chapasContainer.className = "chapas-container";
 
@@ -213,6 +213,7 @@ export function createChapasList(chapas, item) {
     checkbox.type = "checkbox";
     checkbox.id = `chapaCheck${chapa.chapa.id}`;
     checkbox.setAttribute("aria-label", `Select ${chapa.chapa.name}`);
+    checkbox.disabled = !disponivel;
 
     const checkmarkSpan = document.createElement("span");
     checkmarkSpan.className = "checkmark";
@@ -228,14 +229,10 @@ export function createChapasList(chapas, item) {
 
     chapaContentDiv.appendChild(chapaDetailsDiv);
     chapaContentDiv.appendChild(customCheckboxDiv);
-
     chapaCardBody.appendChild(chapaContentDiv);
-
     chapaCard.appendChild(chapaCardBody);
     chapasContainer.appendChild(chapaCard);
   });
 
   return chapasContainer;
 }
-
-
