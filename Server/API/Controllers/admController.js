@@ -208,7 +208,6 @@ class AdmController {
       );
     }
   }
-  
 
   async getAllItemMaquina() {
     try {

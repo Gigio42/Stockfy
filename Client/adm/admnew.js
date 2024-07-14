@@ -1,5 +1,15 @@
 import BASE_URL from "../utils/config.js";
 
+if (localStorage.getItem("isLoggedIn") !== "true") {
+  window.location.href = "../login/login.html";
+}
+
+$("#user-name").text(localStorage.getItem("nome") || "UserName");
+var name = localStorage.getItem("nome");
+var profilePic = $("#profilePic");
+profilePic.attr("src", "https://api.dicebear.com/8.x/shapes/svg?seed=" + name);
+
+
 //============================================
 // Função para lidar com a lógica do Dark Mode
 //============================================
