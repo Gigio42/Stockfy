@@ -275,8 +275,13 @@ function openModal(maquinaName, maquinaId) {
   // Adiciona o listener de clique ao botão
   document
     .getElementById("voltarModalContent5", "voltarModalContentnext")
-    .addEventListener("click", closeModal);
+    .addEventListener("click", closeModal) // Recarrega a página);
 }
+
+document.getElementById("voltarModalContent5").addEventListener("click", function() {
+    location.reload();
+});
+
 
 function closeModal() {
   const modalContent2 = document.querySelector(".modal-content-2");
@@ -407,22 +412,22 @@ async function confirmarItensStaged(event) {
   const maquinaId = currentMaquinaId;
 
   // Buscando itens existentes na máquina
-  let existingItemIds;
+  let existingItemMaquinaIds;
   try {
     const response = await axios.get(
       `${BASE_URL}/adm/maquina/${maquinaId}/item`
     );
-    existingItemIds = response.data.map((item) => item.id_item);
+    existingItemMaquinaIds = response.data.map((item) => item.id_item_maquina);
   } catch (error) {
     console.error("Erro ao buscar itens existentes na máquina:", error);
     return;
   }
 
-  // Buscando prioridades dos itens existentes na tabela Item
+  // Buscando prioridades dos itens existentes na tabela Item_Maquina
   let existingItems;
   try {
-    const response = await axios.post(`${BASE_URL}/adm/itens/prioridades`, {
-      ids: existingItemIds,
+    const response = await axios.post(`${BASE_URL}/adm/maquina/itens/prioridades`, {
+      ids: existingItemMaquinaIds,
     });
     existingItems = response.data;
   } catch (error) {
@@ -607,6 +612,7 @@ async function fetchAllItems(maquinaId) {
   }
 }
 
+
 function createProduzindoItemCard(item) {
   const containerId = `container-${item.id_item}-${item.part_number}-${item.status}`;
 
@@ -615,6 +621,10 @@ function createProduzindoItemCard(item) {
   itemContainer.id = containerId;
   itemContainer.draggable = true;
   itemContainer.dataset.idItem = item.id_item; // Adiciona o id_item como um atributo data
+  itemContainer.dataset.idItemMaquina = item.id_item_maquina; // Adiciona o id_item_maquina como um atributo data
+
+  // Exibir id_item_maquina no console
+  console.log("id_item_maquina:", item.id_item_maquina);
 
   const icon = document.createElement("img");
   icon.src = "media/icons8-arraste-para-reordenar-50.png";
@@ -632,13 +642,17 @@ function createProduzindoItemCard(item) {
   const statusElement = document.createElement("p");
   statusElement.textContent = `${item.status}`;
   statusElement.className =
-    item.status === "PRODUZINDO" ? "status-produzindo" : "status-finalizado";
+    item.status === "PRODUZINDO"
+      ? "status-produzindo"
+      : item.status === "FINALIZADO"
+      ? "status-finalizado"
+      : "status-programado";
   itemCard.appendChild(statusElement);
 
   itemContainer.appendChild(itemCard);
 
   const listContainer = document.getElementById(
-    item.status === "PRODUZINDO" ? "produzindoItemsList" : "finalizadoItemsList"
+    item.status === "FINALIZADO" ? "finalizadoItemsList" : "produzindoItemsList"
   );
 
   if (listContainer) {
@@ -1073,13 +1087,13 @@ document
   .addEventListener("click", async () => {
     try {
       const listContainer = document.getElementById("produzindoItemsList");
-      const items = listContainer.querySelectorAll(".item-container");
+      const itemMaquina = listContainer.querySelectorAll(".item-container");
 
-      const newPriorities = Array.from(items).map((item, index) => {
-        const id_item = parseInt(item.dataset.idItem, 10); // Extrai o id_item do atributo data
+      const newPriorities = Array.from(itemMaquina).map((itemsMaquina, index) => {
+        const id_item_maquina= parseInt(itemsMaquina.dataset.idItemMaquina, 10); // Extrai o id_item do atributo data
 
         return {
-          id_item: id_item,
+          id_item_maquina: id_item_maquina,
           prioridade: index + 1,
         };
       });

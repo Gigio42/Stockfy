@@ -74,7 +74,6 @@ model Item {
   id_item       Int     @id @default(autoincrement())
   part_number   String  @unique @default("0")
   pedido_venda  Int     @default(0)
-  prioridade    Int?
   status        String  @default("")
   reservado_por String?
 
@@ -97,6 +96,7 @@ model Item_Maquina {
   colaborador     String?
   maquinaId       Int
   itemId          Int
+  prioridade    Int?
 
   maquina Maquina @relation(fields: [maquinaId], references: [id_maquina])
   Item    Item    @relation(fields: [itemId], references: [id_item])

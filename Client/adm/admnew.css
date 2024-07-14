@@ -1024,6 +1024,15 @@ span.item-number {
   height: 34px;
 }
 
+.status-programado {
+  background-color: rgba(106, 106, 106, 0.216);
+  padding: 1rem;
+  border-radius: 1rem;
+  color: rgb(84, 84, 84);
+  font-weight: bold;
+  font-size: 1rem;
+}
+
 .status-produzindo {
   background-color: rgba(255, 166, 0, 0.216);
   padding: 1rem;
