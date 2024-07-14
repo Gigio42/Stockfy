@@ -91,6 +91,19 @@ class ComprasController {
           data_prevista: cartao.data_prevista,
         })),
       });
+
+    
+      await prisma.historico.createMany({
+        data: cartoes.info_prod_comprados.map((cartao) => ({ 
+          chapa: `${cartao.largura} X ${cartao.comprimento} - ${cartao.vincos} - ${cartao.qualidade}/${cartao.onda}`,
+          quantidade: cartao.quantidade_comprada,
+          modificacao: cartao.status,
+          modificado_por: cartao.comprador, // usuario login
+          data_modificacao: cartao.data_compra,
+          data_prevista: cartao.data_prevista,
+        })),
+      });
+
       return resultados;
     } catch (error) {
       throw new Error(`Erro ao adicionar cartões criados: ${error.message}`);

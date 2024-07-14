@@ -1,7 +1,3 @@
-import { sendDataToServer } from "./connections.js";
-import { fernandez } from "./fornecedores/fernandez.js";
-
-var rowId = 0; // Variável global para manter o ID da linha
 export function criarTable(table, chapaData) {
   var tbody = table.querySelector("tbody");
   var row = tbody.insertRow(-1);
@@ -14,9 +10,9 @@ export function criarTable(table, chapaData) {
 
   let statusOption = "";
   if (table.id === "recebimento") {
-    statusOption = `<option value="" selected>Indefinido</option>`; // Valor indefinido como padrão para recebimento
+    statusOption = `<option value="" selected>INDEFINIDO</option>`; // Valor indefinido como padrão para recebimento
   } else if (table.id === "bancoDados") {
-    statusOption = dataPrevista > today ? `<option value="Comprado" selected>Comprado</option>` : `<option value="Atrasado" selected>Atrasado</option>`;
+    statusOption = dataPrevista > today ? `<option value="Comprado" selected>COMPRADO</option>` : `<option value="Atrasado" selected>ATRASADO</option>`;
   }
 
   var cellContents = [
@@ -28,8 +24,8 @@ export function criarTable(table, chapaData) {
     `<input type='text' value='${chapaData.comprimento}'>`,
     `<select>${["E", "B", "C", "BB", "BC", ""].map((type) => `<option value="${type}" ${type === chapaData.onda ? "selected" : ""}>${type}</option>`).join("")}</select>`,
     `<select><option value="Sim" ${chapaData.vincos.toLowerCase() === "não" ? "" : "selected"}>Sim</option><option value="Não" ${chapaData.vincos.toLowerCase() === "não" ? "selected" : ""}>Não</option></select>`,
-    `<select style='width: 120px;'>${statusOption}${["Comprado", "Recebido", "Parcialmente", "Atrasado", "Cancelado"]
-      .filter((status) => status !== (dataPrevista > today ? "Comprado" : "Atrasado"))
+    `<select style='width: 120px;'>${statusOption}${["COMPRADO", "RECEBIDO", "PARCIALMENTE", "ATRASADO", "CANCELADO"]
+      .filter((status) => status !== (dataPrevista > today ? "COMPRADO" : "ATRASADO"))
       .map((status) => `<option ${status === chapaData.status ? "selected" : ""}>${status}</option>`)
       .join("")}</select>`,
   ];
@@ -188,10 +184,10 @@ function validar_status(rowBancoDados, rowRecebimento) {
   const quantidadeRecebimento = parseInt(rowRecebimento.cells[3].querySelector("input").value, 10);
 
   if (quantidadeRecebimento >= quantidadeBancoDados) {
-    rowRecebimento.cells[9].querySelector("select").value = "Recebido";
+    rowRecebimento.cells[9].querySelector("select").value = "RECEBIDO";
     console.log("Status mudado para Recebido");
   } else if (quantidadeRecebimento < quantidadeBancoDados) {
-    rowRecebimento.cells[9].querySelector("select").value = "Parcialmente";
+    rowRecebimento.cells[9].querySelector("select").value = "PARCIALMENTE";
     console.log("Status mudado para Parcialmente");
   }
 }
@@ -208,7 +204,7 @@ export function addLine() {
       // Adicionar dropdowns para campos específicos
       let selectHTML = `<select>`;
       if (field === "Status") {
-        selectHTML += `<option>Comprado</option><option>Recebido</option><option>Parcialmente</option>`;
+        selectHTML += `<option>COMPRADO</option><option>RECEBIDO</option><option>PARCIALMENTE</option>`;
       } else if (field == "Onda") {
         selectHTML += `<option>E</option><option>B</option><option>C</option><option>BB</option><option>BC</option>`;
       } else {

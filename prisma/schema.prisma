@@ -122,16 +122,17 @@ model Usuarios {
 
 model Historico {
   id_historico  Int       @id @default(autoincrement())
-  id_chapa            String?
+  chapa               String?
   quantidade          Int
   modificacao         String
   modificado_por      String
   data_modificacao    String
+  data_prevista       String?
   part_number         String?
   maquina             String?
   ordem               Int?
-  conjulgacao         String?
-  pedido_venda        String
+  conjugacao          String?
+  pedido_venda        String?
 
 
   @@index([id_historico])
