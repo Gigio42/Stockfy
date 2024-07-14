@@ -914,6 +914,7 @@ pre {
 .headermodalconjug {
   justify-content: space-between;
   width: 95%;
+  height:fit-content;
 }
 
 .selected {
