@@ -929,6 +929,18 @@ pre {
   margin-left: 1rem;
 }
 
+.userdiv {
+  background: #4a4a4a;
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  padding: 1rem;
+  border-radius: 1rem;
+  margin-bottom: 2REM;
+}
+
 @media screen and (max-width: 902px) {
   .inputform {
     width: 8rem;

@@ -15,12 +15,12 @@
 }
 
 [data-theme="light"] {
-    --header-color: #ccc;
+    --header-color: #d4d4d4;
     --hoverbtnheader-color: rgb(187, 187, 187);
     /* Cor do cabeçalho para o tema claro */
     --background-color: #f5f5f5;
     --text-color: #1e1e1e;
-    --aside-color: #eeeeee;
+    --aside-color: #b8b8b8;
     --button-color: #d5d5d5;
     --button2-color: #747474;
     /* Cor de fundo do aside para o tema claro */
@@ -69,7 +69,7 @@ select {
 }
 
 .logo-container {
-    background-color: var(--header-color);
+    background-color: #8d8d8d;
     display: absolute;
     flex-grow: 1;
     width: 100%;

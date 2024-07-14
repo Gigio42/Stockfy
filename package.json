@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "purgecss": "purgecss --config ./purgecss.config.cjs -o ./dist/",
     "test": "echo \"Error: no test specified\" && exit 1",
     "migrate": "prisma migrate dev",
     "generate": "prisma generate",
@@ -34,6 +35,7 @@
     "typeorm": "^0.3.20"
   },
   "devDependencies": {
+    "@fullhuman/postcss-purgecss": "^6.0.0",
     "eslint-plugin-node": "^11.1.0",
     "faker": "^5.5.3",
     "javascript-obfuscator": "^4.1.1",

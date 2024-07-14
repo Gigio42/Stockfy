@@ -7,6 +7,16 @@ import { undoChanges, redoChanges } from "./modules/undoRedo.js";
 import {sendJSONDataToBackend} from "../sendToBackend.js"
 
 document.addEventListener("DOMContentLoaded", () => {
+
+  if (localStorage.getItem("isLoggedIn") !== "true") {
+    window.location.href = "../login/login.html";
+  }
+  
+  $("#user-name").text(localStorage.getItem("nome") || "UserName");
+  var name = localStorage.getItem("nome");
+  var profilePic = $("#profilePic");
+  profilePic.attr("src", "https://api.dicebear.com/8.x/shapes/svg?seed=" + name);
+  
   var dropEnabled = true;
   var dropzone = document.getElementById("dropzone");
  var jsonData = {
