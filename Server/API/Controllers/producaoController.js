@@ -36,11 +36,12 @@ class ProducaoController {
             prazo: true,
             medida: true,
             finalizado: true,
-            op: true, //adicionado V
+            op: true,
             sistema: true,
             cliente: true,
             quantidade: true,
-            colaborador: true, // adicionado A
+            colaborador: true,
+            prioridade: true,
             itemId: true,
             Item: {
               select: {
@@ -96,7 +97,6 @@ class ProducaoController {
     Object.values(groupedItems).forEach((items) => {
       items.sort((a, b) => a.ordem - b.ordem);
       const ordemTotal = items.length;
-      console.log(items);
       let currentItem = items.find((item) => !item.finalizado);
 
       items.forEach((item) => {
@@ -112,7 +112,7 @@ class ProducaoController {
       });
     });
 
-    // Assign estado to maquina items
+    // Assign estado to maquina items and sort by priority
     maquina.items.forEach((item) => {
       const itemProcesses = groupedItems[item.itemId];
       if (itemProcesses) {
@@ -121,6 +121,20 @@ class ProducaoController {
           item.estado = currentItemProcess.estado;
           item.ordemTotal = currentItemProcess.ordemTotal;
         }
+      }
+    });
+
+    // Sort items by priority
+    maquina.items.sort((a, b) => a.prioridade - b.prioridade);
+
+    // Mark the highest priority item as available and others as blocked
+    let highestPriorityItem = true;
+    maquina.items.forEach((item) => {
+      if (highestPriorityItem) {
+        item.disponivel = true;
+        highestPriorityItem = false;
+      } else {
+        item.disponivel = false;
       }
     });
 
