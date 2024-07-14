@@ -38,14 +38,11 @@ export function createCard(item, maquinaName, estado, executor) {
   contentDiv.style.justifyContent = "space-between";
 
   const chapasList = createChapasList(item.Item.chapas, item);
-  chapasList.style.flex = "0 0 48%";
-  contentDiv.appendChild(chapasList);
+  cardBody.appendChild(chapasList);
 
-  const itemInfo = createItemInfo(item);
-  itemInfo.style.flex = "0 0 48%";
-  contentDiv.appendChild(itemInfo);
-
-  cardBody.appendChild(contentDiv);
+  // const itemInfo = createItemInfo(item);
+  // itemInfo.style.flex = "0 0 48%";
+  // contentDiv.appendChild(itemInfo);
 
   const buttonContainer = document.createElement("div");
   buttonContainer.style.display = "flex";
@@ -138,13 +135,14 @@ export function createChapasHeader(keys) {
 
   const chapaDetailsDiv = document.createElement("div");
   chapaDetailsDiv.className = "chapa-details flex-container";
-  chapaDetailsDiv.style.justifyContent = "space-between";
-  chapaDetailsDiv.style.flexWrap = "wrap";
-  chapaDetailsDiv.style.alignItems = "center";
+  chapaDetailsDiv.style.display = "flex"; // Set display to flex
+  chapaDetailsDiv.style.justifyContent = "space-between"; // Distribute space evenly between the items
+  chapaDetailsDiv.style.flexWrap = "nowrap"; // Prevent items from wrapping onto the next line
 
   keys.forEach((key) => {
     const keyDiv = document.createElement("div");
     keyDiv.textContent = key;
+    keyDiv.style.minWidth = "100px";
     chapaDetailsDiv.appendChild(keyDiv);
   });
 
@@ -159,11 +157,11 @@ export function createChapasHeader(keys) {
 /* LISTA DE CHAPAS                */
 /* ============================== */
 
-export function createChapasList(chapas) {
+export function createChapasList(chapas, item) {
   const chapasContainer = document.createElement("div");
   chapasContainer.className = "chapas-container";
 
-  const header = createChapasHeader(["CHAPAS", "QUANT."]);
+  const header = createChapasHeader(["PART NUMBER", "CHAPA", "MEDIDA", "OP", "SISTEMA", " CLIENTE", "QUANT.", "COLABORADOR", "MARCAR"]);
   chapasContainer.appendChild(header);
 
   chapas.forEach((chapa) => {
@@ -185,13 +183,37 @@ export function createChapasList(chapas) {
     chapaDetailsDiv.style.flexWrap = "wrap";
     chapaDetailsDiv.style.alignItems = "center";
 
-    const larguraComprimentoDiv = document.createElement("div");
-    larguraComprimentoDiv.textContent = `${chapa.chapa.largura}x${chapa.chapa.comprimento}`;
-    chapaDetailsDiv.appendChild(larguraComprimentoDiv);
+    const partNumberDiv = document.createElement("div");
+    partNumberDiv.textContent = item.Item.part_number;
+    chapaDetailsDiv.appendChild(partNumberDiv);
+
+    const chapaDiv = document.createElement("div");
+    chapaDiv.textContent = `${chapa.largura}x${chapa.comprimento}`;
+    chapaDetailsDiv.appendChild(chapaDiv);
+
+    const medidaDiv = document.createElement("div");
+    medidaDiv.textContent = item.medida;
+    chapaDetailsDiv.appendChild(medidaDiv);
+
+    const opDiv = document.createElement("div");
+    opDiv.textContent = item.op;
+    chapaDetailsDiv.appendChild(opDiv);
+
+    const sistemaDiv = document.createElement("div");
+    sistemaDiv.textContent = item.sistema;
+    chapaDetailsDiv.appendChild(sistemaDiv);
+
+    const clienteDiv = document.createElement("div");
+    clienteDiv.textContent = item.cliente;
+    chapaDetailsDiv.appendChild(clienteDiv);
 
     const quantidadeDiv = document.createElement("div");
-    quantidadeDiv.textContent = `${chapa.quantidade}`;
+    quantidadeDiv.textContent = chapa.quantidade;
     chapaDetailsDiv.appendChild(quantidadeDiv);
+
+    const colaboradorDiv = document.createElement("div");
+    colaboradorDiv.textContent = item.colaborador;
+    chapaDetailsDiv.appendChild(colaboradorDiv);
 
     const customCheckboxDiv = document.createElement("div");
     customCheckboxDiv.className = "custom-checkbox";
@@ -228,29 +250,29 @@ export function createChapasList(chapas) {
 /* ============================== */
 /* Info dos Itens                 */
 /* ============================== */
-function createItemInfo(item) {
-  const itemInfo = document.createElement("div");
+// function createItemInfo(item) {
+//   const itemInfo = document.createElement("div");
 
-  const createInfoDiv = (text) => {
-    const div = document.createElement("div");
-    div.textContent = text;
-    div.className = "info-div";
-    return div;
-  };
+//   const createInfoDiv = (text) => {
+//     const div = document.createElement("div");
+//     div.textContent = text;
+//     div.className = "info-div";
+//     return div;
+//   };
 
-  const infoItems = [
-    `Medida: ${item.medida}`,
-    `OP: ${item.op}`,
-    `Sistema: ${item.sistema}`,
-    `Cliente: ${item.cliente}`,
-    `Quantidade: ${item.quantidade}`,
-    `Colaborador: ${item.colaborador}`,
-  ];
+//   const infoItems = [
+//     `Medida: ${item.medida}`,
+//     `OP: ${item.op}`,
+//     `Sistema: ${item.sistema}`,
+//     `Cliente: ${item.cliente}`,
+//     `Quantidade: ${item.quantidade}`,
+//     `Colaborador: ${item.colaborador}`,
+//   ];
 
-  infoItems.forEach((infoItem) => {
-    const infoDiv = createInfoDiv(infoItem);
-    itemInfo.appendChild(infoDiv);
-  });
+//   infoItems.forEach((infoItem) => {
+//     const infoDiv = createInfoDiv(infoItem);
+//     itemInfo.appendChild(infoDiv);
+//   });
 
-  return itemInfo;
-}
+//   return itemInfo;
+// }
