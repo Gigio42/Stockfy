@@ -153,7 +153,6 @@ class AdmController {
       throw new Error("Erro ao buscar itens para a máquina: " + error.message);
     }
   }
-  
 
   async updateItemPriorities(newPriorities) {
     try {
@@ -169,6 +168,9 @@ class AdmController {
           throw new Error(`Item_Maquina com id ${id_item_maquina} não encontrado`);
         }
       }
+  
+      // Encontrar a menor prioridade
+      const minPriority = Math.min(...newPriorities.map(({ prioridade }) => prioridade));
   
       await Promise.all(
         newPriorities.map(async ({ id_item_maquina, prioridade }) => {
@@ -193,7 +195,7 @@ class AdmController {
           // Atualizar o status do item na tabela Item
           await Item.update({
             where: { id_item: itemId },
-            data: { status: prioridade === 1 ? "PRODUZINDO" : "PROGRAMADO" },
+            data: { status: prioridade === minPriority ? "PRODUZINDO" : "PROGRAMADO" },
           });
         })
       );
@@ -206,9 +208,6 @@ class AdmController {
       );
     }
   }
-  
-  
-
   
 
   async getAllItemMaquina() {
