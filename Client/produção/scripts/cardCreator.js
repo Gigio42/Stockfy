@@ -82,10 +82,11 @@ export function createCard(item, maquinaName, estado, executor) {
 }
 
 function updateSubmitButtonState(chapasContainer, submitButton) {
-  const checkboxes = chapasContainer.querySelectorAll('input[type="checkbox"]');
+  //ignorar func do checkbox do header
+  const checkboxes = Array.from(chapasContainer.querySelectorAll('input[type="checkbox"]')).filter(cb => cb.id !== 'headerCheck');
 
   function updateButtonState() {
-    const allChecked = Array.from(checkboxes).every((cb) => cb.checked);
+    const allChecked = checkboxes.every((cb) => cb.checked);
     submitButton.disabled = !allChecked;
     submitButton.classList.toggle("enabled", allChecked);
   }
@@ -97,7 +98,7 @@ function updateSubmitButtonState(chapasContainer, submitButton) {
   updateButtonState();
 }
 
-export function createChapasHeader(keys) {
+function createChapasHeader(keys) {
   const chapaCard = document.createElement("div");
   chapaCard.className = "card text-white mb-2 chapa-card";
   chapaCard.style.borderRadius = "10px";
@@ -113,9 +114,9 @@ export function createChapasHeader(keys) {
 
   const chapaDetailsDiv = document.createElement("div");
   chapaDetailsDiv.className = "chapa-details flex-container";
-  chapaDetailsDiv.style.display = "flex"; // Set display to flex
-  chapaDetailsDiv.style.justifyContent = "space-between"; // Distribute space evenly between the items
-  chapaDetailsDiv.style.flexWrap = "nowrap"; // Prevent items from wrapping onto the next line
+  chapaDetailsDiv.style.display = "flex"; 
+  chapaDetailsDiv.style.justifyContent = "space-between"; 
+  chapaDetailsDiv.style.flexWrap = "nowrap"; 
 
   keys.forEach((key) => {
     const keyDiv = document.createElement("div");
@@ -124,22 +125,34 @@ export function createChapasHeader(keys) {
     chapaDetailsDiv.appendChild(keyDiv);
   });
 
+  // checkbox oculto p/ dar espaçamento igual
+  const customCheckboxDiv = document.createElement("div");
+  customCheckboxDiv.className = "custom-checkbox hidden-checkbox";
+
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.id = `headerCheck`;
+
+  const checkmarkSpan = document.createElement("span");
+  checkmarkSpan.className = "checkmark";
+
+  customCheckboxDiv.appendChild(checkbox);
+  customCheckboxDiv.appendChild(checkmarkSpan);
+
   chapaContentDiv.appendChild(chapaDetailsDiv);
+  chapaContentDiv.appendChild(customCheckboxDiv);
   chapaCardBody.appendChild(chapaContentDiv);
   chapaCard.appendChild(chapaCardBody);
 
   return chapaCard;
 }
 
-/* ============================== */
-/* LISTA DE CHAPAS                */
-/* ============================== */
 
 export function createChapasList(chapas, item) {
   const chapasContainer = document.createElement("div");
   chapasContainer.className = "chapas-container";
 
-  const header = createChapasHeader(["PART NUMBER", "CHAPA", "MEDIDA", "OP", "SISTEMA", " CLIENTE", "QUANT.", "COLABORADOR", "MARCAR"]);
+  const header = createChapasHeader(["PART NUMBER", "CHAPA", "MEDIDA", "OP", "SISTEMA", " CLIENTE", "QUANT.", "COLABORADOR"]);
   chapasContainer.appendChild(header);
 
   chapas.forEach((chapa) => {
@@ -224,3 +237,5 @@ export function createChapasList(chapas, item) {
 
   return chapasContainer;
 }
+
+
