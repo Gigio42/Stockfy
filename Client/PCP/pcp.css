@@ -213,10 +213,12 @@ body {
   height: 100%;
 }
 #container {
-  max-height: 100vh;
-  overflow-y: auto;
-  scrollbar-width: none;
+  max-height: 82vh; /* Altura máxima de 100% da viewport */
+  overflow-y: auto; /* Habilita rolagem vertical */
+  scrollbar-width: none; /* Remove a largura da barra de rolagem em navegadores compatíveis */
+  border-radius: 1rem;
 }
+
 #container::-webkit-scrollbar {
   display: none;
 }

@@ -27,6 +27,15 @@ export function extractPdfData(pdf, jsonData) {
   });
 }
 
+// Função para formatar a data no formato "dd/mm/aaaa"
+function formatarDataParaEnvio(data) {
+  const date = new Date(data);
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Os meses começam do zero
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+}
+
 
   
  export function handleExpectedDateChange(pedidoCompra, infoPedido, infoProdComprados) {
@@ -40,7 +49,7 @@ export function extractPdfData(pdf, jsonData) {
             ...prod,
             ...infoPedido,
             id_compra: convertToInteger(pedidoCompra),
-            data_prevista: dateValue,
+            data_prevista: formatarDataParaEnvio( dateValue),
           };
         }),
       };

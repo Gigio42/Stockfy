@@ -9,6 +9,7 @@ export function addTableHeader(dataTable) {
     "Largura",
     "Comprimento",
     "Vincos",
+    "conjug.",
   ];
   const headerRow = document.createElement("div");
   headerRow.classList.add("header-row");
