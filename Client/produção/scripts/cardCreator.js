@@ -15,34 +15,12 @@ export function createCard(item, maquinaName, estado, executor) {
   const cardBody = document.createElement("div");
   cardBody.className = "card-body";
 
-  const headerDiv = document.createElement("div");
-  headerDiv.style.display = "flex";
-  headerDiv.style.justifyContent = "space-between";
-  headerDiv.style.marginBottom = "1px";
-  headerDiv.style.alignItems = "flex-start";
-
-  const partNumberDiv = document.createElement("div");
-  partNumberDiv.className = "part-number";
-  partNumberDiv.textContent = item.Item.part_number;
-  headerDiv.appendChild(partNumberDiv);
-
-  const orderDiv = document.createElement("div");
-  orderDiv.className = "ordem ordem-div";
-  orderDiv.textContent = item.ordem;
-  headerDiv.appendChild(orderDiv);
-
-  cardBody.appendChild(headerDiv);
-
   const contentDiv = document.createElement("div");
   contentDiv.style.display = "flex";
   contentDiv.style.justifyContent = "space-between";
 
   const chapasList = createChapasList(item.Item.chapas, item);
   cardBody.appendChild(chapasList);
-
-  // const itemInfo = createItemInfo(item);
-  // itemInfo.style.flex = "0 0 48%";
-  // contentDiv.appendChild(itemInfo);
 
   const buttonContainer = document.createElement("div");
   buttonContainer.style.display = "flex";
@@ -188,7 +166,7 @@ export function createChapasList(chapas, item) {
     chapaDetailsDiv.appendChild(partNumberDiv);
 
     const chapaDiv = document.createElement("div");
-    chapaDiv.textContent = `${chapa.largura}x${chapa.comprimento}`;
+    chapaDiv.textContent = `${chapa.chapa.largura}x${chapa.chapa.comprimento}`;
     chapaDetailsDiv.appendChild(chapaDiv);
 
     const medidaDiv = document.createElement("div");
@@ -246,33 +224,3 @@ export function createChapasList(chapas, item) {
 
   return chapasContainer;
 }
-
-/* ============================== */
-/* Info dos Itens                 */
-/* ============================== */
-// function createItemInfo(item) {
-//   const itemInfo = document.createElement("div");
-
-//   const createInfoDiv = (text) => {
-//     const div = document.createElement("div");
-//     div.textContent = text;
-//     div.className = "info-div";
-//     return div;
-//   };
-
-//   const infoItems = [
-//     `Medida: ${item.medida}`,
-//     `OP: ${item.op}`,
-//     `Sistema: ${item.sistema}`,
-//     `Cliente: ${item.cliente}`,
-//     `Quantidade: ${item.quantidade}`,
-//     `Colaborador: ${item.colaborador}`,
-//   ];
-
-//   infoItems.forEach((infoItem) => {
-//     const infoDiv = createInfoDiv(infoItem);
-//     itemInfo.appendChild(infoDiv);
-//   });
-
-//   return itemInfo;
-// }
