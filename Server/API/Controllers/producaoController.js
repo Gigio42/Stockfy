@@ -1,6 +1,7 @@
 import Maquina from "../Models/maquinaModel.js";
 import Item from "../Models/itemModel.js";
 import Item_Maquina from "../Models/item_maquinaModel.js";
+import Chapas from "../Models/chapasModel.js";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
@@ -36,11 +37,12 @@ class ProducaoController {
             prazo: true,
             medida: true,
             finalizado: true,
-            op: true, //adicionado V
+            op: true,
             sistema: true,
             cliente: true,
             quantidade: true,
-            colaborador: true, // adicionado A
+            colaborador: true,
+            prioridade: true,
             itemId: true,
             Item: {
               select: {
@@ -96,7 +98,6 @@ class ProducaoController {
     Object.values(groupedItems).forEach((items) => {
       items.sort((a, b) => a.ordem - b.ordem);
       const ordemTotal = items.length;
-      console.log(items);
       let currentItem = items.find((item) => !item.finalizado);
 
       items.forEach((item) => {
@@ -112,7 +113,7 @@ class ProducaoController {
       });
     });
 
-    // Assign estado to maquina items
+    // Assign estado to maquina items and sort by priority
     maquina.items.forEach((item) => {
       const itemProcesses = groupedItems[item.itemId];
       if (itemProcesses) {
@@ -121,6 +122,20 @@ class ProducaoController {
           item.estado = currentItemProcess.estado;
           item.ordemTotal = currentItemProcess.ordemTotal;
         }
+      }
+    });
+
+    // Sort items by priority
+    maquina.items.sort((a, b) => a.prioridade - b.prioridade);
+
+    // Mark the highest priority item as available and others as blocked
+    let highestPriorityItem = true;
+    maquina.items.forEach((item) => {
+      if (highestPriorityItem && item.estado !== "FEITO") {
+        item.disponivel = true;
+        highestPriorityItem = false;
+      } else {
+        item.disponivel = false;
       }
     });
 
@@ -183,12 +198,67 @@ class ProducaoController {
     });
 
     if (remainingOrders.length === 0) {
+      // Buscar todas as chapas associadas ao item cujo status é USADO
+      const chapasUsadas = await Chapas.findMany({
+        where: {
+          items: {
+            some: {
+              itemId: itemId,
+            },
+          },
+          status: "USADO",
+        },
+      });
+
+      // Excluir todas as chapas cujo status é USADO
+      for (const chapa of chapasUsadas) {
+        // Verificar quantos itens ainda estão usando essa chapa
+        const countItensUsandoChapa = await prisma.chapa_Item.count({
+          where: {
+            chapaId: chapa.id_chapa,
+          },
+        });
+
+        //Se for a ultima...
+        if (countItensUsandoChapa === 1) {
+          // Tirando todas as conjugações associadas a essa chapa
+          await prisma.conjugacoes.deleteMany({
+            where: {
+              chapaId: chapa.id_chapa,
+            },
+          });
+
+          // Tirando a relação entre a chapa e o item
+          await prisma.chapa_Item.deleteMany({
+            where: {
+              chapaId: chapa.id_chapa,
+            },
+          });
+
+          // Excluindo a chapa
+          await Chapas.delete({
+            where: {
+              id_chapa: chapa.id_chapa,
+            },
+          });
+        }
+      }
+
+      // Remover todos os registros de Item_Maquina relacionados ao item
       await Item_Maquina.deleteMany({
         where: {
           itemId: itemId,
         },
       });
 
+      // Remover todas as relações entre o item e as chapas
+      await prisma.chapa_Item.deleteMany({
+        where: {
+          itemId: itemId,
+        },
+      });
+
+      // Remover o item
       await Item.delete({
         where: {
           id_item: itemId,

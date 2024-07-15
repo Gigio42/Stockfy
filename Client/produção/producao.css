@@ -177,18 +177,45 @@ body.dark-mode .kanban-item {
 ====================================== */
 
 .chapa-card {
+  display: flex;
+  flex-direction: column;
+  background-color: #2a2a2a;
   border-radius: 10px;
 }
 
-.chapa-card .card-body {
-  background-color: rgba(255, 255, 255, 0.068);
-  padding: 10px;
+.chapa-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
 .chapa-details {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
-  width: 70%;
+  flex-grow: 1;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.chapa-details div {
+  flex: 1;
+  min-width: 100px;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+.chapa-card-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.chapas-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 /* ======================================
@@ -234,6 +261,14 @@ body.dark-mode .kanban-item {
   display: block;
   text-align: center;
 }
+
+/* Classe para esconder a checkbox no header */
+.hidden-checkbox {
+  visibility: hidden;
+  width: 20px; /* Manter a largura da checkbox */
+  height: 20px; /* Manter a altura da checkbox */
+}
+
 
 /* ======================================
    Button Styles
@@ -281,7 +316,7 @@ body.dark-mode .kanban-item {
 }
 
 .kanban-column {
-  width: 90%;
+  width: 75%;
   background-color: #f0f0f0;
   padding: 10px;
   border-radius: 5px;
@@ -289,28 +324,22 @@ body.dark-mode .kanban-item {
   height: 87vh;
 }
 
-@media (max-width: 1600px) {
-  #kanban-board {
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-  }
+#kanban-board {
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
 
-  .kanban-column {
-    width: 90%;
-  }
+#to-do {
+  order: 1;
+}
 
-  #to-do {
-    order: 1;
-  }
+#in-progress {
+  order: 2;
+}
 
-  #in-progress {
-    order: 2;
-  }
-
-  #done {
-    order: 3;
-  }
+#done {
+  order: 3;
 }
 
 body.dark-mode .kanban-column h3 {
