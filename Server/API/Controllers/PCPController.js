@@ -216,9 +216,22 @@ class PCPController {
       console.log(body);
       await this.validateQuantities(chapas, conjugacoes);
 
-      const item = await this.findOrCreateItem(partNumber, pedidoVenda, reservedBy);
+      const item = await prisma.$transaction(async (prisma) => {
+        // Verificar quantidades antes de qualquer inserção
+        for (const { chapaID, quantity } of chapas) {
+          const chapa = await Chapas.findUnique({ where: { id_chapa: chapaID } });
+          if (!chapa) throw new Error("Chapa não encontrada");
+          if (quantity > chapa.quantidade_disponivel) throw new Error(`Chapa ${chapaID} não possui quantidade suficiente`);
+        }
 
-      const result = await prisma.$transaction(async (prisma) => {
+        for (const { conjugacoesID, quantity } of conjugacoes) {
+          const conjugacao = await Conjugacoes.findUnique({ where: { id_conjugacoes: conjugacoesID } });
+          if (!conjugacao) throw new Error("Conjugação não encontrada");
+          if (quantity > conjugacao.quantidade_disponivel) throw new Error(`Conjugação ${conjugacoesID} não possui quantidade suficiente`);
+        }
+
+        const item = await this.findOrCreateItem(partNumber, pedidoVenda, reservedBy);
+
         for (const { chapaID, quantity } of chapas) {
           await this.updateChapa(chapaID, quantity);
           await this.upsertChapaItem(chapaID, item.id_item, quantity);
@@ -269,7 +282,7 @@ class PCPController {
         return item;
       });
 
-      return result;
+      return item;
     } catch (error) {
       console.error("Erro ao criar item com chapa:", error);
       throw new Error(error.message);
