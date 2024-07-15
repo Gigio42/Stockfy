@@ -132,7 +132,10 @@ export class CardItem {
     const deleteButton = createElementWithClass("button", "btn btn-danger ml-2 card-item-delete-button");
     deleteButton.textContent = "Deletar";
     deleteButton.addEventListener("click", () => {
-      deleteItem(this.item.id_item, "item");
+      const reservedBy = localStorage.getItem("nome");
+      const data = new Date();
+      const dataFormatada = data.toLocaleDateString("pt-BR");
+      deleteItem(this.item.id_item, reservedBy, dataFormatada);
     });
     return deleteButton;
   }

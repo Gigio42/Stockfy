@@ -56,7 +56,9 @@ async function pcpRoute(fastify, options) {
   fastify.delete("/items/:id", async (request, reply) => {
     try {
       const itemId = parseInt(request.params.id, 10);
-      await pcpRouteController.deleteItem(itemId);
+      const { reservedBy, dataFormatada } = request.body;
+
+      await pcpRouteController.deleteItem(itemId, reservedBy, dataFormatada);
       reply.send({ message: `Item with id ${itemId} deleted successfully` });
     } catch (err) {
       console.log(err.message);

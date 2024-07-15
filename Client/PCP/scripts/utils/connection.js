@@ -58,9 +58,11 @@ export async function fetchItems(searchQuery = "") {
   }
 }
 
-export async function deleteItem(id) {
+export async function deleteItem(id, reservedBy, dataFormatada) {
   try {
-    await axios.delete(`${PCP_URL}/items/${id}`);
+    await axios.delete(`${PCP_URL}/items/${id}`, {
+      data: { reservedBy, dataFormatada },
+    });
   } catch (error) {
     handleError(error);
   }
@@ -69,7 +71,7 @@ export async function deleteItem(id) {
 export async function deleteChapaFromItem(itemId, chapaId, reservedBy, dataFormatada) {
   try {
     await axios.delete(`${PCP_URL}/items/${itemId}/chapas/${chapaId}`, {
-      data: { reservedBy, dataFormatada }
+      data: { reservedBy, dataFormatada },
     });
   } catch (error) {
     handleError(error);
