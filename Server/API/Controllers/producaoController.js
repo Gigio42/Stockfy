@@ -212,34 +212,53 @@ class ProducaoController {
 
       // Excluir todas as chapas cujo status é USADO
       for (const chapa of chapasUsadas) {
-        // Tirando todas as conjugações associadas a essa chapa
-        await prisma.conjugacoes.deleteMany({
+        // Verificar quantos itens ainda estão usando essa chapa
+        const countItensUsandoChapa = await prisma.chapa_Item.count({
           where: {
             chapaId: chapa.id_chapa,
           },
         });
 
-        // Tirando a relação entre a chapa e o item
-        await prisma.chapa_Item.deleteMany({
-          where: {
-            chapaId: chapa.id_chapa,
-          },
-        });
+        //Se for a ultima...
+        if (countItensUsandoChapa === 1) {
+          // Tirando todas as conjugações associadas a essa chapa
+          await prisma.conjugacoes.deleteMany({
+            where: {
+              chapaId: chapa.id_chapa,
+            },
+          });
 
-        // Excluindo a chapa
-        await Chapas.delete({
-          where: {
-            id_chapa: chapa.id_chapa,
-          },
-        });
+          // Tirando a relação entre a chapa e o item
+          await prisma.chapa_Item.deleteMany({
+            where: {
+              chapaId: chapa.id_chapa,
+            },
+          });
+
+          // Excluindo a chapa
+          await Chapas.delete({
+            where: {
+              id_chapa: chapa.id_chapa,
+            },
+          });
+        }
       }
 
+      // Remover todos os registros de Item_Maquina relacionados ao item
       await Item_Maquina.deleteMany({
         where: {
           itemId: itemId,
         },
       });
 
+      // Remover todas as relações entre o item e as chapas
+      await prisma.chapa_Item.deleteMany({
+        where: {
+          itemId: itemId,
+        },
+      });
+
+      // Remover o item
       await Item.delete({
         where: {
           id_item: itemId,
