@@ -214,18 +214,18 @@ class PCPController {
       for (const { chapaID, quantity } of chapas) {
         await this.updateChapa(chapaID, quantity);
         await this.upsertChapaItem(chapaID, item.id_item, quantity);
-        
+
         const hoje = new Date();
         const dataFormatada = [
-          hoje.getDate().toString().padStart(2, '0'), // dia
-          (hoje.getMonth() + 1).toString().padStart(2, '0'), // mês (getMonth() retorna de 0 a 11)
-          hoje.getFullYear() // ano
-        ].join('/');
-        
+          hoje.getDate().toString().padStart(2, "0"), // dia
+          (hoje.getMonth() + 1).toString().padStart(2, "0"), // mês (getMonth() retorna de 0 a 11)
+          hoje.getFullYear(), // ano
+        ].join("/");
+
         const chapa = await prisma.chapas.findUnique({
           where: {
-            id_chapa: chapaID // Supondo que 'id' é a chave primária para identificar a chapa
-          }
+            id_chapa: chapaID, // Supondo que 'id' é a chave primária para identificar a chapa
+          },
         });
 
         await prisma.historico.createMany({
@@ -236,10 +236,9 @@ class PCPController {
             modificacao: "reservado",
             modificado_por: reservedBy, // usuario login
             data_modificacao: dataFormatada,
-            pedido_venda: pedidoVenda
-          }
+            pedido_venda: pedidoVenda,
+          },
         });
-
       }
 
       for (const { conjugacoesID, quantity } of conjugacoes) {
@@ -248,23 +247,22 @@ class PCPController {
 
         const hoje = new Date();
         const dataFormatada = [
-          hoje.getDate().toString().padStart(2, '0'), // dia
-          (hoje.getMonth() + 1).toString().padStart(2, '0'), // mês (getMonth() retorna de 0 a 11)
-          hoje.getFullYear() // ano
-        ].join('/');
-        
+          hoje.getDate().toString().padStart(2, "0"), // dia
+          (hoje.getMonth() + 1).toString().padStart(2, "0"), // mês (getMonth() retorna de 0 a 11)
+          hoje.getFullYear(), // ano
+        ].join("/");
+
         const conjugacaoID = await prisma.conjugacoes.findUnique({
           where: {
-            id_conjugacoes: conjugacoesID // Supondo que 'id' é a chave primária para identificar a chapa
-          }
+            id_conjugacoes: conjugacoesID, // Supondo que 'id' é a chave primária para identificar a chapa
+          },
         });
 
         const chapa = await prisma.chapas.findUnique({
           where: {
-            id_chapa: conjugacaoID.chapaId // Supondo que 'id' é a chave primária para identificar a chapa
-          }
+            id_chapa: conjugacaoID.chapaId, // Supondo que 'id' é a chave primária para identificar a chapa
+          },
         });
-
 
         await prisma.historico.createMany({
           data: {
@@ -275,8 +273,8 @@ class PCPController {
             modificacao: "reservado",
             modificado_por: reservedBy, // usuario login
             data_modificacao: dataFormatada,
-            pedido_venda: pedidoVenda
-          }
+            pedido_venda: pedidoVenda,
+          },
         });
       }
 
@@ -313,10 +311,23 @@ class PCPController {
         );
       }
 
+      const chapa = await Chapas.findUnique({
+        where: { id_chapa: chapaItem.chapaId },
+      });
+
+      const chapaUpdateData = {
+        quantidade_estoque: { increment: chapaItem.quantidade },
+        quantidade_disponivel: { increment: chapaItem.quantidade },
+      };
+
+      if (chapa.status === "USADO") {
+        chapaUpdateData.status = "RECUPERADO";
+      }
+
       operations.push(
         Chapas.update({
           where: { id_chapa: chapaItem.chapaId },
-          data: { quantidade_estoque: { increment: chapaItem.quantidade } },
+          data: chapaUpdateData,
         })
       );
 
@@ -359,10 +370,24 @@ class PCPController {
       );
     }
 
+    const chapa = await Chapas.findUnique({
+      where: { id_chapa: chapaId },
+    });
+
+    console.log("qtd: " + chapaItem.quantidade);
+    const chapaUpdateData = {
+      quantidade_estoque: { increment: chapaItem.quantidade },
+      quantidade_disponivel: { increment: chapaItem.quantidade },
+    };
+
+    if (chapa.status === "USADO") {
+      chapaUpdateData.status = "RECUPERADO";
+    }
+
     operations.push(
       Chapas.update({
         where: { id_chapa: chapaId },
-        data: { quantidade_estoque: { increment: chapaItem.quantidade } },
+        data: chapaUpdateData,
       })
     );
 
