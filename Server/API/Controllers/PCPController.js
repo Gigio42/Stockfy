@@ -203,85 +203,78 @@ class PCPController {
   }
 
   async createItemWithChapa(body) {
+    const { partNumber, pedidoVenda, chapas, conjugacoes, reservedBy } = body;
+
+    const hoje = new Date();
+    const dataFormatada = [
+      hoje.getDate().toString().padStart(2, "0"), // dia
+      (hoje.getMonth() + 1).toString().padStart(2, "0"), // mês (getMonth() retorna de 0 a 11)
+      hoje.getFullYear(), // ano
+    ].join("/");
+
     try {
       console.log(body);
-      const { partNumber, pedidoVenda, chapas, conjugacoes, reservedBy } = body;
-
       await this.validateQuantities(chapas, conjugacoes);
 
       const item = await this.findOrCreateItem(partNumber, pedidoVenda, reservedBy);
 
-      for (const { chapaID, quantity } of chapas) {
-        await this.updateChapa(chapaID, quantity);
-        await this.upsertChapaItem(chapaID, item.id_item, quantity);
+      const result = await prisma.$transaction(async (prisma) => {
+        for (const { chapaID, quantity } of chapas) {
+          await this.updateChapa(chapaID, quantity);
+          await this.upsertChapaItem(chapaID, item.id_item, quantity);
 
-        const hoje = new Date();
-        const dataFormatada = [
-          hoje.getDate().toString().padStart(2, "0"), // dia
-          (hoje.getMonth() + 1).toString().padStart(2, "0"), // mês (getMonth() retorna de 0 a 11)
-          hoje.getFullYear(), // ano
-        ].join("/");
+          const chapa = await prisma.chapas.findUnique({
+            where: { id_chapa: chapaID },
+          });
 
-        const chapa = await prisma.chapas.findUnique({
-          where: {
-            id_chapa: chapaID, // Supondo que 'id' é a chave primária para identificar a chapa
-          },
-        });
+          await prisma.historico.create({
+            data: {
+              chapa: `${chapa.largura} X ${chapa.comprimento} - ${chapa.vincos} - ${chapa.qualidade}/${chapa.onda}`,
+              part_number: partNumber,
+              quantidade: quantity,
+              modificacao: "reservado",
+              modificado_por: reservedBy,
+              data_modificacao: dataFormatada,
+              pedido_venda: pedidoVenda,
+            },
+          });
+        }
 
-        await prisma.historico.createMany({
-          data: {
-            chapa: `${chapa.largura} X ${chapa.comprimento} - ${chapa.vincos} - ${chapa.qualidade}/${chapa.onda}`,
-            part_number: partNumber,
-            quantidade: quantity,
-            modificacao: "reservado",
-            modificado_por: reservedBy, // usuario login
-            data_modificacao: dataFormatada,
-            pedido_venda: pedidoVenda,
-          },
-        });
-      }
+        for (const { conjugacoesID, quantity } of conjugacoes) {
+          const conjugacao = await this.updateConjugacao(conjugacoesID, quantity);
+          await this.upsertChapaItem(conjugacao.chapaId, item.id_item, quantity, conjugacoesID);
 
-      for (const { conjugacoesID, quantity } of conjugacoes) {
-        const conjugacao = await this.updateConjugacao(conjugacoesID, quantity);
-        await this.upsertChapaItem(conjugacao.chapaId, item.id_item, quantity, conjugacoesID);
+          const conjugacaoID = await prisma.conjugacoes.findUnique({
+            where: { id_conjugacoes: conjugacoesID },
+          });
 
-        const hoje = new Date();
-        const dataFormatada = [
-          hoje.getDate().toString().padStart(2, "0"), // dia
-          (hoje.getMonth() + 1).toString().padStart(2, "0"), // mês (getMonth() retorna de 0 a 11)
-          hoje.getFullYear(), // ano
-        ].join("/");
+          const chapa = await prisma.chapas.findUnique({
+            where: { id_chapa: conjugacaoID.chapaId },
+          });
 
-        const conjugacaoID = await prisma.conjugacoes.findUnique({
-          where: {
-            id_conjugacoes: conjugacoesID, // Supondo que 'id' é a chave primária para identificar a chapa
-          },
-        });
+          await prisma.historico.create({
+            data: {
+              chapa: `${chapa.largura} X ${chapa.comprimento} - ${chapa.vincos} - ${chapa.qualidade}/${chapa.onda}`,
+              part_number: partNumber,
+              quantidade: parseInt(quantity),
+              conjugacao: `${conjugacao.largura} X ${conjugacao.comprimento}`,
+              modificacao: "reservado",
+              modificado_por: reservedBy,
+              data_modificacao: dataFormatada,
+              pedido_venda: pedidoVenda,
+            },
+          });
+        }
 
-        const chapa = await prisma.chapas.findUnique({
-          where: {
-            id_chapa: conjugacaoID.chapaId, // Supondo que 'id' é a chave primária para identificar a chapa
-          },
-        });
+        return item;
+      });
 
-        await prisma.historico.createMany({
-          data: {
-            chapa: `${chapa.largura} X ${chapa.comprimento} - ${chapa.vincos} - ${chapa.qualidade}/${chapa.onda}`,
-            part_number: partNumber,
-            quantidade: parseInt(quantity),
-            conjugacao: `${conjugacao.largura} X ${conjugacao.comprimento}`,
-            modificacao: "reservado",
-            modificado_por: reservedBy, // usuario login
-            data_modificacao: dataFormatada,
-            pedido_venda: pedidoVenda,
-          },
-        });
-      }
-
-      return item;
+      return result;
     } catch (error) {
-      console.error(error);
-      return { error: error.message };
+      console.error("Erro ao criar item com chapa:", error);
+      throw new Error(error.message);
+    } finally {
+      await prisma.$disconnect();
     }
   }
 
