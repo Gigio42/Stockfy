@@ -288,20 +288,28 @@ class PCPController {
   // ------------------------------
   // delete item
   // ------------------------------
-  async deleteItem(itemId) {
-    const item = await Item.findUnique({
+  async deleteItem(itemId, reservedBy, dataFormatada) {
+    const item = await prisma.item.findUnique({
       where: { id_item: itemId },
       include: { chapas: true },
     });
 
+    if (!item) {
+      throw new Error("Item não encontrado");
+    }
+
     const operations = [];
+    const partNumber = item.part_number;
+    const pedidoVenda = item.pedido_venda !== null && item.pedido_venda !== undefined ? item.pedido_venda.toString() : "N/A";
 
     for (const chapaItem of item.chapas) {
-      const conjugacoes = await Conjugacoes.findMany({ where: { chapaId: chapaItem.chapaId } });
+      const conjugacoes = await prisma.conjugacoes.findMany({ where: { chapaId: chapaItem.chapaId } });
+
+      let conjugacaoStr = conjugacoes.map((conjugacao) => `${conjugacao.largura} X ${conjugacao.comprimento}`).join(", ");
 
       for (const conjugacao of conjugacoes) {
         operations.push(
-          Conjugacoes.update({
+          prisma.conjugacoes.update({
             where: { id_conjugacoes: conjugacao.id_conjugacoes },
             data: {
               quantidade_disponivel: { increment: chapaItem.quantidade },
@@ -311,7 +319,7 @@ class PCPController {
         );
       }
 
-      const chapa = await Chapas.findUnique({
+      const chapa = await prisma.chapas.findUnique({
         where: { id_chapa: chapaItem.chapaId },
       });
 
@@ -325,24 +333,56 @@ class PCPController {
       }
 
       operations.push(
-        Chapas.update({
+        prisma.chapas.update({
           where: { id_chapa: chapaItem.chapaId },
           data: chapaUpdateData,
         })
       );
 
-      operations.push(Chapa_Item.delete({ where: { id_chapa_item: chapaItem.id_chapa_item } }));
+      operations.push(prisma.chapa_Item.delete({ where: { id_chapa_item: chapaItem.id_chapa_item } }));
+
+      const quantidade = chapaItem.quantidade !== undefined && chapaItem.quantidade !== null ? parseInt(chapaItem.quantidade) : 0;
+      console.log("chapaItem qtd", quantidade);
+
+      operations.push(
+        prisma.historico.create({
+          data: {
+            chapa: `${chapa.largura || "null"} X ${chapa.comprimento || "null"} - ${chapa.vincos || "Não"} - ${chapa.qualidade || "SLL40/E"}`,
+            part_number: partNumber,
+            quantidade: quantidade,
+            conjugacao: conjugacaoStr,
+            modificacao: "Chapa removida do item",
+            modificado_por: reservedBy,
+            data_modificacao: dataFormatada,
+            pedido_venda: pedidoVenda,
+          },
+        })
+      );
     }
 
-    operations.push(Item.delete({ where: { id_item: itemId } }));
+    operations.push(prisma.item.delete({ where: { id_item: itemId } }));
+
+    const itemQuantidade = item.quantidade !== undefined && item.quantidade !== null ? parseInt(item.quantidade) : 0;
+    operations.push(
+      prisma.historico.create({
+        data: {
+          part_number: partNumber,
+          quantidade: itemQuantidade,
+          modificacao: "Item deletado",
+          modificado_por: reservedBy,
+          data_modificacao: dataFormatada,
+          pedido_venda: pedidoVenda,
+        },
+      })
+    );
 
     await prisma.$transaction(operations);
   }
 
   // ------------------------------
-  // delete chapa
+  // delete chapa from item
   // ------------------------------
-  async deleteChapaFromItem(itemId, chapaId) {
+  async deleteChapaFromItem(itemId, chapaId, reservedBy, dataFormatada) {
     const chapaItem = await Chapa_Item.findFirst({
       where: {
         itemId: itemId,
@@ -358,23 +398,12 @@ class PCPController {
 
     const conjugacoes = await Conjugacoes.findMany({ where: { chapaId: chapaId } });
 
-    for (const conjugacao of conjugacoes) {
-      operations.push(
-        Conjugacoes.update({
-          where: { id_conjugacoes: conjugacao.id_conjugacoes },
-          data: {
-            quantidade_disponivel: { increment: chapaItem.quantidade },
-            usado: false,
-          },
-        })
-      );
-    }
+    let conjugacaoStr = conjugacoes.map((conjugacao) => `${conjugacao.largura} X ${conjugacao.comprimento}`).join(", ");
 
     const chapa = await Chapas.findUnique({
       where: { id_chapa: chapaId },
     });
 
-    console.log("qtd: " + chapaItem.quantidade);
     const chapaUpdateData = {
       quantidade_estoque: { increment: chapaItem.quantidade },
       quantidade_disponivel: { increment: chapaItem.quantidade },
@@ -392,6 +421,25 @@ class PCPController {
     );
 
     operations.push(Chapa_Item.delete({ where: { id_chapa_item: chapaItem.id_chapa_item } }));
+
+    const item = await Item.findUnique({ where: { id_item: itemId } });
+    const partNumber = item.part_number;
+    const pedidoVenda = item.pedido_venda;
+
+    operations.push(
+      prisma.historico.create({
+        data: {
+          chapa: `${chapa.largura} X ${chapa.comprimento} - ${chapa.vincos} - ${chapa.qualidade}/${chapa.onda}`,
+          part_number: partNumber,
+          quantidade: parseInt(chapaItem.quantidade),
+          conjugacao: conjugacaoStr,
+          modificacao: "Chapa removida do item",
+          modificado_por: reservedBy,
+          data_modificacao: dataFormatada,
+          pedido_venda: toString(pedidoVenda),
+        },
+      })
+    );
 
     await prisma.$transaction(operations);
   }

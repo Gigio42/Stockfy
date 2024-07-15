@@ -56,7 +56,9 @@ async function pcpRoute(fastify, options) {
   fastify.delete("/items/:id", async (request, reply) => {
     try {
       const itemId = parseInt(request.params.id, 10);
-      await pcpRouteController.deleteItem(itemId);
+      const { reservedBy, dataFormatada } = request.body;
+
+      await pcpRouteController.deleteItem(itemId, reservedBy, dataFormatada);
       reply.send({ message: `Item with id ${itemId} deleted successfully` });
     } catch (err) {
       console.log(err.message);
@@ -68,7 +70,8 @@ async function pcpRoute(fastify, options) {
     try {
       const itemId = parseInt(request.params.itemId, 10);
       const chapaId = parseInt(request.params.chapaId, 10);
-      await pcpRouteController.deleteChapaFromItem(itemId, chapaId);
+      const { reservedBy, dataFormatada } = request.body;
+      await pcpRouteController.deleteChapaFromItem(itemId, chapaId, reservedBy, dataFormatada);
       reply.send({ message: `Chapa with id ${chapaId} deleted from item with id ${itemId} successfully` });
     } catch (err) {
       console.log(err.message);
