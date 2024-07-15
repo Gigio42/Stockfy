@@ -35,7 +35,7 @@ fastify.post("/compras/cartoes", async (request, reply) => {
   const cartoesCriados = request.body;
 
   try {
-    const resultado = await comprasController.adicionarCartoesCriados(cartoesCriados);
+    const resultado = await comprasController.criarChapas(cartoesCriados);
     reply.send({ message: 'Cartões criados recebidos com sucesso', data: resultado });
   } catch (error) {
     console.error('Erro ao processar cartões criados:', error);
