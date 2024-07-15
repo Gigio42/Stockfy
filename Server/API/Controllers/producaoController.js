@@ -1,6 +1,7 @@
 import Maquina from "../Models/maquinaModel.js";
 import Item from "../Models/itemModel.js";
 import Item_Maquina from "../Models/item_maquinaModel.js";
+import Chapas from "../Models/chapasModel.js";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
@@ -197,6 +198,42 @@ class ProducaoController {
     });
 
     if (remainingOrders.length === 0) {
+      // Buscar todas as chapas associadas ao item cujo status é USADO
+      const chapasUsadas = await Chapas.findMany({
+        where: {
+          items: {
+            some: {
+              itemId: itemId,
+            },
+          },
+          status: "USADO",
+        },
+      });
+
+      // Excluir todas as chapas cujo status é USADO
+      for (const chapa of chapasUsadas) {
+        // Tirando todas as conjugações associadas a essa chapa
+        await prisma.conjugacoes.deleteMany({
+          where: {
+            chapaId: chapa.id_chapa,
+          },
+        });
+
+        // Tirando a relação entre a chapa e o item
+        await prisma.chapa_Item.deleteMany({
+          where: {
+            chapaId: chapa.id_chapa,
+          },
+        });
+
+        // Excluindo a chapa
+        await Chapas.delete({
+          where: {
+            id_chapa: chapa.id_chapa,
+          },
+        });
+      }
+
       await Item_Maquina.deleteMany({
         where: {
           itemId: itemId,
