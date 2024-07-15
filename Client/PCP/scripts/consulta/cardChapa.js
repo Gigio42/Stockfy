@@ -67,8 +67,11 @@ export class CardChapa {
   createDeleteButton() {
     const deleteButton = createElementWithClass("button", "btn btn-danger ml-2 card-chapa-delete-button");
     deleteButton.textContent = "Deletar";
-    deleteButton.addEventListener("click", () => {
-      deleteChapaFromItem(this.itemId, this.chapa.id_chapa);
+    deleteButton.addEventListener("click", async () => {
+      const reservedBy = localStorage.getItem("nome");
+      const data = new Date();
+      const dataFormatada = data.toLocaleDateString("pt-BR");
+      await deleteChapaFromItem(this.itemId, this.chapa.id_chapa, reservedBy, dataFormatada);
     });
     return deleteButton;
   }

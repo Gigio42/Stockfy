@@ -340,9 +340,9 @@ class PCPController {
   }
 
   // ------------------------------
-  // delete chapa
+  // delete chapa from item
   // ------------------------------
-  async deleteChapaFromItem(itemId, chapaId) {
+  async deleteChapaFromItem(itemId, chapaId, reservedBy, dataFormatada) {
     const chapaItem = await Chapa_Item.findFirst({
       where: {
         itemId: itemId,
@@ -358,23 +358,12 @@ class PCPController {
 
     const conjugacoes = await Conjugacoes.findMany({ where: { chapaId: chapaId } });
 
-    for (const conjugacao of conjugacoes) {
-      operations.push(
-        Conjugacoes.update({
-          where: { id_conjugacoes: conjugacao.id_conjugacoes },
-          data: {
-            quantidade_disponivel: { increment: chapaItem.quantidade },
-            usado: false,
-          },
-        })
-      );
-    }
+    let conjugacaoStr = conjugacoes.map((conjugacao) => `${conjugacao.largura} X ${conjugacao.comprimento}`).join(", ");
 
     const chapa = await Chapas.findUnique({
       where: { id_chapa: chapaId },
     });
 
-    console.log("qtd: " + chapaItem.quantidade);
     const chapaUpdateData = {
       quantidade_estoque: { increment: chapaItem.quantidade },
       quantidade_disponivel: { increment: chapaItem.quantidade },
@@ -392,6 +381,25 @@ class PCPController {
     );
 
     operations.push(Chapa_Item.delete({ where: { id_chapa_item: chapaItem.id_chapa_item } }));
+
+    const item = await Item.findUnique({ where: { id_item: itemId } });
+    const partNumber = item.part_number;
+    const pedidoVenda = item.pedido_venda;
+
+    operations.push(
+      prisma.historico.create({
+        data: {
+          chapa: `${chapa.largura} X ${chapa.comprimento} - ${chapa.vincos} - ${chapa.qualidade}/${chapa.onda}`,
+          part_number: partNumber,
+          quantidade: parseInt(chapaItem.quantidade),
+          conjugacao: conjugacaoStr,
+          modificacao: "Chapa removida do item",
+          modificado_por: reservedBy,
+          data_modificacao: dataFormatada,
+          pedido_venda: toString(pedidoVenda),
+        },
+      })
+    );
 
     await prisma.$transaction(operations);
   }

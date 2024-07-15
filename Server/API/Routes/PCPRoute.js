@@ -68,7 +68,8 @@ async function pcpRoute(fastify, options) {
     try {
       const itemId = parseInt(request.params.itemId, 10);
       const chapaId = parseInt(request.params.chapaId, 10);
-      await pcpRouteController.deleteChapaFromItem(itemId, chapaId);
+      const { reservedBy, dataFormatada } = request.body;
+      await pcpRouteController.deleteChapaFromItem(itemId, chapaId, reservedBy, dataFormatada);
       reply.send({ message: `Chapa with id ${chapaId} deleted from item with id ${itemId} successfully` });
     } catch (err) {
       console.log(err.message);

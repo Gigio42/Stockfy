@@ -66,9 +66,11 @@ export async function deleteItem(id) {
   }
 }
 
-export async function deleteChapaFromItem(itemId, chapaId) {
+export async function deleteChapaFromItem(itemId, chapaId, reservedBy, dataFormatada) {
   try {
-    await axios.delete(`${PCP_URL}/items/${itemId}/chapas/${chapaId}`);
+    await axios.delete(`${PCP_URL}/items/${itemId}/chapas/${chapaId}`, {
+      data: { reservedBy, dataFormatada }
+    });
   } catch (error) {
     handleError(error);
   }
