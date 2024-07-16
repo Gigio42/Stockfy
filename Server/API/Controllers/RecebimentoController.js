@@ -18,8 +18,12 @@ class RecebimentoController {
       const id_chapa_int = parseInt(item.id_chapa, 10);
       if (isNaN(id_chapa_int)) throw new Error("id_chapa must be a number");
 
-      const chapa = await prisma.chapas.findUnique({ where: { id_chapa: id_chapa_int } });
-      if (!chapa) {
+      const chapa = await prisma.chapas.findUnique({
+        where: { id_chapa: id_chapa_int },
+        select: {
+          vincos: true, // Selecione a coluna vincos do model chapa
+        }
+      });      if (!chapa) {
         throw new Error(`Chapa with id ${item.id_chapa} not found`);
       }
 
@@ -37,9 +41,11 @@ class RecebimentoController {
         },
       });
 
+      
+
       await prisma.historico.createMany({
         data: {
-          chapa: `${item.largura} X ${item.comprimento} - ${item.vincos} - ${item.qualidade}/${item.onda}`,
+          chapa: `${item.largura} X ${item.comprimento} - ${chapa.vincos} - ${item.qualidade}/${item.onda}`,
           quantidade: item.quantidade_recebida,
           modificacao: item.status,
           modificado_por: item.senderName, // usuario login

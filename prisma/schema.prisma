@@ -123,7 +123,7 @@ model Usuarios {
 model Historico {
   id_historico  Int       @id @default(autoincrement())
   chapa               String?
-  quantidade          Int
+  quantidade          Int?
   modificacao         String
   modificado_por      String
   data_modificacao    String

@@ -1,5 +1,4 @@
-import { updateCardboardRepresentation } from "./cardboard.js";
-import { addStagedCard } from "./staged-cards.js";
+import { jsonData } from "./extractToJson.js"; // Importe jsonData do arquivo extractToJson.js
 
 export function addTableHeader(dataTable) {
   const headers = [
@@ -26,6 +25,22 @@ export function addTableHeader(dataTable) {
   headerRow.appendChild(thConjug);
 
   dataTable.appendChild(headerRow);
+}
+
+export function populateTable(infoProdComprados) {
+  const dataTable = document.getElementById("dataTable");
+  if (dataTable) {
+    dataTable.innerHTML = "";
+    addTableHeader(dataTable);
+
+    if (infoProdComprados && infoProdComprados.length > 0) {
+      infoProdComprados.forEach((prod, index) =>
+        addTableRow(dataTable, prod, index)
+      );
+    } else {
+      console.log("Nenhum produto comprado encontrado para exibir na tabela.");
+    }
+  }
 }
 
 export function addTableRow(dataTable, prod, index) {
@@ -60,24 +75,31 @@ export function addTableRow(dataTable, prod, index) {
   row.classList.add(index % 2 === 0 ? "even-row" : "odd-row");
 
   // Adiciona evento de clique para selecionar a linha
-  row.addEventListener("click", () => {
-    // Remove a classe 'selected' de todas as linhas
-    const rows = dataTable.getElementsByClassName("table-row");
-    Array.from(rows).forEach((r) => r.classList.remove("selected"));
-    // Adiciona classe 'selected' à linha clicada
-    row.classList.add("vai_conjugar");
+  checkbox.addEventListener("change", (event) => {
+    if (event.target.checked) {
+      // Marcar o status como "A_CONJUGAR"
+      prod.status = "A_CONJUGAR";
+    } else {
+      // Voltar o status para "COMPRADO"
+      prod.status = "COMPRADO";
+    }
+    
+    // Verificar se jsonData existe antes de atualizar
+    if (window.jsonData && jsonData.infoProdComprados) {
+      // Atualizar jsonData.infoProdComprados com a nova informação
+      jsonData.infoProdComprados = jsonData.infoProdComprados.map((p, i) =>
+        i === index ? { ...p, status: prod.status } : p
+      );
+
+      console.log("JSON atualizado com o status:");
+      console.log(jsonData);
+
+      // Atualizar tabela
+      populateTable(jsonData.infoProdComprados);
+    } else {
+      console.error("jsonData.infoProdComprados não está definido ou vazio.");
+    }
   });
 
   dataTable.appendChild(row);
-}
-
-export function populateTable(infoProdComprados) {
-  const dataTable = document.getElementById("dataTable");
-  if (dataTable) {
-    dataTable.innerHTML = "";
-    addTableHeader(dataTable);
-    infoProdComprados.forEach((prod, index) =>
-      addTableRow(dataTable, prod, index)
-    );
-  }
 }

@@ -353,7 +353,7 @@ class PCPController {
       operations.push(
         prisma.historico.create({
           data: {
-            chapa: `${chapa.largura || "null"} X ${chapa.comprimento || "null"} - ${chapa.vincos || "Não"} - ${chapa.qualidade || "SLL40/E"}`,
+            chapa: `${chapa.largura} X ${chapa.comprimento} - ${chapa.vincos} - ${chapa.qualidade}`,
             part_number: partNumber,
             quantidade: quantidade,
             conjugacao: conjugacaoStr,
