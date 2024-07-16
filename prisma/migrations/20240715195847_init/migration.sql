@@ -2,6 +2,11 @@
 CREATE TABLE "Conjugacoes" (
     "id_conjugacoes" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "medida" TEXT NOT NULL,
+    "largura" INTEGER NOT NULL,
+    "comprimento" INTEGER NOT NULL,
+    "rendimento" INTEGER NOT NULL DEFAULT 0,
+    "quantidade" INTEGER NOT NULL DEFAULT 0,
+    "quantidade_disponivel" INTEGER NOT NULL DEFAULT 0,
     "usado" BOOLEAN NOT NULL DEFAULT false,
     "chapaId" INTEGER NOT NULL,
     CONSTRAINT "Conjugacoes_chapaId_fkey" FOREIGN KEY ("chapaId") REFERENCES "Chapas" ("id_chapa") ON DELETE RESTRICT ON UPDATE CASCADE
@@ -15,7 +20,7 @@ CREATE TABLE "Chapas" (
     "fornecedor" TEXT,
     "comprador" TEXT,
     "unidade" TEXT,
-    "qualidade" TEXT NOT NULL,
+    "qualidade" TEXT,
     "medida" TEXT,
     "largura" INTEGER,
     "comprimento" INTEGER,
@@ -41,17 +46,19 @@ CREATE TABLE "Chapa_Item" (
     "id_chapa_item" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "quantidade" INTEGER NOT NULL DEFAULT 0,
     "terminado" BOOLEAN NOT NULL DEFAULT false,
-    "chapaId" INTEGER NOT NULL,
     "itemId" INTEGER NOT NULL,
+    "chapaId" INTEGER NOT NULL,
+    "conjugacaoId" INTEGER,
+    CONSTRAINT "Chapa_Item_itemId_fkey" FOREIGN KEY ("itemId") REFERENCES "Item" ("id_item") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "Chapa_Item_chapaId_fkey" FOREIGN KEY ("chapaId") REFERENCES "Chapas" ("id_chapa") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "Chapa_Item_itemId_fkey" FOREIGN KEY ("itemId") REFERENCES "Item" ("id_item") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "Chapa_Item_conjugacaoId_fkey" FOREIGN KEY ("conjugacaoId") REFERENCES "Conjugacoes" ("id_conjugacoes") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 -- CreateTable
 CREATE TABLE "Item" (
     "id_item" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "part_number" TEXT NOT NULL DEFAULT '0',
-    "prioridade" INTEGER,
+    "pedido_venda" INTEGER NOT NULL DEFAULT 0,
     "status" TEXT NOT NULL DEFAULT '',
     "reservado_por" TEXT
 );
@@ -64,7 +71,13 @@ CREATE TABLE "Item_Maquina" (
     "ordemTotal" INTEGER,
     "executor" TEXT,
     "finalizado" BOOLEAN NOT NULL DEFAULT false,
-    "corte" TEXT,
+    "medida" TEXT,
+    "op" INTEGER,
+    "prioridade" INTEGER,
+    "sistema" TEXT,
+    "cliente" TEXT,
+    "quantidade" INTEGER,
+    "colaborador" TEXT,
     "maquinaId" INTEGER NOT NULL,
     "itemId" INTEGER NOT NULL,
     CONSTRAINT "Item_Maquina_maquinaId_fkey" FOREIGN KEY ("maquinaId") REFERENCES "Maquina" ("id_maquina") ON DELETE RESTRICT ON UPDATE CASCADE,
@@ -82,6 +95,22 @@ CREATE TABLE "Usuarios" (
     "id_usuario" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "username" TEXT NOT NULL,
     "password" TEXT NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "Historico" (
+    "id_historico" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "chapa" TEXT,
+    "quantidade" INTEGER NOT NULL,
+    "modificacao" TEXT NOT NULL,
+    "modificado_por" TEXT NOT NULL,
+    "data_modificacao" TEXT NOT NULL,
+    "data_prevista" TEXT,
+    "part_number" TEXT,
+    "maquina" TEXT,
+    "ordem" INTEGER,
+    "conjugacao" TEXT,
+    "pedido_venda" TEXT
 );
 
 -- CreateTable
@@ -103,6 +132,9 @@ CREATE UNIQUE INDEX "Item_part_number_key" ON "Item"("part_number");
 
 -- CreateIndex
 CREATE INDEX "Usuarios_id_usuario_idx" ON "Usuarios"("id_usuario");
+
+-- CreateIndex
+CREATE INDEX "Historico_id_historico_idx" ON "Historico"("id_historico");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_MaquinaToUsuarios_AB_unique" ON "_MaquinaToUsuarios"("A", "B");
