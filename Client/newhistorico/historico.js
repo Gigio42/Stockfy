@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const headers = {
             'part_number': ["Part Number", "Quantidade", "Modificação", "Modificado Por", "Data Modificação", "Máquina", "Ordem", "Pedido Venda", "Conjulgação", "Chapas"],
-            'chapa': ["Chapa", "Quantidade", "Modificação", "Modificado Por", "Data recebimento", "Data Modificação", "Part Number"],
+            'chapa': ["Chapa", "Quantidade", "Modificação", "Modificado Por", "Data prevista", "Data Modificação", "Part Number"],
             'maquina': ["Máquina", "Part Number", "Quantidade", "Modificação", "Modificado Por", "Data Modificação", "Ordem", "Pedido Venda", "Conjulgação", "Chapas"]
         }[displayType];
 

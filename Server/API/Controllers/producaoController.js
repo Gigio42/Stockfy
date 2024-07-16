@@ -190,6 +190,28 @@ class ProducaoController {
       },
     });
 
+    const item = await prisma.item.findUnique({
+      where: { id_item: itemId },
+      select: {
+        part_number: true,
+        pedido_venda: true,
+      },
+    });
+
+    //historico finalizou item na maquina
+    await prisma.historico.createMany({
+      data: {
+        part_number: item.part_number,
+        maquina: maquinaName,
+        quantidade: itemMaquina.quantidade,
+        modificacao: "finalizado na maquina",
+        modificado_por: executor, // usuario login
+        data_modificacao: new Date().toLocaleDateString("pt-BR"),
+        ordem: itemMaquina.ordem,
+        pedido_venda: item.pedido_venda.toString(),
+      }
+    });
+
     const remainingOrders = await Item_Maquina.findMany({
       where: {
         itemId: itemId,
@@ -221,6 +243,21 @@ class ProducaoController {
 
         //Se for a ultima...
         if (countItensUsandoChapa === 1) {
+
+          //remover chapa!!!
+
+          //historico deleta chapa
+          await prisma.historico.createMany({
+            data: {
+              chapa: `${chapa.largura} X ${chapa.comprimento} - ${chapa.vincos} - ${chapa.qualidade}/${chapa.onda}`,
+              part_number: item.part_number,
+              modificacao: "chapa deletada",
+              modificado_por: executor, // usuario login
+              data_modificacao: new Date().toLocaleDateString("pt-BR"),
+              pedido_venda: item.pedido_venda.toString(),
+            }
+          });
+
           // Tirando todas as conjugações associadas a essa chapa
           await prisma.conjugacoes.deleteMany({
             where: {
@@ -243,6 +280,19 @@ class ProducaoController {
           });
         }
       }
+
+      //remover item!!
+
+      //historico deleta item
+      await prisma.historico.createMany({
+        data: {
+          part_number: item.part_number,
+          modificacao: "item deletado",
+          modificado_por: executor, // usuario login
+          data_modificacao: new Date().toLocaleDateString("pt-BR"),
+          pedido_venda: item.pedido_venda.toString(),
+        }
+      });
 
       // Remover todos os registros de Item_Maquina relacionados ao item
       await Item_Maquina.deleteMany({

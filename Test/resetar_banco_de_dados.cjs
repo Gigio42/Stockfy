@@ -24,6 +24,7 @@ async function main() {
       await prisma.item.deleteMany();
       await prisma.maquina.deleteMany();
       await prisma.usuarios.deleteMany();
+      await prisma.historico.deleteMany();
 
       console.log(`finalizado, parabéns vc destruiu tudo!`);
 
