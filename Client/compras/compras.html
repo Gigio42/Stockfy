@@ -212,6 +212,13 @@
         <script>
             // Wait until the DOM is fully loaded
             document.addEventListener('DOMContentLoaded', (event) => {
+
+                const closeButton = document.getElementById("backButton");
+    closeButton.addEventListener("click", function () {
+        window.location.reload();
+
+    });
+
                 // Get references to the button, modal, and dropzone
                 const btnAdicionarManualmente = document.getElementById('btnAdicionarManualmente');
                 const mModal = document.getElementById('mModal');

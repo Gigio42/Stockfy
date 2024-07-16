@@ -130,42 +130,51 @@ async function admRoute(fastify, options) {
   fastify.post("/item_maquina/selecionar-maquinas", async (request, reply) => {
     try {
       const items = request.body;
-
+  
+      // Log de todas as máquinas recebidas
+      console.log("Recebido para criação de Itens_Maquina:", items);
+  
       for (const { itemId, maquinaId, ordem } of items) {
         await admController.createItemMaquina(itemId, maquinaId, ordem);
       }
-
+  
       reply.send({ message: "Itens_Maquina criados com sucesso." });
     } catch (err) {
       console.error("Erro ao criar Itens_Maquina:", err);
       reply.code(500).send({ message: "Erro ao criar Itens_Maquina." });
     }
   });
+  
+  
 
   fastify.get("/item_maquina/existence-check", async (request, reply) => {
     try {
       const { itemId, maquinaId } = request.query;
-      console.log(
-        `Received existence check request for itemId: ${itemId}, maquinaId: ${maquinaId}`
-      );
-
+      console.log(`Received existence check request for itemId: ${itemId}, maquinaId: ${maquinaId}`);
+  
       if (!itemId || !maquinaId) {
         reply.code(400).send({ message: "itemId and maquinaId are required." });
         return;
       }
-
-      const exists = await admController.checkItemMaquinaExists(
-        parseInt(itemId),
-        parseInt(maquinaId)
-      );
+  
+      const maquinaIds = maquinaId.split(',').map(id => parseInt(id.trim()));
+  
+      const promises = maquinaIds.map(async id => {
+        const exists = await admController.checkItemMaquinaExists(parseInt(itemId), id);
+        return { maquinaId: id, exists: exists };
+      });
+  
+      const results = await Promise.all(promises);
+  
+      const exists = results.some(result => result.exists);
+  
       reply.send({ exists });
     } catch (err) {
       console.error("Erro ao verificar a existência do item_maquina:", err);
-      reply
-        .code(500)
-        .send({ message: "Erro ao verificar a existência do item_maquina." });
+      reply.code(500).send({ message: "Erro ao verificar a existência do item_maquina." });
     }
   });
+  
 
   fastify.post("/maquina", async (request, reply) => {
     try {
