@@ -216,71 +216,67 @@ class PCPController {
       console.log(body);
       await this.validateQuantities(chapas, conjugacoes);
 
-      const item = await prisma.$transaction(async (prisma) => {
-        // Verificar quantidades antes de qualquer inserção
-        for (const { chapaID, quantity } of chapas) {
-          const chapa = await Chapas.findUnique({ where: { id_chapa: chapaID } });
-          if (!chapa) throw new Error("Chapa não encontrada");
-          if (quantity > chapa.quantidade_disponivel) throw new Error(`Chapa ${chapaID} não possui quantidade suficiente`);
-        }
+      // Verificar quantidades antes de qualquer inserção
+      for (const { chapaID, quantity } of chapas) {
+        const chapa = await Chapas.findUnique({ where: { id_chapa: chapaID } });
+        if (!chapa) throw new Error("Chapa não encontrada");
+        if (quantity > chapa.quantidade_disponivel) throw new Error(`Chapa ${chapaID} não possui quantidade suficiente`);
+      }
 
-        for (const { conjugacoesID, quantity } of conjugacoes) {
-          const conjugacao = await Conjugacoes.findUnique({ where: { id_conjugacoes: conjugacoesID } });
-          if (!conjugacao) throw new Error("Conjugação não encontrada");
-          if (quantity > conjugacao.quantidade_disponivel) throw new Error(`Conjugação ${conjugacoesID} não possui quantidade suficiente`);
-        }
+      for (const { conjugacoesID, quantity } of conjugacoes) {
+        const conjugacao = await Conjugacoes.findUnique({ where: { id_conjugacoes: conjugacoesID } });
+        if (!conjugacao) throw new Error("Conjugação não encontrada");
+        if (quantity > conjugacao.quantidade_disponivel) throw new Error(`Conjugação ${conjugacoesID} não possui quantidade suficiente`);
+      }
 
-        const item = await this.findOrCreateItem(partNumber, pedidoVenda, reservedBy);
+      const item = await this.findOrCreateItem(partNumber, pedidoVenda, reservedBy);
 
-        for (const { chapaID, quantity } of chapas) {
-          await this.updateChapa(chapaID, quantity);
-          await this.upsertChapaItem(chapaID, item.id_item, quantity);
+      for (const { chapaID, quantity } of chapas) {
+        await this.updateChapa(chapaID, quantity);
+        await this.upsertChapaItem(chapaID, item.id_item, quantity);
 
-          const chapa = await prisma.chapas.findUnique({
-            where: { id_chapa: chapaID },
-          });
+        const chapa = await prisma.chapas.findUnique({
+          where: { id_chapa: chapaID },
+        });
 
-          await prisma.historico.create({
-            data: {
-              chapa: `${chapa.largura} X ${chapa.comprimento} - ${chapa.vincos} - ${chapa.qualidade}/${chapa.onda}`,
-              part_number: partNumber,
-              quantidade: quantity,
-              modificacao: "reservado",
-              modificado_por: reservedBy,
-              data_modificacao: dataFormatada,
-              pedido_venda: pedidoVenda,
-            },
-          });
-        }
+        await prisma.historico.create({
+          data: {
+            chapa: `${chapa.largura} X ${chapa.comprimento} - ${chapa.vincos} - ${chapa.qualidade}/${chapa.onda}`,
+            part_number: partNumber,
+            quantidade: quantity,
+            modificacao: "reservado",
+            modificado_por: reservedBy,
+            data_modificacao: dataFormatada,
+            pedido_venda: pedidoVenda,
+          },
+        });
+      }
 
-        for (const { conjugacoesID, quantity } of conjugacoes) {
-          const conjugacao = await this.updateConjugacao(conjugacoesID, quantity);
-          await this.upsertChapaItem(conjugacao.chapaId, item.id_item, quantity, conjugacoesID);
+      for (const { conjugacoesID, quantity } of conjugacoes) {
+        const conjugacao = await this.updateConjugacao(conjugacoesID, quantity);
+        await this.upsertChapaItem(conjugacao.chapaId, item.id_item, quantity, conjugacoesID);
 
-          const conjugacaoID = await prisma.conjugacoes.findUnique({
-            where: { id_conjugacoes: conjugacoesID },
-          });
+        const conjugacaoID = await prisma.conjugacoes.findUnique({
+          where: { id_conjugacoes: conjugacoesID },
+        });
 
-          const chapa = await prisma.chapas.findUnique({
-            where: { id_chapa: conjugacaoID.chapaId },
-          });
+        const chapa = await prisma.chapas.findUnique({
+          where: { id_chapa: conjugacaoID.chapaId },
+        });
 
-          await prisma.historico.create({
-            data: {
-              chapa: `${chapa.largura} X ${chapa.comprimento} - ${chapa.vincos} - ${chapa.qualidade}/${chapa.onda}`,
-              part_number: partNumber,
-              quantidade: parseInt(quantity),
-              conjugacao: `${conjugacao.largura} X ${conjugacao.comprimento}`,
-              modificacao: "reservado",
-              modificado_por: reservedBy,
-              data_modificacao: dataFormatada,
-              pedido_venda: pedidoVenda,
-            },
-          });
-        }
-
-        return item;
-      });
+        await prisma.historico.create({
+          data: {
+            chapa: `${chapa.largura} X ${chapa.comprimento} - ${chapa.vincos} - ${chapa.qualidade}/${chapa.onda}`,
+            part_number: partNumber,
+            quantidade: parseInt(quantity),
+            conjugacao: `${conjugacao.largura} X ${conjugacao.comprimento}`,
+            modificacao: "reservado",
+            modificado_por: reservedBy,
+            data_modificacao: dataFormatada,
+            pedido_venda: pedidoVenda,
+          },
+        });
+      }
 
       return item;
     } catch (error) {
