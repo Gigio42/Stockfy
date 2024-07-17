@@ -17,7 +17,7 @@ class PCPController {
   async getChapas(query, filterCriteria, sortOrder, sortBy) {
     let data = await Chapas.findMany({ include: { conjugacoes: true } });
 
-    data = data.filter((chapa) => chapa.status !== "USADO");
+    data = data.filter((chapa) => chapa.quantidade_disponivel > 0);
 
     if (filterCriteria) {
       for (let key in filterCriteria) {
@@ -131,13 +131,6 @@ class PCPController {
       },
     });
 
-    if (updatedChapa.quantidade_disponivel === 0) {
-      await Chapas.update({
-        where: { id_chapa: chapa.id_chapa },
-        data: { status: "USADO" },
-      });
-    }
-
     return chapa;
   }
 
@@ -164,7 +157,7 @@ class PCPController {
     if (allUsed) {
       await Chapas.update({
         where: { id_chapa: conjugacao.chapaId },
-        data: { status: "USADO" },
+        data: { quantidade_disponivel: 0 },
       });
     }
 
@@ -330,10 +323,6 @@ class PCPController {
         quantidade_disponivel: { increment: chapaItem.quantidade },
       };
 
-      if (chapa.status === "USADO") {
-        chapaUpdateData.status = "RECUPERADO";
-      }
-
       operations.push(
         prisma.chapas.update({
           where: { id_chapa: chapaItem.chapaId },
@@ -410,10 +399,6 @@ class PCPController {
       quantidade_estoque: { increment: chapaItem.quantidade },
       quantidade_disponivel: { increment: chapaItem.quantidade },
     };
-
-    if (chapa.status === "USADO") {
-      chapaUpdateData.status = "RECUPERADO";
-    }
 
     operations.push(
       Chapas.update({
