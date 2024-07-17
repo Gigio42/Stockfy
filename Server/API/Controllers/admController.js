@@ -27,13 +27,14 @@ class AdmController {
       include: {
         item: true,
         chapa: true,
+        conjugacao: true, // Certifique-se de incluir a relação com conjugação
       },
     });
-
+  
     if (!chapaItems.length) {
-      throw new Error(`No Chapa_Item found`);
+      throw new Error(`Nenhum Chapa_Item encontrado`);
     }
-
+  
     const items = chapaItems.reduce((acc, chapaItem) => {
       const { item } = chapaItem;
       if (!acc[item.id_item]) {
@@ -42,12 +43,24 @@ class AdmController {
           chapas: [],
         };
       }
-      acc[item.id_item].chapas.push(chapaItem.chapa);
+      // Monta o objeto de chapa com seus dados
+      const chapaInfo = {
+        chapa: chapaItem.chapa,
+        quantidade: chapaItem.quantidade,
+        terminado: chapaItem.terminado,
+      };
+      // Adiciona a conjugação, se existir
+      if (chapaItem.conjugacao) {
+        chapaInfo.conjugacao = chapaItem.conjugacao; // Certifique-se de incluir a conjugação aqui
+      }
+      acc[item.id_item].chapas.push(chapaInfo);
       return acc;
     }, {});
-
+  
     return Object.values(items);
   }
+  
+  
 
   async changeItemStatusProduzindo(
     itemId,
@@ -60,9 +73,17 @@ class AdmController {
     cliente,
     quantidade,
     colaborador,
-    prioridade
+    prioridade,
+    nomeUsuario // Parâmetro adicional para o nome de usuário
   ) {
     try {
+      // Formatando o prazo para dd/mm/aaaa
+      const prazoFormatado = new Date(prazo).toLocaleDateString("pt-BR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      });
+  
       console.log(`Prioridade recebida no servidor: ${prioridade}`);
   
       const status = prioridade === 1 ? "PRODUZINDO" : "PROGRAMADO";
@@ -76,7 +97,7 @@ class AdmController {
         data: {
           maquinaId: maquinaId,
           itemId: itemId,
-          prazo: prazo,
+          prazo: prazoFormatado,
           ordem: parseInt(ordem, 10),
           medida: medida,
           op: parseInt(op, 10),
@@ -85,6 +106,7 @@ class AdmController {
           quantidade: parseInt(quantidade, 10),
           colaborador: colaborador,
           prioridade: prioridade,
+          executor: nomeUsuario, // Definir o executor como o nome do usuário passado como parâmetro
         },
       });
   
@@ -95,7 +117,7 @@ class AdmController {
           pedido_venda: true,
         },
       });
-
+  
       if (!item || !item.part_number || !item.pedido_venda) {
         throw new Error("Item não encontrado ou dados incompletos.");
       }
@@ -111,7 +133,7 @@ class AdmController {
         where: { id_maquina: maquinaId },
         select: { nome: true }
       });
-
+  
       for (const { chapa } of chapaItems) {
         await prisma.historico.create({
           data: {
@@ -121,16 +143,17 @@ class AdmController {
             modificacao: "PROGRAMADO",
             modificado_por: colaborador,
             data_modificacao: new Date().toLocaleDateString("pt-BR"),
-            data_prevista: prazo,
+            data_prevista: prazoFormatado,
             pedido_venda: item.pedido_venda.toString(),
             ordem: parseInt(ordem, 10),
-            maquina: maquina.nome
+            maquina: maquina.nome,
+            executor: nomeUsuario, // Definir o executor como o nome do usuário passado como parâmetro
           },
         });
       }
   
       console.log(
-        `Item ${itemId} atualizado para status ${status} com prazo ${prazo}, ordem ${ordem}, medida ${medida}, op ${op}, sistema ${sistema}, cliente ${cliente}, quantidade ${quantidade}, colaborador ${colaborador}, prioridade ${prioridade}`
+        `Item ${itemId} atualizado para status ${status} com prazo ${prazoFormatado}, ordem ${ordem}, medida ${medida}, op ${op}, sistema ${sistema}, cliente ${cliente}, quantidade ${quantidade}, colaborador ${colaborador}, prioridade ${prioridade}, executor ${nomeUsuario},`
       );
     } catch (error) {
       console.error(
@@ -142,6 +165,9 @@ class AdmController {
       );
     }
   }
+  
+  
+  
   
 
   async getAllItemsPriorities(existingItemMaquinaIds) {
