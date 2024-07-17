@@ -289,36 +289,53 @@ class AdmController {
   
   async createItemMaquina(itemId, maquinaId) {
     try {
+      // Busca o último Item_Maquina para o itemId fornecido
       const lastItem = await Item_Maquina.findFirst({
         where: { itemId: itemId },
         orderBy: { ordem: "desc" },
       });
   
-      let ordem = 1;
-      if (lastItem) {
-        ordem = lastItem.ordem + 1;
+      if (!lastItem) {
+        throw new Error(`Nenhum Item_Maquina encontrado para o itemId: ${itemId}`);
       }
   
-      await Item_Maquina.create({
-        data: {
-          prazo: lastItem ? lastItem.prazo : null,
-          ordem: ordem,
-          executor: lastItem ? lastItem.executor : null,
-          finalizado: lastItem ? lastItem.finalizado : false,
-          corte: lastItem ? lastItem.corte : null,
-          maquinaId: maquinaId,
-          itemId: itemId,
-        },
+      // Cria uma cópia do último Item_Maquina encontrado
+      const newItemMaquina = {
+        prazo: lastItem.prazo,
+        ordem: lastItem.ordem + 1, // Incrementa a ordem
+        executor: lastItem.executor,
+        finalizado: lastItem.finalizado,
+        corte: lastItem.corte,
+        medida: lastItem.medida,
+        op: lastItem.op,
+        prioridade: lastItem.prioridade + 1,
+        sistema: lastItem.sistema,
+        cliente: lastItem.cliente,
+        quantidade: lastItem.quantidade,
+        colaborador: lastItem.colaborador,
+        maquinaId: maquinaId, // Atualiza a máquinaId
+        itemId: itemId,
+      };
+  
+      // Cria o novo Item_Maquina com base na cópia ajustada
+      const createdItemMaquina = await Item_Maquina.create({
+        data: newItemMaquina,
       });
   
       console.log(
-        `Item_Maquina criado com sucesso para o item ${itemId} e a máquina ${maquinaId}.`
+        `Item_Maquina duplicado com sucesso para o item ${itemId} e a nova máquina ${maquinaId}.`
       );
+  
+      return createdItemMaquina; // Retorna o novo Item_Maquina criado
     } catch (error) {
-      console.error("Erro ao criar Item_Maquina:", error);
-      throw new Error("Erro ao criar Item_Maquina: " + error.message);
+      console.error("Erro ao duplicar Item_Maquina:", error);
+      throw new Error("Erro ao duplicar Item_Maquina: " + error.message);
     }
   }
+  
+  
+  
+  
   
   
 

@@ -1,10 +1,4 @@
 import AdmController from "../Controllers/admController.js";
-import {
-  postChapaItemMaquinaSchema,
-  getChapaItemMaquinaSchema,
-  getItemSchema,
-} from "../validators/admValidator.js";
-
 import { deleteMaquina } from "../Controllers/admController.js"; // Importe a função deleteMaquina
 
 async function admRoute(fastify, options) {
@@ -33,8 +27,7 @@ async function admRoute(fastify, options) {
     }
   });
 
-  fastify.post(
-    "/maquina/:maquinaId/item/:itemId/produzindo",
+  fastify.post("/maquina/:maquinaId/item/:itemId/produzindo",
     async (request, reply) => {
       try {
         const maquinaId = parseInt(request.params.maquinaId, 10);
