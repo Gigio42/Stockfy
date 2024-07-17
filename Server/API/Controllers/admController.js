@@ -266,18 +266,39 @@ class AdmController {
     }
   }
 
+
+  async checkItemMaquinaExists(itemId, maquinaId) {
+    try {
+      console.log(`Checking existence for itemId: ${itemId}, maquinaId: ${maquinaId}`);
+      const existingItemMaquina = await Item_Maquina.findFirst({
+        where: {
+          itemId: itemId,
+          maquinaId: maquinaId,
+        },
+      });
+  
+      console.log(`Existence check result: ${!!existingItemMaquina}`);
+      return !!existingItemMaquina;
+    } catch (error) {
+      console.error("Erro ao verificar a existência do item_maquina:", error);
+      throw new Error(
+        "Erro ao verificar a existência do item_maquina: " + error.message
+      );
+    }
+  }
+  
   async createItemMaquina(itemId, maquinaId) {
     try {
       const lastItem = await Item_Maquina.findFirst({
         where: { itemId: itemId },
         orderBy: { ordem: "desc" },
       });
-
+  
       let ordem = 1;
       if (lastItem) {
         ordem = lastItem.ordem + 1;
       }
-
+  
       await Item_Maquina.create({
         data: {
           prazo: lastItem ? lastItem.prazo : null,
@@ -289,7 +310,7 @@ class AdmController {
           itemId: itemId,
         },
       });
-
+  
       console.log(
         `Item_Maquina criado com sucesso para o item ${itemId} e a máquina ${maquinaId}.`
       );
@@ -298,46 +319,8 @@ class AdmController {
       throw new Error("Erro ao criar Item_Maquina: " + error.message);
     }
   }
-
-  async checkItemMaquinaExists(itemId, maquinaId) {
-    try {
-      const existingItemMaquina = await Item_Maquina.findUnique({
-        where: {
-          itemId: itemId,
-          maquinaId: maquinaId,
-        },
-      });
-
-      return existingItemMaquina ? true : false;
-    } catch (error) {
-      console.error("Erro ao verificar se Item_Maquina existe:", error);
-      throw new Error(
-        "Erro ao verificar se Item_Maquina existe: " + error.message
-      );
-    }
-  }
-
-  async checkItemMaquinaExists(itemId, maquinaId) {
-    try {
-      console.log(
-        `Checking existence for itemId: ${itemId}, maquinaId: ${maquinaId}`
-      );
-      const existingItemMaquina = await Item_Maquina.findFirst({
-        where: {
-          itemId: itemId,
-          maquinaId: maquinaId,
-        },
-      });
-
-      console.log(`Existence check result: ${!!existingItemMaquina}`);
-      return !!existingItemMaquina;
-    } catch (error) {
-      console.error("Erro ao verificar a existência do item_maquina:", error);
-      throw new Error(
-        "Erro ao verificar a existência do item_maquina: " + error.message
-      );
-    }
-  }
+  
+  
 
   // Método para criar uma nova máquina
   async createMaquina(nome) {

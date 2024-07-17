@@ -875,7 +875,7 @@ async function createEmptyCard(cardWrapper) {
         machineButton.addEventListener("click", (event) => {
           event.stopPropagation(); // Previne a propagação do evento
 
-          emptyCard.textContent = machine.nome;
+          emptyCard.textContent = `${machine.nome} (ID: ${machine.id_maquina})`; // Mostra o nome da máquina e seu ID
           emptyCard.classList.add("add-processo");
           emptyCard.dataset.maquinaId = machine.id_maquina;
 
@@ -910,6 +910,8 @@ async function createEmptyCard(cardWrapper) {
     }
   });
 }
+
+
 
 function addAddButton(card, cardWrapper) {
   if (card.classList.contains("empty-card")) return; // Não adicionar botão ao empty card
@@ -1017,30 +1019,29 @@ document.addEventListener("DOMContentLoaded", function () {
   optionsButton.addEventListener("click", showPartNumbersAndMachines);
 });
 
-document
-  .getElementById("confirmarProcesso")
-  .addEventListener("click", async () => {
-    const cards = document.querySelectorAll(".card");
-    const items = [];
-    const duplicates = [];
+document.getElementById("confirmarProcesso").addEventListener("click", async () => {
+  const cards = document.querySelectorAll(".card");
+  const items = [];
+  const duplicates = [];
 
-    for (const card of cards) {
-      const emptyCard = card
-        .closest(".card-wrapper")
-        .querySelector(".empty-card");
-      const maquinaId = emptyCard?.dataset.maquinaId;
+  for (const card of cards) {
+    const emptyCard = card.closest(".card-wrapper").querySelector(".empty-card");
+    const maquinaId = emptyCard?.dataset.maquinaId;
 
-      if (maquinaId) {
-        const itemId = parseInt(card.dataset.itemId);
-        const ordem = parseInt(card.dataset.ordem) + 1;
+    if (maquinaId) {
+      const itemId = parseInt(card.dataset.itemId);
+      const ordem = parseInt(card.dataset.ordem) + 1;
 
-        try {
+      try {
+        const maquinaIds = maquinaId.split(',').map(id => parseInt(id.trim())); // Divide os ids por vírgula e converte para array de números
+
+        for (const id of maquinaIds) {
           const response = await axios.get(
             `${BASE_URL}/adm/item_maquina/existence-check`,
             {
               params: {
                 itemId: itemId,
-                maquinaId: maquinaId,
+                maquinaId: id,
               },
             }
           );
@@ -1048,45 +1049,49 @@ document
           if (response.data.exists) {
             duplicates.push({
               itemId: itemId,
-              maquinaId: maquinaId,
+              maquinaId: id,
             });
           } else {
             items.push({
               itemId: itemId,
-              maquinaId: parseInt(maquinaId),
+              maquinaId: id,
               ordem: ordem,
             });
           }
-        } catch (error) {
-          console.error("Erro ao verificar a existência do processo:", error);
         }
-      }
-    }
-
-    if (duplicates.length > 0) {
-      alert(
-        "Alguns processos já existem:\n" +
-          duplicates
-            .map((d) => `Item ID: ${d.itemId}, Máquina ID: ${d.maquinaId}`)
-            .join("\n")
-      );
-    }
-
-    if (items.length > 0) {
-      try {
-        const response = await axios.post(
-          `${BASE_URL}/adm/item_maquina/selecionar-maquinas`,
-          items
-        );
-        console.log(response.data.message);
-        showPartNumbersAndMachines(); // Chama a função para atualizar os cards
       } catch (error) {
-        console.error("Erro ao confirmar processos:", error);
+        console.error("Erro ao verificar a existência do processo:", error);
       }
-    } else {
-      console.warn("Nenhum item selecionado.");
     }
-  });
+  }
+
+  if (duplicates.length > 0) {
+    alert(
+      "Alguns processos já existem:\n" +
+      duplicates
+        .map((d) => `Item ID: ${d.itemId}, Máquina ID: ${d.maquinaId}`)
+        .join("\n")
+    );
+  }
+
+  if (items.length > 0) {
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/adm/item_maquina/selecionar-maquinas`,
+        items
+      );
+      console.log(response.data.message);
+      showPartNumbersAndMachines(); // Chama a função para atualizar os cards
+    } catch (error) {
+      console.error("Erro ao confirmar processos:", error);
+    }
+  } else {
+    console.warn("Nenhum item selecionado.");
+  }
+});
+
+
+
 
 //=================================================
 // função para CONFIRMAR prioridade
