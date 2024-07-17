@@ -204,7 +204,7 @@ class ProducaoController {
         part_number: item.part_number,
         maquina: maquinaName,
         quantidade: itemMaquina.quantidade,
-        modificacao: "finalizado na maquina",
+        modificacao: "FINALIZADO",
         modificado_por: executor, // usuario login
         data_modificacao: new Date().toLocaleDateString("pt-BR"),
         ordem: itemMaquina.ordem,
@@ -251,7 +251,7 @@ class ProducaoController {
             data: {
               chapa: `${chapa.largura} X ${chapa.comprimento} - ${chapa.vincos} - ${chapa.qualidade}/${chapa.onda}`,
               part_number: item.part_number,
-              modificacao: "chapa deletada",
+              modificacao: "PROCESSADA",
               modificado_por: executor, // usuario login
               data_modificacao: new Date().toLocaleDateString("pt-BR"),
               pedido_venda: item.pedido_venda.toString(),
@@ -287,7 +287,7 @@ class ProducaoController {
       await prisma.historico.createMany({
         data: {
           part_number: item.part_number,
-          modificacao: "item deletado",
+          modificacao: "FINALIZADO",
           modificado_por: executor, // usuario login
           data_modificacao: new Date().toLocaleDateString("pt-BR"),
           pedido_venda: item.pedido_venda.toString(),

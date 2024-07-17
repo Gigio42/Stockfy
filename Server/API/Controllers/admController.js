@@ -95,6 +95,10 @@ class AdmController {
           pedido_venda: true,
         },
       });
+
+      if (!item || !item.part_number || !item.pedido_venda) {
+        throw new Error("Item não encontrado ou dados incompletos.");
+      }
   
       const chapaItems = await prisma.chapa_Item.findMany({
         where: { itemId: itemId },
@@ -114,11 +118,11 @@ class AdmController {
             chapa: `${chapa.largura} X ${chapa.comprimento} - ${chapa.vincos} - ${chapa.qualidade}/${chapa.onda}`,
             part_number: item.part_number,
             quantidade: parseInt(quantidade, 10),
-            modificacao: "reservar_maquina",
+            modificacao: "PROGRAMADO",
             modificado_por: colaborador,
             data_modificacao: new Date().toLocaleDateString("pt-BR"),
             data_prevista: prazo,
-            pedido_venda: part_number.pedido_venda.toString(),
+            pedido_venda: item.pedido_venda.toString(),
             ordem: parseInt(ordem, 10),
             maquina: maquina.nome
           },

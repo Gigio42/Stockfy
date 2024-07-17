@@ -1023,6 +1023,7 @@ document.getElementById("confirmarProcesso").addEventListener("click", async () 
   const cards = document.querySelectorAll(".card");
   const items = [];
   const duplicates = [];
+  const allMaquinaIds = []; // Array para armazenar todos os IDs de máquinas
 
   for (const card of cards) {
     const emptyCard = card.closest(".card-wrapper").querySelector(".empty-card");
@@ -1034,6 +1035,7 @@ document.getElementById("confirmarProcesso").addEventListener("click", async () 
 
       try {
         const maquinaIds = maquinaId.split(',').map(id => parseInt(id.trim())); // Divide os ids por vírgula e converte para array de números
+        allMaquinaIds.push(...maquinaIds); // Adiciona os IDs ao array de todos os IDs de máquinas
 
         for (const id of maquinaIds) {
           const response = await axios.get(
@@ -1064,6 +1066,9 @@ document.getElementById("confirmarProcesso").addEventListener("click", async () 
       }
     }
   }
+
+  // Imprime todos os IDs de máquinas no console
+  console.log("IDs de máquinas que serão enviados:", allMaquinaIds);
 
   if (duplicates.length > 0) {
     alert(

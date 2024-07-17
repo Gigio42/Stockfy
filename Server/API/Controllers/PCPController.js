@@ -270,8 +270,8 @@ class PCPController {
             part_number: partNumber,
             quantidade: parseInt(quantity),
             conjugacao: `${conjugacao.largura} X ${conjugacao.comprimento}`,
-            modificacao: "reservado",
-            modificado_por: reservedBy,
+            modificacao: "RESERVADO",
+            modificado_por: reservedBy, // usuario login
             data_modificacao: dataFormatada,
             pedido_venda: pedidoVenda,
           },

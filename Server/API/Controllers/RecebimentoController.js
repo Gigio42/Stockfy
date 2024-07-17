@@ -41,8 +41,6 @@ class RecebimentoController {
         },
       });
 
-      
-
       await prisma.historico.createMany({
         data: {
           chapa: `${item.largura} X ${item.comprimento} - ${chapa.vincos} - ${item.qualidade}/${item.onda}`,
