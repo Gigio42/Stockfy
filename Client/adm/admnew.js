@@ -933,35 +933,41 @@ function addAddButton(card, cardWrapper) {
   card.addEventListener("mouseout", () => (addButton.style.display = "none"));
 }
 
+// Função para exibir números de peça e máquinas
 async function showPartNumbersAndMachines() {
   try {
+    // Obter dados dos itens de máquina
     const response = await axios.get(`${BASE_URL}/adm/item_maquina`);
 
+    // Limpar container de cards
     const cardContainer = document.getElementById("partNumberCardsContainer");
     cardContainer.innerHTML = "";
 
+    // Mapa para armazenar números de peça e dados associados
     const partNumberMap = {};
 
+    // Iterar sobre os dados recebidos
     response.data.forEach((itemMaquina) => {
+      // Extrair número de peça
       const partNumber = itemMaquina.Item.part_number.replace("::maker", "");
 
+      // Inicializar entrada no mapa se não existir
       if (!partNumberMap[partNumber]) {
         partNumberMap[partNumber] = {
           maquinas: [],
-          itemId: itemMaquina.itemId,
-          prazo: itemMaquina.prazo,
-          executor: itemMaquina.executor,
-          finalizado: itemMaquina.finalizado,
-          corte: itemMaquina.corte,
+          idItem: itemMaquina.itemId, // Ajustado para idItem
+          ordem: itemMaquina.ordem,   // Ajustado para ordem
         };
       }
 
+      // Adicionar máquina ao número de peça correspondente
       partNumberMap[partNumber].maquinas.push({
         nome: itemMaquina.maquina.nome,
         finalizado: itemMaquina.finalizado,
       });
     });
 
+    // Construir cards com base nos dados do mapa
     for (const [partNumber, data] of Object.entries(partNumberMap)) {
       const cardWrapper = document.createElement("div");
       cardWrapper.className = "card-wrapper";
@@ -969,12 +975,12 @@ async function showPartNumbersAndMachines() {
       const card = document.createElement("div");
       card.className = "card";
 
-      card.dataset.itemId = data.itemId;
-      card.dataset.prazo = data.prazo;
-      card.dataset.executor = data.executor;
-      card.dataset.finalizado = data.finalizado;
-      card.dataset.corte = data.corte;
+      // Configuração dos datasets apenas com partNumber, idItem e ordem
+      card.dataset.partNumber = partNumber;
+      card.dataset.itemId = data.idItem; // Corrigido para itemId
+      card.dataset.ordem = data.ordem;   // Corrigido para ordem
 
+      // Conteúdo do card com número de peça e máquinas associadas
       const cardContent = `
               <div class="card-header d-flex justify-content-between align-items-center">
                   <span>${partNumber}</span>
@@ -987,6 +993,7 @@ async function showPartNumbersAndMachines() {
 
       card.innerHTML = cardContent;
 
+      // Adicionar evento de clique para expandir/recolher o corpo do card
       const cardHeader = card.querySelector(".card-header");
       const cardBody = card.querySelector(".card-body");
       const toggleArrow = card.querySelector(".toggle-arrow");
@@ -1000,9 +1007,11 @@ async function showPartNumbersAndMachines() {
         }
       });
 
+      // Adicionar card ao container de cards
       cardWrapper.appendChild(card);
       addAddButton(card, cardWrapper);
 
+      // Adicionar card ao container de cards
       cardContainer.appendChild(cardWrapper);
     }
   } catch (error) {
@@ -1010,6 +1019,7 @@ async function showPartNumbersAndMachines() {
   }
 }
 
+// Evento de carregamento do DOM para iniciar a função showPartNumbersAndMachines
 document.addEventListener("DOMContentLoaded", function () {
   const optionsButton = document.getElementById("optionsButton");
   if (!optionsButton) {
@@ -1023,7 +1033,7 @@ document.getElementById("confirmarProcesso").addEventListener("click", async () 
   const cards = document.querySelectorAll(".card");
   const items = [];
   const duplicates = [];
-  const allMaquinaIds = []; // Array para armazenar todos os IDs de máquinas
+  const allMaquinaIds = [];
 
   for (const card of cards) {
     const emptyCard = card.closest(".card-wrapper").querySelector(".empty-card");
@@ -1031,11 +1041,23 @@ document.getElementById("confirmarProcesso").addEventListener("click", async () 
 
     if (maquinaId) {
       const itemId = parseInt(card.dataset.itemId);
-      const ordem = parseInt(card.dataset.ordem) + 1;
+      if (isNaN(itemId)) {
+        console.error(`itemId inválido para o card:`, card);
+        continue;
+      }
+
+      let ordem = parseInt(card.dataset.ordem);
+
+      if (!isNaN(ordem)) {
+        ordem += 1;
+      } else {
+        console.warn(`Ordem inválida para o card com itemId: ${itemId}`);
+        ordem = 1; // Defina uma ordem padrão se o valor for inválido
+      }
 
       try {
-        const maquinaIds = maquinaId.split(',').map(id => parseInt(id.trim())); // Divide os ids por vírgula e converte para array de números
-        allMaquinaIds.push(...maquinaIds); // Adiciona os IDs ao array de todos os IDs de máquinas
+        const maquinaIds = maquinaId.split(',').map(id => parseInt(id.trim()));
+        allMaquinaIds.push(...maquinaIds);
 
         for (const id of maquinaIds) {
           const response = await axios.get(
@@ -1054,10 +1076,19 @@ document.getElementById("confirmarProcesso").addEventListener("click", async () 
               maquinaId: id,
             });
           } else {
+            const prazo = card.dataset.prazo;
+            const executor = card.dataset.executor;
+            const finalizado = card.dataset.finalizado === "true";
+            const corte = card.dataset.corte;
+            
             items.push({
               itemId: itemId,
               maquinaId: id,
               ordem: ordem,
+              prazo: prazo,
+              executor: executor,
+              finalizado: finalizado,
+              corte: corte,
             });
           }
         }
@@ -1067,7 +1098,6 @@ document.getElementById("confirmarProcesso").addEventListener("click", async () 
     }
   }
 
-  // Imprime todos os IDs de máquinas no console
   console.log("IDs de máquinas que serão enviados:", allMaquinaIds);
 
   if (duplicates.length > 0) {
@@ -1081,12 +1111,16 @@ document.getElementById("confirmarProcesso").addEventListener("click", async () 
 
   if (items.length > 0) {
     try {
-      const response = await axios.post(
-        `${BASE_URL}/adm/item_maquina/selecionar-maquinas`,
-        items
-      );
-      console.log(response.data.message);
-      showPartNumbersAndMachines(); // Chama a função para atualizar os cards
+      // Enviar os maquinaIds para o backend
+      await axios.post(`${BASE_URL}/adm/item_maquina/enviar-maquinaids`, {
+        maquinaIds: allMaquinaIds,
+      });
+
+      // Enviar os dados dos itens selecionados para o backend
+      await axios.post(`${BASE_URL}/adm/item_maquina/selecionar-maquinas`, items);
+
+      console.log("Processos confirmados com sucesso.");
+      showPartNumbersAndMachines();
     } catch (error) {
       console.error("Erro ao confirmar processos:", error);
     }
@@ -1094,6 +1128,10 @@ document.getElementById("confirmarProcesso").addEventListener("click", async () 
     console.warn("Nenhum item selecionado.");
   }
 });
+
+
+
+
 
 
 
