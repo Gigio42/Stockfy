@@ -31,50 +31,7 @@ async function admRoute(fastify, options) {
   
   
 
-  fastify.post("/maquina/:maquinaId/item/:itemId/produzindo",
-    async (request, reply) => {
-      try {
-        const maquinaId = parseInt(request.params.maquinaId, 10);
-        const itemId = parseInt(request.params.itemId, 10);
-        const {
-          prazo,
-          ordem,
-          medida,
-          op,
-          sistema,
-          cliente,
-          quantidade,
-          colaborador,
-          prioridade,
-        } = request.body; // Incluir prioridade aqui
 
-        await admController.changeItemStatusProduzindo(
-          itemId,
-          maquinaId,
-          prazo,
-          parseInt(ordem, 10),
-          medida,
-          parseInt(op, 10),
-          sistema,
-          cliente,
-          parseInt(quantidade, 10),
-          colaborador,
-          parseInt(prioridade, 10) // Passar prioridade como um inteiro
-        );
-
-        reply.send({ message: "Status do item atualizado para PRODUZINDO" });
-        console.log(
-          `Solicitação POST para /maquina/${maquinaId}/item/${itemId}/produzindo realizada com sucesso`
-        );
-      } catch (err) {
-        console.error(
-          "Erro ao processar a solicitação POST para /maquina/:maquinaId/item/:itemId/produzindo:",
-          err
-        );
-        reply.code(500).send({ message: "Internal Server Error" });
-      }
-    }
-  );
 
   fastify.post("/atualizar-prioridades", async (request, reply) => {
     try {
@@ -86,6 +43,68 @@ async function admRoute(fastify, options) {
       reply.status(500).send({ error: "Erro ao atualizar as prioridades" });
     }
   });
+
+  fastify.post("/maquina/:maquinaId/item/:itemId/produzindo", async (request, reply) => {
+    try {
+        const maquinaId = parseInt(request.params.maquinaId, 10);
+        const itemId = parseInt(request.params.itemId, 10);
+        const {
+            prazo,
+            ordem,
+            medida,
+            op,
+            sistema,
+            cliente,
+            quantidade,
+            colaborador,
+            prioridade,
+            executor // Receber o executor aqui
+        } = request.body; // Incluir executor aqui
+
+        console.log("Dados recebidos na rota:", {
+            prazo,
+            ordem,
+            medida,
+            op,
+            sistema,
+            cliente,
+            quantidade,
+            colaborador,
+            prioridade,
+            executor // Log para verificar se o executor está sendo recebido
+        });
+
+        await admController.changeItemStatusProduzindo(
+            itemId,
+            maquinaId,
+            prazo,
+            parseInt(ordem, 10),
+            medida,
+            parseInt(op, 10),
+            sistema,
+            cliente,
+            parseInt(quantidade, 10),
+            colaborador,
+            parseInt(prioridade, 10), // Passar prioridade como um inteiro
+            executor // Passar o executor para o controlador
+        );
+
+        reply.send({ message: "Status do item atualizado para PRODUZINDO" });
+        console.log(
+            `Solicitação POST para /maquina/${maquinaId}/item/${itemId}/produzindo realizada com sucesso`
+        );
+    } catch (err) {
+        console.error(
+            "Erro ao processar a solicitação POST para /maquina/:maquinaId/item/:itemId/produzindo:",
+            err
+        );
+        reply.code(500).send({ message: "Internal Server Error" });
+    }
+});
+
+
+  
+  
   
 
   fastify.get("/maquina/:maquinaId/item", async (request, reply) => {
