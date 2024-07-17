@@ -17,7 +17,7 @@ class PCPController {
   async getChapas(query, filterCriteria, sortOrder, sortBy) {
     let data = await Chapas.findMany({ include: { conjugacoes: true } });
 
-    data = data.filter((chapa) => chapa.status !== "USADO");
+    data = data.filter((chapa) => chapa.quantidade_disponivel > 0);
 
     if (filterCriteria) {
       for (let key in filterCriteria) {
@@ -131,13 +131,6 @@ class PCPController {
       },
     });
 
-    if (updatedChapa.quantidade_disponivel === 0) {
-      await Chapas.update({
-        where: { id_chapa: chapa.id_chapa },
-        data: { status: "USADO" },
-      });
-    }
-
     return chapa;
   }
 
@@ -164,7 +157,7 @@ class PCPController {
     if (allUsed) {
       await Chapas.update({
         where: { id_chapa: conjugacao.chapaId },
-        data: { status: "USADO" },
+        data: { quantidade_disponivel: 0 },
       });
     }
 
@@ -203,11 +196,31 @@ class PCPController {
   }
 
   async createItemWithChapa(body) {
+    const { partNumber, pedidoVenda, chapas, conjugacoes, reservedBy } = body;
+
+    const hoje = new Date();
+    const dataFormatada = [
+      hoje.getDate().toString().padStart(2, "0"), // dia
+      (hoje.getMonth() + 1).toString().padStart(2, "0"), // mês (getMonth() retorna de 0 a 11)
+      hoje.getFullYear(), // ano
+    ].join("/");
+
     try {
       console.log(body);
-      const { partNumber, pedidoVenda, chapas, conjugacoes, reservedBy } = body;
-
       await this.validateQuantities(chapas, conjugacoes);
+
+      // Verificar quantidades antes de qualquer inserção
+      for (const { chapaID, quantity } of chapas) {
+        const chapa = await Chapas.findUnique({ where: { id_chapa: chapaID } });
+        if (!chapa) throw new Error("Chapa não encontrada");
+        if (quantity > chapa.quantidade_disponivel) throw new Error(`Chapa ${chapaID} não possui quantidade suficiente`);
+      }
+
+      for (const { conjugacoesID, quantity } of conjugacoes) {
+        const conjugacao = await Conjugacoes.findUnique({ where: { id_conjugacoes: conjugacoesID } });
+        if (!conjugacao) throw new Error("Conjugação não encontrada");
+        if (quantity > conjugacao.quantidade_disponivel) throw new Error(`Conjugação ${conjugacoesID} não possui quantidade suficiente`);
+      }
 
       const item = await this.findOrCreateItem(partNumber, pedidoVenda, reservedBy);
 
@@ -215,26 +228,17 @@ class PCPController {
         await this.updateChapa(chapaID, quantity);
         await this.upsertChapaItem(chapaID, item.id_item, quantity);
 
-        const hoje = new Date();
-        const dataFormatada = [
-          hoje.getDate().toString().padStart(2, "0"), // dia
-          (hoje.getMonth() + 1).toString().padStart(2, "0"), // mês (getMonth() retorna de 0 a 11)
-          hoje.getFullYear(), // ano
-        ].join("/");
-
         const chapa = await prisma.chapas.findUnique({
-          where: {
-            id_chapa: chapaID, // Supondo que 'id' é a chave primária para identificar a chapa
-          },
+          where: { id_chapa: chapaID },
         });
 
-        await prisma.historico.createMany({
+        await prisma.historico.create({
           data: {
             chapa: `${chapa.largura} X ${chapa.comprimento} - ${chapa.vincos} - ${chapa.qualidade}/${chapa.onda}`,
             part_number: partNumber,
             quantidade: quantity,
             modificacao: "reservado",
-            modificado_por: reservedBy, // usuario login
+            modificado_por: reservedBy,
             data_modificacao: dataFormatada,
             pedido_venda: pedidoVenda,
           },
@@ -245,26 +249,15 @@ class PCPController {
         const conjugacao = await this.updateConjugacao(conjugacoesID, quantity);
         await this.upsertChapaItem(conjugacao.chapaId, item.id_item, quantity, conjugacoesID);
 
-        const hoje = new Date();
-        const dataFormatada = [
-          hoje.getDate().toString().padStart(2, "0"), // dia
-          (hoje.getMonth() + 1).toString().padStart(2, "0"), // mês (getMonth() retorna de 0 a 11)
-          hoje.getFullYear(), // ano
-        ].join("/");
-
         const conjugacaoID = await prisma.conjugacoes.findUnique({
-          where: {
-            id_conjugacoes: conjugacoesID, // Supondo que 'id' é a chave primária para identificar a chapa
-          },
+          where: { id_conjugacoes: conjugacoesID },
         });
 
         const chapa = await prisma.chapas.findUnique({
-          where: {
-            id_chapa: conjugacaoID.chapaId, // Supondo que 'id' é a chave primária para identificar a chapa
-          },
+          where: { id_chapa: conjugacaoID.chapaId },
         });
 
-        await prisma.historico.createMany({
+        await prisma.historico.create({
           data: {
             chapa: `${chapa.largura} X ${chapa.comprimento} - ${chapa.vincos} - ${chapa.qualidade}/${chapa.onda}`,
             part_number: partNumber,
@@ -280,8 +273,10 @@ class PCPController {
 
       return item;
     } catch (error) {
-      console.error(error);
-      return { error: error.message };
+      console.error("Erro ao criar item com chapa:", error);
+      throw new Error(error.message);
+    } finally {
+      await prisma.$disconnect();
     }
   }
 
@@ -327,10 +322,6 @@ class PCPController {
         quantidade_estoque: { increment: chapaItem.quantidade },
         quantidade_disponivel: { increment: chapaItem.quantidade },
       };
-
-      if (chapa.status === "USADO") {
-        chapaUpdateData.status = "RECUPERADO";
-      }
 
       operations.push(
         prisma.chapas.update({
@@ -408,10 +399,6 @@ class PCPController {
       quantidade_estoque: { increment: chapaItem.quantidade },
       quantidade_disponivel: { increment: chapaItem.quantidade },
     };
-
-    if (chapa.status === "USADO") {
-      chapaUpdateData.status = "RECUPERADO";
-    }
 
     operations.push(
       Chapas.update({

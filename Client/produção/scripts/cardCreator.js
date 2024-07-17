@@ -199,7 +199,7 @@ export function createChapasList(chapas, item, disponivel) {
     chapaDetailsDiv.appendChild(clienteDiv);
 
     const quantidadeDiv = document.createElement("div");
-    quantidadeDiv.textContent = chapa.quantidade;
+    quantidadeDiv.textContent = item.quantidade;
     chapaDetailsDiv.appendChild(quantidadeDiv);
 
     const colaboradorDiv = document.createElement("div");

@@ -220,7 +220,7 @@ class ProducaoController {
     });
 
     if (remainingOrders.length === 0) {
-      // Buscar todas as chapas associadas ao item cujo status é USADO
+      // Buscar todas as chapas associadas ao item cuja quantidade disponível é 0
       const chapasUsadas = await Chapas.findMany({
         where: {
           items: {
@@ -228,13 +228,13 @@ class ProducaoController {
               itemId: itemId,
             },
           },
-          status: "USADO",
+          quantidade_disponivel: 0,
         },
       });
 
-      // Excluir todas as chapas cujo status é USADO
+      // Excluir todas as chapas cuja a quantidade disponível é 0
       for (const chapa of chapasUsadas) {
-        // Verificar quantos itens ainda estão usando essa chapa
+        // Verificar quantos itens estão usando a chapa
         const countItensUsandoChapa = await prisma.chapa_Item.count({
           where: {
             chapaId: chapa.id_chapa,
