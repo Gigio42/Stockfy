@@ -21,11 +21,15 @@ async function admRoute(fastify, options) {
   fastify.get("/items/chapas", async (request, reply) => {
     try {
       const chapas = await admController.getChapasInItems();
+      console.log("Dados retornados pelo servidor:", chapas); // Adiciona um log dos dados retornados
       reply.send(chapas);
     } catch (err) {
+      console.error("Erro ao buscar chapas:", err);
       reply.code(500).send({ message: "Internal Server Error" });
     }
   });
+  
+  
 
   fastify.post("/maquina/:maquinaId/item/:itemId/produzindo",
     async (request, reply) => {
@@ -127,16 +131,25 @@ async function admRoute(fastify, options) {
       // Log de todas as máquinas recebidas
       console.log("Recebido para criação de Itens_Maquina:", items);
   
-      for (const { itemId, maquinaId, ordem } of items) {
-        await admController.createItemMaquina(itemId, maquinaId, ordem);
+      // Aqui você pode adicionar um console.log para os maquinaIds
+      const allMaquinaIds = items.map(item => item.maquinaId);
+      console.log("Todos os maquinaIds recebidos:", allMaquinaIds);
+  
+      const createdItems = [];
+  
+      for (const { itemId, maquinaId, ordem, prazo, executor, finalizado, corte } of items) {
+        const createdItem = await admController.createItemMaquina(itemId, maquinaId, ordem, prazo, executor, finalizado, corte);
+        createdItems.push(createdItem);
       }
   
-      reply.send({ message: "Itens_Maquina criados com sucesso." });
+      reply.send({ message: "Itens_Maquina criados com sucesso.", createdItems });
     } catch (err) {
       console.error("Erro ao criar Itens_Maquina:", err);
       reply.code(500).send({ message: "Erro ao criar Itens_Maquina." });
     }
   });
+  
+  
   
   
 

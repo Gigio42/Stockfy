@@ -228,6 +228,32 @@
   .itemContainer {
     padding-bottom: 0 !important;
   }
+
+
+
+/* Estilo para a div do rendimento */
+.cardInfoMedida,
+.cardInfoQuantidade {
+  color: #41ff6a; /* Cor do texto */
+background: #41ff6a47;
+border-radius: 1rem;
+padding: 0.5rem;
+width: fit-content;
+margin-bottom: 1rem;
+
+}
+
+.cardInfoConjugação ,
+.cardInfoRendimento {
+  color: #6a6a6a; /* Cor do texto */
+background: #46464647;
+border-radius: 1rem;
+padding: 0.5rem;
+width: fit-content;
+margin-bottom: 1rem;
+
+}
+
   
   /* ======================================
          Scrollbar Styles
@@ -571,7 +597,7 @@
   #reservados {
     width: 100%;
     overflow-y: auto;
-    max-height: 65vh;
+    max-height: 80vh;
     border-radius: 1rem;
   }
   

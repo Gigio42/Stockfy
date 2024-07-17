@@ -45,7 +45,6 @@ function handleDarkModeToggle() {
 //============================================
 // Função para buscar e exibir as máquinas
 //============================================
-
 async function fetchMaquinas() {
   try {
     const response = await axios.get(`${BASE_URL}/adm/maquina`);
@@ -63,10 +62,13 @@ async function fetchMaquinas() {
   }
 }
 
+//============================================
+// Função para criar o card de adicionar máquina
+//============================================
 function createAddMaquinaCard() {
   const allMaquina = document.getElementById("allMaquina");
   const addCard = document.createElement("div");
-  (addCard.className = "cardMaquina"), "addCard";
+  addCard.className = "cardMaquina addCard";
 
   const addText = document.createElement("span");
   addText.textContent = "Add Máquina";
@@ -87,6 +89,9 @@ function createAddMaquinaCard() {
   allMaquina.appendChild(addCard);
 }
 
+//============================================
+// Função para deletar uma máquina pelo ID
+//============================================
 async function deleteMaquina(maquinaId) {
   console.log(`Tentando deletar a máquina com ID: ${maquinaId}`);
   try {
@@ -121,6 +126,9 @@ async function deleteMaquina(maquinaId) {
   }
 }
 
+//============================================
+// Função para criar cards de máquina dentro do modal sem ícones
+//============================================
 function createMaquinaCardsInModalWithoutIcons(maquinas) {
   const modalContent = document.getElementById("modalContentMaquinas");
   modalContent.innerHTML = ""; // Limpa o conteúdo existente
@@ -185,6 +193,9 @@ function createMaquinaCardsInModalWithoutIcons(maquinas) {
   });
 }
 
+//============================================
+// Função assíncrona para abrir o modal de adicionar máquina
+//============================================
 async function openAddMaquinaModal() {
   const modal = document.getElementById("addMaquinaModal");
   modal.style.display = "block";
@@ -198,6 +209,9 @@ async function openAddMaquinaModal() {
   }
 }
 
+//============================================
+// Função para fechar o modal de adicionar máquina
+//============================================
 function closeAddMaquinaModal() {
   const modal = document.getElementById("addMaquinaModal");
   modal.style.display = "none";
@@ -215,6 +229,7 @@ window.addEventListener("click", (event) => {
     modal.style.display = "none";
   }
 });
+
 
 //============================================
 // Função para criar um card de máquina
@@ -326,10 +341,116 @@ async function fetchitens(maquinaId) {
     itens.forEach((item) => {
       createItemCard(item, maquinaId);
     });
-  } catch {
+  } catch ( error ){
     console.error("Erro ao recuperar os itens!", error);
   }
 }
+
+//=================================================
+// Função para criar o card de item a ser programado
+//=================================================
+function createItemCard(item, maquinaId) {
+  const reservados = document.getElementById("reservados");
+  const card = document.createElement("div");
+  card.className = "cardItem";
+
+  const titleContainer = document.createElement("div");
+  titleContainer.className = "title-container";
+
+  const partNumberInfo = document.createElement("h3");
+  partNumberInfo.textContent = `${item.part_number}`;
+  titleContainer.appendChild(partNumberInfo);
+
+  const imgContainer = document.createElement("div");
+  imgContainer.className = "img-container";
+
+  const arrowImage = document.createElement("img");
+  arrowImage.src = "media/seta-para-a-direita.png";
+  arrowImage.alt = "Seta para a direita";
+  arrowImage.classList.add("arrow-icon");
+  imgContainer.appendChild(arrowImage);
+
+  titleContainer.appendChild(imgContainer);
+  card.appendChild(titleContainer);
+
+  const itemInfoContainer = document.createElement("div");
+  itemInfoContainer.className = "item-info-container";
+
+
+  card.appendChild(itemInfoContainer);
+
+  // Adicionar informações das chapas e conjugações, se existirem
+  if (item.chapas && Array.isArray(item.chapas)) {
+    item.chapas.forEach((chapa) => {
+      const subcard = document.createElement("div");
+      subcard.className = "subcard";
+
+      const chapaDiv = document.createElement("div");
+      const chapaInfo = document.createElement("p");
+      chapaInfo.textContent = `Chapa: ${chapa.chapa.medida}`;
+      chapaInfo.className = "cardInfoMedida"
+      chapaDiv.appendChild(chapaInfo);
+      subcard.appendChild(chapaDiv);
+
+      const quantidadeDiv = document.createElement("div");
+      const quantidadeInfo = document.createElement("p");
+      quantidadeInfo.textContent = `Quantidade: ${chapa.quantidade}`;
+      quantidadeInfo.className = "cardInfoQuantidade"
+      quantidadeDiv.appendChild(quantidadeInfo);
+      subcard.appendChild(quantidadeDiv);
+
+      // Verifica se há conjugação e a adiciona, se existir
+      if (chapa.conjugacao) {
+        const conjugacaoDiv = document.createElement("div");
+        const conjugacaoInfo = document.createElement("p");
+        conjugacaoInfo.textContent = `Conjugação: ${chapa.conjugacao.medida}`;
+        conjugacaoInfo.className = "cardInfoConjugação"
+        conjugacaoDiv.appendChild(conjugacaoInfo);
+        subcard.appendChild(conjugacaoDiv);
+
+        const rendimentoDiv = document.createElement("div");
+        const rendimentoInfo = document.createElement("p");
+        rendimentoInfo.textContent = `Rendimento: ${chapa.conjugacao.rendimento}`;
+        rendimentoInfo.className = "cardInfoRendimento"
+        rendimentoDiv.appendChild(rendimentoInfo);
+        subcard.appendChild(rendimentoDiv);
+      }
+
+      card.appendChild(subcard);
+    });
+  }
+
+  // Adicionar botão para adicionar o item
+  const adicionarItemButton = document.createElement("button");
+  adicionarItemButton.textContent = "Adicionar";
+  adicionarItemButton.className = "addItem";
+  card.appendChild(adicionarItemButton);
+  adicionarItemButton.dataset.id = item.id_item;
+
+  // Adicionar evento para expandir o card ao clicar no título
+  titleContainer.addEventListener("click", () => {
+    card.classList.toggle("expanded");
+  });
+
+  // Adicionar evento para adicionar o item ao staged
+  adicionarItemButton.removeEventListener("click", adicionarItemAoStaged); // Remover o evento anterior
+  adicionarItemButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    adicionarItemAoStaged(item, maquinaId);
+  });
+
+  // Adicionar o card ao elemento reservados
+  reservados.appendChild(card);
+
+  console.log("Item criado:", item); // Log do item criado
+}
+
+
+//=================================================
+// cria um formulario para criar um novo itemMaquina
+//=================================================
+
 
 function adicionarItemAoStaged(item, maquinaId) {
   const stagedItems = document.getElementById("stagedItems");
@@ -421,6 +542,9 @@ async function confirmarItensStaged(event) {
   const stagedItems = document.getElementById("stagedItems").children;
   const maquinaId = currentMaquinaId;
 
+  // Obtendo o nome de usuário do localStorage
+  const nomeUsuario = localStorage.getItem("nome") || "UserName";
+
   // Buscando itens existentes na máquina
   let existingItemMaquinaIds;
   try {
@@ -485,6 +609,7 @@ async function confirmarItensStaged(event) {
           quantidade: quantidade,
           colaborador: colaborador,
           prioridade: prioridade, // Enviando a prioridade
+          nomeUsuario: nomeUsuario // Enviando o nome de usuário como executor
         }
       );
 
@@ -503,65 +628,6 @@ document
   .getElementById("confirmButton")
   .addEventListener("click", confirmarItensStaged);
 
-//=================================================
-// Função para criar o card de item
-//=================================================
-function createItemCard(item, maquinaId) {
-  const reservados = document.getElementById("reservados");
-  const card = document.createElement("div");
-  card.className = "cardItem";
-
-  const titleContainer = document.createElement("div");
-  titleContainer.className = "title-container";
-
-  const partNumberInfo = document.createElement("h3");
-  partNumberInfo.textContent = `${item.part_number}`;
-  titleContainer.appendChild(partNumberInfo);
-
-  const imgContainer = document.createElement("div");
-  imgContainer.className = "img-container";
-
-  const arrowImage = document.createElement("img");
-  arrowImage.src = "media/seta-para-a-direita.png";
-  arrowImage.alt = "Seta para a direita";
-  arrowImage.classList.add("arrow-icon");
-  imgContainer.appendChild(arrowImage);
-
-  titleContainer.appendChild(imgContainer);
-  card.appendChild(titleContainer);
-
-  item.chapas.forEach((chapa) => {
-    const subcard = document.createElement("div");
-    subcard.className = "subcard";
-
-    const chapaInfo = document.createElement("p");
-    chapaInfo.innerHTML = `Chapa: ${chapa.medida}<br>Quant.: ${chapa.quantidade_comprada}`;
-    subcard.appendChild(chapaInfo);
-
-    card.appendChild(subcard);
-  });
-
-  const adicionarItemButton = document.createElement("button");
-  adicionarItemButton.textContent = "Adicionar";
-  adicionarItemButton.className = "addItem";
-  card.appendChild(adicionarItemButton);
-  adicionarItemButton.dataset.id = item.id_item;
-
-  titleContainer.addEventListener("click", () => {
-    card.classList.toggle("expanded");
-  });
-
-  adicionarItemButton.removeEventListener("click", adicionarItemAoStaged); // Remova o evento anterior
-  adicionarItemButton.addEventListener("click", (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    adicionarItemAoStaged(item, maquinaId);
-  });
-
-  reservados.appendChild(card);
-
-  console.log("Item criado:", item); // Log do item criado
-}
 
 //============================================================
 // Botão para abrir o modal com os itens e seus status
@@ -622,6 +688,9 @@ async function fetchAllItems(maquinaId) {
   }
 }
 
+//===============================================================================
+// Função para criar um card para cada item maquina com o seu status 
+//===============================================================================
 
 function createProduzindoItemCard(item) {
   const containerId = `container-${item.id_item}-${item.part_number}-${item.status}`;
@@ -801,6 +870,8 @@ if (voltarButton1 && voltarButton2 && modalContent2 && modalContent3) {
   );
 }
 
+
+
 function logItemPositions(listContainer) {
   const items = listContainer.querySelectorAll(".item-container");
   items.forEach((item, index) => {
@@ -833,6 +904,11 @@ $(document).ready(function () {
     $("#nextProcessModal").css("display", "none");
   });
 });
+
+//============================================================================
+// Função para criar um card com a maquina selecionada e seu id
+
+//============================================================================
 
 async function createEmptyCard(cardWrapper) {
   const emptyCard = document.createElement("div");
@@ -875,7 +951,7 @@ async function createEmptyCard(cardWrapper) {
         machineButton.addEventListener("click", (event) => {
           event.stopPropagation(); // Previne a propagação do evento
 
-          emptyCard.textContent = `${machine.nome} (ID: ${machine.id_maquina})`; // Mostra o nome da máquina e seu ID
+          emptyCard.textContent = `${machine.nome}`; // Mostra o nome da máquina e seu ID
           emptyCard.classList.add("add-processo");
           emptyCard.dataset.maquinaId = machine.id_maquina;
 
@@ -1036,10 +1112,19 @@ document.getElementById("confirmarProcesso").addEventListener("click", async () 
   const allMaquinaIds = [];
 
   for (const card of cards) {
-    const emptyCard = card.closest(".card-wrapper").querySelector(".empty-card");
-    const maquinaId = emptyCard?.dataset.maquinaId;
+    const emptyCards = card.closest(".card-wrapper").querySelectorAll(".empty-card");
 
-    if (maquinaId) {
+    if (emptyCards.length === 0) {
+      console.warn("Nenhum empty-card encontrado para o card:", card);
+      continue;
+    }
+
+    const maquinaIds = Array.from(emptyCards).map(emptyCard => parseInt(emptyCard.dataset.maquinaId)); // Converta para número inteiro
+    const uniqueMaquinaIds = [...new Set(maquinaIds)]; // Remove duplicatas, se houver
+
+    allMaquinaIds.push(...uniqueMaquinaIds);
+
+    for (const maquinaId of uniqueMaquinaIds) {
       const itemId = parseInt(card.dataset.itemId);
       if (isNaN(itemId)) {
         console.error(`itemId inválido para o card:`, card);
@@ -1056,41 +1141,38 @@ document.getElementById("confirmarProcesso").addEventListener("click", async () 
       }
 
       try {
-        const maquinaIds = maquinaId.split(',').map(id => parseInt(id.trim()));
-        allMaquinaIds.push(...maquinaIds);
-
-        for (const id of maquinaIds) {
-          const response = await axios.get(
-            `${BASE_URL}/adm/item_maquina/existence-check`,
-            {
-              params: {
-                itemId: itemId,
-                maquinaId: id,
-              },
-            }
-          );
-
-          if (response.data.exists) {
-            duplicates.push({
+        const response = await axios.get(
+          `${BASE_URL}/adm/item_maquina/existence-check`,
+          {
+            params: {
               itemId: itemId,
-              maquinaId: id,
-            });
-          } else {
-            const prazo = card.dataset.prazo;
-            const executor = card.dataset.executor;
-            const finalizado = card.dataset.finalizado === "true";
-            const corte = card.dataset.corte;
-            
-            items.push({
-              itemId: itemId,
-              maquinaId: id,
-              ordem: ordem,
-              prazo: prazo,
-              executor: executor,
-              finalizado: finalizado,
-              corte: corte,
-            });
+              maquinaId: maquinaId,
+            },
           }
+        );
+
+        if (response.data.exists) {
+          duplicates.push({
+            itemId: itemId,
+            maquinaId: maquinaId,
+          });
+        } else {
+          const prazo = card.dataset.prazo;
+          const executor = card.dataset.executor;
+          const finalizado = card.dataset.finalizado === "true";
+          const corte = card.dataset.corte;
+
+          const item = {
+            itemId: itemId,
+            maquinaId: maquinaId,
+            ordem: ordem,
+            prazo: prazo,
+            executor: executor,
+            finalizado: finalizado,
+            corte: corte,
+          };
+
+          items.push(item);
         }
       } catch (error) {
         console.error("Erro ao verificar a existência do processo:", error);
@@ -1111,11 +1193,6 @@ document.getElementById("confirmarProcesso").addEventListener("click", async () 
 
   if (items.length > 0) {
     try {
-      // Enviar os maquinaIds para o backend
-      await axios.post(`${BASE_URL}/adm/item_maquina/enviar-maquinaids`, {
-        maquinaIds: allMaquinaIds,
-      });
-
       // Enviar os dados dos itens selecionados para o backend
       await axios.post(`${BASE_URL}/adm/item_maquina/selecionar-maquinas`, items);
 
@@ -1128,10 +1205,6 @@ document.getElementById("confirmarProcesso").addEventListener("click", async () 
     console.warn("Nenhum item selecionado.");
   }
 });
-
-
-
-
 
 
 
