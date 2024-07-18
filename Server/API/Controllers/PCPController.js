@@ -237,7 +237,7 @@ class PCPController {
             chapa: `${chapa.largura} X ${chapa.comprimento} - ${chapa.vincos} - ${chapa.qualidade}/${chapa.onda}`,
             part_number: partNumber,
             quantidade: quantity,
-            modificacao: "reservado",
+            modificacao: "RESERVADO",
             modificado_por: reservedBy,
             data_modificacao: dataFormatada,
             pedido_venda: pedidoVenda,
