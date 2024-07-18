@@ -228,6 +228,32 @@
   .itemContainer {
     padding-bottom: 0 !important;
   }
+
+
+
+/* Estilo para a div do rendimento */
+.cardInfoMedida,
+.cardInfoQuantidade {
+  color: #41ff6a; /* Cor do texto */
+background: #41ff6a47;
+border-radius: 1rem;
+padding: 0.5rem;
+width: fit-content;
+margin-bottom: 1rem;
+
+}
+
+.cardInfoConjugação ,
+.cardInfoRendimento {
+  color: #6a6a6a; /* Cor do texto */
+background: #46464647;
+border-radius: 1rem;
+padding: 0.5rem;
+width: fit-content;
+margin-bottom: 1rem;
+
+}
+
   
   /* ======================================
          Scrollbar Styles
@@ -571,7 +597,7 @@
   #reservados {
     width: 100%;
     overflow-y: auto;
-    max-height: 65vh;
+    max-height: 80vh;
     border-radius: 1rem;
   }
   
@@ -1063,7 +1089,8 @@
     flex-direction: column;
     width: 100%;
     overflow-y: auto;
-    max-height: 80%;
+    max-height: 800%;
+
   }
   
   #finalizadoItemsList {
@@ -1078,7 +1105,7 @@
   .itensContainerstatus {
     display: flex;
     flex-direction: column;
-  
+    height: 85%;
     border-radius: 1rem;
     border-radius: 2rem;
   }
@@ -1286,8 +1313,10 @@
   .dark-mode div.card-body {
     background: #1d1d1d;
   }
+
   
   .maquina-div {
+    position: relative;
     display: flex;
     padding: 0.5rem 1rem;
     background: #64646428;
@@ -1295,6 +1324,28 @@
   
     border-radius: 1rem;
   }
+
+  /* Exemplo de estilos CSS */
+.custom-title-class {
+  color: #2f2f2f; /* Cor vermelha para o título */
+}
+
+
+
+  .overlay-div {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; /* Ocupa toda a largura da maquina-div */
+    height: 100%; /* Ocupa toda a altura da maquina-div */
+    background-color: rgba(30, 30, 30, 0.295); /* Cor e transparência do overlay */
+    backdrop-filter: blur(2px); /* Desfoque */
+    z-index: 1000; /* Z-index alto para sobrepor outros elementos */
+    border-radius:1rem ;
+  }
+  
   
   #machineCardsContainer {
     display: flex;
