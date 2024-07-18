@@ -75,96 +75,98 @@ class AdmController {
     colaborador,
     prioridade,
     nomeUsuario // Parâmetro adicional para o nome de usuário
-  ) {
+) {
     try {
-      // Formatando o prazo para dd/mm/aaaa
-      const prazoFormatado = new Date(prazo).toLocaleDateString("pt-BR", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-      });
-  
-      console.log(`Prioridade recebida no servidor: ${prioridade}`);
-  
-      const status = prioridade === 1 ? "PRODUZINDO" : "PROGRAMADO";
-  
-      await prisma.item.update({
-        where: { id_item: itemId },
-        data: { status: status },
-      });
-  
-      await prisma.item_Maquina.create({
-        data: {
-          maquinaId: maquinaId,
-          itemId: itemId,
-          prazo: prazoFormatado,
-          ordem: parseInt(ordem, 10),
-          medida: medida,
-          op: parseInt(op, 10),
-          sistema: sistema,
-          cliente: cliente,
-          quantidade: parseInt(quantidade, 10),
-          colaborador: colaborador,
-          prioridade: prioridade,
-          executor: nomeUsuario, // Definir o executor como o nome do usuário passado como parâmetro
-        },
-      });
-  
-      const item = await prisma.item.findUnique({
-        where: { id_item: itemId },
-        select: {
-          part_number: true,
-          pedido_venda: true,
-        },
-      });
-  
-      if (!item || !item.part_number || !item.pedido_venda) {
-        throw new Error("Item não encontrado ou dados incompletos.");
-      }
-  
-      const chapaItems = await prisma.chapa_Item.findMany({
-        where: { itemId: itemId },
-        include: {
-          chapa: true // Inclui dados de chapa diretamente no resultado
-        }
-      });
-  
-      const maquina = await prisma.maquina.findUnique({
-        where: { id_maquina: maquinaId },
-        select: { nome: true }
-      });
-  
-      for (const { chapa } of chapaItems) {
-        await prisma.historico.create({
-          data: {
-            chapa: `${chapa.largura} X ${chapa.comprimento} - ${chapa.vincos} - ${chapa.qualidade}/${chapa.onda}`,
-            part_number: item.part_number,
-            quantidade: parseInt(quantidade, 10),
-            modificacao: "PROGRAMADO",
-            modificado_por: colaborador,
-            data_modificacao: new Date().toLocaleDateString("pt-BR"),
-            data_prevista: prazoFormatado,
-            pedido_venda: item.pedido_venda.toString(),
-            ordem: parseInt(ordem, 10),
-            maquina: maquina.nome,
-            executor: nomeUsuario, // Definir o executor como o nome do usuário passado como parâmetro
-          },
+        // Formatando o prazo para dd/mm/aaaa
+        const prazoFormatado = new Date(prazo).toLocaleDateString("pt-BR", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
         });
-      }
-  
-      console.log(
-        `Item ${itemId} atualizado para status ${status} com prazo ${prazoFormatado}, ordem ${ordem}, medida ${medida}, op ${op}, sistema ${sistema}, cliente ${cliente}, quantidade ${quantidade}, colaborador ${colaborador}, prioridade ${prioridade}, executor ${nomeUsuario},`
-      );
+
+        console.log(`Prioridade recebida no servidor: ${prioridade}`);
+        console.log("Nome do usuário recebido no controlador:", nomeUsuario);
+
+        const status = prioridade === 1 ? "PRODUZINDO" : "PROGRAMADO";
+
+        await prisma.item.update({
+            where: { id_item: itemId },
+            data: { status: status },
+        });
+
+        await prisma.item_Maquina.create({
+            data: {
+                maquinaId: maquinaId,
+                itemId: itemId,
+                prazo: prazoFormatado,
+                ordem: parseInt(ordem, 10),
+                medida: medida,
+                op: parseInt(op, 10),
+                sistema: sistema,
+                cliente: cliente,
+                quantidade: parseInt(quantidade, 10),
+                colaborador: colaborador,
+                prioridade: prioridade,
+                executor: nomeUsuario, // Definir o executor como o nome do usuário passado como parâmetro
+            },
+        });
+
+        const item = await prisma.item.findUnique({
+            where: { id_item: itemId },
+            select: {
+                part_number: true,
+                pedido_venda: true,
+            },
+        });
+
+        if (!item || !item.part_number || !item.pedido_venda) {
+            throw new Error("Item não encontrado ou dados incompletos.");
+        }
+
+        const chapaItems = await prisma.chapa_Item.findMany({
+            where: { itemId: itemId },
+            include: {
+                chapa: true // Inclui dados de chapa diretamente no resultado
+            }
+        });
+
+        const maquina = await prisma.maquina.findUnique({
+            where: { id_maquina: maquinaId },
+            select: { nome: true }
+        });
+
+        for (const { chapa } of chapaItems) {
+            await prisma.historico.create({
+                data: {
+                    chapa: `${chapa.largura} X ${chapa.comprimento} - ${chapa.vincos} - ${chapa.qualidade}/${chapa.onda}`,
+                    part_number: item.part_number,
+                    quantidade: parseInt(quantidade, 10),
+                    modificacao: "PROGRAMADO",
+                    modificado_por: colaborador,
+                    data_modificacao: new Date().toLocaleDateString("pt-BR"),
+                    data_prevista: prazoFormatado,
+                    pedido_venda: item.pedido_venda.toString(),
+                    ordem: parseInt(ordem, 10),
+                    maquina: maquina.nome,
+                },
+            });
+        }
+
+        console.log(
+            `Item ${itemId} atualizado para status ${status} com prazo ${prazoFormatado}, ordem ${ordem}, medida ${medida}, op ${op}, sistema ${sistema}, cliente ${cliente}, quantidade ${quantidade}, colaborador ${colaborador}, prioridade ${prioridade}, executor ${nomeUsuario},`
+        );
     } catch (error) {
-      console.error(
-        "Erro ao atualizar o status do item para PRODUZINDO:",
-        error
-      );
-      throw new Error(
-        "Erro ao atualizar o status do item para PRODUZINDO: " + error.message
-      );
+        console.error(
+            "Erro ao atualizar o status do item para PRODUZINDO:",
+            error
+        );
+        throw new Error(
+            "Erro ao atualizar o status do item para PRODUZINDO: " + error.message
+        );
     }
-  }
+}
+
+  
   
   
   
