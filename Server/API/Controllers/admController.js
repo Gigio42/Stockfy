@@ -286,14 +286,14 @@ class AdmController {
           maquina: true,
           Item: true,
         },
-
       });
+      console.log(itemMaquinas); // Verifique a estrutura dos dados aqui
       return itemMaquinas;
     } catch (error) {
       throw new Error("Erro ao buscar todos os Item_Maquina: " + error.message);
     }
   }
-
+  
 
   async checkItemMaquinaExists(itemId, maquinaId) {
     try {

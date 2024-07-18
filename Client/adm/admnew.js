@@ -535,7 +535,7 @@ document
   .addEventListener("click", confirmarItensStaged);
 
 //=================================================
-// Função para criar o card de item
+// Função para criar o card de item a ser programado
 //=================================================
 function createItemCard(item, maquinaId) {
   const reservados = document.getElementById("reservados");
@@ -561,38 +561,79 @@ function createItemCard(item, maquinaId) {
   titleContainer.appendChild(imgContainer);
   card.appendChild(titleContainer);
 
-  item.chapas.forEach((chapa) => {
-    const subcard = document.createElement("div");
-    subcard.className = "subcard";
+  const itemInfoContainer = document.createElement("div");
+  itemInfoContainer.className = "item-info-container";
 
-    const chapaInfo = document.createElement("p");
-    chapaInfo.innerHTML = `Chapa: ${chapa.medida}<br>Quant.: ${chapa.quantidade_comprada}`;
-    subcard.appendChild(chapaInfo);
 
-    card.appendChild(subcard);
-  });
+  card.appendChild(itemInfoContainer);
 
+  // Adicionar informações das chapas e conjugações, se existirem
+  if (item.chapas && Array.isArray(item.chapas)) {
+    item.chapas.forEach((chapa) => {
+      const subcard = document.createElement("div");
+      subcard.className = "subcard";
+
+      const chapaDiv = document.createElement("div");
+      const chapaInfo = document.createElement("p");
+      chapaInfo.textContent = `Chapa: ${chapa.chapa.medida}`;
+      chapaInfo.className = "cardInfoMedida"
+      chapaDiv.appendChild(chapaInfo);
+      subcard.appendChild(chapaDiv);
+
+      const quantidadeDiv = document.createElement("div");
+      const quantidadeInfo = document.createElement("p");
+      quantidadeInfo.textContent = `Quantidade: ${chapa.quantidade}`;
+      quantidadeInfo.className = "cardInfoQuantidade"
+      quantidadeDiv.appendChild(quantidadeInfo);
+      subcard.appendChild(quantidadeDiv);
+
+      // Verifica se há conjugação e a adiciona, se existir
+      if (chapa.conjugacao) {
+        const conjugacaoDiv = document.createElement("div");
+        const conjugacaoInfo = document.createElement("p");
+        conjugacaoInfo.textContent = `Conjugação: ${chapa.conjugacao.medida}`;
+        conjugacaoInfo.className = "cardInfoConjugação"
+        conjugacaoDiv.appendChild(conjugacaoInfo);
+        subcard.appendChild(conjugacaoDiv);
+
+        const rendimentoDiv = document.createElement("div");
+        const rendimentoInfo = document.createElement("p");
+        rendimentoInfo.textContent = `Rendimento: ${chapa.conjugacao.rendimento}`;
+        rendimentoInfo.className = "cardInfoRendimento"
+        rendimentoDiv.appendChild(rendimentoInfo);
+        subcard.appendChild(rendimentoDiv);
+      }
+
+      card.appendChild(subcard);
+    });
+  }
+
+  // Adicionar botão para adicionar o item
   const adicionarItemButton = document.createElement("button");
   adicionarItemButton.textContent = "Adicionar";
   adicionarItemButton.className = "addItem";
   card.appendChild(adicionarItemButton);
   adicionarItemButton.dataset.id = item.id_item;
 
+  // Adicionar evento para expandir o card ao clicar no título
   titleContainer.addEventListener("click", () => {
     card.classList.toggle("expanded");
   });
 
-  adicionarItemButton.removeEventListener("click", adicionarItemAoStaged); // Remova o evento anterior
+  // Adicionar evento para adicionar o item ao staged
+  adicionarItemButton.removeEventListener("click", adicionarItemAoStaged); // Remover o evento anterior
   adicionarItemButton.addEventListener("click", (event) => {
     event.preventDefault();
     event.stopPropagation();
     adicionarItemAoStaged(item, maquinaId);
   });
 
+  // Adicionar o card ao elemento reservados
   reservados.appendChild(card);
 
   console.log("Item criado:", item); // Log do item criado
 }
+
 
 //============================================================
 // Botão para abrir o modal com os itens e seus status
@@ -1032,11 +1073,11 @@ function toggleOverlayDiv(maquinaDiv) {
 
 
 
-// Função para exibir números de peça e máquinas
 async function showPartNumbersAndMachines() {
   try {
     // Obter dados dos itens de máquina
     const response = await axios.get(`${BASE_URL}/adm/item_maquina`);
+    console.log(response.data); // Verifique a estrutura dos dados aqui
 
     // Limpar container de cards
     const cardContainer = document.getElementById("partNumberCardsContainer");
@@ -1061,6 +1102,8 @@ async function showPartNumbersAndMachines() {
 
       // Adicionar máquina ao número de peça correspondente
       partNumberMap[partNumber].maquinas.push({
+        idItemMaquina: itemMaquina.id, // Adiciona id_item_maquina
+        idMaquina: itemMaquina.maquina.id, // Adiciona id_maquina
         nome: itemMaquina.maquina.nome,
         finalizado: itemMaquina.finalizado,
       });
@@ -1086,7 +1129,13 @@ async function showPartNumbersAndMachines() {
                   <img class="toggle-arrow" src="media/seta.png" style="cursor: pointer; transform: rotate(0deg);">
               </div>
               <div class="card-body d-none">
-                  ${data.maquinas.map((maquina) => `<div class="maquina-div ${maquina.finalizado ? "finalizado" : ""}">${maquina.nome}</div>`).join("")}
+                  ${data.maquinas.map((maquina) => `
+                      <div 
+                          class="maquina-div ${maquina.finalizado ? "finalizado" : ""}"
+                          data-id-item-maquina="${maquina.idItemMaquina}" 
+                          data-id-maquina="${maquina.idMaquina}">
+                          ${maquina.nome}
+                      </div>`).join("")}
               </div>
           `;
 
@@ -1126,6 +1175,16 @@ async function showPartNumbersAndMachines() {
   }
 }
 
+// Evento de carregamento do DOM para iniciar a função showPartNumbersAndMachines
+document.addEventListener("DOMContentLoaded", function () {
+  const optionsButton = document.getElementById("optionsButton");
+  if (!optionsButton) {
+    console.error("Botão optionsButton não encontrado.");
+    return;
+  }
+  optionsButton.addEventListener("click", showPartNumbersAndMachines);
+});
+
 
 // Evento de carregamento do DOM para iniciar a função showPartNumbersAndMachines
 document.addEventListener("DOMContentLoaded", function () {
@@ -1136,6 +1195,28 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   optionsButton.addEventListener("click", showPartNumbersAndMachines);
 });
+
+
+// Evento de carregamento do DOM para iniciar a função showPartNumbersAndMachines
+document.addEventListener("DOMContentLoaded", function () {
+  const optionsButton = document.getElementById("optionsButton");
+  if (!optionsButton) {
+    console.error("Botão optionsButton não encontrado.");
+    return;
+  }
+  optionsButton.addEventListener("click", showPartNumbersAndMachines);
+});
+
+// Evento de carregamento do DOM para iniciar a função showPartNumbersAndMachines
+document.addEventListener("DOMContentLoaded", function () {
+  const optionsButton = document.getElementById("optionsButton");
+  if (!optionsButton) {
+    console.error("Botão optionsButton não encontrado.");
+    return;
+  }
+  optionsButton.addEventListener("click", showPartNumbersAndMachines);
+});
+
 
 document.getElementById("confirmarProcesso").addEventListener("click", async () => {
   const cards = document.querySelectorAll(".card");
