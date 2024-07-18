@@ -536,6 +536,9 @@ margin-bottom: 1rem;
   #voltarModalContent5 {
     background-color: #1c1c1c;
   }
+
+
+
   
   #voltarModalContent:hover {
     background-color: #212121;
@@ -1340,8 +1343,8 @@ margin-bottom: 1rem;
     left: 0;
     width: 100%; /* Ocupa toda a largura da maquina-div */
     height: 100%; /* Ocupa toda a altura da maquina-div */
-    background-color: rgba(30, 30, 30, 0.295); /* Cor e transparência do overlay */
-    backdrop-filter: blur(2px); /* Desfoque */
+    background-color: rgba(30, 30, 30, 0.44); /* Cor e transparência do overlay */
+    backdrop-filter: blur(3) !important; /* Desfoque */
     z-index: 1000; /* Z-index alto para sobrepor outros elementos */
     border-radius:1rem ;
   }
