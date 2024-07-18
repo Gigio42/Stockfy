@@ -961,6 +961,77 @@ function addAddButton(card, cardWrapper) {
   card.addEventListener("mouseout", () => (addButton.style.display = "none"));
 }
 
+// ==========================================================================
+// Função para exclluir um processo
+//==========================================================================
+
+// Função para criar uma div sobreposta ao maquina-div
+function toggleOverlayDiv(maquinaDiv) {
+  // Verificar se já existe uma div de sobreposição
+  const overlayDiv = maquinaDiv.querySelector(".overlay-div");
+
+  if (overlayDiv) {
+    // Se existir, remover a sobreposição
+    maquinaDiv.removeChild(overlayDiv);
+  } else {
+    // Se não existir, criar a sobreposição
+    const newOverlayDiv = document.createElement("div");
+    newOverlayDiv.className = "overlay-div";
+    
+    // Criar o ícone de exclusão
+    const deleteIcon = document.createElement("img");
+    deleteIcon.src = "media/icons8-delete-48.png";
+    deleteIcon.alt = "Delete";
+    deleteIcon.className = "delete-icon";
+    deleteIcon.addEventListener("click", (event) => {
+      event.stopPropagation(); // Impede que o evento de clique se propague para a maquina-div
+
+      // Exibir a notificação de confirmação
+      Swal.fire({
+        title: 'Tem certeza?',
+        text: "Você está prestes a excluir este processo!",
+        showCancelButton: true,
+        confirmButtonColor: '#7066e0',
+        cancelButtonColor: '#888',
+        confirmButtonText: 'Sim, exclua!',
+        cancelButtonText: 'Cancelar',
+        background: '#e9e9e9', // Cor de fundo personalizada
+        customClass: {
+          title: 'custom-title-class', // Classe CSS para o título
+          content: 'custom-content-class', // Classe CSS para o conteúdo
+          icon: 'custom-icon-class' // Classe CSS para o ícone
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Realizar ação de exclusão aqui
+          maquinaDiv.removeChild(newOverlayDiv);
+          Swal.fire(
+            'Excluído!',
+            'Seu item foi excluído com sucesso.',
+            'success'
+          );
+        }
+      });
+    });
+
+    newOverlayDiv.appendChild(deleteIcon);
+
+    // Adicionar evento para fechar a div de sobreposição ao clicar fora dela
+    maquinaDiv.addEventListener("click", (event) => {
+      if (event.target === maquinaDiv) {
+        maquinaDiv.removeChild(newOverlayDiv);
+      }
+    });
+
+    maquinaDiv.appendChild(newOverlayDiv);
+  }
+}
+
+
+
+
+
+
 // Função para exibir números de peça e máquinas
 async function showPartNumbersAndMachines() {
   try {
@@ -1035,6 +1106,14 @@ async function showPartNumbersAndMachines() {
         }
       });
 
+      // Adicionar evento para clicar em maquina-div e criar/remover a div sobreposta
+      const maquinaDivs = card.querySelectorAll(".maquina-div");
+      maquinaDivs.forEach((maquinaDiv) => {
+        maquinaDiv.addEventListener("click", () => {
+          toggleOverlayDiv(maquinaDiv);
+        });
+      });
+
       // Adicionar card ao container de cards
       cardWrapper.appendChild(card);
       addAddButton(card, cardWrapper);
@@ -1047,6 +1126,7 @@ async function showPartNumbersAndMachines() {
   }
 }
 
+
 // Evento de carregamento do DOM para iniciar a função showPartNumbersAndMachines
 document.addEventListener("DOMContentLoaded", function () {
   const optionsButton = document.getElementById("optionsButton");
@@ -1057,114 +1137,107 @@ document.addEventListener("DOMContentLoaded", function () {
   optionsButton.addEventListener("click", showPartNumbersAndMachines);
 });
 
-document
-  .getElementById("confirmarProcesso")
-  .addEventListener("click", async () => {
-    const cards = document.querySelectorAll(".card");
-    const items = [];
-    const duplicates = [];
-    const allMaquinaIds = [];
+document.getElementById("confirmarProcesso").addEventListener("click", async () => {
+  const cards = document.querySelectorAll(".card");
+  const items = [];
+  const duplicates = [];
+  const allMaquinaIds = [];
 
-    for (const card of cards) {
-      const emptyCard = card
-        .closest(".card-wrapper")
-        .querySelector(".empty-card");
-      const maquinaId = emptyCard?.dataset.maquinaId;
+  for (const card of cards) {
+    const emptyCards = card.closest(".card-wrapper").querySelectorAll(".empty-card");
 
-      if (maquinaId) {
-        const itemId = parseInt(card.dataset.itemId);
-        if (isNaN(itemId)) {
-          console.error(`itemId inválido para o card:`, card);
-          continue;
-        }
+    if (emptyCards.length === 0) {
+      console.warn("Nenhum empty-card encontrado para o card:", card);
+      continue;
+    }
 
-        let ordem = parseInt(card.dataset.ordem);
+    const maquinaIds = Array.from(emptyCards).map(emptyCard => parseInt(emptyCard.dataset.maquinaId)); // Converta para número inteiro
+    const uniqueMaquinaIds = [...new Set(maquinaIds)]; // Remove duplicatas, se houver
 
-        if (!isNaN(ordem)) {
-          ordem += 1;
-        } else {
-          console.warn(`Ordem inválida para o card com itemId: ${itemId}`);
-          ordem = 1; // Defina uma ordem padrão se o valor for inválido
-        }
+    allMaquinaIds.push(...uniqueMaquinaIds);
 
-        try {
-          const maquinaIds = maquinaId
-            .split(",")
-            .map((id) => parseInt(id.trim()));
-          allMaquinaIds.push(...maquinaIds);
-
-          for (const id of maquinaIds) {
-            const response = await axios.get(
-              `${BASE_URL}/adm/item_maquina/existence-check`,
-              {
-                params: {
-                  itemId: itemId,
-                  maquinaId: id,
-                },
-              }
-            );
-
-            if (response.data.exists) {
-              duplicates.push({
-                itemId: itemId,
-                maquinaId: id,
-              });
-            } else {
-              const prazo = card.dataset.prazo;
-              const executor = card.dataset.executor;
-              const finalizado = card.dataset.finalizado === "true";
-              const corte = card.dataset.corte;
-
-              items.push({
-                itemId: itemId,
-                maquinaId: id,
-                ordem: ordem,
-                prazo: prazo,
-                executor: executor,
-                finalizado: finalizado,
-                corte: corte,
-              });
-            }
-          }
-        } catch (error) {
-          console.error("Erro ao verificar a existência do processo:", error);
-        }
+    for (const maquinaId of uniqueMaquinaIds) {
+      const itemId = parseInt(card.dataset.itemId);
+      if (isNaN(itemId)) {
+        console.error(`itemId inválido para o card:`, card);
+        continue;
       }
-    }
 
-    console.log("IDs de máquinas que serão enviados:", allMaquinaIds);
+      let ordem = parseInt(card.dataset.ordem);
 
-    if (duplicates.length > 0) {
-      alert(
-        "Alguns processos já existem:\n" +
-          duplicates
-            .map((d) => `Item ID: ${d.itemId}, Máquina ID: ${d.maquinaId}`)
-            .join("\n")
-      );
-    }
+      if (!isNaN(ordem)) {
+        ordem += 1;
+      } else {
+        console.warn(`Ordem inválida para o card com itemId: ${itemId}`);
+        ordem = 1; // Defina uma ordem padrão se o valor for inválido
+      }
 
-    if (items.length > 0) {
       try {
-        // Enviar os maquinaIds para o backend
-        await axios.post(`${BASE_URL}/adm/item_maquina/selecionar-maquinas`, {
-          maquinaIds: allMaquinaIds,
-        });
-
-        // Enviar os dados dos itens selecionados para o backend
-        await axios.post(
-          `${BASE_URL}/adm/item_maquina/selecionar-maquinas`,
-          items
+        const response = await axios.get(
+          `${BASE_URL}/adm/item_maquina/existence-check`,
+          {
+            params: {
+              itemId: itemId,
+              maquinaId: maquinaId,
+            },
+          }
         );
 
-        console.log("Processos confirmados com sucesso.");
-        showPartNumbersAndMachines();
+        if (response.data.exists) {
+          duplicates.push({
+            itemId: itemId,
+            maquinaId: maquinaId,
+          });
+        } else {
+          const prazo = card.dataset.prazo;
+          const executor = card.dataset.executor;
+          const finalizado = card.dataset.finalizado === "true";
+          const corte = card.dataset.corte;
+
+          const item = {
+            itemId: itemId,
+            maquinaId: maquinaId,
+            ordem: ordem,
+            prazo: prazo,
+            executor: executor,
+            finalizado: finalizado,
+            corte: corte,
+          };
+
+          items.push(item);
+        }
       } catch (error) {
-        console.error("Erro ao confirmar processos:", error);
+        console.error("Erro ao verificar a existência do processo:", error);
       }
-    } else {
-      console.warn("Nenhum item selecionado.");
     }
-  });
+  }
+
+  console.log("IDs de máquinas que serão enviados:", allMaquinaIds);
+
+  if (duplicates.length > 0) {
+    alert(
+      "Alguns processos já existem:\n" +
+      duplicates
+        .map((d) => `Item ID: ${d.itemId}, Máquina ID: ${d.maquinaId}`)
+        .join("\n")
+    );
+  }
+
+  if (items.length > 0) {
+    try {
+      // Enviar os dados dos itens selecionados para o backend
+      await axios.post(`${BASE_URL}/adm/item_maquina/selecionar-maquinas`, items);
+
+      console.log("Processos confirmados com sucesso.");
+      showPartNumbersAndMachines();
+    } catch (error) {
+      console.error("Erro ao confirmar processos:", error);
+    }
+  } else {
+    console.warn("Nenhum item selecionado.");
+  }
+});
+
 
 //=================================================
 // função para CONFIRMAR prioridade

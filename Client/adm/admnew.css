@@ -1313,8 +1313,10 @@ margin-bottom: 1rem;
   .dark-mode div.card-body {
     background: #1d1d1d;
   }
+
   
   .maquina-div {
+    position: relative;
     display: flex;
     padding: 0.5rem 1rem;
     background: #64646428;
@@ -1322,6 +1324,28 @@ margin-bottom: 1rem;
   
     border-radius: 1rem;
   }
+
+  /* Exemplo de estilos CSS */
+.custom-title-class {
+  color: #2f2f2f; /* Cor vermelha para o título */
+}
+
+
+
+  .overlay-div {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; /* Ocupa toda a largura da maquina-div */
+    height: 100%; /* Ocupa toda a altura da maquina-div */
+    background-color: rgba(30, 30, 30, 0.295); /* Cor e transparência do overlay */
+    backdrop-filter: blur(2px); /* Desfoque */
+    z-index: 1000; /* Z-index alto para sobrepor outros elementos */
+    border-radius:1rem ;
+  }
+  
   
   #machineCardsContainer {
     display: flex;
