@@ -27,13 +27,14 @@ class AdmController {
       include: {
         item: true,
         chapa: true,
+        conjugacao: true, // Certifique-se de incluir a relação com conjugação
       },
     });
-
+  
     if (!chapaItems.length) {
-      throw new Error(`No Chapa_Item found`);
+      throw new Error(`Nenhum Chapa_Item encontrado`);
     }
-
+  
     const items = chapaItems.reduce((acc, chapaItem) => {
       const { item } = chapaItem;
       if (!acc[item.id_item]) {
@@ -42,12 +43,24 @@ class AdmController {
           chapas: [],
         };
       }
-      acc[item.id_item].chapas.push(chapaItem.chapa);
+      // Monta o objeto de chapa com seus dados
+      const chapaInfo = {
+        chapa: chapaItem.chapa,
+        quantidade: chapaItem.quantidade,
+        terminado: chapaItem.terminado,
+      };
+      // Adiciona a conjugação, se existir
+      if (chapaItem.conjugacao) {
+        chapaInfo.conjugacao = chapaItem.conjugacao; // Certifique-se de incluir a conjugação aqui
+      }
+      acc[item.id_item].chapas.push(chapaInfo);
       return acc;
     }, {});
-
+  
     return Object.values(items);
   }
+  
+  
 
   async changeItemStatusProduzindo(
     itemId,
@@ -60,88 +73,103 @@ class AdmController {
     cliente,
     quantidade,
     colaborador,
-    prioridade
-  ) {
+    prioridade,
+    nomeUsuario // Parâmetro adicional para o nome de usuário
+) {
     try {
-      console.log(`Prioridade recebida no servidor: ${prioridade}`);
-  
-      const status = prioridade === 1 ? "PRODUZINDO" : "PROGRAMADO";
-  
-      await prisma.item.update({
-        where: { id_item: itemId },
-        data: { status: status },
-      });
-  
-      await prisma.item_Maquina.create({
-        data: {
-          maquinaId: maquinaId,
-          itemId: itemId,
-          prazo: prazo,
-          ordem: parseInt(ordem, 10),
-          medida: medida,
-          op: parseInt(op, 10),
-          sistema: sistema,
-          cliente: cliente,
-          quantidade: parseInt(quantidade, 10),
-          colaborador: colaborador,
-          prioridade: prioridade,
-        },
-      });
-  
-      const item = await prisma.item.findUnique({
-        where: { id_item: itemId },
-        select: {
-          part_number: true,
-          pedido_venda: true,
-        },
-      });
-
-      if (!item || !item.part_number || !item.pedido_venda) {
-        throw new Error("Item não encontrado ou dados incompletos.");
-      }
-  
-      const chapaItems = await prisma.chapa_Item.findMany({
-        where: { itemId: itemId },
-        include: {
-          chapa: true // Inclui dados de chapa diretamente no resultado
-        }
-      });
-  
-      const maquina = await prisma.maquina.findUnique({
-        where: { id_maquina: maquinaId },
-        select: { nome: true }
-      });
-
-      for (const { chapa } of chapaItems) {
-        await prisma.historico.create({
-          data: {
-            chapa: `${chapa.largura} X ${chapa.comprimento} - ${chapa.vincos} - ${chapa.qualidade}/${chapa.onda}`,
-            part_number: item.part_number,
-            quantidade: parseInt(quantidade, 10),
-            modificacao: "PROGRAMADO",
-            modificado_por: colaborador,
-            data_modificacao: new Date().toLocaleDateString("pt-BR"),
-            data_prevista: prazo,
-            pedido_venda: item.pedido_venda.toString(),
-            ordem: parseInt(ordem, 10),
-            maquina: maquina.nome
-          },
+        // Formatando o prazo para dd/mm/aaaa
+        const prazoFormatado = new Date(prazo).toLocaleDateString("pt-BR", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
         });
-      }
-  
-      console.log(
-        `Item ${itemId} atualizado para status ${status} com prazo ${prazo}, ordem ${ordem}, medida ${medida}, op ${op}, sistema ${sistema}, cliente ${cliente}, quantidade ${quantidade}, colaborador ${colaborador}, prioridade ${prioridade}`
-      );
+
+        console.log(`Prioridade recebida no servidor: ${prioridade}`);
+        console.log("Nome do usuário recebido no controlador:", nomeUsuario);
+
+        const status = prioridade === 1 ? "PRODUZINDO" : "PROGRAMADO";
+
+        await prisma.item.update({
+            where: { id_item: itemId },
+            data: { status: status },
+        });
+
+        await prisma.item_Maquina.create({
+            data: {
+                maquinaId: maquinaId,
+                itemId: itemId,
+                prazo: prazoFormatado,
+                ordem: parseInt(ordem, 10),
+                medida: medida,
+                op: parseInt(op, 10),
+                sistema: sistema,
+                cliente: cliente,
+                quantidade: parseInt(quantidade, 10),
+                colaborador: colaborador,
+                prioridade: prioridade,
+                executor: nomeUsuario, // Definir o executor como o nome do usuário passado como parâmetro
+            },
+        });
+
+        const item = await prisma.item.findUnique({
+            where: { id_item: itemId },
+            select: {
+                part_number: true,
+                pedido_venda: true,
+            },
+        });
+
+        if (!item || !item.part_number || !item.pedido_venda) {
+            throw new Error("Item não encontrado ou dados incompletos.");
+        }
+
+        const chapaItems = await prisma.chapa_Item.findMany({
+            where: { itemId: itemId },
+            include: {
+                chapa: true // Inclui dados de chapa diretamente no resultado
+            }
+        });
+
+        const maquina = await prisma.maquina.findUnique({
+            where: { id_maquina: maquinaId },
+            select: { nome: true }
+        });
+
+        for (const { chapa } of chapaItems) {
+            await prisma.historico.create({
+                data: {
+                    chapa: `${chapa.largura} X ${chapa.comprimento} - ${chapa.vincos} - ${chapa.qualidade}/${chapa.onda}`,
+                    part_number: item.part_number,
+                    quantidade: parseInt(quantidade, 10),
+                    modificacao: "PROGRAMADO",
+                    modificado_por: colaborador,
+                    data_modificacao: new Date().toLocaleDateString("pt-BR"),
+                    data_prevista: prazoFormatado,
+                    pedido_venda: item.pedido_venda.toString(),
+                    ordem: parseInt(ordem, 10),
+                    maquina: maquina.nome,
+                },
+            });
+        }
+
+        console.log(
+            `Item ${itemId} atualizado para status ${status} com prazo ${prazoFormatado}, ordem ${ordem}, medida ${medida}, op ${op}, sistema ${sistema}, cliente ${cliente}, quantidade ${quantidade}, colaborador ${colaborador}, prioridade ${prioridade}, executor ${nomeUsuario},`
+        );
     } catch (error) {
-      console.error(
-        "Erro ao atualizar o status do item para PRODUZINDO:",
-        error
-      );
-      throw new Error(
-        "Erro ao atualizar o status do item para PRODUZINDO: " + error.message
-      );
+        console.error(
+            "Erro ao atualizar o status do item para PRODUZINDO:",
+            error
+        );
+        throw new Error(
+            "Erro ao atualizar o status do item para PRODUZINDO: " + error.message
+        );
     }
-  }
+}
+
+  
+  
+  
+  
   
 
   async getAllItemsPriorities(existingItemMaquinaIds) {
@@ -258,14 +286,29 @@ class AdmController {
           maquina: true,
           Item: true,
         },
-
       });
+      console.log(itemMaquinas); // Verifique a estrutura dos dados aqui
       return itemMaquinas;
     } catch (error) {
       throw new Error("Erro ao buscar todos os Item_Maquina: " + error.message);
     }
   }
 
+  async  deleteItemMaquina(id) {
+    try {
+      await prisma.item_Maquina.delete({
+        where: {
+          id_item_maquina: parseInt(id, 10), // Certifique-se de que o ID é um número
+        },
+      });
+      return { success: true };
+    } catch (error) {
+      console.error("Erro ao excluir o Item_Maquina:", error); // Adicionar log detalhado
+      throw new Error("Erro ao excluir o Item_Maquina: " + error.message);
+    }
+  }
+  
+      
 
   async checkItemMaquinaExists(itemId, maquinaId) {
     try {
@@ -289,36 +332,53 @@ class AdmController {
   
   async createItemMaquina(itemId, maquinaId) {
     try {
+      // Busca o último Item_Maquina para o itemId fornecido
       const lastItem = await Item_Maquina.findFirst({
         where: { itemId: itemId },
         orderBy: { ordem: "desc" },
       });
   
-      let ordem = 1;
-      if (lastItem) {
-        ordem = lastItem.ordem + 1;
+      if (!lastItem) {
+        throw new Error(`Nenhum Item_Maquina encontrado para o itemId: ${itemId}`);
       }
   
-      await Item_Maquina.create({
-        data: {
-          prazo: lastItem ? lastItem.prazo : null,
-          ordem: ordem,
-          executor: lastItem ? lastItem.executor : null,
-          finalizado: lastItem ? lastItem.finalizado : false,
-          corte: lastItem ? lastItem.corte : null,
-          maquinaId: maquinaId,
-          itemId: itemId,
-        },
+      // Cria uma cópia do último Item_Maquina encontrado
+      const newItemMaquina = {
+        prazo: lastItem.prazo,
+        ordem: lastItem.ordem + 1, // Incrementa a ordem
+        executor: lastItem.executor,
+        finalizado: lastItem.finalizado,
+        corte: lastItem.corte,
+        medida: lastItem.medida,
+        op: lastItem.op,
+        prioridade: lastItem.prioridade + 1,
+        sistema: lastItem.sistema,
+        cliente: lastItem.cliente,
+        quantidade: lastItem.quantidade,
+        colaborador: lastItem.colaborador,
+        maquinaId: maquinaId, // Atualiza a máquinaId
+        itemId: itemId,
+      };
+  
+      // Cria o novo Item_Maquina com base na cópia ajustada
+      const createdItemMaquina = await Item_Maquina.create({
+        data: newItemMaquina,
       });
   
       console.log(
-        `Item_Maquina criado com sucesso para o item ${itemId} e a máquina ${maquinaId}.`
+        `Item_Maquina duplicado com sucesso para o item ${itemId} e a nova máquina ${maquinaId}.`
       );
+  
+      return createdItemMaquina; // Retorna o novo Item_Maquina criado
     } catch (error) {
-      console.error("Erro ao criar Item_Maquina:", error);
-      throw new Error("Erro ao criar Item_Maquina: " + error.message);
+      console.error("Erro ao duplicar Item_Maquina:", error);
+      throw new Error("Erro ao duplicar Item_Maquina: " + error.message);
     }
   }
+  
+  
+  
+  
   
   
 

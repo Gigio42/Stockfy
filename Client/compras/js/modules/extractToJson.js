@@ -52,6 +52,7 @@ export function handleExpectedDateChange(
   infoProdComprados
 ) {
   var expectedDateInput = document.getElementById("expectedDate");
+  var userName = localStorage.getItem("nome") || "Usuário Desconhecido"; // Obtendo o nome do usuário do localStorage
 
   expectedDateInput.addEventListener("change", function () {
     var dateValue = expectedDateInput.value;
@@ -62,8 +63,10 @@ export function handleExpectedDateChange(
           ...infoPedido,
           id_compra: convertToInteger(pedidoCompra),
           data_prevista: formatarDataParaEnvio(dateValue),
+          executor: userName, // Adicionando o nome do usuário ao JSON
         };
       }),
+      
     };
 
     console.log("JSON atualizado com a data prevista:");

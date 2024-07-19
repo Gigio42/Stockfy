@@ -1,14 +1,5 @@
 import BASE_URL from "../utils/config.js";
 
-if (localStorage.getItem("isLoggedIn") !== "true") {
-  window.location.href = "../login/login.html";
-}
-
-$("#user-name").text(localStorage.getItem("nome") || "UserName");
-var name = localStorage.getItem("nome");
-var profilePic = $("#profilePic");
-profilePic.attr("src", "https://api.dicebear.com/8.x/shapes/svg?seed=" + name);
-
 
 //============================================
 // Função para lidar com a lógica do Dark Mode
@@ -285,13 +276,14 @@ function openModal(maquinaName, maquinaId) {
   // Adiciona o listener de clique ao botão
   document
     .getElementById("voltarModalContent5", "voltarModalContentnext")
-    .addEventListener("click", closeModal) // Recarrega a página);
+    .addEventListener("click", closeModal); // Recarrega a página);
 }
 
-document.getElementById("voltarModalContent5").addEventListener("click", function() {
+document
+  .getElementById("voltarModalContent5")
+  .addEventListener("click", function () {
     location.reload();
-});
-
+  });
 
 function closeModal() {
   const modalContent2 = document.querySelector(".modal-content-2");
@@ -360,11 +352,25 @@ function adicionarItemAoStaged(item, maquinaId) {
   opInput.className = "inputOp";
   card.appendChild(opInput);
 
-  const sistemaInput = document.createElement("input");
-  sistemaInput.type = "text";
-  sistemaInput.placeholder = "Sistema";
-  sistemaInput.className = "inputSistema";
-  card.appendChild(sistemaInput);
+  const sistemaSelect = document.createElement("select");
+  sistemaSelect.className = "inputSistema";
+  
+  // Criando as opções
+  const optionJferres = document.createElement("option");
+  optionJferres.value = "JFERRES";
+  optionJferres.textContent = "JFERRES";
+  
+  const optionNovaDimensao = document.createElement("option");
+  optionNovaDimensao.value = "NOVA DIMENSÃO";
+  optionNovaDimensao.textContent = "NOVA DIMENSÃO";
+  
+  // Adicionando as opções ao select
+  sistemaSelect.appendChild(optionJferres);
+  sistemaSelect.appendChild(optionNovaDimensao);
+  
+  // Adicionando o select ao card
+  card.appendChild(sistemaSelect);
+  
 
   const clienteInput = document.createElement("input");
   clienteInput.type = "text";
@@ -380,7 +386,7 @@ function adicionarItemAoStaged(item, maquinaId) {
 
   const colaboradorInput = document.createElement("input");
   colaboradorInput.type = "text";
-  colaboradorInput.placeholder = "Colaborador";
+  colaboradorInput.placeholder = "Colaboradores";
   colaboradorInput.className = "inputColaborador";
   card.appendChild(colaboradorInput);
 
@@ -415,11 +421,53 @@ function adicionarItemAoStaged(item, maquinaId) {
 // Função para confirmar os itens na área de "staged"
 //============================================================
 
+// Verifica se o usuário está logado
+if (localStorage.getItem("isLoggedIn") !== "true") {
+  window.location.href = "../login/login.html";
+}
+
+// Obtém o nome do usuário do localStorage
+var userName = localStorage.getItem("nome") || "UserName";
+
+// Define o nome de usuário no elemento com id "user-name"
+$("#user-name").text(userName);
+
+// Define a imagem de perfil
+var profilePic = $("#profilePic");
+profilePic.attr(
+  "src",
+  "https://api.dicebear.com/8.x/shapes/svg?seed=" + userName
+);
+
+// Variável global para o nome de usuário
+window.globalUserName = userName;
+
 async function confirmarItensStaged(event) {
   event.preventDefault();
 
   const stagedItems = document.getElementById("stagedItems").children;
   const maquinaId = currentMaquinaId;
+
+  // Obtendo o nome do usuário da variável global
+  const nomeUsuario = window.globalUserName;
+  console.log("Nome do usuário obtido:", nomeUsuario);
+
+  // Verifica se há itens para confirmar
+  if (stagedItems.length === 0) {
+    Swal.fire({
+      title: 'Nenhum item para confirmar',
+      text: 'Não há itens para confirmar.',
+      icon: 'info',
+      confirmButtonText: 'OK',
+      background: '#e9e9e9',
+      customClass: {
+        title: 'custom-title-class',
+        content: 'custom-content-class',
+        icon: 'custom-icon-class'
+      }
+    });
+    return;
+  }
 
   // Buscando itens existentes na máquina
   let existingItemMaquinaIds;
@@ -436,9 +484,12 @@ async function confirmarItensStaged(event) {
   // Buscando prioridades dos itens existentes na tabela Item_Maquina
   let existingItems;
   try {
-    const response = await axios.post(`${BASE_URL}/adm/maquina/itens/prioridades`, {
-      ids: existingItemMaquinaIds,
-    });
+    const response = await axios.post(
+      `${BASE_URL}/adm/maquina/itens/prioridades`,
+      {
+        ids: existingItemMaquinaIds,
+      }
+    );
     existingItems = response.data;
   } catch (error) {
     console.error("Erro ao buscar prioridades dos itens existentes:", error);
@@ -456,6 +507,9 @@ async function confirmarItensStaged(event) {
   // Exibindo o valor da maior prioridade encontrada no console
   console.log("Maior prioridade encontrada:", maxPriority);
 
+  // Armazenar erros
+  const errors = [];
+
   for (const itemCard of stagedItems) {
     const itemId = itemCard.dataset.id;
     const prazo = itemCard.querySelector(".inputPrazo").value;
@@ -463,13 +517,16 @@ async function confirmarItensStaged(event) {
     const op = parseInt(itemCard.querySelector(".inputOp").value, 10); // Convertendo para número
     const sistema = itemCard.querySelector(".inputSistema").value;
     const cliente = itemCard.querySelector(".inputCliente").value;
-    const quantidade = parseInt(
-      itemCard.querySelector(".inputQuantidade").value,
-      10
-    ); // Convertendo para número
+    const quantidade = parseInt(itemCard.querySelector(".inputQuantidade").value, 10); // Convertendo para número
     const colaborador = itemCard.querySelector(".inputColaborador").value;
     const ordem = 1; // Define a ordem automaticamente como "1"
     const prioridade = maxPriority + 1; // Definindo a prioridade
+
+    // Verificações e adição de erros
+    if (!prazo || !medida || isNaN(op) || op <= 0 || !sistema || !cliente || isNaN(quantidade) || quantidade <= 0 || !colaborador) {
+      errors.push("Campos não preenchidos são obrigatórios.");
+      break; // Interrompe o loop se houver erro
+    }
 
     try {
       console.log("Prioridade enviada para o servidor:", prioridade);
@@ -485,9 +542,22 @@ async function confirmarItensStaged(event) {
           quantidade: quantidade,
           colaborador: colaborador,
           prioridade: prioridade, // Enviando a prioridade
+          executor: nomeUsuario // Enviando o nome do usuário
         }
       );
 
+      console.log("Dados enviados ao servidor:", {
+        prazo: prazo,
+        ordem: ordem,
+        medida: medida,
+        op: op,
+        sistema: sistema,
+        cliente: cliente,
+        quantidade: quantidade,
+        colaborador: colaborador,
+        prioridade: prioridade,
+        executor: nomeUsuario
+      });
       console.log("Item confirmado:", response.data);
       maxPriority++; // Incrementando a prioridade para o próximo item
     } catch (error) {
@@ -495,16 +565,47 @@ async function confirmarItensStaged(event) {
     }
   }
 
-  document.getElementById("stagedItems").innerHTML = "";
-  alert("Itens confirmados com sucesso!");
+  if (errors.length > 0) {
+    Swal.fire({
+      title: 'Erro',
+      text: errors.join(' '),
+      icon: 'error',
+      confirmButtonText: 'OK',
+      background: '#e9e9e9',
+      customClass: {
+        title: 'custom-title-class',
+        content: 'custom-content-class',
+        icon: 'custom-icon-class'
+      }
+    });
+  } else {
+    document.getElementById("stagedItems").innerHTML = "";
+    Swal.fire({
+      title: 'Sucesso!',
+      text: 'Itens confirmados com sucesso.',
+      icon: 'success',
+      confirmButtonText: 'OK',
+      background: '#e9e9e9',
+      customClass: {
+        title: 'custom-title-class',
+        content: 'custom-content-class',
+        icon: 'custom-icon-class'
+      }
+    });
+  }
 }
+
+
+
+
+
 
 document
   .getElementById("confirmButton")
   .addEventListener("click", confirmarItensStaged);
 
 //=================================================
-// Função para criar o card de item
+// Função para criar o card de item a ser programado
 //=================================================
 function createItemCard(item, maquinaId) {
   const reservados = document.getElementById("reservados");
@@ -530,38 +631,79 @@ function createItemCard(item, maquinaId) {
   titleContainer.appendChild(imgContainer);
   card.appendChild(titleContainer);
 
-  item.chapas.forEach((chapa) => {
-    const subcard = document.createElement("div");
-    subcard.className = "subcard";
+  const itemInfoContainer = document.createElement("div");
+  itemInfoContainer.className = "item-info-container";
 
-    const chapaInfo = document.createElement("p");
-    chapaInfo.innerHTML = `Chapa: ${chapa.medida}<br>Quant.: ${chapa.quantidade_comprada}`;
-    subcard.appendChild(chapaInfo);
 
-    card.appendChild(subcard);
-  });
+  card.appendChild(itemInfoContainer);
 
+  // Adicionar informações das chapas e conjugações, se existirem
+  if (item.chapas && Array.isArray(item.chapas)) {
+    item.chapas.forEach((chapa) => {
+      const subcard = document.createElement("div");
+      subcard.className = "subcard";
+
+      const chapaDiv = document.createElement("div");
+      const chapaInfo = document.createElement("p");
+      chapaInfo.textContent = `Chapa: ${chapa.chapa.medida}`;
+      chapaInfo.className = "cardInfoMedida"
+      chapaDiv.appendChild(chapaInfo);
+      subcard.appendChild(chapaDiv);
+
+      const quantidadeDiv = document.createElement("div");
+      const quantidadeInfo = document.createElement("p");
+      quantidadeInfo.textContent = `Quantidade: ${chapa.quantidade}`;
+      quantidadeInfo.className = "cardInfoQuantidade"
+      quantidadeDiv.appendChild(quantidadeInfo);
+      subcard.appendChild(quantidadeDiv);
+
+      // Verifica se há conjugação e a adiciona, se existir
+      if (chapa.conjugacao) {
+        const conjugacaoDiv = document.createElement("div");
+        const conjugacaoInfo = document.createElement("p");
+        conjugacaoInfo.textContent = `Conjugação: ${chapa.conjugacao.medida}`;
+        conjugacaoInfo.className = "cardInfoConjugação"
+        conjugacaoDiv.appendChild(conjugacaoInfo);
+        subcard.appendChild(conjugacaoDiv);
+
+        const rendimentoDiv = document.createElement("div");
+        const rendimentoInfo = document.createElement("p");
+        rendimentoInfo.textContent = `Rendimento: ${chapa.conjugacao.rendimento}`;
+        rendimentoInfo.className = "cardInfoRendimento"
+        rendimentoDiv.appendChild(rendimentoInfo);
+        subcard.appendChild(rendimentoDiv);
+      }
+
+      card.appendChild(subcard);
+    });
+  }
+
+  // Adicionar botão para adicionar o item
   const adicionarItemButton = document.createElement("button");
   adicionarItemButton.textContent = "Adicionar";
   adicionarItemButton.className = "addItem";
   card.appendChild(adicionarItemButton);
   adicionarItemButton.dataset.id = item.id_item;
 
+  // Adicionar evento para expandir o card ao clicar no título
   titleContainer.addEventListener("click", () => {
     card.classList.toggle("expanded");
   });
 
-  adicionarItemButton.removeEventListener("click", adicionarItemAoStaged); // Remova o evento anterior
+  // Adicionar evento para adicionar o item ao staged
+  adicionarItemButton.removeEventListener("click", adicionarItemAoStaged); // Remover o evento anterior
   adicionarItemButton.addEventListener("click", (event) => {
     event.preventDefault();
     event.stopPropagation();
     adicionarItemAoStaged(item, maquinaId);
   });
 
+  // Adicionar o card ao elemento reservados
   reservados.appendChild(card);
 
   console.log("Item criado:", item); // Log do item criado
 }
+
 
 //============================================================
 // Botão para abrir o modal com os itens e seus status
@@ -622,7 +764,6 @@ async function fetchAllItems(maquinaId) {
   }
 }
 
-
 function createProduzindoItemCard(item) {
   const containerId = `container-${item.id_item}-${item.part_number}-${item.status}`;
 
@@ -655,8 +796,8 @@ function createProduzindoItemCard(item) {
     item.status === "PRODUZINDO"
       ? "status-produzindo"
       : item.status === "FINALIZADO"
-      ? "status-finalizado"
-      : "status-programado";
+        ? "status-finalizado"
+        : "status-programado";
   itemCard.appendChild(statusElement);
 
   itemContainer.appendChild(itemCard);
@@ -911,8 +1052,6 @@ async function createEmptyCard(cardWrapper) {
   });
 }
 
-
-
 function addAddButton(card, cardWrapper) {
   if (card.classList.contains("empty-card")) return; // Não adicionar botão ao empty card
 
@@ -933,35 +1072,127 @@ function addAddButton(card, cardWrapper) {
   card.addEventListener("mouseout", () => (addButton.style.display = "none"));
 }
 
+// ==========================================================================
+// Função para exclluir um processo
+//==========================================================================
+
+async function toggleOverlayDiv(maquinaDiv) {
+  const overlayDiv = maquinaDiv.querySelector(".overlay-div");
+
+  if (overlayDiv) {
+    maquinaDiv.removeChild(overlayDiv);
+  } else {
+    const newOverlayDiv = document.createElement("div");
+    newOverlayDiv.className = "overlay-div";
+    
+    const deleteIcon = document.createElement("img");
+    deleteIcon.src = "media/icons8-delete-48.png";
+    deleteIcon.alt = "Delete";
+    deleteIcon.className = "delete-icon";
+    deleteIcon.addEventListener("click", async (event) => {
+      event.stopPropagation(); // Impede que o evento de clique se propague para a maquina-div
+
+      const idItemMaquina = maquinaDiv.dataset.idItemMaquina;
+
+      Swal.fire({
+        title: 'Tem certeza?',
+        text: "Você está prestes a excluir este processo!",
+        showCancelButton: true,
+        confirmButtonColor: '#7066e0',
+        cancelButtonColor: '#888',
+        confirmButtonText: 'Sim, exclua!',
+        cancelButtonText: 'Cancelar',
+        background: '#e9e9e9',
+        customClass: {
+          title: 'custom-title-class',
+          content: 'custom-content-class',
+          icon: 'custom-icon-class'
+        }
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            // Enviar requisição DELETE para o backend
+            await axios.delete(`${BASE_URL}/adm/item_maquina/${idItemMaquina}`);
+
+            // Remover a máquina da interface
+            maquinaDiv.removeChild(newOverlayDiv);
+            Swal.fire(
+              'Excluído!',
+              'Seu item foi excluído com sucesso.',
+              'success'
+            );
+          } catch (error) {
+            console.error("Erro ao enviar requisição DELETE:", error); // Adicionar log detalhado
+            Swal.fire(
+              'Erro!',
+              'Houve um problema ao excluir o item.',
+              'error'
+            );
+          }
+        }
+      });
+    });
+
+    newOverlayDiv.appendChild(deleteIcon);
+
+    maquinaDiv.addEventListener("click", (event) => {
+      if (event.target === maquinaDiv) {
+        maquinaDiv.removeChild(newOverlayDiv);
+      }
+    });
+
+    maquinaDiv.appendChild(newOverlayDiv);
+  }
+}
+
+
+
+
+
+
+
+
 async function showPartNumbersAndMachines() {
   try {
+    // Obter dados dos itens de máquina
     const response = await axios.get(`${BASE_URL}/adm/item_maquina`);
+    console.log(response.data); // Verifique a estrutura dos dados aqui
 
+    // Limpar container de cards
     const cardContainer = document.getElementById("partNumberCardsContainer");
     cardContainer.innerHTML = "";
 
+    // Mapa para armazenar números de peça e dados associados
     const partNumberMap = {};
 
+    // Iterar sobre os dados recebidos
     response.data.forEach((itemMaquina) => {
+      console.log(itemMaquina); // Adicione esta linha para depuração
+
+      // Extrair número de peça
       const partNumber = itemMaquina.Item.part_number.replace("::maker", "");
 
+      // Inicializar entrada no mapa se não existir
       if (!partNumberMap[partNumber]) {
         partNumberMap[partNumber] = {
           maquinas: [],
-          itemId: itemMaquina.itemId,
-          prazo: itemMaquina.prazo,
-          executor: itemMaquina.executor,
-          finalizado: itemMaquina.finalizado,
-          corte: itemMaquina.corte,
+          idItem: itemMaquina.id_item_maquina, // Ajustado para id_item_maquina
+          ordem: itemMaquina.ordem,
         };
       }
 
+      // Verificar e acessar a propriedade 'nome' correta
+      const nome = itemMaquina.maquina.nome; // Ajuste conforme a estrutura dos dados
+
+      // Adicionar máquina ao número de peça correspondente
       partNumberMap[partNumber].maquinas.push({
-        nome: itemMaquina.maquina.nome,
+        idItemMaquina: itemMaquina.id_item_maquina,
+        nome: nome, // Corrigido para usar o valor correto de 'nome'
         finalizado: itemMaquina.finalizado,
       });
     });
 
+    // Construir cards com base nos dados do mapa
     for (const [partNumber, data] of Object.entries(partNumberMap)) {
       const cardWrapper = document.createElement("div");
       cardWrapper.className = "card-wrapper";
@@ -969,24 +1200,33 @@ async function showPartNumbersAndMachines() {
       const card = document.createElement("div");
       card.className = "card";
 
-      card.dataset.itemId = data.itemId;
-      card.dataset.prazo = data.prazo;
-      card.dataset.executor = data.executor;
-      card.dataset.finalizado = data.finalizado;
-      card.dataset.corte = data.corte;
+      // Configuração dos datasets
+      card.dataset.partNumber = partNumber;
+      card.dataset.itemId = data.idItem;
+      card.dataset.ordem = data.ordem;
 
+      // Conteúdo do card com número de peça e máquinas associadas
       const cardContent = `
-              <div class="card-header d-flex justify-content-between align-items-center">
-                  <span>${partNumber}</span>
-                  <img class="toggle-arrow" src="media/seta.png" style="cursor: pointer; transform: rotate(0deg);">
-              </div>
-              <div class="card-body d-none">
-                  ${data.maquinas.map((maquina) => `<div class="maquina-div ${maquina.finalizado ? "finalizado" : ""}">${maquina.nome}</div>`).join("")}
-              </div>
-          `;
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <span>${partNumber}</span>
+          <img class="toggle-arrow" src="media/seta.png" style="cursor: pointer; transform: rotate(0deg);">
+        </div>
+        <div class="card-body d-none">
+          ${data.maquinas.map((maquina) => {
+            console.log(maquina); // Adicione esta linha para depuração
+            return `
+              <div 
+                class="maquina-div ${maquina.finalizado ? "finalizado" : ""}"
+                data-id-item-maquina="${maquina.idItemMaquina}"> <!-- Somente id_item_maquina -->
+                ${maquina.nome || "Nome não disponível"} <!-- Exibe 'Nome não disponível' se nome estiver undefined -->
+              </div>`;
+          }).join("")}
+        </div>
+      `;
 
       card.innerHTML = cardContent;
 
+      // Adicionar evento de clique para expandir/recolher o corpo do card
       const cardHeader = card.querySelector(".card-header");
       const cardBody = card.querySelector(".card-body");
       const toggleArrow = card.querySelector(".toggle-arrow");
@@ -1000,9 +1240,19 @@ async function showPartNumbersAndMachines() {
         }
       });
 
+      // Adicionar evento para clicar em maquina-div e criar/remover a div sobreposta
+      const maquinaDivs = card.querySelectorAll(".maquina-div");
+      maquinaDivs.forEach((maquinaDiv) => {
+        maquinaDiv.addEventListener("click", () => {
+          toggleOverlayDiv(maquinaDiv);
+        });
+      });
+
+      // Adicionar card ao container de cards
       cardWrapper.appendChild(card);
       addAddButton(card, cardWrapper);
 
+      // Adicionar card ao container de cards
       cardContainer.appendChild(cardWrapper);
     }
   } catch (error) {
@@ -1010,6 +1260,10 @@ async function showPartNumbersAndMachines() {
   }
 }
 
+
+
+
+// Evento de carregamento do DOM para iniciar a função showPartNumbersAndMachines
 document.addEventListener("DOMContentLoaded", function () {
   const optionsButton = document.getElementById("optionsButton");
   if (!optionsButton) {
@@ -1019,47 +1273,107 @@ document.addEventListener("DOMContentLoaded", function () {
   optionsButton.addEventListener("click", showPartNumbersAndMachines);
 });
 
+
+// Evento de carregamento do DOM para iniciar a função showPartNumbersAndMachines
+document.addEventListener("DOMContentLoaded", function () {
+  const optionsButton = document.getElementById("optionsButton");
+  if (!optionsButton) {
+    console.error("Botão optionsButton não encontrado.");
+    return;
+  }
+  optionsButton.addEventListener("click", showPartNumbersAndMachines);
+});
+
+
+// Evento de carregamento do DOM para iniciar a função showPartNumbersAndMachines
+document.addEventListener("DOMContentLoaded", function () {
+  const optionsButton = document.getElementById("optionsButton");
+  if (!optionsButton) {
+    console.error("Botão optionsButton não encontrado.");
+    return;
+  }
+  optionsButton.addEventListener("click", showPartNumbersAndMachines);
+});
+
+// Evento de carregamento do DOM para iniciar a função showPartNumbersAndMachines
+document.addEventListener("DOMContentLoaded", function () {
+  const optionsButton = document.getElementById("optionsButton");
+  if (!optionsButton) {
+    console.error("Botão optionsButton não encontrado.");
+    return;
+  }
+  optionsButton.addEventListener("click", showPartNumbersAndMachines);
+});
+
+
 document.getElementById("confirmarProcesso").addEventListener("click", async () => {
   const cards = document.querySelectorAll(".card");
   const items = [];
   const duplicates = [];
-  const allMaquinaIds = []; // Array para armazenar todos os IDs de máquinas
+  const allMaquinaIds = [];
 
   for (const card of cards) {
-    const emptyCard = card.closest(".card-wrapper").querySelector(".empty-card");
-    const maquinaId = emptyCard?.dataset.maquinaId;
+    const emptyCards = card.closest(".card-wrapper").querySelectorAll(".empty-card");
 
-    if (maquinaId) {
+    if (emptyCards.length === 0) {
+      console.warn("Nenhum empty-card encontrado para o card:", card);
+      continue;
+    }
+
+    const maquinaIds = Array.from(emptyCards).map(emptyCard => parseInt(emptyCard.dataset.maquinaId)); // Converta para número inteiro
+    const uniqueMaquinaIds = [...new Set(maquinaIds)]; // Remove duplicatas, se houver
+
+    allMaquinaIds.push(...uniqueMaquinaIds);
+
+    for (const maquinaId of uniqueMaquinaIds) {
       const itemId = parseInt(card.dataset.itemId);
-      const ordem = parseInt(card.dataset.ordem) + 1;
+      if (isNaN(itemId)) {
+        console.error(`itemId inválido para o card:`, card);
+        continue;
+      }
+
+      let ordem = parseInt(card.dataset.ordem);
+
+      if (!isNaN(ordem)) {
+        ordem += 1;
+      } else {
+        console.warn(`Ordem inválida para o card com itemId: ${itemId}`);
+        ordem = 1; // Defina uma ordem padrão se o valor for inválido
+      }
 
       try {
-        const maquinaIds = maquinaId.split(',').map(id => parseInt(id.trim())); // Divide os ids por vírgula e converte para array de números
-        allMaquinaIds.push(...maquinaIds); // Adiciona os IDs ao array de todos os IDs de máquinas
-
-        for (const id of maquinaIds) {
-          const response = await axios.get(
-            `${BASE_URL}/adm/item_maquina/existence-check`,
-            {
-              params: {
-                itemId: itemId,
-                maquinaId: id,
-              },
-            }
-          );
-
-          if (response.data.exists) {
-            duplicates.push({
+        const response = await axios.get(
+          `${BASE_URL}/adm/item_maquina/existence-check`,
+          {
+            params: {
               itemId: itemId,
-              maquinaId: id,
-            });
-          } else {
-            items.push({
-              itemId: itemId,
-              maquinaId: id,
-              ordem: ordem,
-            });
+              maquinaId: maquinaId,
+            },
           }
+        );
+
+        if (response.data.exists) {
+          duplicates.push({
+            itemId: itemId,
+            maquinaId: maquinaId,
+          });
+        } else {
+          const prazo = card.dataset.prazo;
+          const executor = card.dataset.executor;
+          const finalizado = card.dataset.finalizado === "true";
+          const corte = card.dataset.corte;
+
+          const item = {
+            itemId: itemId,
+            maquinaId: maquinaId,
+            ordem: ordem,
+            prazo: prazo,
+            executor: executor,
+            finalizado: finalizado,
+            corte: corte,
+          };
+
+          items.push(item);
         }
       } catch (error) {
         console.error("Erro ao verificar a existência do processo:", error);
@@ -1067,7 +1381,6 @@ document.getElementById("confirmarProcesso").addEventListener("click", async () 
     }
   }
 
-  // Imprime todos os IDs de máquinas no console
   console.log("IDs de máquinas que serão enviados:", allMaquinaIds);
 
   if (duplicates.length > 0) {
@@ -1081,12 +1394,11 @@ document.getElementById("confirmarProcesso").addEventListener("click", async () 
 
   if (items.length > 0) {
     try {
-      const response = await axios.post(
-        `${BASE_URL}/adm/item_maquina/selecionar-maquinas`,
-        items
-      );
-      console.log(response.data.message);
-      showPartNumbersAndMachines(); // Chama a função para atualizar os cards
+      // Enviar os dados dos itens selecionados para o backend
+      await axios.post(`${BASE_URL}/adm/item_maquina/selecionar-maquinas`, items);
+
+      console.log("Processos confirmados com sucesso.");
+      showPartNumbersAndMachines();
     } catch (error) {
       console.error("Erro ao confirmar processos:", error);
     }
@@ -1094,8 +1406,6 @@ document.getElementById("confirmarProcesso").addEventListener("click", async () 
     console.warn("Nenhum item selecionado.");
   }
 });
-
-
 
 
 //=================================================
@@ -1109,14 +1419,19 @@ document
       const listContainer = document.getElementById("produzindoItemsList");
       const itemMaquina = listContainer.querySelectorAll(".item-container");
 
-      const newPriorities = Array.from(itemMaquina).map((itemsMaquina, index) => {
-        const id_item_maquina= parseInt(itemsMaquina.dataset.idItemMaquina, 10); // Extrai o id_item do atributo data
+      const newPriorities = Array.from(itemMaquina).map(
+        (itemsMaquina, index) => {
+          const id_item_maquina = parseInt(
+            itemsMaquina.dataset.idItemMaquina,
+            10
+          ); // Extrai o id_item do atributo data
 
-        return {
-          id_item_maquina: id_item_maquina,
-          prioridade: index + 1,
-        };
-      });
+          return {
+            id_item_maquina: id_item_maquina,
+            prioridade: index + 1,
+          };
+        }
+      );
 
       console.log(
         "Dados enviados para atualização de prioridades:",

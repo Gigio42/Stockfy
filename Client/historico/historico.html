@@ -1,169 +1,137 @@
-<!doctype html>
-<html lang="pt-br">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="author" content="Seu Nome" />
-        <title>Consulta</title>
-
-        <!-- CSS -->
-        <link id="theme" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css" rel="stylesheet" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spinkit/1.2.5/spinkit.min.css" />
-        <link rel="stylesheet" href="historico.css" />
-        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css" />
-        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
-        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css" />
-
-        <!-- JS -->
-        <script src="https://code.jquery.com/jquery-3.5.1.js" type="text/javascript" charset="utf8"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
-        <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js" type="text/javascript" charset="utf8"></script>
-        <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js" type="text/javascript"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-        <script src="https://cdn.datatables.net/plug-ins/1.10.22/sorting/datetime-moment.js"></script>
-        <script src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
-    </head>
-
-    <body class="body">
-        <div class="container-fluid">
-            <div class="row">
-                <!-- Aside -->
-                <aside id="aside" class="col-md-2 d-none d-md-block sidebar">
-                    <div class="sidebar-sticky">
-                        <div class="logo-container">
-                            <img class="logo" src="./media/logoTransparente.png" alt="Logo" class="logoImg" />
-                        </div>
-                        <ul class="nav flex-column">
-                            <li class="nav-item mb-2 mt-5">
-                                <a class="nav-link" href="#"> Chapas </a>
-                            </li>
-                            <li class="nav-item mb-2">
-                                <a class="nav-link" href="#"> Items </a>
-                            </li>
-                            <!--                             <li class="nav-item mb-2">
-                                <a class="nav-link" href="#"> Máquinas </a>
-                            </li>
-                            <li class="nav-item mb-2">
-                                <a class="nav-link" href="#"> Usuários </a>
-                            </li> -->
-                        </ul>
-                    </div>
-                </aside>
-
-                <!-- Header -->
-                <div class="col-md-10 header">
-                    <div class="header-custom text-light d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center">
-                            <h1 class="m-0 hide-on-mobile">Consulta</h1>
-                        </div>
-                        <div class="navbar-header">
-                            <div class="media hide-on-mobile">
-                                <img class="mr-3 align-self-center" alt="Profile Pic" id="profilePic" style="width: 50px; height: 50px; border-radius: 50%" />
-                                <div class="media-body">
-                                    <h5 class="mt-0 mb-0" id="user-name">Username</h5>
-                                    <p class="mb-0 text-muted" id="role">Administrador</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="d-flex justify-content-around align-items-center" style="min-height: 70px">
-                            <div class="dark-mode-toggle mx-sm-1 mx-0 my-1 align-self-center px-sm-3 px-2">
-                                <input type="checkbox" id="darkModeToggle" />
-                                <label for="darkModeToggle"></label>
-                            </div>
-                            <div class="mx-sm-1 mx-0 my-1 align-self-center">
-                                <button id="logoutButton" class="btn btn-primary px-sm-3 px-2">Logout</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 1 seção -->
-                    <div class="container-fluid d-flex flex-column vh-100">
-                        <div class="row flex-grow-1 overflow-hidden">
-                            <div class="col-lg-6 col-md-12 d-flex flex-column pt-3">
-                                <div class="flex-grow-1 p-3 position-relative border rounded">
-                                    <div id="chartCarousel" class="carousel slide h-100 overflow-auto" data-ride="carousel">
-                                        <!-- Slides -->
-                                        <div class="carousel-inner">
-                                            <div class="carousel-item active">
-                                                <canvas id="myChart1"></canvas>
-                                            </div>
-                                            <div class="carousel-item">
-                                                <canvas id="myChart2"></canvas>
-                                            </div>
-                                            <div class="carousel-item">
-                                                <canvas id="myChart3"></canvas>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Indicators -->
-                                    <ol class="carousel-indicators position-absolute bottom-0 start-50 translate-middle-x">
-                                        <li data-target="#chartCarousel" data-slide-to="0" class="active"></li>
-                                        <li data-target="#chartCarousel" data-slide-to="1"></li>
-                                        <li data-target="#chartCarousel" data-slide-to="2"></li>
-                                    </ol>
-                                </div>
-                            </div>
-
-                            <!-- 2 seção -->
-                            <div class="col-lg-6 col-md-12 d-flex flex-column pt-3">
-                                <div class="flex-grow-1 overflow-auto p-3">
-                                    <div id="chapasCards" class="d-flex flex-wrap justify-content-start"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 3 Seção -->
-                        <div class="row flex-grow-1 overflow-hidden dark-mode pt-3">
-                            <div class="col-12 d-flex flex-column">
-                                <div class="flex-grow-1 overflow-auto">
-                                    <!-- Wrapper for the table -->
-                                    <div id="tableWrapper" class="expandable">
-                                        <table id="myTable2" class="display w-100">
-                                            <thead></thead>
-                                            <tbody></tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="modal fade" id="itemModal" tabindex="-1" role="dialog" aria-labelledby="itemModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="itemModalLabel">Item Information</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body" id="itemModalBody">
-                                    <!-- Item information will be inserted here -->
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciamento de Histórico</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #2B2B2B;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        aside {
+            position: absolute;
+            width: 20%;
+            height: 100vh;
+            background-color: #222222;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-right: 2px solid #444444;
+        }
+        button, .button-like, .id-button {
+            padding: 10px;
+            margin: 5px;
+            background-color: #333333;
+            color: white;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+        button:hover, .button-like:hover, .id-button:hover {
+            background-color: #555555;
+        }
+        main {
+            margin-left: 20%;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #444444;
+        }
+        th {
+            background-color: #333333;
+        }
+        .data {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        #idsContainer {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            margin-bottom: 20px;
+            white-space: nowrap;
+        }
+        .modal {
+            display: none; /* Certifique-se que isso muda para 'block' */
+            position: fixed;
+            z-index: 1050; /* Suficientemente alto para estar sobre outros conteúdos */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4); /* Cor de fundo com opacidade */
+            color: white;
+        }
+        
+        .modal-content {
+            color: white;
+            background-color: #333333;
+            margin: 15% auto; /* Ajuste conforme necessário */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%; /* Ajuste conforme necessário */
+        }
+        
+    </style>
+</head>
+<body>
+    <aside>
+        <button id="btnHistoricoPartNumber">Part Number</button>
+        <button id="btnHistoricoChapa">Chapa</button>
+        <button id="btnHistoricoMaquina">Máquina</button>
+    </aside>
+    <main>
+        <header>
+            <h1>Gerenciador de Histórico</h1>
+        </header>
+        
+        <div class="data">
+            <div class="button-like" id="week">Semana</div>
+            <div class="button-like" id="month">Mês</div>
+            <div class="button-like" id="year">Ano</div>
+            <input type="text" id="dateRange" placeholder="Selecione as datas" style="background-color: #333333; color: white; border: none; padding: 10px; margin: 5px;">
         </div>
+        <div id="idsContainer"></div>
+        
+        <table id="resultsTable" border="1">
+            <thead>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <div id="modal" class="modal">
+            <p>Detalhes da Chapa</p>
+            <div id="modalContent"></div>
+            <button onclick="document.getElementById('modal').style.display='none';">Fechar</button>
+        </div>
+    </main>
+    <!-- Modal Structure -->
+    <div id="modalChapas" class="modal">
+        <div class="modal-content">
+            <div id="modalContentChapas"></div>
+        </div>
+    </div>
+    
+    <script src="historico.js"></script>
 
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-        <!-- Popper.js library -->
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <!-- Bootstrap library -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
-        <!-- jQuery Mask plugin -->
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-        <!-- Axios library -->
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.9/dist/sweetalert2.all.min.js"></script>
-        <!-- sweetAlert -->
+</script>
 
-        <script type="module" src="historico.js"></script>
-    </body>
+
+</body>
 </html>

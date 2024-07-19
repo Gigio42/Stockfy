@@ -1,10 +1,4 @@
 import AdmController from "../Controllers/admController.js";
-import {
-  postChapaItemMaquinaSchema,
-  getChapaItemMaquinaSchema,
-  getItemSchema,
-} from "../validators/admValidator.js";
-
 import { deleteMaquina } from "../Controllers/admController.js"; // Importe a função deleteMaquina
 
 async function admRoute(fastify, options) {
@@ -15,21 +9,32 @@ async function admRoute(fastify, options) {
       const maquina_id = await admController.getMaquina(request.params.item);
       reply.send(maquina_id);
     } catch (err) {
-      reply
-        .code(500)
-        .send({
-          message: "Error retrieving data from SQLite database",
-          error: err.message,
-        });
+      reply.code(500).send({
+        message: "Error retrieving data from SQLite database",
+        error: err.message,
+      });
     }
   });
 
   fastify.get("/items/chapas", async (request, reply) => {
     try {
       const chapas = await admController.getChapasInItems();
+      console.log("Dados retornados pelo servidor:", chapas); // Adiciona um log dos dados retornados
       reply.send(chapas);
     } catch (err) {
+      console.error("Erro ao buscar chapas:", err);
       reply.code(500).send({ message: "Internal Server Error" });
+    }
+  });
+
+  fastify.post("/atualizar-prioridades", async (request, reply) => {
+    try {
+      const newPriorities = request.body;
+      await admController.updateItemPriorities(newPriorities);
+      reply.send({ message: "Prioridades atualizadas com sucesso!" });
+    } catch (error) {
+      fastify.log.error(error);
+      reply.status(500).send({ error: "Erro ao atualizar as prioridades" });
     }
   });
 
@@ -49,7 +54,21 @@ async function admRoute(fastify, options) {
           quantidade,
           colaborador,
           prioridade,
-        } = request.body; // Incluir prioridade aqui
+          executor, // Receber o executor aqui
+        } = request.body; // Incluir executor aqui
+
+        console.log("Dados recebidos na rota:", {
+          prazo,
+          ordem,
+          medida,
+          op,
+          sistema,
+          cliente,
+          quantidade,
+          colaborador,
+          prioridade,
+          executor, // Log para verificar se o executor está sendo recebido
+        });
 
         await admController.changeItemStatusProduzindo(
           itemId,
@@ -62,7 +81,8 @@ async function admRoute(fastify, options) {
           cliente,
           parseInt(quantidade, 10),
           colaborador,
-          parseInt(prioridade, 10) // Passar prioridade como um inteiro
+          parseInt(prioridade, 10), // Passar prioridade como um inteiro
+          executor // Passar o executor para o controlador
         );
 
         reply.send({ message: "Status do item atualizado para PRODUZINDO" });
@@ -79,18 +99,6 @@ async function admRoute(fastify, options) {
     }
   );
 
-  fastify.post("/atualizar-prioridades", async (request, reply) => {
-    try {
-      const newPriorities = request.body;
-      await admController.updateItemPriorities(newPriorities);
-      reply.send({ message: "Prioridades atualizadas com sucesso!" });
-    } catch (error) {
-      fastify.log.error(error);
-      reply.status(500).send({ error: "Erro ao atualizar as prioridades" });
-    }
-  });
-  
-
   fastify.get("/maquina/:maquinaId/item", async (request, reply) => {
     try {
       const maquinaId = parseInt(request.params.maquinaId, 10);
@@ -100,14 +108,14 @@ async function admRoute(fastify, options) {
       reply.code(500).send({ message: "Internal Server Error" });
     }
   });
-  
+
   fastify.post("/maquina/itens/prioridades", async (request, reply) => {
     try {
       const { ids } = request.body;
-  
+
       // Busca os itens com as prioridades pelos IDs fornecidos
       const items = await admController.getAllItemsPriorities(ids);
-  
+
       reply.send(items);
     } catch (err) {
       console.error("Erro ao buscar prioridades dos itens existentes:", err);
@@ -116,6 +124,26 @@ async function admRoute(fastify, options) {
         .send({ message: "Erro ao buscar prioridades dos itens existentes." });
     }
   });
+
+// No arquivo de rotas, por exemplo, routes/itemMaquinaRoutes.js
+
+fastify.delete("/item_maquina/:id", async (request, reply) => {
+  try {
+    const { id } = request.params;
+
+    // Chamar a função do controlador para excluir o item
+    await admController.deleteItemMaquina(id);
+
+    // Enviar uma resposta de sucesso
+    reply.status(204).send(); // 204 No Content
+  } catch (err) {
+    console.error("Erro ao excluir o item de máquina:", err);
+    reply
+      .code(500)
+      .send({ message: "Erro ao excluir o item de máquina." });
+  }
+});
+
   
 
   fastify.get("/item_maquina", async (request, reply) => {
@@ -130,51 +158,81 @@ async function admRoute(fastify, options) {
   fastify.post("/item_maquina/selecionar-maquinas", async (request, reply) => {
     try {
       const items = request.body;
-  
+
       // Log de todas as máquinas recebidas
       console.log("Recebido para criação de Itens_Maquina:", items);
-  
-      for (const { itemId, maquinaId, ordem } of items) {
-        await admController.createItemMaquina(itemId, maquinaId, ordem);
+
+      // Aqui você pode adicionar um console.log para os maquinaIds
+      const allMaquinaIds = items.map((item) => item.maquinaId);
+      console.log("Todos os maquinaIds recebidos:", allMaquinaIds);
+
+      const createdItems = [];
+
+      for (const {
+        itemId,
+        maquinaId,
+        ordem,
+        prazo,
+        executor,
+        finalizado,
+        corte,
+      } of items) {
+        const createdItem = await admController.createItemMaquina(
+          itemId,
+          maquinaId,
+          ordem,
+          prazo,
+          executor,
+          finalizado,
+          corte
+        );
+        createdItems.push(createdItem);
       }
-  
-      reply.send({ message: "Itens_Maquina criados com sucesso." });
+
+      reply.send({
+        message: "Itens_Maquina criados com sucesso.",
+        createdItems,
+      });
     } catch (err) {
       console.error("Erro ao criar Itens_Maquina:", err);
       reply.code(500).send({ message: "Erro ao criar Itens_Maquina." });
     }
   });
-  
-  
 
   fastify.get("/item_maquina/existence-check", async (request, reply) => {
     try {
       const { itemId, maquinaId } = request.query;
-      console.log(`Received existence check request for itemId: ${itemId}, maquinaId: ${maquinaId}`);
-  
+      console.log(
+        `Received existence check request for itemId: ${itemId}, maquinaId: ${maquinaId}`
+      );
+
       if (!itemId || !maquinaId) {
         reply.code(400).send({ message: "itemId and maquinaId are required." });
         return;
       }
-  
-      const maquinaIds = maquinaId.split(',').map(id => parseInt(id.trim()));
-  
-      const promises = maquinaIds.map(async id => {
-        const exists = await admController.checkItemMaquinaExists(parseInt(itemId), id);
+
+      const maquinaIds = maquinaId.split(",").map((id) => parseInt(id.trim()));
+
+      const promises = maquinaIds.map(async (id) => {
+        const exists = await admController.checkItemMaquinaExists(
+          parseInt(itemId),
+          id
+        );
         return { maquinaId: id, exists: exists };
       });
-  
+
       const results = await Promise.all(promises);
-  
-      const exists = results.some(result => result.exists);
-  
+
+      const exists = results.some((result) => result.exists);
+
       reply.send({ exists });
     } catch (err) {
       console.error("Erro ao verificar a existência do item_maquina:", err);
-      reply.code(500).send({ message: "Erro ao verificar a existência do item_maquina." });
+      reply
+        .code(500)
+        .send({ message: "Erro ao verificar a existência do item_maquina." });
     }
   });
-  
 
   fastify.post("/maquina", async (request, reply) => {
     try {
@@ -183,12 +241,10 @@ async function admRoute(fastify, options) {
       reply.send(newMaquina);
     } catch (err) {
       console.error("Erro ao criar uma nova máquina:", err);
-      reply
-        .code(500)
-        .send({
-          message: "Erro ao criar uma nova máquina",
-          error: err.message,
-        });
+      reply.code(500).send({
+        message: "Erro ao criar uma nova máquina",
+        error: err.message,
+      });
     }
   });
 
