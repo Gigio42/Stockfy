@@ -24,8 +24,36 @@ class ProducaoController {
   // GetItemsInMaquinas Function
   // ------------------------------
   async getChapasInItemsInMaquinas(name) {
-    // Fetch the machine details
-    const maquina = await prisma.maquina.findFirst({
+    // Busca os detalhes da máquina e itens associados
+    const maquina = await this.buscarDetalhesDaMaquina(name);
+    if (!maquina) {
+      return null;
+    }
+
+    // Busca todos os processos dos itens
+    const allItemsMaquinas = await this.buscarTodosProcessosDosItens();
+
+    // Agrupa processos por itemId e calcula ordemTotal
+    const groupedItems = this.agruparItensPorId(allItemsMaquinas);
+
+    // Calcula ordemTotal e determina estado para cada processo
+    this.calcularEstadosDosItens(groupedItems);
+
+    // Atribui estado aos itens da máquina e ordena por prioridade
+    this.atribuirEstadosAosItens(maquina, groupedItems);
+
+    // Ordena itens por prioridade
+    this.ordenarItensPorPrioridade(maquina);
+
+    // Marca o item de maior prioridade com todas as chapas no status "RECEBIDO" como disponível
+    this.marcarItemDisponivel(maquina);
+
+    return maquina;
+  }
+
+  // Método para buscar os detalhes da máquina e itens associados
+  async buscarDetalhesDaMaquina(name) {
+    return prisma.maquina.findFirst({
       where: { nome: name },
       select: {
         id_maquina: true,
@@ -60,6 +88,7 @@ class ProducaoController {
                         medida: true,
                         largura: true,
                         comprimento: true,
+                        status: true, // Inclui status da chapa
                       },
                     },
                   },
@@ -70,13 +99,11 @@ class ProducaoController {
         },
       },
     });
+  }
 
-    if (!maquina) {
-      return null;
-    }
-
-    // Fetch all items' processes
-    const allItemsMaquinas = await prisma.item_Maquina.findMany({
+  // Método para buscar todos os processos dos itens
+  async buscarTodosProcessosDosItens() {
+    return prisma.item_Maquina.findMany({
       select: {
         ordem: true,
         finalizado: true,
@@ -84,17 +111,21 @@ class ProducaoController {
         maquinaId: true,
       },
     });
+  }
 
-    // Group processes by itemId and calculate ordemTotal
-    const groupedItems = allItemsMaquinas.reduce((groups, item) => {
+  // Método para agrupar processos por itemId
+  agruparItensPorId(allItemsMaquinas) {
+    return allItemsMaquinas.reduce((groups, item) => {
       if (!groups[item.itemId]) {
         groups[item.itemId] = [];
       }
       groups[item.itemId].push(item);
       return groups;
     }, {});
+  }
 
-    // Calculate ordemTotal and determine estado for each process
+  // Método para calcular ordemTotal e determinar estado para cada processo
+  calcularEstadosDosItens(groupedItems) {
     Object.values(groupedItems).forEach((items) => {
       items.sort((a, b) => a.ordem - b.ordem);
       const ordemTotal = items.length;
@@ -112,8 +143,10 @@ class ProducaoController {
         }
       });
     });
+  }
 
-    // Assign estado to maquina items and sort by priority
+  // Método para atribuir estado aos itens da máquina
+  atribuirEstadosAosItens(maquina, groupedItems) {
     maquina.items.forEach((item) => {
       const itemProcesses = groupedItems[item.itemId];
       if (itemProcesses) {
@@ -124,22 +157,26 @@ class ProducaoController {
         }
       }
     });
+  }
 
-    // Sort items by priority
+  // Método para ordenar itens por prioridade
+  ordenarItensPorPrioridade(maquina) {
     maquina.items.sort((a, b) => a.prioridade - b.prioridade);
+  }
 
-    // Mark the highest priority item as available and others as blocked
+  // Método para marcar o item de maior prioridade com todas as chapas no status "RECEBIDO" como disponível
+  marcarItemDisponivel(maquina) {
     let highestPriorityItem = true;
     maquina.items.forEach((item) => {
-      if (highestPriorityItem && item.estado !== "FEITO") {
+      const allChapasReceived = item.Item.chapas.every((chapaItem) => chapaItem.chapa.status === "RECEBIDO");
+
+      if (highestPriorityItem && item.estado !== "FEITO" && allChapasReceived) {
         item.disponivel = true;
         highestPriorityItem = false;
       } else {
         item.disponivel = false;
       }
     });
-
-    return maquina;
   }
 
   // ------------------------------
@@ -209,7 +246,7 @@ class ProducaoController {
         data_modificacao: new Date().toLocaleDateString("pt-BR"),
         ordem: itemMaquina.ordem,
         pedido_venda: item.pedido_venda.toString(),
-      }
+      },
     });
 
     const remainingOrders = await Item_Maquina.findMany({
@@ -243,7 +280,6 @@ class ProducaoController {
 
         //Se for a ultima...
         if (countItensUsandoChapa === 1) {
-
           //remover chapa!!!
 
           //historico deleta chapa
@@ -255,7 +291,7 @@ class ProducaoController {
               modificado_por: executor, // usuario login
               data_modificacao: new Date().toLocaleDateString("pt-BR"),
               pedido_venda: item.pedido_venda.toString(),
-            }
+            },
           });
 
           // Tirando todas as conjugações associadas a essa chapa
@@ -291,7 +327,7 @@ class ProducaoController {
           modificado_por: executor, // usuario login
           data_modificacao: new Date().toLocaleDateString("pt-BR"),
           pedido_venda: item.pedido_venda.toString(),
-        }
+        },
       });
 
       // Remover todos os registros de Item_Maquina relacionados ao item
