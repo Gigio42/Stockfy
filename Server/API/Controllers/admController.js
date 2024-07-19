@@ -293,7 +293,22 @@ class AdmController {
       throw new Error("Erro ao buscar todos os Item_Maquina: " + error.message);
     }
   }
+
+  async  deleteItemMaquina(id) {
+    try {
+      await prisma.item_Maquina.delete({
+        where: {
+          id_item_maquina: parseInt(id, 10), // Certifique-se de que o ID é um número
+        },
+      });
+      return { success: true };
+    } catch (error) {
+      console.error("Erro ao excluir o Item_Maquina:", error); // Adicionar log detalhado
+      throw new Error("Erro ao excluir o Item_Maquina: " + error.message);
+    }
+  }
   
+      
 
   async checkItemMaquinaExists(itemId, maquinaId) {
     try {

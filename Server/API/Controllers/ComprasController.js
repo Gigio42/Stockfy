@@ -113,8 +113,11 @@ class ComprasController {
 
   async listarChapasEmEstoque() {
     try {
-      // Consulta todas as chapas em estoque no banco de dados usando Prisma
+      // Consulta todas as chapas com status 'A_CONJUGAR' no banco de dados usando Prisma
       const chapas = await prisma.chapas.findMany({
+        where: {
+          status: 'A_CONJUGAR', // Filtra chapas com o status 'A_CONJUGAR'
+        },
         select: {
           id_chapa: true,
           medida: true,
@@ -126,15 +129,17 @@ class ComprasController {
           // Adicione outros campos conforme necessário
         },
       });
-
+  
       return chapas;
     } catch (error) {
       throw new Error(`Erro ao listar chapas em estoque: ${error.message}`);
     }
   }
+  
 
   async adicionarMedidasConjugadas(medidasConjugConfimed) {
     try {
+      // Processa as medidas e cria novas conjugacões
       const resultados = await Promise.all(
         medidasConjugConfimed.map(async (medida) => {
           // Concatenando largura e comprimento como medida
@@ -154,6 +159,19 @@ class ComprasController {
           // Verificando se 'chapa' está presente e adicionando a referência
           if (medida.chapa) {
             data.chapaId = parseInt(medida.chapa, 10);
+  
+            // Atualizando o status da chapa se necessário
+            const chapa = await prisma.chapas.findUnique({
+              where: { id_chapa: data.chapaId },
+              select: { status: true }
+            });
+  
+            if (chapa && chapa.status !== 'RECEBIDO' && chapa.status !== 'PARCIAL') {
+              await prisma.chapas.update({
+                where: { id_chapa: data.chapaId },
+                data: { status: 'COMPRADO' }
+              });
+            }
           }
   
           // Criando uma nova conjugação no banco de dados usando Prisma
@@ -170,6 +188,7 @@ class ComprasController {
       throw error;
     }
   }
+  
   
 }
 
