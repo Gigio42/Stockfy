@@ -376,12 +376,6 @@ class AdmController {
     }
   }
   
-  
-  
-  
-  
-  
-
   // Método para criar uma nova máquina
   async createMaquina(nome) {
     try {
@@ -396,9 +390,9 @@ class AdmController {
       throw new Error("Erro ao criar uma nova máquina: " + error.message);
     }
   }
-}
+  }
 
-async function deleteMaquina(maquinaId) {
+  async function deleteMaquina(maquinaId) {
   console.log(`Tentando deletar a máquina com ID: ${maquinaId}`);
   try {
     // Verifica se a máquina possui itens associados
@@ -436,7 +430,7 @@ async function deleteMaquina(maquinaId) {
     // Lança o erro novamente para que seja capturado no local onde a função deleteMaquina é chamada
     throw error;
   }
-}
+  }
 
 export default AdmController;
 export { deleteMaquina };
