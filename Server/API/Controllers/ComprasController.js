@@ -139,7 +139,7 @@ class ComprasController {
 
   async adicionarMedidasConjugadas(medidasConjugConfimed) {
     try {
-      // Processa as medidas e cria novas conjugacões
+      // Processa as medidas e cria novas conjugações
       const resultados = await Promise.all(
         medidasConjugConfimed.map(async (medida) => {
           // Concatenando largura e comprimento como medida
@@ -174,6 +174,9 @@ class ComprasController {
             }
           }
   
+          // Aqui você pode usar a data de confirmação para qualquer lógica necessária
+          console.log(`Medida confirmada em: ${medida.dataConfirmacao}`);
+  
           // Criando uma nova conjugação no banco de dados usando Prisma
           const novaConjugacao = await prisma.conjugacoes.create({ data });
   
@@ -187,7 +190,8 @@ class ComprasController {
       console.error("Erro ao adicionar medidas conjugadas:", error);
       throw error;
     }
-  }
+  }  
+  
   
   
 }
