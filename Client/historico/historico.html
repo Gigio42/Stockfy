@@ -6,87 +6,8 @@
     <title>Gerenciamento de Histórico</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="stylesheet" href="historico.css">
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #2B2B2B;
-            color: white;
-            font-family: Arial, sans-serif;
-        }
-        aside {
-            position: absolute;
-            width: 20%;
-            height: 100vh;
-            background-color: #222222;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border-right: 2px solid #444444;
-        }
-        button, .button-like, .id-button {
-            padding: 10px;
-            margin: 5px;
-            background-color: #333333;
-            color: white;
-            border: none;
-            cursor: pointer;
-            text-align: center;
-            transition: background-color 0.3s;
-        }
-        button:hover, .button-like:hover, .id-button:hover {
-            background-color: #555555;
-        }
-        main {
-            margin-left: 20%;
-            padding: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-            border-bottom: 1px solid #444444;
-        }
-        th {
-            background-color: #333333;
-        }
-        .data {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 20px;
-        }
-        #idsContainer {
-            display: flex;
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            margin-bottom: 20px;
-            white-space: nowrap;
-        }
-        .modal {
-            display: none; /* Certifique-se que isso muda para 'block' */
-            position: fixed;
-            z-index: 1050; /* Suficientemente alto para estar sobre outros conteúdos */
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4); /* Cor de fundo com opacidade */
-            color: white;
-        }
-        
-        .modal-content {
-            color: white;
-            background-color: #333333;
-            margin: 15% auto; /* Ajuste conforme necessário */
-            padding: 20px;
-            border: 1px solid #888;
-            width: 50%; /* Ajuste conforme necessário */
-        }
         
     </style>
 </head>
@@ -97,6 +18,7 @@
         <button id="btnHistoricoMaquina">Máquina</button>
     </aside>
     <main>
+        <div class="partoftop">
         <header>
             <h1>Gerenciador de Histórico</h1>
         </header>
@@ -108,6 +30,7 @@
             <input type="text" id="dateRange" placeholder="Selecione as datas" style="background-color: #333333; color: white; border: none; padding: 10px; margin: 5px;">
         </div>
         <div id="idsContainer"></div>
+    </div>
         
         <table id="resultsTable" border="1">
             <thead>

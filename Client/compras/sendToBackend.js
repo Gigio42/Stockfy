@@ -60,22 +60,39 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 
+// Função para formatar a data no formato dd/mm/aaaa
+function formatarData(data) {
+  const dia = String(data.getDate()).padStart(2, '0');
+  const mes = String(data.getMonth() + 1).padStart(2, '0'); // Janeiro é 0!
+  const ano = data.getFullYear();
+  return `${dia}/${mes}/${ano}`;
+}
+
 // Função para enviar as medidas confirmadas para o backend
 export async function enviarMedidasConjugadas() {
   try {
-      console.log("Enviando medidas conjugadas para o backend...");
-      const response = await axios.post(`${BASE_URL}/compras/conjugacoes/confirmed`, medidasConjugConfimed, {
-          headers: {
-              "Content-Type": "application/json",
-          },
-      });
-      console.log("Medidas conjugadas enviadas com sucesso:", response.data);
-      // Aqui você pode realizar qualquer ação adicional após o envio bem-sucedido
+    console.log("Enviando medidas conjugadas para o backend...");
+
+    // Adicionando a data de confirmação
+    const medidasComData = medidasConjugConfimed.map(medida => ({
+      ...medida,
+      dataConfirmacao: formatarData(new Date()) // Adiciona a data formatada
+    }));
+
+    const response = await axios.post(`${BASE_URL}/compras/conjugacoes/confirmed`, medidasComData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log("Medidas conjugadas enviadas com sucesso:", response.data);
+    // Aqui você pode realizar qualquer ação adicional após o envio bem-sucedido
   } catch (error) {
-      console.error("Erro ao enviar medidas conjugadas:", error);
-      // Trate os erros conforme necessário
+    console.error("Erro ao enviar medidas conjugadas:", error);
+    // Trate os erros conforme necessário
   }
 }
+
+
 
 // Associar a função ao botão de confirmação
 document.addEventListener("DOMContentLoaded", () => {
