@@ -1147,86 +1147,62 @@ async function toggleOverlayDiv(maquinaDiv) {
 
 
 
-
-
-
-
-
+// Função no Frontend
 async function showPartNumbersAndMachines() {
   try {
-    // Obter dados dos itens de máquina
     const response = await axios.get(`${BASE_URL}/adm/item_maquina`);
-    console.log(response.data); // Verifique a estrutura dos dados aqui
-
-    // Limpar container de cards
     const cardContainer = document.getElementById("partNumberCardsContainer");
     cardContainer.innerHTML = "";
 
-    // Mapa para armazenar números de peça e dados associados
     const partNumberMap = {};
 
-    // Iterar sobre os dados recebidos
     response.data.forEach((itemMaquina) => {
-      console.log(itemMaquina); // Adicione esta linha para depuração
-
-      // Extrair número de peça
       const partNumber = itemMaquina.Item.part_number.replace("::maker", "");
 
-      // Inicializar entrada no mapa se não existir
       if (!partNumberMap[partNumber]) {
         partNumberMap[partNumber] = {
           maquinas: [],
-          idItem: itemMaquina.id_item_maquina, // Ajustado para id_item_maquina
+          idItem: itemMaquina.itemId, // Use itemId, não id_item_maquina
           ordem: itemMaquina.ordem,
         };
       }
 
-      // Verificar e acessar a propriedade 'nome' correta
-      const nome = itemMaquina.maquina.nome; // Ajuste conforme a estrutura dos dados
+      const nome = itemMaquina.maquina.nome;
 
-      // Adicionar máquina ao número de peça correspondente
       partNumberMap[partNumber].maquinas.push({
         idItemMaquina: itemMaquina.id_item_maquina,
-        nome: nome, // Corrigido para usar o valor correto de 'nome'
+        nome: nome,
         finalizado: itemMaquina.finalizado,
       });
     });
 
-    // Construir cards com base nos dados do mapa
     for (const [partNumber, data] of Object.entries(partNumberMap)) {
       const cardWrapper = document.createElement("div");
       cardWrapper.className = "card-wrapper";
 
       const card = document.createElement("div");
       card.className = "card";
-
-      // Configuração dos datasets
       card.dataset.partNumber = partNumber;
       card.dataset.itemId = data.idItem;
       card.dataset.ordem = data.ordem;
 
-      // Conteúdo do card com número de peça e máquinas associadas
       const cardContent = `
         <div class="card-header d-flex justify-content-between align-items-center">
           <span>${partNumber}</span>
           <img class="toggle-arrow" src="media/seta.png" style="cursor: pointer; transform: rotate(0deg);">
         </div>
         <div class="card-body d-none">
-          ${data.maquinas.map((maquina) => {
-            console.log(maquina); // Adicione esta linha para depuração
-            return `
+          ${data.maquinas.map((maquina) => `
               <div 
                 class="maquina-div ${maquina.finalizado ? "finalizado" : ""}"
-                data-id-item-maquina="${maquina.idItemMaquina}"> <!-- Somente id_item_maquina -->
-                ${maquina.nome || "Nome não disponível"} <!-- Exibe 'Nome não disponível' se nome estiver undefined -->
-              </div>`;
-          }).join("")}
+                data-id-item-maquina="${maquina.idItemMaquina}">
+                ${maquina.nome || "Nome não disponível"}
+              </div>`).join("")}
         </div>
       `;
 
       card.innerHTML = cardContent;
 
-      // Adicionar evento de clique para expandir/recolher o corpo do card
       const cardHeader = card.querySelector(".card-header");
       const cardBody = card.querySelector(".card-body");
       const toggleArrow = card.querySelector(".toggle-arrow");
@@ -1240,7 +1216,6 @@ async function showPartNumbersAndMachines() {
         }
       });
 
-      // Adicionar evento para clicar em maquina-div e criar/remover a div sobreposta
       const maquinaDivs = card.querySelectorAll(".maquina-div");
       maquinaDivs.forEach((maquinaDiv) => {
         maquinaDiv.addEventListener("click", () => {
@@ -1248,11 +1223,8 @@ async function showPartNumbersAndMachines() {
         });
       });
 
-      // Adicionar card ao container de cards
       cardWrapper.appendChild(card);
       addAddButton(card, cardWrapper);
-
-      // Adicionar card ao container de cards
       cardContainer.appendChild(cardWrapper);
     }
   } catch (error) {
@@ -1260,10 +1232,6 @@ async function showPartNumbersAndMachines() {
   }
 }
 
-
-
-
-// Evento de carregamento do DOM para iniciar a função showPartNumbersAndMachines
 document.addEventListener("DOMContentLoaded", function () {
   const optionsButton = document.getElementById("optionsButton");
   if (!optionsButton) {
@@ -1272,39 +1240,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   optionsButton.addEventListener("click", showPartNumbersAndMachines);
 });
-
-
-// Evento de carregamento do DOM para iniciar a função showPartNumbersAndMachines
-document.addEventListener("DOMContentLoaded", function () {
-  const optionsButton = document.getElementById("optionsButton");
-  if (!optionsButton) {
-    console.error("Botão optionsButton não encontrado.");
-    return;
-  }
-  optionsButton.addEventListener("click", showPartNumbersAndMachines);
-});
-
-
-// Evento de carregamento do DOM para iniciar a função showPartNumbersAndMachines
-document.addEventListener("DOMContentLoaded", function () {
-  const optionsButton = document.getElementById("optionsButton");
-  if (!optionsButton) {
-    console.error("Botão optionsButton não encontrado.");
-    return;
-  }
-  optionsButton.addEventListener("click", showPartNumbersAndMachines);
-});
-
-// Evento de carregamento do DOM para iniciar a função showPartNumbersAndMachines
-document.addEventListener("DOMContentLoaded", function () {
-  const optionsButton = document.getElementById("optionsButton");
-  if (!optionsButton) {
-    console.error("Botão optionsButton não encontrado.");
-    return;
-  }
-  optionsButton.addEventListener("click", showPartNumbersAndMachines);
-});
-
 
 document.getElementById("confirmarProcesso").addEventListener("click", async () => {
   const cards = document.querySelectorAll(".card");
@@ -1320,9 +1255,8 @@ document.getElementById("confirmarProcesso").addEventListener("click", async () 
       continue;
     }
 
-    const maquinaIds = Array.from(emptyCards).map(emptyCard => parseInt(emptyCard.dataset.maquinaId)); // Converta para número inteiro
-    const uniqueMaquinaIds = [...new Set(maquinaIds)]; // Remove duplicatas, se houver
-
+    const maquinaIds = Array.from(emptyCards).map(emptyCard => parseInt(emptyCard.dataset.maquinaId));
+    const uniqueMaquinaIds = [...new Set(maquinaIds)];
     allMaquinaIds.push(...uniqueMaquinaIds);
 
     for (const maquinaId of uniqueMaquinaIds) {
@@ -1338,7 +1272,7 @@ document.getElementById("confirmarProcesso").addEventListener("click", async () 
         ordem += 1;
       } else {
         console.warn(`Ordem inválida para o card com itemId: ${itemId}`);
-        ordem = 1; // Defina uma ordem padrão se o valor for inválido
+        ordem = 1;
       }
 
       try {
@@ -1394,7 +1328,6 @@ document.getElementById("confirmarProcesso").addEventListener("click", async () 
 
   if (items.length > 0) {
     try {
-      // Enviar os dados dos itens selecionados para o backend
       await axios.post(`${BASE_URL}/adm/item_maquina/selecionar-maquinas`, items);
 
       console.log("Processos confirmados com sucesso.");
@@ -1406,6 +1339,8 @@ document.getElementById("confirmarProcesso").addEventListener("click", async () 
     console.warn("Nenhum item selecionado.");
   }
 });
+
+
 
 
 //=================================================
