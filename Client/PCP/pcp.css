@@ -910,9 +910,18 @@ input[type="checkbox"] {
   pointer-events: none; /* This disables click events */
 }
 
+.text-danger {
+  color: #a72828 !important ;
+}
+
+.text-success {
+  color: #2bff0098 !important;
+}
+
 .subcard {
   background-color: #3b3b3b;
   margin-bottom: 10px;
+  border-radius: 0.8rem !important;
 }
 .light-mode .subcard {
   background-color: #e6ebf0;
