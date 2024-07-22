@@ -71,33 +71,45 @@ document.addEventListener('DOMContentLoaded', function () {
         const tbody = table.getElementsByTagName('tbody')[0];
         tbody.innerHTML = '';
         thead.innerHTML = '';
-
+    
         const headers = {
             'part_number': ["Part Number", "Quantidade", "Modificação", "Modificado Por", "Data Modificação", "Máquina", "Ordem", "Pedido Venda", "Conjulgação", "Chapas"],
             'chapa': ["Chapa", "Quantidade", "Modificação", "Modificado Por", "Data prevista", "Data Modificação", "Part Number"],
             'maquina': ["Máquina", "Part Number", "Quantidade", "Modificação", "Modificado Por", "Data Modificação", "Ordem", "Pedido Venda", "Conjulgação", "Chapas"]
         }[displayType];
-
+    
         const jsonKeys = {
             'part_number': ["part_number", "quantidade", "modificacao", "modificado_por", "data_modificacao", "maquina", "ordem", "pedido_venda", "conjulgacao"],
             'chapa': ["chapa", "quantidade", "modificacao", "modificado_por", "data_prevista", "data_modificacao", "part_number"],
             'maquina': ["maquina", "part_number", "quantidade", "modificacao", "modificado_por", "data_modificacao", "ordem", "pedido_venda", "conjulgacao"]
         }[displayType];
-
+    
+        // Adicionar cabeçalho para o contador de linha
         let rowHeader = thead.insertRow();
+        let th = document.createElement('th');
+        th.textContent = "#";
+        rowHeader.appendChild(th);
+    
         headers.forEach(header => {
             let th = document.createElement('th');
             th.textContent = header;
             rowHeader.appendChild(th);
         });
-
-        data.forEach(item => {
+    
+        // Adicionar linhas da tabela com contador de linha
+        data.forEach((item, index) => {
             if (!item[jsonKeys[0]] || item[jsonKeys[0]].toString().trim() === "") {
                 return; // Não adiciona linhas com part_number ou chapa vazio
             }
             let row = tbody.insertRow();
-            jsonKeys.forEach(key => {
+    
+            // Adicionar célula do contador de linha
+            let cell = row.insertCell();
+            cell.textContent = index + 1; // Contador de linha começa em 1
+    
+            jsonKeys.forEach((key, colIndex) => {
                 const cell = row.insertCell();
+                cell.classList.add(colIndex % 2 === 0 ? 'col-even' : 'col-odd');
                 if (key === 'data_modificacao') {
                     const date = new Date(item[key]);
                     const formattedDate = date.toLocaleDateString('pt-BR', {
@@ -115,6 +127,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+    
+    
 
     function addChapasButton(row, item) {
         let chapasCell = row.insertCell();
