@@ -50,6 +50,7 @@ model Chapas {
   data_compra           String?
   data_prevista         String?
   data_recebimento      String?
+  conjugado             Boolean @default(false)
 
   items       Chapa_Item[]
   conjugacoes Conjugacoes[]

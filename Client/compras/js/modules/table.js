@@ -21,6 +21,7 @@ export function addTableHeader(dataTable) {
 
   // Adicionar célula vazia para o checkbox de "conjug."
   const thConjug = document.createElement("div");
+  thConjug.textContent = "Conjugado"; // Texto para a célula do cabeçalho
   thConjug.classList.add("table-header");
   headerRow.appendChild(thConjug);
 
@@ -69,6 +70,7 @@ export function addTableRow(dataTable, prod, index) {
   checkboxCell.classList.add("table-cell");
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
+  checkbox.checked = prod.conjugado === 1; // Marcar checkbox se "conjugado" for 1
   checkboxCell.appendChild(checkbox);
   row.appendChild(checkboxCell);
 
@@ -76,28 +78,22 @@ export function addTableRow(dataTable, prod, index) {
 
   // Adiciona evento de clique para selecionar a linha
   checkbox.addEventListener("change", (event) => {
-    if (event.target.checked) {
-      // Marcar o status como "A_CONJUGAR"
-      prod.status = "A_CONJUGAR";
-    } else {
-      // Voltar o status para "COMPRADO"
-      prod.status = "COMPRADO";
-    }
+    prod.conjugado = event.target.checked ? 1 : 0; // Atualizar campo "conjugado" como 1 ou 0
     
-    // Verificar se jsonData existe antes de atualizar
+    // Verificar se jsonData e jsonData.infoProdComprados existem antes de atualizar
     if (window.jsonData && jsonData.infoProdComprados) {
       // Atualizar jsonData.infoProdComprados com a nova informação
       jsonData.infoProdComprados = jsonData.infoProdComprados.map((p, i) =>
-        i === index ? { ...p, status: prod.status } : p
+        i === index ? { ...p, conjugado: prod.conjugado } : p
       );
 
-      console.log("JSON atualizado com o status:");
+      console.log("JSON atualizado com o campo conjugado:");
       console.log(jsonData);
 
       // Atualizar tabela
       populateTable(jsonData.infoProdComprados);
     } else {
-      console.error("jsonData.infoProdComprados não está definido ou vazio.");
+      console.error("jsonData.infoProdComprados não está definido ou está vazio.");
     }
   });
 
