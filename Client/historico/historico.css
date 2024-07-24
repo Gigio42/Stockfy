@@ -1,0 +1,309 @@
+/* Fonte padrão para telas pequenas */
+tr td {
+  font-size: 0.7rem;
+}
+
+th {
+  font-size: 0.7rem;
+}
+
+/* Fonte para telas médias (largura mínima de 600px) */
+@media (min-width: 600px) {
+  tr td {
+    font-size: 0.9rem;
+  }
+
+  th {
+    font-size: 0.7rem;
+  }
+}
+
+/* Fonte para telas grandes (largura mínima de 1024px) */
+@media (min-width: 1024px) {
+  tr td {
+    font-size: 1.1rem;
+  }
+
+  th {
+    font-size: 0.9rem;
+  }
+}
+
+/* Defina as cores para as colunas pares e ímpares */
+.col-even {
+  background-color: #292929; /* Cinza claro */
+}
+
+.col-odd {
+  background-color: #303030; /* Cinza escuro */
+}
+
+/* Ajustes finos com unidades responsivas */
+tr td {
+  font-size: calc(0.5rem + 0.5vw);
+}
+
+th {
+  font-size: calc(0.6rem + 0.5vh);
+  font-weight: normal;
+}
+
+main {
+  padding: 0;
+  width: 100%;
+}
+
+h1 {
+  margin-left: 1rem;
+  font-size: 1.5rem;
+  font-weight: normal;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  /* largura da barra de rolagem */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #424242;
+  /* cor do 'thumb' (a parte que você arrasta) */
+  border-radius: 5px;
+  /* borda arredondada */
+}
+
+::-webkit-scrollbar-track {
+  background-color: #212121;
+  /* cor do fundo da barra de rolagem */
+}
+
+/* ======================================
+         Dark Mode Toggle Styles
+         ====================================== */
+.dark-mode-toggle input[type="checkbox"] {
+  display: none;
+}
+
+.dark-mode-toggle label {
+  margin-right: 1rem;
+  display: block;
+  width: 2.7em;
+  height: 1.5em;
+  background-color: #2a2a2a;
+  border-radius: 2rem;
+  position: relative;
+  cursor: pointer;
+}
+
+.dark-mode-toggle label:after {
+  content: "";
+  display: block;
+  width: 1.2em;
+  height: 1.2em;
+  background-color: #ffffff;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.dark-mode-toggle input[type="checkbox"]:checked + label {
+  background-color: #6eec07;
+}
+
+.dark-mode-toggle input[type="checkbox"]:checked + label:after {
+  transform: translateX(100%);
+}
+
+header {
+  font-size: 1rem;
+  width: 80%;
+  background: #0f0f0f;
+  width: 100%;
+  height: 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.botoesheader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-right: 1rem;
+}
+
+.logo-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  background: #0f0f0f;
+  height: 3rem;
+  border: solid 1px #6a6a6a45;
+  align-items: center;
+  width: 100%;
+  border-left: none;
+  border-radius: 0 !important;
+}
+.logoStockfy {
+  width: 60px;
+}
+
+body {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  background-color: #2b2b2b;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+aside {
+  width: 15vw;
+  height: 100vh;
+  background-color: #222222;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-right: 2px solid #444444;
+}
+button {
+  background-color: #333333;
+  color: white;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s;
+}
+
+.button-like {
+  background-color: rgb(68, 68, 68);
+  width: 25%;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.8rem;
+}
+
+.partoftop {
+  display: flex;
+}
+.partofside {
+  width: 100%;
+}
+
+.id-button {
+  padding: 0.8rem;
+  color: #656565;
+  border-radius: 0.5rem;
+  margin-right: 1rem;
+}
+.id-button:hover {
+  background: #4e3762;
+  color: #bd70f2;
+}
+.id-button:focus {
+  background: #4e3762;
+  color: #bd70f2;
+}
+
+button:hover,
+.button-like:hover {
+  background-color: #555555;
+}
+
+.flatpickr-input {
+  margin: 0 !important;
+  width: 25%;
+}
+
+table {
+  border: none;
+}
+
+table {
+  width: 100%;
+}
+th,
+td {
+  padding: 8px;
+  text-align: left;
+  border: none;
+}
+th {
+  background-color: #333333;
+}
+.data {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+  background: #5f5f5f;
+}
+#idsContainer {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  margin-bottom: 20px;
+  white-space: nowrap;
+  padding-left: 1rem;
+}
+.modal {
+  display: none; /* Certifique-se que isso muda para 'block' */
+  position: fixed;
+  z-index: 1050; /* Suficientemente alto para estar sobre outros conteúdos */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4); /* Cor de fundo com opacidade */
+  color: white;
+}
+
+.modal-content {
+  color: white;
+  background-color: #333333;
+  margin: 15% auto; /* Ajuste conforme necessário */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%; /* Ajuste conforme necessário */
+}
+
+#btnHistoricoPartNumber,
+#btnHistoricoChapa,
+#btnHistoricoMaquina {
+  margin-bottom: 0;
+  margin: 1rem;
+  padding: 0.8rem;
+  background: #353535;
+  color: #767676;
+  border-radius: 0.5rem;
+  width: 80%;
+  border: none;
+  cursor: pointer; /* Adiciona o cursor de ponteiro para indicar que é um botão clicável */
+  transition:
+    background 0.3s,
+    color 0.3s; /* Transições suaves para hover e focus */
+}
+
+#btnHistoricoPartNumber:hover,
+#btnHistoricoChapa:hover,
+#btnHistoricoMaquina:hover {
+  background: #444444;
+  color: #ffffff;
+}
+
+#btnHistoricoPartNumber:focus,
+#btnHistoricoChapa:focus,
+#btnHistoricoMaquina:focus {
+  background: #4e3762;
+  color: #bd70f2;
+  outline: none; /* Remove o contorno padrão do navegador */
+}
+
+#btnHistoricoPartNumber:active,
+#btnHistoricoChapa:active,
+#btnHistoricoMaquina:active {
+  background: #4e3762;
+  color: #bd70f2;
+}

@@ -293,7 +293,22 @@ class AdmController {
       throw new Error("Erro ao buscar todos os Item_Maquina: " + error.message);
     }
   }
+
+  async  deleteItemMaquina(id) {
+    try {
+      await prisma.item_Maquina.delete({
+        where: {
+          id_item_maquina: parseInt(id, 10), // Certifique-se de que o ID é um número
+        },
+      });
+      return { success: true };
+    } catch (error) {
+      console.error("Erro ao excluir o Item_Maquina:", error); // Adicionar log detalhado
+      throw new Error("Erro ao excluir o Item_Maquina: " + error.message);
+    }
+  }
   
+      
 
   async checkItemMaquinaExists(itemId, maquinaId) {
     try {
@@ -361,12 +376,6 @@ class AdmController {
     }
   }
   
-  
-  
-  
-  
-  
-
   // Método para criar uma nova máquina
   async createMaquina(nome) {
     try {
@@ -381,9 +390,9 @@ class AdmController {
       throw new Error("Erro ao criar uma nova máquina: " + error.message);
     }
   }
-}
+  }
 
-async function deleteMaquina(maquinaId) {
+  async function deleteMaquina(maquinaId) {
   console.log(`Tentando deletar a máquina com ID: ${maquinaId}`);
   try {
     // Verifica se a máquina possui itens associados
@@ -421,7 +430,7 @@ async function deleteMaquina(maquinaId) {
     // Lança o erro novamente para que seja capturado no local onde a função deleteMaquina é chamada
     throw error;
   }
-}
+  }
 
 export default AdmController;
 export { deleteMaquina };
