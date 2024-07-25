@@ -12,17 +12,30 @@
     </style>
 </head>
 <body>
-    <aside>
-        <button id="btnHistoricoPartNumber">Part Number</button>
-        <button id="btnHistoricoChapa">Chapa</button>
-        <button id="btnHistoricoMaquina">Máquina</button>
-    </aside>
     <main>
         <div class="partoftop">
-        <header>
-            <h1>Gerenciador de Histórico</h1>
-        </header>
-        
+        <aside>
+            <div class="logo-container">
+                <img class="logoStockfy" src="logoTransparente.png" alt="" />
+              </div>
+            <button id="btnHistoricoPartNumber">Part Number</button>
+            <button id="btnHistoricoChapa">Chapa</button>
+            <button id="btnHistoricoMaquina">Máquina</button>
+        </aside>
+
+        <div class="partofside" >
+            <header>
+                <h1>Gerenciador de Histórico</h1>
+                <div class="botoesheader">
+                    <div class="dark-mode-toggle">
+                      <input type="checkbox" id="darkModeToggle" />
+                      <label for="darkModeToggle"></label>
+                    </div>
+                    <a class="logout" href="../home.html"
+                      ><img class="" src="sair (1).png" alt=""
+                    /></a>
+                  </div>
+            </header>
         <div class="data">
             <div class="button-like" id="week">Semana</div>
             <div class="button-like" id="month">Mês</div>
@@ -30,14 +43,16 @@
             <input type="text" id="dateRange" placeholder="Selecione as datas" style="background-color: #333333; color: white; border: none; padding: 10px; margin: 5px;">
         </div>
         <div id="idsContainer"></div>
-    </div>
-        
         <table id="resultsTable" border="1">
             <thead>
             </thead>
             <tbody>
             </tbody>
         </table>
+    </div>
+    </div>
+        
+
         <div id="modal" class="modal">
             <p>Detalhes da Chapa</p>
             <div id="modalContent"></div>

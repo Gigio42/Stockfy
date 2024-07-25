@@ -89,6 +89,7 @@ class ComprasController {
           fornecedor: cartao.fornecedor,
           id_compra: cartao.id_compra,
           data_prevista: cartao.data_prevista,
+          conjugado: cartao.conjugado,
         })),
       });
 
@@ -113,10 +114,10 @@ class ComprasController {
 
   async listarChapasEmEstoque() {
     try {
-      // Consulta todas as chapas com status 'A_CONJUGAR' no banco de dados usando Prisma
+      // Consulta chapas com conjugado: true no banco de dados usando Prisma
       const chapas = await prisma.chapas.findMany({
         where: {
-          status: 'A_CONJUGAR', // Filtra chapas com o status 'A_CONJUGAR'
+          conjugado: true, // Filtra chapas com o campo conjugado igual a true
         },
         select: {
           id_chapa: true,
@@ -135,6 +136,7 @@ class ComprasController {
       throw new Error(`Erro ao listar chapas em estoque: ${error.message}`);
     }
   }
+  
   
 
   async adicionarMedidasConjugadas(medidasConjugConfimed) {
