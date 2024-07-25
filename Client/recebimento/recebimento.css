@@ -1,34 +1,34 @@
+.row-error {
+    background-color: red !important;
+}
+
 :root {
     --header-color: #0f0f0f;
-    /* Cor do cabeçalho para o tema escuro */
     --background-color: #1e1e1e;
     --text-color: #ccc;
     --aside-color: #333333;
     --button-color: #404040;
     --button2-color: #2c2c2c;
-    /* Cor de fundo do aside para o tema escuro */
-    --tabelacompra-color: rgb(255, 40, 40);
+    --tabela-color: rgb(54, 54, 54);
     --hoverbtnheader-color: rgb(44, 44, 44);
     --header-titulos-color: #232323;
-    --btnhover-color:#1c1c1c;
-
+    --btnhover-color: #1c1c1c;
+    --row-hover-background: #3a3a3a; /* Cor de fundo para a linha quando o mouse passa por cima */
 }
 
 [data-theme="light"] {
     --header-color: #d4d4d4;
     --hoverbtnheader-color: rgb(187, 187, 187);
-    /* Cor do cabeçalho para o tema claro */
     --background-color: #f5f5f5;
     --text-color: #1e1e1e;
     --aside-color: #b8b8b8;
     --button-color: #d5d5d5;
     --button2-color: #747474;
-    /* Cor de fundo do aside para o tema claro */
+    --tabela-color: #e3e3e3;
     --header-titulos-color: #979797;
-    --btnhover-color:#4e4e4e;
-
+    --btnhover-color: #4e4e4e;
+    --row-hover-background: #d1d1d1; /* Cor de fundo para a linha quando o mouse passa por cima */
 }
-
 
 .userdiv {
     background: #4a4a4a;
@@ -39,9 +39,8 @@
     flex-direction: row;
     padding: 1rem;
     border-radius: 1rem;
-    margin-TOP: 2REM;
+    margin-top: 2rem;
 }
-
 
 body {
     font-family: Arial, sans-serif;
@@ -50,21 +49,17 @@ body {
     display: flex;
     flex-direction: row;
     height: 100vh;
-    /* Faz o corpo da página ocupar toda a altura da tela */
-    overflow-x: hidden;
-    /* Remove a barra de rolagem se não for necessário */
+    overflow: hidden; /* Removido o scroll horizontal e vertical da página */
 }
 
-body,
-input[type="date"] {
+body, input[type="date"] {
     background-color: var(--background-color);
-    color: rgb(255, 39, 82);
+    color: var(--text-color);
 }
 
-input[type="text"],
-select {
+input[type="text"], select {
     background-color: var(--background-color);
-    color: rgb(255, 39, 82);
+    color: var(--text-color);
     font-size: 0.7rem;
 }
 
@@ -78,9 +73,8 @@ select {
     border-bottom: solid 1px #6a6a6a45;
 }
 
-h5,
-P {
-    margin: 0.5REM;
+h5, p {
+    margin: 0.5rem;
 }
 
 .logo {
@@ -89,27 +83,19 @@ P {
     width: 100px;
 }
 
-
 aside {
     position: fixed;
-    /* Fixa o aside na posição, fazendo-o não rolar com o resto da página */
     top: 0;
-    /* Posiciona o topo do aside no topo da viewport */
     left: 0;
-    /* Posiciona o lado esquerdo do aside na lateral esquerda da viewport */
     height: 100vh;
-    /* Faz o aside ocupar toda a altura da viewport */
     width: 18%;
-    /* Define uma largura fixa para o aside */
     background-color: var(--aside-color);
     color: var(--text-color);
     border: solid 1px #6a6a6a45;
-    /* Adiciona uma borda apenas no lado direito */
     display: flex;
     flex-direction: column;
     align-items: center;
     z-index: 1000;
-    /* Assegura que o aside fique sobre outros elementos */
 }
 
 aside button {
@@ -121,275 +107,76 @@ aside button {
     border-radius: 5%;
     padding: 5%;
     margin: 1%;
+    cursor: pointer; /* Adicionando cursor de ponteiro */
 }
 
-#tableBody2 {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: fit-content;
-
-}
-
-
-#tableBody2 input
- {
-    color: #3168ff !important;
+aside button:hover {
+    background-color: var(--btnhover-color); /* Cor de fundo ao passar o mouse */
 }
 
 .logout {
     padding: 0.5rem;
-  border-radius: 0.5rem;
+    border-radius: 0.5rem;
 }
-
-
 
 a {
     margin: 0.5rem;
     display: flex;
-align-items: center;
-justify-content: center;
-color: var(    --header-color);
-
+    align-items: center;
+    justify-content: center;
+    color: var(--header-color);
 }
 
 .logout:hover {
-    background:var(--hoverbtnheader-color);
-
-}
-
-
-table#recebimento {
-    display: flex;
-    background-color: #3168ff2b !important;
-    margin: 2rem;
-    border-radius: 1rem;
-    flex-direction: column;
-    padding: 1rem;
-    margin-top: 0;
-    margin-bottom:0;
-}
-
-#recebimento select {
-    color: #3168ff;
-}
-#recebimento th {
-    color: #3168ff;
-}
-
-.divmargin {
-   height: 2rem; 
-}
-
-
-::-webkit-scrollbar {
-    width: 10px;
-    /* largura da barra de rolagem */
-  }
-  
-  ::-webkit-scrollbar-thumb {
-    background-color: #848484;
-    /* cor do 'thumb' (a parte que você arrasta) */
-    border-radius: 5px;
-    /* borda arredondada */
-  }
-  
-  ::-webkit-scrollbar-track {
-    background-color: #b8b8b8;
-    /* cor do fundo da barra de rolagem */
-  }
-  
-
-#tableBody {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: fit-content;
-}
-
-aside button:hover {
-    cursor: pointer;
-    background-color: var(--button-color);
-    color: var(--text-color);
-}
-
-.buscar {
-    display: flex;
-    flex-direction: row;
-}
-
-#id_compra {
-    text-align: center;
-    color: var(--text-color);
-    background-color: transparent !important;
-    border: none;
-    display: flex;
-    width: 40%;
-}
-
-#buscarChapa {
-    color: var(--text-color);
-    display: flex;
-    justify-content: center;
-    width: 60%;
-}
-
-
-.buttonsBlock {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-
-main {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-}
-
-.block1 {
-    margin-left: 18%;
-    /* Empurra o block1 para começar após o aside */
-    flex-grow: 1;
-    /* Permite que o block1 use o espaço restante */
-    height: 100vh;
-    /* Ocupa a altura total da viewport */
-    overflow-X: hidden;
-    /* Adiciona rolagem se o conteúdo exceder a altura da tela */
-}
-
-.block2 {
-    height: 100%;
-}
-
-.drop-zone {
-    width: 100%;
-    height: 80%;
-    align-items: center;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-
-}
-
-#drop-zoneText {
-    width: 80%;
-    height: 50%;
-    border: 2px dashed #ccc;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-}
-
-.titulo {
-    width: 15%;
-    display: flex;
-    justify-content: center;
-    margin: 0 !important;
-    margin-bottom: 10px !important    ;
-    color: #ccc;
-}
-
-.titulorecebimento {
-
-    color: #ccc;
-    margin-left: 2rem;
-}
-
-.recebido{
-    width: 25px;
-}
-
-#tables {
-    width: 100%;
-    margin-top: 10px;
-    /* Espaço para o contêiner do botão */
-  
+    background: var(--hoverbtnheader-color);
 }
 
 table {
-    border-collapse: collapse;
-    /* Colapsa as bordas das células para uma borda única */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    /* Sombra leve ao redor da tabela para melhor definição */
-}
-
-#bancoDados {
-    display: flex;
-    background-color: rgba(220, 20, 60, 0.224) !important;
-    margin: 2rem;
+    background-color: var(--tabela-color);
+    color: var(--text-color);
     border-radius: 1rem;
-    flex-direction: column;
-    padding: 1rem;
-    margin-top: 0;
-    margin-bottom:0;
+    margin-bottom: 2rem;
+    width: 100%;
+    border-collapse: collapse;
 }
 
-thead tr {
-    display: flex;
-    width: 100% !important;
-    flex-direction: row;
-    justify-content: space-around;
-}
-tbody tr:hover {
+th, td {
     padding: 0.5rem;
-    background-color: rgba(0, 0, 0, 0.102);
-
+    font-size: 0.8rem;
+    text-align: center;
+    white-space: nowrap;
 }
 
-tbody tr {
-border-radius: 1rem;
-}
-
-
-th {
-    padding: 1rem !important;
-    font-size: 0.6rem;
-    color: rgb(255, 45, 87);
+table tbody tr:hover {
+    background-color: var(--row-hover-background);
+    padding: 0.7rem; /* Aumenta o padding quando o mouse está sobre a linha */
 }
 
 .headertable {
     width: 100% !important;
 }
 
-tr td {
-    width: fit-content !important;
-}
 .recebido:hover {
-padding: 0.5rem;
     background-color: rgba(255, 45, 87, 0.257);
     border-radius: 1rem;
 }
 
-th {
-    white-space: nowrap;
-    /* Evita que o texto quebre para a próxima linha */
-    padding: 2px;
-    /* Define uma largura mínima para cada célula */
+input[type="text"], input[type="date"], select {
+    width: 100%;
+    border: none;
     text-align: center;
-    /* Centraliza texto em cabeçalhos e células */
+    background-color: transparent;
+    padding: 5px;
+    box-sizing: border-box;
+    color: var(--text-color);
+    -webkit-appearance: none; /* Remove estilo padrão do navegador */
+    -moz-appearance: none; /* Remove estilo padrão do navegador */
+    appearance: none; /* Remove estilo padrão do navegador */
 }
 
-input[type="text"],
-input[type="date"],
 select {
-    width: 100%;
-    /* Faz os inputs ocuparem toda a célula */
-    border: none;
-    /* Remove as bordas dos inputs */
-    text-align: center;
-    /* Centraliza o texto dentro dos inputs */
-    background-color: transparent;
-    /* Remove o fundo para igualar ao fundo da célula */
-    padding: 5px;
-    /* Espaçamento interno para conforto visual */
-    box-sizing: border-box;
-    /* Inclui padding no cálculo de width */
+    min-width: 60px; /* Ajustar conforme necessário */
+    max-width: 100px; /* Ajustar conforme necessário */
 }
 
 .bancoDadosButton {
@@ -404,29 +191,31 @@ select {
     margin-bottom: 0;
 }
 
-.headercomprado {
-display: flex;
-align-items: center;
-margin: 0.5rem 2rem;
-justify-content: space-between;
-background-color: var(--header-titulos-color);
-padding: 1rem;
-border-radius: 1rem;
+.headercomprado, .titulorecebimento {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--header-titulos-color);
+    padding: 1rem;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+    box-sizing: border-box; /* Garante que o padding seja incluído na largura */
 }
 
 .COPYEVERYTHING {
     width: 25px;
+    height: 25px; /* Ajustar tamanho */
     margin-left: 1rem;
 }
 
-h4{
+h4 {
     color: #8a8a8a;
 }
 
 h2 {
     margin: 0;
 }
-
 
 .recebimentoButton {
     display: flex;
@@ -443,7 +232,6 @@ h2 {
     border: none;
     border-radius: 1rem;
     cursor: pointer;
-
     align-items: center;
 }
 
@@ -452,7 +240,8 @@ h2 {
 }
 
 .update-button {
-width: 25px;
+    width: 25px;
+    height: 25px; /* Ajustar tamanho */
 }
 
 .update-button:hover {
@@ -460,18 +249,19 @@ width: 25px;
     padding: 0.5rem;
     background-color: #3168ff2b;
     border-radius: 1rem;
-    }
-    
-
+}
 
 header {
-    margin-left: 18%;
-    /* Empurra o block1 para começar após o aside */
+    position: fixed;
+    top: 0;
+    left: 18%;
+    width: calc(100% - 18%);
     background-color: var(--header-color);
     color: var(--text-color);
     display: flex;
     height: 11.5vh;
     max-height: 63px;
+    z-index: 1000;
 }
 
 .text-content {
@@ -482,7 +272,6 @@ header {
     font-size: 200%;
     display: flex;
     justify-content: space-between;
-
 }
 
 .userBlock {
@@ -491,7 +280,6 @@ header {
     padding-right: 15%;
 }
 
-
 .dark-mode-toggle label {
     top: 20%;
     right: 15%;
@@ -499,7 +287,6 @@ header {
     width: 2.7rem;
     height: 1.5rem;
     background-color: #007bff;
-    /* Green for active state */
     border-radius: 50px;
     position: relative;
     cursor: pointer;
@@ -518,19 +305,19 @@ header {
     transition: transform 0.3s ease-in-out;
 }
 
-.dark-mode-toggle input[type="checkbox"]:not(:checked)+label {
+.dark-mode-toggle input[type="checkbox"]:not(:checked) + label {
     background-color: #ddd;
 }
 
-.dark-mode-toggle input[type="checkbox"]:not(:checked)+label:after {
+.dark-mode-toggle input[type="checkbox"]:not(:checked) + label:after {
     transform: translateX(0);
 }
 
-.dark-mode-toggle input[type="checkbox"]:checked+label:after {
+.dark-mode-toggle input[type="checkbox"]:checked + label:after {
     transform: translateX(26px);
 }
 
-.dark-mode-toggle input[type="checkbox"]:checked~#button-container .logo img {
+.dark-mode-toggle input[type="checkbox"]:checked ~ #button-container .logo img {
     filter: invert(100%);
 }
 
@@ -538,38 +325,132 @@ header {
     display: none;
 }
 
+.block1 {
+    margin-left: 18%;
+    flex-grow: 1;
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-top: 11.5vh; /* Espaço para o header fixo */
+}
+
+.divmargin {
+    height: 2rem;
+}
+
+.drop-zone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 11.5vh - 4rem); /* Espaço restante menos header e margens */
+    max-height: 70vh; /* Garante que a área de arraste não ultrapasse 70% da altura da viewport */
+    border: 2px dashed var(--text-color);
+    border-radius: 1rem;
+    margin: 2rem auto; /* Centrando a área de arraste */
+    width: calc(100% - 22%); /* Margem de 2rem dos dois lados mais o tamanho do aside */
+    overflow: auto; /* Adiciona rolagem interna se o conteúdo exceder a altura */
+}
+
+.block2 {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 2rem;
+    box-sizing: border-box;
+    flex-grow: 1; /* Garante que o block2 cresça para preencher o espaço disponível */
+}
+
+.scrollable-table {
+    width: 100%;
+    margin-top: 2rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--tabela-color);
+    color: var(--text-color);
+    border-radius: 1rem;
+}
+
+th, td {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+    text-align: center;
+    white-space: nowrap;
+}
+
+table tbody tr:hover {
+    background-color: var(--row-hover-background);
+    padding: 0.7rem; /* Aumenta o padding quando o mouse está sobre a linha */
+}
+
+.headercomprado, .titulorecebimento {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--header-titulos-color);
+    padding: 1rem;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+    box-sizing: border-box; /* Garante que o padding seja incluído na largura */
+}
+
+.headercomprado h2, .titulorecebimento h2 {
+    margin: 0;
+}
+
+.buscar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#id_compra {
+    margin-top: 1rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--text-color);
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+#buscarChapa {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: none; /* Removido a borda */
+    background-color: var(--button-color);
+    color: var(--text-color);
+    cursor: pointer;
+}
+
+#buscarChapa:hover {
+    background-color: var(--btnhover-color);
+}
 
 
 @media (max-width: 768px) {
-
     :root {
         --aside-color: #1e1e1e;
         --button-color: #292929;
-        /* Cor de fundo do aside para o tema escuro */
     }
 
     [data-theme="light"] {
         --aside-color: #f5f5f5;
         --button-color: #e3e3e3;
-        /* Cor de fundo do aside para o tema claro */
     }
 
     main {
-
         flex-direction: column;
         align-items: center;
     }
 
     header {
-        margin-left: 0;
+        left: 0;
         width: 100%;
-        /* Ajusta a largura para cobrir toda a tela */
-        height: 10vh;
-        position: static;
-        /* Mudança para 'static' para se ajustar ao fluxo normal */
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
     }
 
     .userBlock {
@@ -586,20 +467,13 @@ header {
         margin-left: 0;
     }
 
-
-
     aside {
         width: 100%;
-        /* Ajusta a largura para cobrir toda a tela */
-        /* O aside vem após o header e logo */
         position: static;
-        /* Mudança para 'static' para alinhar corretamente */
         flex-direction: column;
         align-items: center;
         height: auto;
-        /* Altura automática para conter todos os botões */
         border: none;
-        /* Remove a borda que não é mais necessária */
     }
 
     aside button {
@@ -611,21 +485,20 @@ header {
 
     .block1 {
         margin-left: 0;
-        /* Remove a margem esquerda */
         width: 100%;
-        /* Ajusta a largura para cobrir toda a tela */
+        padding-top: 10vh; /* Espaço para o header fixo */
     }
 
     .block2 {
-
         padding-top: 10px;
-        /* Adiciona um espaço entre o header e o conteúdo */
+        width: 100%;
+        padding: 2rem; /* Adiciona padding para garantir que o conteúdo não encoste nas bordas */
+        flex-grow: 1; /* Garante que o block2 cresça para preencher o espaço disponível */
     }
 
     #tables {
         width: 100%;
         margin-top: 20px;
-        /* Ajuste para garantir que a tabela não seja coberta */
     }
 
     thead {
@@ -634,18 +507,13 @@ header {
 
     th {
         white-space: nowrap;
-        /* Evita que o texto quebre para a próxima linha */
         padding: 8px;
-        /* Mantém um padding uniforme */
         min-width: 60px;
-        /* Define uma largura mínima para cada célula */
     }
 
     .scrollable-table {
         overflow-x: auto;
-        /* Permite rolagem horizontal */
         overflow-y: hidden;
-        /* Evita rolagem vertical dentro da tabela */
     }
 }
 
@@ -653,5 +521,4 @@ header {
     .text-content {
         font-size: 1.2rem;
     }
-
 }
