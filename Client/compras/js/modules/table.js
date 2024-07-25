@@ -1,5 +1,3 @@
-import { jsonData } from "./extractToJson.js"; // Importe jsonData do arquivo extractToJson.js
-
 export function addTableHeader(dataTable) {
   const headers = [
     "Quant. Comprada",
@@ -19,7 +17,7 @@ export function addTableHeader(dataTable) {
     headerRow.appendChild(th);
   });
 
-  // Adicionar célula vazia para o checkbox de "conjug."
+  // Adicionar célula para o checkbox de "conjug."
   const thConjug = document.createElement("div");
   thConjug.textContent = "Conjugado"; // Texto para a célula do cabeçalho
   thConjug.classList.add("table-header");
@@ -65,37 +63,28 @@ export function addTableRow(dataTable, prod, index) {
     row.appendChild(cell);
   });
 
-  // Adicionar checkbox em cada linha
   const checkboxCell = document.createElement("div");
   checkboxCell.classList.add("table-cell");
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
-  checkbox.checked = prod.conjugado === 1; // Marcar checkbox se "conjugado" for 1
+  checkbox.checked = prod.conjugado === true; // Marcar checkbox se "conjugado" for true
+  checkbox.addEventListener("change", (event) => {
+    handleCheckboxChange(event, prod, index);
+  });
   checkboxCell.appendChild(checkbox);
   row.appendChild(checkboxCell);
 
   row.classList.add(index % 2 === 0 ? "even-row" : "odd-row");
 
-  // Adiciona evento de clique para selecionar a linha
-  checkbox.addEventListener("change", (event) => {
-    prod.conjugado = event.target.checked ? 1 : 0; // Atualizar campo "conjugado" como 1 ou 0
-    
-    // Verificar se jsonData e jsonData.infoProdComprados existem antes de atualizar
-    if (window.jsonData && jsonData.infoProdComprados) {
-      // Atualizar jsonData.infoProdComprados com a nova informação
-      jsonData.infoProdComprados = jsonData.infoProdComprados.map((p, i) =>
-        i === index ? { ...p, conjugado: prod.conjugado } : p
-      );
-
-      console.log("JSON atualizado com o campo conjugado:");
-      console.log(jsonData);
-
-      // Atualizar tabela
-      populateTable(jsonData.infoProdComprados);
-    } else {
-      console.error("jsonData.infoProdComprados não está definido ou está vazio.");
-    }
-  });
-
   dataTable.appendChild(row);
+}
+
+function handleCheckboxChange(event, prod, index) {
+  const isChecked = event.target.checked;
+  prod.conjugado = isChecked;
+
+  // Enviar atualização para o backend ou atualizar estado local
+  console.log(`Linha ${index} atualizada:`, prod);
+
+
 }

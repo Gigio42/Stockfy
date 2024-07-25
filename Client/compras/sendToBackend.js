@@ -60,6 +60,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 
+
 // Função para formatar a data no formato dd/mm/aaaa
 function formatarData(data) {
   const dia = String(data.getDate()).padStart(2, '0');
