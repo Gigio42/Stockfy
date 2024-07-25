@@ -18,17 +18,17 @@ async function comprasRoutes(fastify, options) {
     },
   });
 
-  // Rota para listar chapas em estoque
-  fastify.get("/chapas/estoque", async (request, reply) => {
-    try {
-      console.log('Recebida requisição para listar chapas em estoque...');
-      const chapasEmEstoque = await comprasController.listarChapasEmEstoque();
-      reply.send(chapasEmEstoque);
-    } catch (error) {
-      console.error('Erro ao buscar chapas em estoque:', error);
-      reply.code(500).send({ error: "Erro ao buscar chapas em estoque." });
-    }
-  });
+// Rota para listar chapas em estoque
+fastify.get("/chapas/estoque", async (request, reply) => {
+  try {
+    console.log('Recebida requisição para listar chapas em estoque...');
+    const chapasEmEstoque = await comprasController.listarChapasEmEstoque();
+    reply.send(chapasEmEstoque);
+  } catch (error) {
+    console.error('Erro ao buscar chapas em estoque:', error);
+    reply.code(500).send({ error: "Erro ao buscar chapas em estoque." });
+  }
+});
 
 // Rota para receber os cartões criados do cliente
 fastify.post("/compras/cartoes", async (request, reply) => {
