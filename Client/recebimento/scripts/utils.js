@@ -17,14 +17,14 @@ export function logout() {
 export function themeToggle() {
   const toggle = document.getElementById("darkModeToggle");
   const theme = toggle.checked ? "dark" : "light";
-  document.documentElement.setAttribute("data-theme", theme); // Aplica o atributo de tema ao root do documento
+  document.documentElement.setAttribute("data-theme", theme);
   localStorage.setItem("theme", theme);
 }
 
 export function alterarTema() {
   const toggle = document.getElementById("darkModeToggle");
   const theme = toggle.checked ? "dark" : "light";
-  document.documentElement.setAttribute("data-theme", theme); // Aplica o atributo de tema ao root do documento
+  document.documentElement.setAttribute("data-theme", theme);
   localStorage.setItem("theme", theme);
 }
 
@@ -41,19 +41,19 @@ export function hideDropZone() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const savedTheme = localStorage.getItem("theme") || "dark"; // Assume "dark" se nada estiver salvo
+  const savedTheme = localStorage.getItem("theme") || "dark";
   const toggle = document.getElementById("darkModeToggle");
   toggle.checked = savedTheme === "dark";
-  document.documentElement.setAttribute("data-theme", savedTheme); // Aplica o tema salvo ao carregar
+  document.documentElement.setAttribute("data-theme", savedTheme);
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-  const recebimentoTbody = document.getElementById("tableBody2"); // Ajuste o ID conforme sua tabela
+  const recebimentoTbody = document.getElementById("tableBody2");
   recebimentoTbody.addEventListener("click", function (event) {
     if (event.target.className === "update-button") {
       const row = event.target.closest("tr");
-      if (verifyRowData(row)) {
-        if (verifyIdChapa(row)) {
+      if (verifyIdChapa(row)) {
+        if (verifyRowData(row)) {
           sendDataToServer(row);
         } else {
           alert("Por favor, defina os campos vazios.");
@@ -75,24 +75,25 @@ export function rowDataObj(row) {
   }
 
   var rowData = {
-    id_chapa: row.cells[0].querySelector("input").value,
-    fornecedor: row.cells[1].querySelector("input").value,
-    id_compra: row.cells[2].querySelector("input").value,
-    quantidade_recebida: parseFloat(row.cells[3].querySelector("input").value) || 0,
-    qualidade: row.cells[4].querySelector("input").value,
-    largura: row.cells[5].querySelector("input").value,
-    comprimento: row.cells[6].querySelector("input").value,
-    onda: row.cells[7].querySelector("select").value,
-    vincos: row.cells[8].querySelector("select").value,
-    status: row.cells[9].querySelector("select").value,
-    data_recebimento: row.cells[10].querySelector("input").value,
+    id_chapa: row.getAttribute("data-id") || "", // Verifica data-id na linha
+    fornecedor: row.cells[1].querySelector("input") ? row.cells[1].querySelector("input").value : "",
+    id_compra: row.cells[2].querySelector("input") ? row.cells[2].querySelector("input").value : "",
+    quantidade_recebida: parseFloat(row.cells[3].querySelector("input") ? row.cells[3].querySelector("input").value : "0") || 0,
+    qualidade: row.cells[4].querySelector("input") ? row.cells[4].querySelector("input").value : "",
+    largura: row.cells[5].querySelector("input") ? row.cells[5].querySelector("input").value : "",
+    comprimento: row.cells[6].querySelector("input") ? row.cells[6].querySelector("input").value : "",
+    onda: row.cells[7].querySelector("select") ? row.cells[7].querySelector("select").value : "",
+    vincos: row.cells[8].querySelector("select") ? row.cells[8].querySelector("select").value : "",
+    status: row.cells[9].querySelector("select") ? row.cells[9].querySelector("select").value : "",
+    data_recebimento: row.cells[10].querySelector("input") ? row.cells[10].querySelector("input").value : "",
   };
 
+  console.log("rowDataObj: ", rowData);
   return rowData;
 }
 
 function verifyRowData(row) {
-  const requiredCells = Array.from(row.cells).slice(0, 3); // Verifica as 3 primeiras colunas
+  const requiredCells = Array.from(row.cells).slice(1, 7); // Verifica as colunas Fornecedor, Id_compra, Quantidade, Qualidade, Largura, Comprimento
   let allEmpty = true;
   for (let cell of requiredCells) {
     const input = cell.querySelector("input, select");
@@ -105,15 +106,11 @@ function verifyRowData(row) {
 }
 
 export function verifyIdChapa(row) {
-  const requiredCells = Array.from(row.cells).slice(0, 7); // Verifica as 7 primeiras colunas
-  for (let cell of requiredCells) {
-    const input = cell.querySelector("input");
-    if (!input || input.value.trim() === "") {
-      return false;
-    }
-  }
-  return true;
+  const id = row.getAttribute("data-id");
+  console.log("Verifying ID Chapa: ", id);
+  return id && id.trim() !== "";
 }
+
 
 function deleteRow(row) {
   row.parentNode.removeChild(row);

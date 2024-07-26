@@ -135,17 +135,18 @@
     justify-content: center;
   }
   
-  .list-unstyled:hover {
+  a:hover {
     background: #adadad;
     padding: 1rem;
   }
   
-  .dark-mode .list-unstyled:hover {
+  .dark-mode a:hover {
     background: #333333;
   }
   
-  .list-unstyled {
-    padding: 1rem;
+  a {
+    width: 100%;
+    padding: 1rem !important;
     border-radius: 1rem;
   }
   
@@ -164,7 +165,6 @@
   }
   
   a:hover {
-    color: #535353;
     text-decoration: none;
     /* Remove o sublinhado */
   }
@@ -177,9 +177,13 @@
   }
   
   .imgicon {
-    width: 3rem;
-    height: 3rem;
+    width: 20%;
+    height: 20%;
     border-radius: 0 !important;
+  }
+
+ .imgicon {
+    filter: invert(1);
   }
   
   html {
@@ -370,20 +374,43 @@ margin-bottom: 1rem;
   
     box-sizing: border-box;
   }
-  
+
+  .list-unstyled {
+    width: 80%;
+  }
+  #FinishButton,
   #optionsButton {
     display: flex;
-    line-height: 1;
-    padding: 0;
-    padding-left: 0.5rem;
-    width: 10rem;
+    align-content: center;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    padding: 1rem;
+    border-radius: 1rem;
+    margin-bottom: 2REM;
+    background: #cecece;
   }
+
+  .dark-mode   #optionsButton {
+    background:#282828 ;
+  }
+
+  .dark-mode #optionsButton:hover {
+    background:#202020 ;
+  }
+
+  #optionsButton:hover {
+    background:#a8a8a8 ;
+  }
+  
+
   
   .textButtonli {
     display: flex;
     width: 75%;
     color: #3d3d3d;
     font-weight: bold;
+    font-size: 1.2rem;
   }
   
   .dark-mode .textButtonli {

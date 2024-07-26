@@ -1,6 +1,5 @@
 import BASE_URL from "../../utils/config.js";
-import { clearTable } from "./manipularTabela.js";
-import { criarTable } from "./manipularTabela.js";
+import { clearTable, criarTable } from "./manipularTabela.js";
 import { name, verifyIdChapa, rowDataObj } from "./utils.js";
 
 export function fetchChapas(xPed) {
@@ -29,9 +28,9 @@ export function fetchChapas(xPed) {
 
 export async function sendDataToServer(row) {
   try {
-    var data = [rowDataObj(row)]; // Enviar como array de objetos
-    data.forEach(d => d.senderName = name); // Adiciona o nome à cada objeto no array
-    console.log("Data to send:", data); // Verifique o dado que está sendo enviado
+    var data = [rowDataObj(row)];
+    data.forEach(d => d.senderName = name);
+    console.log("Data to send:", data);
     const response = await axios.put(`${BASE_URL}/recebimento`, data);
     alert("Dados atualizados com sucesso!");
   } catch (error) {
@@ -43,14 +42,24 @@ export async function sendDataToServer(row) {
 export async function sendAllDataToServer() {
   const tableBody = document.getElementById("tableBody2");
   const rows = Array.from(tableBody.getElementsByTagName("tr"));
-  const allData = rows
-    .filter((row) => verifyIdChapa(row)) // Verifica se as 7 primeiras colunas não são vazias e se as 3 primeiras colunas não são vazias
-    .map((row) => rowDataObj(row));
+  console.log("Total rows to process:", rows.length);
 
-  allData.forEach(d => d.senderName = name); // Adiciona o nome à cada objeto no array
+  const allData = rows
+    .filter((row) => {
+      const isValid = verifyIdChapa(row);
+      console.log("Row valid:", isValid, row);
+      return isValid;
+    })
+    .map((row) => {
+      const data = rowDataObj(row);
+      console.log("Row data object:", data);
+      return data;
+    });
+
+  allData.forEach(d => d.senderName = name);
 
   try {
-    console.log("Data to send:", allData); // Verifique o dado que está sendo enviado
+    console.log("Data to send:", allData);
     const response = await axios.put(`${BASE_URL}/recebimento`, allData);
     alert("dados atualizados com sucesso!");
   } catch (error) {
