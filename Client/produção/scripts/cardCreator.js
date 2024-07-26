@@ -155,10 +155,16 @@ export function createChapasList(chapas, item, disponivel) {
   const header = createChapasHeader(["PART NUMBER", "CHAPA", "MEDIDA", "OP", "SISTEMA", " CLIENTE", "QUANT.", "COLABORADOR"]);
   chapasContainer.appendChild(header);
 
+  const allChapasReceived = chapas.every((chapa) => chapa.chapa.status === "RECEBIDO");
+
   chapas.forEach((chapa) => {
     const chapaCard = document.createElement("div");
-    chapaCard.className = "card bg-dark text-white mb-2 chapa-card";
+    chapaCard.className = "card text-white mb-2 chapa-card";
     chapaCard.style.borderRadius = "10px";
+
+    if (!allChapasReceived) {
+      chapaCard.classList.add("chapa-not-received");
+    }
 
     const chapaCardBody = document.createElement("div");
     chapaCardBody.className = "card-body d-flex justify-content-between align-items-center";
