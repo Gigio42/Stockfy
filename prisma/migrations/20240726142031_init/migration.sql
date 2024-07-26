@@ -8,6 +8,8 @@ CREATE TABLE "Conjugacoes" (
     "quantidade" INTEGER NOT NULL DEFAULT 0,
     "quantidade_disponivel" INTEGER NOT NULL DEFAULT 0,
     "usado" BOOLEAN NOT NULL DEFAULT false,
+    "part_number" TEXT NOT NULL DEFAULT '0',
+    "pedido_venda" INTEGER NOT NULL DEFAULT 0,
     "chapaId" INTEGER NOT NULL,
     CONSTRAINT "Conjugacoes_chapaId_fkey" FOREIGN KEY ("chapaId") REFERENCES "Chapas" ("id_chapa") ON DELETE RESTRICT ON UPDATE CASCADE
 );
@@ -38,7 +40,8 @@ CREATE TABLE "Chapas" (
     "status" TEXT,
     "data_compra" TEXT,
     "data_prevista" TEXT,
-    "data_recebimento" TEXT
+    "data_recebimento" TEXT,
+    "conjugado" BOOLEAN NOT NULL DEFAULT false
 );
 
 -- CreateTable
@@ -101,7 +104,7 @@ CREATE TABLE "Usuarios" (
 CREATE TABLE "Historico" (
     "id_historico" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "chapa" TEXT,
-    "quantidade" INTEGER NOT NULL,
+    "quantidade" INTEGER,
     "modificacao" TEXT NOT NULL,
     "modificado_por" TEXT NOT NULL,
     "data_modificacao" TEXT NOT NULL,

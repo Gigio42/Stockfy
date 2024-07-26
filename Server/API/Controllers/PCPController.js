@@ -12,12 +12,12 @@ class PCPController {
   constructor() {}
 
   // ------------------------------
-  // GetChapasComment Function
+  // GetChapas Function
   // ------------------------------
   async getChapas(query, filterCriteria, sortOrder, sortBy) {
     let data = await Chapas.findMany({ include: { conjugacoes: true } });
 
-    data = data.filter((chapa) => chapa.quantidade_disponivel > 0);
+    data = data.filter((chapa) => chapa.quantidade_disponivel > 0 && !chapa.conjugado);
 
     if (filterCriteria) {
       for (let key in filterCriteria) {
