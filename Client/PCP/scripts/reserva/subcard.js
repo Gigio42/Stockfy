@@ -41,6 +41,8 @@ export class Subcard {
     valueRow.appendChild(this.createValueDiv("medida", this.conjugacao.medida));
     valueRow.appendChild(this.createRendimentoDiv());
     valueRow.appendChild(this.createValueDiv("quantidade", this.conjugacao.quantidade));
+    valueRow.appendChild(this.createValueDiv("PartNumber", this.conjugacao.part_number));
+    valueRow.appendChild(this.createValueDiv("PedidoVenda", this.conjugacao.pedido_venda));
     valueRow.appendChild(this.createUsadoDiv());
     return valueRow;
   }
