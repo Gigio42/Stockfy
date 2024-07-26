@@ -16,7 +16,7 @@ model Conjugacoes {
   quantidade            Int     @default(0)
   quantidade_disponivel Int     @default(0)
   usado                 Boolean @default(false)
-  part_number           String  @unique @default("0")
+  part_number           String   @default("0")
   pedido_venda          Int     @default(0)
 
   chapaId    Int
