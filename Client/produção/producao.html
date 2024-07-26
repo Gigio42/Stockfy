@@ -1,52 +1,78 @@
 <!doctype html>
 <html lang="pt-br">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Produção</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Produção</title>
 
-        <link id="theme" rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
-        <link rel="stylesheet" href="producao.css" />
-    </head>
-    <body class="body">
-        <header class="navbar navbar-dark bg-dark">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a id="user-name" class="navbar-brand" href="#"></a>
-                    <a id="machine-name" class="navbar-brand" href="#"></a>
-                </div>
-                <div class="navbar-right">
-                    <div class="dark-mode-toggle">
-                        <input type="checkbox" id="darkModeToggle" />
-                        <label for="darkModeToggle"></label>
-                    </div>
-                    <a href="../login/login.html" id="logoutLink">
-                        <button class="btn btn-danger navbar-btn">Sair</button>
-                    </a>
-                </div>
-            </div>
-        </header>
-
-        <div id="kanban-board">
-            <div class="kanban-column" id="done">
-                <h3>Feitos</h3>
-                <div class="kanban-items" id="done-items"></div>
-            </div>
-            <div class="kanban-column" id="to-do">
-                <h3>A Fazer</h3>
-                <div class="kanban-items" id="to-do-items"></div>
-            </div>
-            <div class="kanban-column" id="in-progress">
-                <h3>Próximas</h3>
-                <div class="kanban-items" id="in-progress-items"></div>
-            </div>
+    <link id="theme" rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+    <link rel="stylesheet" href="producao.css" />
+  </head>
+  <body class="body">
+    <header class="navbar navbar-dark bg-dark">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a id="user-name" class="navbar-brand" href="#"></a>
+          <a id="machine-name" class="navbar-brand" href="#"></a>
         </div>
+        <div id="kanban-navigation">
+          <button onclick="showColumn('to-do')">A Fazer</button>
+          <button onclick="showColumn('in-progress')">Próximas</button>
+          <button onclick="showColumn('done')">Feitos</button>
+        </div>
+        <div class="navbar-right">
+          <div class="dark-mode-toggle">
+            <input type="checkbox" id="darkModeToggle" />
+            <label for="darkModeToggle"></label>
+          </div>
+          <a href="../login/login.html" id="logoutLink">
+            <button class="btn btn-danger navbar-btn">Sair</button>
+          </a>
+        </div>
+      </div>
+    </header>
 
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-        <script type="module" src="producao.js"></script>
-    </body>
+    <div id="kanban-board">
+      <div class="kanban-column" id="to-do">
+
+        <div class="kanban-items" id="to-do-items"></div>
+      </div>
+      <div class="kanban-column" id="in-progress">
+        <h3>Próximas</h3>
+        <div class="kanban-items" id="in-progress-items"></div>
+      </div>
+      <div class="kanban-column" id="done">
+        <h3>Feitos</h3>
+        <div class="kanban-items" id="done-items"></div>
+      </div>
+    </div>
+
+    <script>
+      function showColumn(columnId) {
+        // Hide all columns
+        document.querySelectorAll(".kanban-column").forEach((column) => {
+          column.classList.remove("active");
+        });
+
+        // Show the selected column
+        document.getElementById(columnId).classList.add("active");
+
+        // Update button states
+        document.querySelectorAll("#kanban-navigation button").forEach((button) => {
+          button.classList.remove("active");
+        });
+        document.querySelector(`#kanban-navigation button[onclick="showColumn('${columnId}')"]`).classList.add("active");
+      }
+
+      // Initialize by showing the first column
+      showColumn("to-do");
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script type="module" src="producao.js"></script>
+  </body>
 </html>
