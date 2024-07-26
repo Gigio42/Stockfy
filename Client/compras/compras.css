@@ -31,7 +31,7 @@ body {
   border: solid 1px #39ea62;
   border-radius: 1rem;
   color: #39ea62;
-  padding: 1rem;
+
 }
 
 
@@ -207,7 +207,7 @@ body {
   border-radius: 1rem;
   background-color: #282828;
   border: none;
-  color: #131313 !important;
+  color: #3bf867 !important;
   padding-left: 1.5rem;
   border: solid 1px #383838;
 }
@@ -216,29 +216,10 @@ body {
 #expectedDate:focus {
   outline: none;
   border-left: 7px solid #3bf867;
+  color: #ededed !important;
 }
 
-#expectedDate.invalid-date {
-  border-left: 7px solid rgb(255, 64, 64);
-}
 
-@keyframes blink {
-  0% {
-    border-color: transparent;
-  }
-
-  50% {
-    border-color: red;
-  }
-
-  100% {
-    border-color: transparent;
-  }
-}
-
-#expectedDate.invalid-date {
-  animation: blink 1s infinite;
-}
 
 .logostockfy {
   width: 70px;
@@ -563,6 +544,8 @@ th {
   background: #161616;
 }
 
+#partNumber,
+#pedidoVenda,
 #quantidade,
 #largura,
 #comprimento,
@@ -590,7 +573,8 @@ th {
   padding: 5px;
   text-align: center;
 }
-
+#partNumber:focus,
+#pedidoVenda:focus,
 #quantidade:focus,
 #largura:focus,
 #comprimento:focus,
@@ -600,6 +584,8 @@ th {
 }
 
 /* Estilizando os placeholders */
+#partNumber::placeholder,
+#pedidoVenda::placeholder,
 #quantidade::placeholder,
 #largura::placeholder,
 #comprimento::placeholder,
@@ -723,7 +709,8 @@ th {
 
 .conjugmedidasstaged {
   display: flex;
-  flex-direction: ro;
+  flex-direction: row;
+
 }
 
 .delete-button,

@@ -12,7 +12,7 @@
     <!-- Vue.js -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    
+
 
 
 </head>
@@ -26,7 +26,8 @@
     <div class="foracontainer">
         <aside class="aside-lateral">
             <div class="userdiv">
-                <img class="mr-3 align-self-center" alt="Profile Pic" id="profilePic" style="width: 50px; height: 50px; border-radius: 50%" />
+                <img class="mr-3 align-self-center" alt="Profile Pic" id="profilePic"
+                    style="width: 50px; height: 50px; border-radius: 50%" />
                 <div class="media-body">
                     <h5 class="mt-0 mb-0" id="user-name">Username</h5>
                     <p class="mb-0 text-muted" id="role">Administrador</p>
@@ -55,7 +56,7 @@
                         </div>
                     </div>
                 </div>
-                
+
             </div>
         </div>
 
@@ -101,6 +102,8 @@
                         <input type="number" id="quantasvezes" name="quantas vezes?" placeholder="Quantas vezes?"
                             required>
                         <input type="number" id="quantidade" name="quantidade" placeholder="Quantidade" required>
+                        <input type="text" id="partNumber" name="part Number" placeholder="part Number">
+                        <input type="number" id="pedidoVenda" name="pedido Venda" placeholder="N° Ped. Venda" required>
                     </form>
                     <button type="button" id="adicionarMedidaBtn">Adicionar</button>
                 </div>
@@ -207,6 +210,7 @@
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script type="module" src="./js/main.js"></script>
 
         <script>
@@ -214,10 +218,10 @@
             document.addEventListener('DOMContentLoaded', (event) => {
 
                 const closeButton = document.getElementById("backButton");
-    closeButton.addEventListener("click", function () {
-        window.location.reload();
+                closeButton.addEventListener("click", function () {
+                    window.location.reload();
 
-    });
+                });
 
                 // Get references to the button, modal, and dropzone
                 const btnAdicionarManualmente = document.getElementById('btnAdicionarManualmente');

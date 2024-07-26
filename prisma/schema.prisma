@@ -16,6 +16,8 @@ model Conjugacoes {
   quantidade            Int     @default(0)
   quantidade_disponivel Int     @default(0)
   usado                 Boolean @default(false)
+  part_number           String  @default("0")
+  pedido_venda          Int     @default(0)
 
   chapaId    Int
   chapa      Chapas       @relation(fields: [chapaId], references: [id_chapa])
@@ -91,7 +93,7 @@ model Item_Maquina {
   finalizado      Boolean @default(false)
   medida          String?
   op              Int?
-  prioridade    Int?
+  prioridade      Int?
   sistema         String?
   cliente         String?
   quantidade      Int?
@@ -122,19 +124,18 @@ model Usuarios {
 }
 
 model Historico {
-  id_historico  Int       @id @default(autoincrement())
-  chapa               String?
-  quantidade          Int?
-  modificacao         String
-  modificado_por      String
-  data_modificacao    String
-  data_prevista       String?
-  part_number         String?
-  maquina             String?
-  ordem               Int?
-  conjugacao          String?
-  pedido_venda        String?
-
+  id_historico     Int     @id @default(autoincrement())
+  chapa            String?
+  quantidade       Int?
+  modificacao      String
+  modificado_por   String
+  data_modificacao String
+  data_prevista    String?
+  part_number      String?
+  maquina          String?
+  ordem            Int?
+  conjugacao       String?
+  pedido_venda     String?
 
   @@index([id_historico])
 }
