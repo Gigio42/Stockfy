@@ -22,23 +22,23 @@ class PCPController {
     if (filterCriteria) {
       for (let key in filterCriteria) {
         if (key === "comprimento" || key === "largura") {
+          const filterValue = parseInt(filterCriteria[key]);
+  
           data = data.filter((chapa) => {
             let isValid = chapa.conjugacoes.some((conjugacao) => {
-              const [comprimento, largura] = conjugacao.medida.split("x");
               if (key === "comprimento") {
-                return comprimento === filterCriteria[key];
+                return conjugacao.comprimento === filterValue;
               } else {
-                return largura === filterCriteria[key];
+                return conjugacao.largura === filterValue;
               }
             });
-
-            const [cardComprimento, cardLargura] = chapa.medida.split("x");
+  
             if (key === "comprimento") {
-              isValid = isValid || cardComprimento === filterCriteria[key];
+              isValid = isValid || chapa.comprimento === filterValue;
             } else {
-              isValid = isValid || cardLargura === filterCriteria[key];
+              isValid = isValid || chapa.largura === filterValue;
             }
-
+  
             return isValid;
           });
         } else {
