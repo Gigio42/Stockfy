@@ -38,6 +38,20 @@ nav ul li{
     align-items: center;
 }
 
+.list-unstyled {
+    display: flex;
+    flex-wrap: wrap;
+    width: 80%;
+
+}
+
+@media (max-width: 900px ){
+    .list-unstyled {
+       overflow-y: auto;
+       max-height: 100%;
+    }
+}
+
 .btn-primary {
 background: var(--nav-background) ;
 border: none;

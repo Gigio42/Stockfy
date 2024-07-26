@@ -2,67 +2,68 @@ export function criarTable(table, chapaData) {
   var tbody = table.querySelector("tbody");
   var row = tbody.insertRow(-1);
 
-  var idCell = row.insertCell(0);
-  idCell.innerHTML = `<input type='text' value='${chapaData.id_chapa ? chapaData.id_chapa : ""}' class='editable-id'>`;
-
-  let today = new Date();
-  let dataPrevista = chapaData.data_prevista ? new Date(chapaData.data_prevista.split("/").reverse().join("-")) : new Date(); // Usa a data atual como fallback
-
-  let statusOption = "";
-  if (table.id === "recebimento") {
-    statusOption = `<option value="" selected>INDEFINIDO</option>`; // Valor indefinido como padrão para recebimento
-  } else if (table.id === "bancoDados") {
-    statusOption = dataPrevista > today ? `<option value="Comprado" selected>COMPRADO</option>` : `<option value="Atrasado" selected>ATRASADO</option>`;
-  }
+  // Definindo data-id corretamente na linha
+  const dataId = chapaData.id_chapa || "";
+  row.setAttribute("data-id", dataId); 
 
   var cellContents = [
-    `<input type='text' value='${chapaData.fornecedor}'>`,
-    `<input type='text' value='${chapaData.id_compra}'>`,
-    `<input type='text' class='quantity' value='${chapaData.quantidade_recebida}'>`,
-    `<input type='text' value='${chapaData.qualidade}'>`,
-    `<input type='text' value='${chapaData.largura}'>`,
-    `<input type='text' value='${chapaData.comprimento}'>`,
-    `<select>${["E", "B", "C", "BB", "BC", ""].map((type) => `<option value="${type}" ${type === chapaData.onda ? "selected" : ""}>${type}</option>`).join("")}</select>`,
-    `<select><option value="Sim" ${chapaData.vincos.toLowerCase() === "não" ? "" : "selected"}>Sim</option><option value="Não" ${chapaData.vincos.toLowerCase() === "não" ? "selected" : ""}>Não</option></select>`,
-    `<select style='width: 120px;'>${statusOption}${["COMPRADO", "RECEBIDO", "PARCIALMENTE", "ATRASADO", "CANCELADO"]
-      .filter((status) => status !== (dataPrevista > today ? "COMPRADO" : "ATRASADO"))
-      .map((status) => `<option ${status === chapaData.status ? "selected" : ""}>${status}</option>`)
-      .join("")}</select>`,
+      `<input type='text' value='${dataId}' class='editable-id' style='color: var(--text-color);' ${table.id === "recebimento" ? "readonly" : ""}>`,
+      `<input type='text' value='${chapaData.fornecedor || ""}' style='color: var(--text-color);'>`,
+      `<input type='text' value='${chapaData.id_compra || ""}' style='color: var(--text-color);'>`,
+      `<input type='text' class='quantity' value='${chapaData.quantidade_recebida || ""}' style='color: var(--text-color);'>`,
+      `<input type='text' value='${chapaData.qualidade || ""}' style='color: var(--text-color);'>`,
+      `<input type='text' value='${chapaData.largura || ""}' style='color: var(--text-color);'>`,
+      `<input type='text' value='${chapaData.comprimento || ""}' style='color: var(--text-color);'>`,
+      `<select style='color: var(--text-color);'>
+          ${["E", "B", "C", "BB", "BC", ""].map((type) => `<option value="${type}" ${type === chapaData.onda ? "selected" : ""}>${type}</option>`).join("")}
+      </select>`,
+      `<select style='color: var(--text-color);'>
+          <option value="Sim" ${chapaData.vincos && chapaData.vincos.toLowerCase() === "não" ? "" : "selected"}>Sim</option>
+          <option value="Não" ${chapaData.vincos && chapaData.vincos.toLowerCase() === "não" ? "selected" : ""}>Não</option>
+      </select>`,
+      `<select style='color: var(--text-color);'>
+          ${["COMPRADO", "RECEBIDO", "PARCIALMENTE", "ATRASADO", "CANCELADO"].map((status) => `<option ${status === chapaData.status ? "selected" : ""}>${status}</option>`).join("")}
+      </select>`
   ];
 
   cellContents.forEach((content, index) => {
-    var cell = row.insertCell(index + 1);
-    cell.innerHTML = content;
+      var cell = row.insertCell(index);
+      cell.innerHTML = content;
   });
 
   if (table.id === "bancoDados") {
-    let dataPrevistaCell = row.insertCell(-1);
-    let formattedDataPrevista = chapaData.data_prevista.split("/").reverse().join("-");
-    dataPrevistaCell.innerHTML = `<input type='date' value='${formattedDataPrevista}'>`;
+      let dataPrevistaCell = row.insertCell(-1);
+      let formattedDataPrevista = (chapaData.data_prevista || "").split("/").reverse().join("-");
+      dataPrevistaCell.innerHTML = `<input type='date' value='${formattedDataPrevista}' style='color: var(--text-color);'>`;
 
-    let copiarCell = row.insertCell(-1);
-    let copiarButton = document.createElement("img");
-    copiarButton.src = "icons8-copy-48 (2).png"; // Update the path to the correct location of your image
-    copiarButton.alt = "Copiar";
-    copiarButton.className = "recebido";
-    copiarButton.addEventListener("click", function () {
-      copiarParaRecebimento(this);
-    });
-    copiarCell.appendChild(copiarButton);
+      let copiarCell = row.insertCell(-1);
+      let copiarButton = document.createElement("img");
+      copiarButton.src = "icons8-copy-48 (2).png";
+      copiarButton.alt = "Copiar";
+      copiarButton.className = "recebido";
+      copiarButton.style.width = "25px"; // Ajustar tamanho
+      copiarButton.style.height = "25px"; // Ajustar tamanho
+      copiarButton.addEventListener("click", function () {
+          copiarParaRecebimento(this);
+      });
+      copiarCell.appendChild(copiarButton);
   } else if (table.id === "recebimento") {
-    let dataRecebimentoCell = row.insertCell(-1);
-    let todayDate = new Date().toISOString().slice(0, 10);
-    dataRecebimentoCell.innerHTML = `<input type='date' value='${todayDate}'>`;
+      let dataRecebimentoCell = row.insertCell(-1);
+      let todayDate = new Date().toISOString().slice(0, 10);
+      dataRecebimentoCell.innerHTML = `<input type='date' value='${todayDate}' style='color: var(--text-color);'>`;
 
-    const updateCell = row.insertCell(-1);
-    let updateButton = document.createElement("img");
-    updateButton.src = "icons8-synchronize-48.png";
-    updateButton.className = "update-button";
-    updateCell.appendChild(updateButton);
+      const updateCell = row.insertCell(-1);
+      let updateButton = document.createElement("img");
+      updateButton.src = "icons8-synchronize-48.png";
+      updateButton.className = "update-button";
+      updateButton.style.width = "25px"; // Ajustar tamanho
+      updateButton.style.height = "25px"; // Ajustar tamanho
+      updateCell.appendChild(updateButton);
   }
 
   comparar();
 }
+
 
 export function clearTable() {
   clearRows(document.getElementById("tableBody"));
@@ -76,22 +77,23 @@ function clearRows(tbody) {
 }
 
 export function copiarParaRecebimento(button) {
-  const sourceRow = button.closest("tr"); // Encontra a linha do botão que foi clicado
-  const targetTableBody = document.getElementById("tableBody2"); // Seleciona o tbody da tabela de destino
-  const newRow = targetTableBody.insertRow(-1); // Cria uma nova linha no final do tbody de recebimento
+  const sourceRow = button.closest("tr");
+  const targetTableBody = document.getElementById("tableBody2");
+  const newRow = targetTableBody.insertRow(-1);
 
-  // Copia as células da linha de origem para a nova linha de destino, exceto as duas últimas
+  // Copiar o data-id da linha de origem para a nova linha
+  const dataId = sourceRow.getAttribute("data-id");
+  newRow.setAttribute("data-id", dataId);
+  console.log("Copying row with data-id:", dataId);
+
   Array.from(sourceRow.cells).forEach((cell, index) => {
     if (index < sourceRow.cells.length - 2) {
-      // Ignora as duas últimas células
       let newCell = newRow.insertCell(-1);
       if (cell.querySelector("input, select")) {
-        // Copia inputs ou selects
         if (cell.querySelector("input")) {
           let input = cell.querySelector("input");
-          newCell.innerHTML = `<input type='${input.type}' value='${input.value}' ${input.type === "text" ? "" : "readonly"}>`;
+          newCell.innerHTML = `<input type='${input.type}' value='${input.value}' ${input.type === "text" && index === 0 ? "readonly" : ""}>`;
         } else if (cell.querySelector("select")) {
-          // Cria um novo select com as mesmas opções
           let select = cell.querySelector("select");
           let newSelect = document.createElement("select");
           Array.from(select.options).forEach((option) => {
@@ -101,19 +103,18 @@ export function copiarParaRecebimento(button) {
           newCell.appendChild(newSelect);
         }
       } else {
-        // Simplesmente copia o texto
         newCell.textContent = cell.textContent;
       }
     }
   });
 
-  // Adiciona células específicas para a tabela de recebimento
   let todayDate = new Date().toISOString().slice(0, 10);
-  newRow.insertCell(-1).innerHTML = `<input type='date' value='${todayDate}'>`; // Data de recebimento
-  newRow.insertCell(-1).innerHTML = `<button class='update-button'>Atualizar</button>`; // Botão Atualizar
+  newRow.insertCell(-1).innerHTML = `<input type='date' value='${todayDate}'>`;
+  newRow.insertCell(-1).innerHTML = `<button class='update-button'>Atualizar</button>`;
 
   comparar();
 }
+
 
 export function copiarTudo() {
   const bancoDadosTable = document.getElementById("bancoDados");
@@ -138,13 +139,7 @@ export function comparar() {
       const row1 = table1.rows[j];
       let allMatch = true;
 
-      var colunaLimite = 8;
-
-      if (row1.cells[1] == "fernandez" || "Fernandez" || "FERNANDEZ" || "irani" || "IRANI" || "Irani") {
-        colunaLimite = 7;
-      }
-
-      for (let k = 4; k <= colunaLimite; k++) {
+      for (let k = 4; k <= 7; k++) {
         const cell1 = row1.cells[k].querySelector("input, select")
           ? row1.cells[k].querySelector("input, select").value.trim().toLowerCase()
           : row1.cells[k].textContent.trim().toLowerCase();
@@ -160,6 +155,7 @@ export function comparar() {
 
       if (allMatch) {
         foundMatch = true;
+        row2.setAttribute("data-id", row1.getAttribute("data-id")); // Atribui o data-id corretamente
         row2.cells[0].querySelector("input").value = row1.cells[0].querySelector("input").value;
 
         const select1 = row1.cells[8].querySelector("select");
@@ -174,7 +170,14 @@ export function comparar() {
     }
 
     if (!foundMatch) {
-      // console.log(`${i + 1}`);
+      // console.log(`Nenhuma correspondência encontrada para a linha ${i + 1}`);
+    }
+
+    // Adiciona a classe 'row-error' se o data-id estiver vazio
+    if (!row2.getAttribute("data-id")) {
+      row2.classList.add("row-error");
+    } else {
+      row2.classList.remove("row-error");
     }
   }
 }
@@ -192,7 +195,10 @@ function validar_status(rowBancoDados, rowRecebimento) {
   }
 }
 
+
+
 export function addLine() {
+  console.log("Função addLine chamada");
   const table = document.getElementById("recebimento");
   const tbody = table.querySelector("tbody");
   const row = tbody.insertRow(-1);
@@ -201,7 +207,6 @@ export function addLine() {
   fields.forEach((field, index) => {
     const cell = row.insertCell(index);
     if (field === "Status" || field === "Onda" || field == "Vincos") {
-      // Adicionar dropdowns para campos específicos
       let selectHTML = `<select>`;
       if (field === "Status") {
         selectHTML += `<option>COMPRADO</option><option>RECEBIDO</option><option>PARCIALMENTE</option>`;
@@ -215,11 +220,10 @@ export function addLine() {
     } else if (field == "Data_recebimento") {
       cell.innerHTML = `<input type='date'>`;
     } else {
-      cell.innerHTML = `<input type='text'>`; // Campos editáveis
+      cell.innerHTML = `<input type='text'>`;
     }
   });
 
-  // Adicionar botão de atualizar
   const updateCell = row.insertCell(-1);
   updateCell.innerHTML = `<button class='update-button'>Atualizar</button>`;
 }

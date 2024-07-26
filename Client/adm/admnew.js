@@ -60,7 +60,7 @@ function createAddMaquinaCard() {
   (addCard.className = "cardMaquina"), "addCard";
 
   const addText = document.createElement("span");
-  addText.textContent = "Add Máquina";
+  addText.textContent = "Add Processo";
   addText.className = "addText";
 
   const addIcon = document.createElement("img");
@@ -738,33 +738,28 @@ async function fetchAllItems(maquinaId) {
     console.log("Itens encontrados/listados:", allItems); // Log com todos os itens encontrados/listados
 
     const produzindoItemList = document.getElementById("produzindoItemsList");
-    const finalizadoItemList = document.getElementById("finalizadoItemsList");
 
-    if (!produzindoItemList || !finalizadoItemList) {
-      console.error(
-        "Elementos #produzindoItemsList ou #finalizadoItemsList não encontrados"
-      );
+    if (!produzindoItemList) {
+      console.error("Elemento #produzindoItemsList não encontrado");
       return;
     }
 
-    // Limpar as listas antes de adicionar novos itens
+    // Limpar a lista antes de adicionar novos itens
     produzindoItemList.innerHTML = "";
-    finalizadoItemList.innerHTML = "";
 
-    // Adicionar novos itens às listas
+    // Adicionar novos itens à lista
     allItems.forEach((item) => {
-      createProduzindoItemCard(item);
+      createProduzindoItemCard(item, produzindoItemList);
     });
 
-    // Chamada única para logItemPositions após adicionar todos os itens em ambas as listas
+    // Chamada única para logItemPositions após adicionar todos os itens na lista de produzindo
     logItemPositions(produzindoItemList); // Chama a função para exibir as posições no console para a lista de itens produzindo
-    logItemPositions(finalizadoItemList); // Chama a função para exibir as posições no console para a lista de itens finalizados
   } catch (error) {
     console.error("Erro ao recuperar os itens!", error);
   }
 }
 
-function createProduzindoItemCard(item) {
+function createProduzindoItemCard(item, produzindoItemList) {
   const containerId = `container-${item.id_item}-${item.part_number}-${item.status}`;
 
   const itemContainer = document.createElement("div");
@@ -802,17 +797,13 @@ function createProduzindoItemCard(item) {
 
   itemContainer.appendChild(itemCard);
 
-  const listContainer = document.getElementById(
-    item.status === "FINALIZADO" ? "finalizadoItemsList" : "produzindoItemsList"
-  );
-
-  if (listContainer) {
+  if (produzindoItemList) {
     const renumberItems = () => {
-      const items = listContainer.querySelectorAll(".item-container");
+      const items = produzindoItemList.querySelectorAll(".item-container");
       items.forEach((item, index) => {
         item.querySelector(".item-number").textContent = `${index + 1} `;
       });
-      logItemPositions(listContainer);
+      logItemPositions(produzindoItemList);
     };
 
     itemContainer.addEventListener("dragstart", (event) => {
@@ -824,23 +815,23 @@ function createProduzindoItemCard(item) {
       itemContainer.classList.remove("dragging");
     });
 
-    listContainer.addEventListener("dragover", (event) => {
+    produzindoItemList.addEventListener("dragover", (event) => {
       event.preventDefault();
-      const afterElement = getDragAfterElement(listContainer, event.clientY);
+      const afterElement = getDragAfterElement(produzindoItemList, event.clientY);
       const draggable = document.querySelector(".dragging");
       if (
         afterElement !== draggable.nextElementSibling &&
         afterElement !== draggable
       ) {
         if (afterElement == null) {
-          listContainer.appendChild(draggable);
+          produzindoItemList.appendChild(draggable);
         } else {
-          listContainer.insertBefore(draggable, afterElement);
+          produzindoItemList.insertBefore(draggable, afterElement);
         }
       }
     });
 
-    listContainer.addEventListener("drop", (event) => {
+    produzindoItemList.addEventListener("drop", (event) => {
       event.preventDefault();
       const idItemContainerBeingDragged =
         event.dataTransfer.getData("text/plain");
@@ -848,29 +839,30 @@ function createProduzindoItemCard(item) {
         idItemContainerBeingDragged
       );
       if (itemContainerBeingDragged) {
-        const afterElement = getDragAfterElement(listContainer, event.clientY);
+        const afterElement = getDragAfterElement(produzindoItemList, event.clientY);
         if (afterElement == null) {
-          listContainer.appendChild(itemContainerBeingDragged);
+          produzindoItemList.appendChild(itemContainerBeingDragged);
         } else {
-          listContainer.insertBefore(itemContainerBeingDragged, afterElement);
+          produzindoItemList.insertBefore(itemContainerBeingDragged, afterElement);
         }
         renumberItems();
       }
     });
 
     const itemCount =
-      listContainer.querySelectorAll(".item-container").length + 1;
+      produzindoItemList.querySelectorAll(".item-container").length + 1;
 
     const itemNumberElement = document.createElement("span");
     itemNumberElement.textContent = `${itemCount} `;
     itemNumberElement.className = "item-number";
     itemCard.insertBefore(itemNumberElement, partNumberElement);
 
-    listContainer.appendChild(itemContainer);
+    produzindoItemList.appendChild(itemContainer);
   } else {
     console.error("Elemento não encontrado ao criar cartão do item");
   }
 }
+
 
 function getDragAfterElement(container, y) {
   const draggableElements = [
@@ -896,14 +888,9 @@ function getDragAfterElement(container, y) {
 //=================================================
 
 // Seleciona o botão e o modal
-const listarFinalizadosButton = document.getElementById("ListarFinalizados");
 const modalContent = document.querySelector(".modal-content-3");
 const voltarButton = document.getElementById("voltarModalContent");
 
-// Adiciona um evento de clique para abrir o modal
-listarFinalizadosButton.addEventListener("click", () => {
-  modalContent.classList.add("show");
-});
 
 // Adiciona um evento de clique para fechar o modal
 voltarButton.addEventListener("click", () => {
@@ -911,36 +898,28 @@ voltarButton.addEventListener("click", () => {
 });
 
 //=================================================
-// função para fechar o modalcontent 2 e 3
+// função para fechar o modalcontent 2
 //=================================================
 
-// Adicionar event listeners para voltarModalContent
+// Adicionar event listener para voltarModalContent
 const voltarButton1 = document.getElementById("voltarModalContent");
 const voltarButton2 = document.getElementById("voltarModalContent2");
 const modalContent2 = document.querySelector(".modal-content-2");
-const modalContent3 = document.querySelector(".modal-content-3");
 
-if (voltarButton1 && voltarButton2 && modalContent2 && modalContent3) {
+if (voltarButton1 && voltarButton2 && modalContent2) {
   voltarButton1.addEventListener("click", () => {
     modalContent2.classList.add("d-none");
-    modalContent3.classList.add("d-none");
   });
 
   voltarButton2.addEventListener("click", () => {
     modalContent2.classList.remove("d-none");
-    modalContent3.classList.add("d-none");
-  });
-
-  listarFinalizadosButton.addEventListener("click", () => {
-    modalContent2.classList.add("d-none");
-    modalContent3.classList.remove("d-none");
-    console.log("modal-content-2 escondido, modal-content-3 mostrado");
   });
 } else {
   console.error(
     "Não foi possível encontrar um ou mais elementos necessários para adicionar event listeners."
   );
 }
+
 
 function logItemPositions(listContainer) {
   const items = listContainer.querySelectorAll(".item-container");

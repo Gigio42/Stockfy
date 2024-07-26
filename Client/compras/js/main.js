@@ -1,35 +1,58 @@
-import { handleExpectedDateChange, convertToInteger, extractPdfData } from "./modules/extractToJson.js";
+import {
+  handleExpectedDateChange,
+  convertToInteger,
+  extractPdfData,
+} from "./modules/extractToJson.js";
 import { addTableHeader, addTableRow, populateTable } from "./modules/table.js";
 import { updateCardboardRepresentation } from "./modules/cardboard.js";
 import { handleAddMeasureBtnClick } from "./modules/form.js";
 import { openFilePicker } from "./modules/openfile.js";
 import { undoChanges, redoChanges } from "./modules/undoRedo.js";
-import {sendJSONDataToBackend} from "../sendToBackend.js"
+import { sendJSONDataToBackend } from "../sendToBackend.js";
+
+document.addEventListener('DOMContentLoaded', (event) => {
+  // Função para limpar todos os inputs
+  function clearAllInputs() {
+      // Seleciona todos os elementos input
+      const inputs = document.querySelectorAll('input');
+      // Itera sobre todos os inputs e limpa o valor
+      inputs.forEach(input => {
+          input.value = '';
+      });
+  }
+  
+  // Chama a função para limpar os inputs após a página ser carregada
+  clearAllInputs();
+});
+
 
 document.addEventListener("DOMContentLoaded", () => {
-
-  
-
-
   if (localStorage.getItem("isLoggedIn") !== "true") {
     window.location.href = "../login/login.html";
   }
-  
+
   $("#user-name").text(localStorage.getItem("nome") || "UserName");
   var name = localStorage.getItem("nome");
   var profilePic = $("#profilePic");
-  profilePic.attr("src", "https://api.dicebear.com/8.x/shapes/svg?seed=" + name);
-  
+  profilePic.attr(
+    "src",
+    "https://api.dicebear.com/8.x/shapes/svg?seed=" + name
+  );
+
   var dropEnabled = true;
   var dropzone = document.getElementById("dropzone");
- var jsonData = {
+  var jsonData = {
     infoPedido: {},
     infoProdComprados: [], // Inicializando como array vazio
   };
 
   // Exemplo de como chamar as funções dentro do contexto apropriado
-  document.getElementById("desfazerChapa").addEventListener("click", redoChanges);
-  document.getElementById("refazerChapa").addEventListener("click", undoChanges);
+  document
+    .getElementById("desfazerChapa")
+    .addEventListener("click", redoChanges);
+  document
+    .getElementById("refazerChapa")
+    .addEventListener("click", undoChanges);
 
   let selectedCardboard = {};
 
@@ -72,9 +95,11 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   };
 
-  document.getElementById("adicionarMedidaBtn").addEventListener("click", () => {
-    handleAddMeasureBtnClick();
-  });
+  document
+    .getElementById("adicionarMedidaBtn")
+    .addEventListener("click", () => {
+      handleAddMeasureBtnClick();
+    });
 
   addTableHeader(dataTable);
 
@@ -87,16 +112,29 @@ document.addEventListener("DOMContentLoaded", () => {
   populateTable(jsonData.infoProdComprados, selectedCardboard);
 
   var expectedDateInput = document.getElementById("expectedDate");
-
   var sendButton = document.getElementById("sendButton");
+
   if (sendButton) {
     sendButton.addEventListener("click", function () {
-      if (expectedDateInput.value === "") {
-        expectedDateInput.classList.add("invalid-date");
-        console.error("A data prevista não foi selecionada.");
-        return;
+      // Verifica se o campo de data está vazio
+      if (!expectedDateInput.value) {
+        // Exibe uma notificação de erro se o campo estiver vazio
+        Swal.fire({
+          title: 'Campo de Data Obrigatório',
+          text: 'Por favor, selecione uma data antes de enviar.',
+          icon: 'warning',
+          confirmButtonText: 'OK',
+          background: '#e9e9e9',
+          customClass: {
+            title: 'custom-title-class',
+            content: 'custom-content-class',
+            icon: 'custom-icon-class'
+          }
+        });
+        return; // Interrompe a função de envio
       }
 
+      // Se o campo de data estiver preenchido, chama a função para enviar os dados
       sendJSONDataToBackend();
     });
   } else {
@@ -104,6 +142,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-
-
-export { handleExpectedDateChange, convertToInteger, populateTable, addTableHeader, addTableRow, updateCardboardRepresentation, handleAddMeasureBtnClick };
+export {
+  handleExpectedDateChange,
+  convertToInteger,
+  populateTable,
+  addTableHeader,
+  addTableRow,
+  updateCardboardRepresentation,
+  handleAddMeasureBtnClick,
+};
