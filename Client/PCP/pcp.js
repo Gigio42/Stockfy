@@ -44,10 +44,16 @@ const initializeModules = () => {
 };
 
 const initializeDarkMode = (darkModeToggle, body, themeElement) => {
-  const isDarkModeEnabled = localStorage.getItem("darkMode") === "enabled";
-  darkModeToggle.checked = isDarkModeEnabled;
-  toggleClass(body, "dark-mode", "light-mode", isDarkModeEnabled);
-  setSwal2Theme(isDarkModeEnabled, themeElement);
+  let isDarkModeEnabled = localStorage.getItem("darkMode");
+  if (isDarkModeEnabled === null) {
+    // Se a preferência não estiver definida, começa no modo escuro
+    isDarkModeEnabled = "enabled";
+    localStorage.setItem("darkMode", isDarkModeEnabled);
+  }
+  const darkMode = isDarkModeEnabled === "enabled";
+  darkModeToggle.checked = darkMode;
+  toggleClass(body, "dark-mode", "light-mode", darkMode);
+  setSwal2Theme(darkMode, themeElement);
 };
 
 const addEventListeners = (body, swal2Theme) => {
