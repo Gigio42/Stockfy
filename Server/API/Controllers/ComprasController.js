@@ -21,49 +21,6 @@ class ComprasController {
     return chapa;
   }
 
-  /* async createCompra(orderData) {
-    try {
-      const promises = orderData.info_prod_comprados.map(async (chapaData) => {
-        // Extração e formatação das dimensões da chapa
-        const chapa = this.extractDimensions(chapaData);
-  
-        // Definindo a quantidade_disponivel da Chapa igual à quantidade_comprada
-        chapa.quantidade_disponivel = chapa.quantidade_comprada;
-  
-        // Inserindo a chapa no banco de dados usando Prisma
-        const createdChapa = await prisma.chapas.create({
-          data: {
-            medida: chapa.medida,
-            largura: chapa.largura,
-            comprimento: chapa.comprimento,
-            quantidade_comprada: chapa.quantidade_comprada,
-            qualidade: chapa.qualidade, // Certifique-se de passar qualidade se estiver presente
-            fornecedor: chapa.fornecedor,
-            // Adicione outros campos conforme necessário
-          },
-        });
-  
-        // Criando uma entrada no histórico para a chapa
-        const idChapaHistorico = `${chapa.largura} X ${chapa.comprimento} - ${chapa.vincos} - ${chapa.qualidade}/${chapa.onda}`;
-        await prisma.historico.create({
-          data: {
-            id_chapa: idChapaHistorico,
-            quantidade: chapa.quantidade_comprada,
-            modificacao: chapa.status,
-            modificado_por: chapa.comprador,
-            data_modificacao: chapa.data_compra,
-            // Adicione outros campos conforme necessário
-          },
-        });
-      });
-  
-      return Promise.all(promises);
-    } catch (error) {
-      console.error('Erro ao processar dados de compra:', error);
-      throw error; // Propaga o erro para o caller lidar com ele
-    }
-  }*/
-
   // Função para adicionar os cartões criados ao banco de dados
   async criarChapas(cartoes) {
     try {
@@ -141,13 +98,11 @@ class ComprasController {
 
   async adicionarMedidasConjugadas(medidasConjugConfimed) {
     try {
-      // Processa as medidas e cria novas conjugações
       const resultados = await Promise.all(
         medidasConjugConfimed.map(async (medida) => {
-          // Concatenando largura e comprimento como medida
           const medidaText = `${medida.largura} X ${medida.comprimento}`;
   
-          // Preparando os dados para a criação
+          // Preparando os dados para a criação da nova conjugação
           const data = {
             medida: medidaText,
             largura: medida.largura,
@@ -156,24 +111,21 @@ class ComprasController {
             rendimento: medida.quantasVezes || 0,
             quantidade_disponivel: medida.quantidade || 0,
             usado: medida.usado || false,
+            chapaId: medida.chapa ? parseInt(medida.chapa, 10) : null,
+            part_number: String(medida.partNumber), // Garante que part_number é uma string
+            pedido_venda: medida.pedidoVenda || null, // Garante que pedido_venda é tratado corretamente
           };
-  
-          // Verificando se 'chapa' está presente e adicionando a referência
-          if (medida.chapa) {
-            data.chapaId = parseInt(medida.chapa, 10);
-  
-            // Atualizando o status da chapa se necessário
-            const chapa = await prisma.chapas.findUnique({
-              where: { id_chapa: data.chapaId },
-              select: { status: true }
-            });
-          }
-  
-          // Aqui você pode usar a data de confirmação para qualquer lógica necessária
-          console.log(`Medida confirmada em: ${medida.dataConfirmacao}`);
   
           // Criando uma nova conjugação no banco de dados usando Prisma
           const novaConjugacao = await prisma.conjugacoes.create({ data });
+  
+          // Atualiza a chapa associada para marcar como conjugado: false
+          if (medida.chapa) {
+            await prisma.chapas.update({
+              where: { id_chapa: parseInt(medida.chapa, 10) },
+              data: { conjugado: false },
+            });
+          }
   
           return novaConjugacao;
         })
@@ -185,7 +137,8 @@ class ComprasController {
       console.error("Erro ao adicionar medidas conjugadas:", error);
       throw error;
     }
-  }  
+  }
+  
   
   
   

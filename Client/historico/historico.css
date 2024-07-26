@@ -18,6 +18,12 @@ th {
   }
 }
 
+#resultsTable {
+  overflow-x: auto !important;
+  max-width: 87vw;
+
+}
+
 /* Fonte para telas grandes (largura mínima de 1024px) */
 @media (min-width: 1024px) {
   tr td {
@@ -51,6 +57,12 @@ th {
 main {
   padding: 0;
   width: 100%;
+  overflow: hidden;
+  
+}
+
+.intoPartOfSideTop {
+  max-width: 87vw;
 }
 
 h1 {
@@ -156,6 +168,7 @@ body {
   background-color: #2b2b2b;
   color: white;
   font-family: Arial, sans-serif;
+  overflow-y:hidden !important; 
 }
 aside {
   width: 15vw;
@@ -187,9 +200,11 @@ button {
 
 .partoftop {
   display: flex;
+
 }
 .partofside {
   width: 100%;
+
 }
 
 .id-button {
@@ -236,7 +251,7 @@ th {
 .data {
   display: flex;
   justify-content: space-around;
-  margin-bottom: 20px;
+
   background: #5f5f5f;
 }
 #idsContainer {
@@ -245,7 +260,7 @@ th {
   overflow-x: auto;
   margin-bottom: 20px;
   white-space: nowrap;
-  padding-left: 1rem;
+  padding: 1rem;
 }
 .modal {
   display: none; /* Certifique-se que isso muda para 'block' */
