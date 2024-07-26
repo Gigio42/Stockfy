@@ -1,429 +1,434 @@
-/* ======================================
-   General Styles
-====================================== */
+  /* ======================================
+    General Styles
+  ====================================== */
 
-body.light-mode {
-  background-color: #fff;
-  color: #000;
-}
+  body.light-mode {
+    background-color: #fff;
+    color: #000;
+  }
 
-body.dark-mode .kanban-column {
-  background-color: #444;
-}
+  body.dark-mode .kanban-column {
+    background-color: #444;
+  }
 
-body.dark-mode .kanban-item {
-  color: #fff;
-}
+  body.dark-mode .kanban-item {
+    color: #fa1515;
+  }
 
-/* REMOVÍVEL (faz os cards parecerem que está em um jogo kkkkk */
-.card-body {
-  background-color: rgba(255, 255, 255, 0.068);
-  border: 1px solid #2a2a2a;
-  border-radius: 10px;
-  padding: 10px;
+  /* REMOVÍVEL (faz os cards parecerem que está em um jogo kkkkk */
+  .card-body {
+    background-color: rgba(255, 255, 255, 0.068);
+    border: 1px solid #2a2a2a;
+    border-radius: 10px;
+    padding: 10px;
 
-}
+  }
 
-.info-div {
-  background-color: rgba(255, 255, 255, 0.068);
-  border: 1px solid #2a2a2a;
-  border-radius: 10px;
-  padding: 5px;
-  margin-bottom: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+  .info-div {
+    background-color: rgba(255, 255, 255, 0.068);
+    border: 1px solid #2a2a2a;
+    border-radius: 10px;
+    padding: 5px;
+    margin-bottom: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
 
-/* ======================================
-   Navbar Styles
-====================================== */
+  /* ======================================
+    Navbar Styles
+  ====================================== */
 
-.navbar-right {
-  display: flex;
-  align-items: center;
-}
+  .navbar-right {
+    display: flex;
+    align-items: center;
+  }
 
-/* ======================================
-   Dark Mode Toggle Styles
-====================================== */
+  /* ======================================
+    Dark Mode Toggle Styles
+  ====================================== */
 
-.dark-mode-toggle input[type="checkbox"] {
-  display: none;
-}
+  .dark-mode-toggle input[type="checkbox"] {
+    display: none;
+  }
 
-.dark-mode-toggle label {
-  margin-right: 1rem;
-  display: block;
-  width: 2.7em;
-  height: 1.5em;
-  background-color: #ddd;
-  border-radius: 2rem;
-  position: relative;
-  cursor: pointer;
-}
+  .dark-mode-toggle label {
+    margin-right: 1rem;
+    display: block;
+    width: 2.7em;
+    height: 1.5em;
+    background-color: #ddd;
+    border-radius: 2rem;
+    position: relative;
+    cursor: pointer;
+  }
 
-.dark-mode-toggle label:after {
-  content: "";
-  display: block;
-  width: 1.2em;
-  height: 1.2em;
-  background-color: #fff;
-  border-radius: 50%;
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  transition: transform 0.3s ease-in-out;
-}
+  .dark-mode-toggle label:after {
+    content: "";
+    display: block;
+    width: 1.2em;
+    height: 1.2em;
+    background-color: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s ease-in-out;
+  }
 
-.dark-mode-toggle input[type="checkbox"]:checked + label {
-  background-color: #6eec07;
-}
+  .dark-mode-toggle input[type="checkbox"]:checked + label {
+    background-color: #6eec07;
+  }
 
-.dark-mode-toggle input[type="checkbox"]:checked + label:after {
-  transform: translateX(100%);
-}
+  .dark-mode-toggle input[type="checkbox"]:checked + label:after {
+    transform: translateX(100%);
+  }
 
-/* ======================================
-   Card Container Styles
-====================================== */
+  /* ======================================
+    Card Container Styles
+  ====================================== */
 
-.card-container {
-  margin-top: 20px;
-  margin-right: 25%;
-  margin-left: 25%;
-}
-
-@media screen and (max-width: 600px) {
   .card-container {
-    margin-right: 2%;
-    margin-left: 2%;
+    margin-top: 20px;
+    margin-right: 25%;
+    margin-left: 25%;
   }
-}
 
-/* ======================================
-   Card Styles
-====================================== */
+  @media screen and (max-width: 600px) {
+    .card-container {
+      margin-right: 2%;
+      margin-left: 2%;
+    }
+  }
 
-.card {
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+  /* ======================================
+    Card Styles
+  ====================================== */
 
-.part-number {
-  background: #7a1bff23 !important;
-  color: #bf8cff;
-  border: solid 1px #9b5fff3d;
-  padding: 10px;
-  display: inline-block;
-  border-radius: 10px;
-}
+  .card {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
 
-.keys {
-  display: none;
-  background-color: rgb(40, 40, 40);
-  color: white;
-  flex-grow: 1;
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
-  margin-left: 10px;
-  margin-right: 10px;
-  border-radius: 10px;
-}
+  .part-number {
+    background: #7a1bff23 !important;
+    color: #bf8cff;
+    border: solid 1px #9b5fff3d;
+    padding: 10px;
+    display: inline-block;
+    border-radius: 10px;
+  }
 
-.ordem-div {
-  background-color: #007bff;
-  color: white;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-}
+  .keys {
+    display: none;
+    background-color: rgb(40, 40, 40);
+    color: white;
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-radius: 10px;
+  }
 
-.prazo-div {
-  background-color: #4d7099;
-  color: white;
-  padding: 10px;
-  margin: 10px;
-  border-radius: 5px;
-}
+  .ordem-div {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
 
-.ordem {
-  width: 50px;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 20px;
-  font-weight: bold;
-  box-sizing: border-box;
-  padding: 10px;
-}
+  .prazo-div {
+    background-color: #4d7099;
+    color: white;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+  }
 
-@media (max-width: 600px) {
   .ordem {
-    position: static;
-    border-radius: 50px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
+    box-sizing: border-box;
+    padding: 10px;
   }
-}
 
-.finalizado {
-  color: #727272;
-  backdrop-filter: blur(10px);
-  opacity: 0.5;
-}
+  @media (max-width: 600px) {
+    .ordem {
+      position: static;
+      border-radius: 50px;
+    }
+  }
 
-/* ======================================
-   Chapa Card Styles
-====================================== */
+  .finalizado {
+    color: #727272;
+    backdrop-filter: blur(10px);
+    opacity: 0.5;
+  }
 
-.chapa-card {
-  display: flex;
-  flex-direction: column;
-  background-color: #2a2a2a;
-  border-radius: 10px;
-}
+  /* ======================================
+    Chapa Card Styles
+  ====================================== */
 
-.chapa-content {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
+  .chapa-card {
+    display: flex;
+    flex-direction: column;
+    background-color: #2a2a2a;
+    border-radius: 10px;
+  }
 
-.chapa-details {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  flex-grow: 1;
-  flex-wrap: wrap;
-  width: 100%;
-}
+  .chapa-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
 
-.chapa-details div {
-  flex: 1;
-  min-width: 100px;
-  padding: 5px;
-  box-sizing: border-box;
-}
+  .chapa-details {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-grow: 1;
+    flex-wrap: wrap;
+    width: 100%;
+  }
 
-.chapa-card-body {
-  display: flex;
-  flex-direction: column;
-}
+  .chapa-details div {
+    flex: 1;
+    min-width: 100px;
+    padding: 5px;
+    box-sizing: border-box;
+  }
 
-.chapas-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
+  .chapa-card-body {
+    display: flex;
+    flex-direction: column;
+  }
 
-/* ======================================
-   Custom Checkbox Styles
-====================================== */
+  .chapas-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
 
-.custom-checkbox {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
+  /* ======================================
+    Custom Checkbox Styles
+  ====================================== */
 
-.custom-checkbox input[type="checkbox"] {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 100%;
-  width: 100%;
-  top: 0;
-  left: 0;
-}
+  .custom-checkbox {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
 
-.custom-checkbox .checkmark {
-  width: 20px;
-  height: 20px;
-  background-color: #eee;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  display: inline-block;
-  margin-right: 10px;
-}
+  .custom-checkbox input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+  }
 
-.custom-checkbox input:checked ~ .checkmark {
-  background-color: #28a745;
-}
+  .custom-checkbox .checkmark {
+    width: 20px;
+    height: 20px;
+    background-color: #eee;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: inline-block;
+    margin-right: 10px;
+  }
 
-.custom-checkbox input[type="checkbox"]:disabled + .checkmark::before {
-  content: "\f023";
-  font-family: "Font Awesome 5 Free";
-  font-weight: 900;
-  font-size: 12px;
-  color: red;
-  display: block;
-  text-align: center;
-}
+  .custom-checkbox input:checked ~ .checkmark {
+    background-color: #28a745;
+  }
 
-/* Classe para esconder a checkbox no header */
-.hidden-checkbox {
-  visibility: hidden;
-  width: 20px; /* Manter a largura da checkbox */
-  height: 20px; /* Manter a altura da checkbox */
-}
+  .custom-checkbox input[type="checkbox"]:disabled + .checkmark::before {
+    content: "\f023";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 12px;
+    color: red;
+    display: block;
+    text-align: center;
+  }
+
+  /* Classe para esconder a checkbox no header */
+  .hidden-checkbox {
+    visibility: hidden;
+    width: 20px; /* Manter a largura da checkbox */
+    height: 20px; /* Manter a altura da checkbox */
+  }
 
 
-/* ======================================
-   Button Styles
-====================================== */
+  /* ======================================
+    Button Styles
+  ====================================== */
 
-.btn-submit {
-  display: block;
-  margin-top: 10px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: not-allowed;
-  opacity: 0.6;
-}
+  .btn-submit {
+    display: block;
+    margin-top: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
 
-.btn-submit.enabled {
-  cursor: pointer;
-  opacity: 1;
-}
+  .btn-submit.enabled {
+    cursor: pointer;
+    opacity: 1;
+  }
 
-.btn-submit.align-right {
-  margin-left: auto;
-}
+  .btn-submit.align-right {
+    margin-left: auto;
+  }
 
-/* ======================================
-   Flex Container Styles
-====================================== */
+  /* ======================================
+    Flex Container Styles
+  ====================================== */
 
-.flex-container {
-  display: flex;
-  justify-content: space-between;
-}
+  .flex-container {
+    display: flex;
+    justify-content: space-between;
+  }
 
-/* Hide all columns by default */
-.kanban-column {
-  display: none;
-}
+  /* Hide all columns by default */
+  .kanban-column {
+    display: none;
+  }
 
-/* Show the selected column */
-.kanban-column.active {
-  display: block;
-}
+  /* Show the selected column */
+  .kanban-column.active {
+    display: block;
+  }
 
-#kanban-navigation {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 20px;
-}
+  #kanban-navigation {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
 
-#kanban-navigation button {
-  padding: 10px 20px;
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  cursor: pointer;
-}
+  #kanban-navigation button {
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+  }
 
-.kanban-item {
-  width: 75%;
-  margin: 10px auto;
-}
+  .kanban-item {
+    width: 75%;
+    margin: 10px auto;
+  }
 
-#kanban-navigation button:hover {
-  background-color: #e0e0e0;
-}
+  #kanban-navigation button:hover {
+    background-color: #e0e0e0;
+  }
 
-#kanban-navigation button.active {
-  background-color: #d0d0d0;
-}
+  #kanban-navigation button.active {
+    background-color: #d0d0d0;
+  }
 
-/* ======================================
-   Dark Mode Specific Styles
-====================================== */
+  /* ======================================
+    Dark Mode Specific Styles
+  ====================================== */
 
-body.dark-mode .kanban-column {
-  background-color: #444;
-}
+  body.dark-mode .kanban-column {
+    background-color: rgba(246, 0, 0, 0)
+  }
 
-/* ======================================
-   Light Mode Specific Styles
-====================================== */
+  /* ======================================
+    Light Mode Specific Styles
+  ====================================== */
 
-body.light-mode .navbar {
-  background-color: #f8f9fa;
-}
+  body.light-mode .navbar {
+    background-color: #f8f9fa;
+  }
 
-body.light-mode .card {
-  background-color: #fff;
-  color: #000;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+  body.light-mode .card {
+    background-color: #fff;
+    color: #000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
 
-body.light-mode .card-body {
-  background-color: #fff;
-  color: #000;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+  body.light-mode .card-body {
+    background-color: #fff;
+    color: #000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
 
-body.light-mode .part-number {
-  background: #000000;
-  color: #8000ff;
-  border: solid 1px rgb(174, 0, 255);
-}
+  body.light-mode .part-number {
+    background: #000000;
+    color: #8000ff;
+    border: solid 1px rgb(174, 0, 255);
+  }
 
-body.light-mode .keys {
-  background-color: #f8f9fa;
-  color: #000;
-}
+  body.light-mode .keys {
+    background-color: #f8f9fa;
+    color: #000;
+  }
 
-body.light-mode .custom-checkbox .checkmark {
-  background-color: #eee;
-  border: 1px solid #ddd;
-}
+  body.light-mode .custom-checkbox .checkmark {
+    background-color: #eee;
+    border: 1px solid #ddd;
+  }
 
-body.light-mode .custom-checkbox input:checked ~ .checkmark {
-  background-color: #59e664;
-}
+  body.light-mode .custom-checkbox input:checked ~ .checkmark {
+    background-color: #59e664;
+  }
 
-body.light-mode .ordem-div,
-body.light-mode .prazo-div {
-  background-color: #1d77ddc4;
-  color: #ffffff;
-}
+  body.light-mode .ordem-div,
+  body.light-mode .prazo-div {
+    background-color: #1d77ddc4;
+    color: #ffffff;
+  }
 
-body.light-mode .btn-submit {
-  background-color: #0c9400;
-  color: #ffffff;
-}
+  body.light-mode .btn-submit {
+    background-color: #0c9400;
+    color: #ffffff;
+  }
 
-/* ======================================
-   Dark Mode Select Styles
-====================================== */
+  /* ======================================
+    Dark Mode Select Styles
+  ====================================== */
 
-.dark-mode-select {
-  padding: 10px;
-  background-color: #464646;
-  color: #fff;
-  border-radius: 10px;
-  border: none;
-}
+  .dark-mode-select {
+    padding: 10px;
+    background-color: #464646;
+    color: #fff;
+    border-radius: 10px;
+    border: none;
+  }
 
-.dark-mode-select option {
-  background-color: #464646;
-  color: #fff;
-}
+  .dark-mode-select option {
+    background-color: #464646;
+    color: #fff;
+  }
 
-body.light-mode .dark-mode-select {
-  background-color: #fff;
-  color: #333;
-}
+  body.light-mode .dark-mode-select {
+    background-color: #fff;
+    color: #333;
+  }
 
-body.light-mode .dark-mode-select option {
-  background-color: #fff;
-  color: #333;
-}
+  body.light-mode .dark-mode-select option {
+    background-color: #fff;
+    color: #333;
+  }
+
+  .chapa-not-received {
+    background-color: rgba(255, 0, 0, 0.2);
+    border: 1px solid red !important;
+  }
