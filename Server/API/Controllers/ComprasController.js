@@ -167,13 +167,6 @@ class ComprasController {
               where: { id_chapa: data.chapaId },
               select: { status: true }
             });
-  
-            if (chapa && chapa.status !== 'RECEBIDO' && chapa.status !== 'PARCIAL') {
-              await prisma.chapas.update({
-                where: { id_chapa: data.chapaId },
-                data: { status: 'COMPRADO' }
-              });
-            }
           }
   
           // Aqui você pode usar a data de confirmação para qualquer lógica necessária
