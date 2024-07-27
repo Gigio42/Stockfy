@@ -159,7 +159,7 @@ export function createChapasList(chapas, item, disponivel) {
 
   chapas.forEach((chapa) => {
     const chapaCard = document.createElement("div");
-    chapaCard.className = "card text-white mb-2 chapa-card";
+    chapaCard.className = "card text-white mb-2 ";
     chapaCard.style.borderRadius = "10px";
 
     if (!allChapasReceived) {
