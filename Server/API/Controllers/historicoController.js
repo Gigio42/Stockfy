@@ -1,16 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-// Função de validação para os objetos de dados
-function validateData(data) {
-  const requiredFields = ["id_chapa", "quantidade", "modificacao", "modificado_por", "data_modificacao", "pedido_venda"];
-  for (const field of requiredFields) {
-    if (!data.hasOwnProperty(field) || data[field] === null || data[field] === undefined) {
-      return false;
-    }
-  }
-  return true;
-}
 
 export async function getAll(request, reply) {
   try {
@@ -21,21 +11,29 @@ export async function getAll(request, reply) {
   }
 }
 
-export async function add(request, reply) {
-  if (!request.body || !Array.isArray(request.body) || request.body.length === 0) {
-    return reply.status(400).send({ error: "Um array de dados é necessário para a criação." });
-  }
+export async function findChapaByCriteria(request, reply) {
+  const { medida, vincos, qualidade, onda } = request.query;
 
-  const invalidItems = request.body.filter(item => !validateData(item));
-  if (invalidItems.length > 0) {
-    return reply.status(400).send({ error: "Todos os campos obrigatórios devem estar presentes e não nulos." });
+  // Validação básica para garantir que todos os parâmetros necessários foram fornecidos
+  if (!medida || !vincos || !qualidade || !onda) {
+    return reply.status(400).send({ error: "Todos os parâmetros (medida, vincos, qualidade, onda) são necessários." });
   }
   
   try {
-    const entities = await prisma.historico.createMany({
-      data: request.body,
+    const chapa = await prisma.chapas.findFirst({
+      where: {
+        medida: medida,
+        vincos: vincos,
+        qualidade: qualidade,
+        onda: onda
+      }
     });
-    reply.send({ count: entities.count, message: `${entities.count} registros criados com sucesso.` });
+    
+    if (chapa) {
+      reply.send(chapa);
+    } else {
+      reply.status(404).send({ error: "Nenhuma chapa encontrada com os critérios especificados." });
+    }
   } catch (error) {
     reply.status(500).send({ error: error.message });
   }

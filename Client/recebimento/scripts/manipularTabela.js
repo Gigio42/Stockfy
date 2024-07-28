@@ -39,10 +39,7 @@ export function criarTable(table, chapaData) {
       let copiarCell = row.insertCell(-1);
       let copiarButton = document.createElement("img");
       copiarButton.src = "icons8-copy-48 (2).png";
-      copiarButton.alt = "Copiar";
-      copiarButton.className = "recebido";
-      copiarButton.style.width = "25px"; // Ajustar tamanho
-      copiarButton.style.height = "25px"; // Ajustar tamanho
+      copiarButton.className = "copiar";
       copiarButton.addEventListener("click", function () {
           copiarParaRecebimento(this);
       });
@@ -55,9 +52,7 @@ export function criarTable(table, chapaData) {
       const updateCell = row.insertCell(-1);
       let updateButton = document.createElement("img");
       updateButton.src = "icons8-synchronize-48.png";
-      updateButton.className = "update-button";
-      updateButton.style.width = "25px"; // Ajustar tamanho
-      updateButton.style.height = "25px"; // Ajustar tamanho
+      updateButton.className = "atualizar";
       updateCell.appendChild(updateButton);
   }
 
@@ -110,7 +105,15 @@ export function copiarParaRecebimento(button) {
 
   let todayDate = new Date().toISOString().slice(0, 10);
   newRow.insertCell(-1).innerHTML = `<input type='date' value='${todayDate}'>`;
-  newRow.insertCell(-1).innerHTML = `<button class='update-button'>Atualizar</button>`;
+  
+  // Adicionar o mesmo ícone de atualização utilizado na função criarTable
+  let updateCell = newRow.insertCell(-1);
+  let updateButton = document.createElement("img");
+  updateButton.src = "icons8-synchronize-48.png";
+  updateButton.className = "update-button";
+  updateButton.style.width = "25px"; // Ajustar tamanho
+  updateButton.style.height = "25px"; // Ajustar tamanho
+  updateCell.appendChild(updateButton);
 
   comparar();
 }
@@ -120,7 +123,7 @@ export function copiarTudo() {
   const bancoDadosTable = document.getElementById("bancoDados");
   const rows = Array.from(bancoDadosTable.querySelectorAll("tbody tr"));
   rows.forEach((row) => {
-    const copiarButton = row.querySelector(".recebido");
+    const copiarButton = row.querySelector(".copiar");
     if (copiarButton) {
       copiarParaRecebimento(copiarButton);
     }

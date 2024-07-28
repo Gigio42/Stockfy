@@ -7,71 +7,51 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <link rel="stylesheet" href="historico.css">
-    <style>
-        
-    </style>
 </head>
 <body>
     <main>
-        <div class="partoftop">
         <aside>
             <div class="logo-container">
                 <img class="logoStockfy" src="logoTransparente.png" alt="" />
-              </div>
+            </div>
             <button id="btnHistoricoPartNumber">Part Number</button>
             <button id="btnHistoricoChapa">Chapa</button>
             <button id="btnHistoricoMaquina">Máquina</button>
         </aside>
-
-        <div class="partofside" >
-            <div class="intoPartOfSideTop">
+        <div class="partofside">
             <header>
                 <h1>Gerenciador de Histórico</h1>
                 <div class="botoesheader">
-                    <div class="dark-mode-toggle">
-                      <input type="checkbox" id="darkModeToggle" />
-                      <label for="darkModeToggle"></label>
-                    </div>
-                    <a class="logout" href="../home.html"
-                      ><img class="" src="sair (1).png" alt=""
-                    /></a>
-                  </div>
+                    <a class="logout" href="../home.html"><img class="" src="sair (1).png" alt="" /></a>
+                </div>
             </header>
-        <div class="data">
-            <div class="button-like" id="week">Semana</div>
-            <div class="button-like" id="month">Mês</div>
-            <div class="button-like" id="year">Ano</div>
-            <input type="text" id="dateRange" placeholder="Selecione as datas" style="background-color: #333333; color: white; border: none; padding: 10px; margin: 5px;">
+            <div class="data">
+                <div class="button-like" id="week">Semana</div>
+                <div class="button-like" id="month">Mês</div>
+                <div class="button-like" id="year">Ano</div>
+                <input type="text" id="dateRange" placeholder="Selecione as datas" style="background-color: #333333; color: white; border: none; padding: 10px; margin: 5px;">
+            </div>
+            <div id="idsContainer"></div>
+            <div id="tableContainer">
+                <table id="resultsTable" border="1">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
-        <div id="idsContainer"></div>
-    </div>
-        <table id="resultsTable" border="1">
-            <thead>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-    </div>
-    </div>
-        
-
-        <div id="modal" class="modal">
+    </main>
+    <div id="modal" class="modal">
+        <div class="modal-content">
             <p>Detalhes da Chapa</p>
             <div id="modalContent"></div>
             <button onclick="document.getElementById('modal').style.display='none';">Fechar</button>
         </div>
-    </main>
-    <!-- Modal Structure -->
+    </div>
     <div id="modalChapas" class="modal">
         <div class="modal-content">
             <div id="modalContentChapas"></div>
         </div>
     </div>
-    
     <script src="historico.js"></script>
-
-</script>
-
-
 </body>
 </html>

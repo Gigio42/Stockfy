@@ -156,10 +156,7 @@ table tbody tr:hover {
     width: 100% !important;
 }
 
-.recebido:hover {
-    background-color: rgba(255, 45, 87, 0.257);
-    border-radius: 1rem;
-}
+
 
 input[type="text"], input[type="date"], select {
     width: 100%;
@@ -239,13 +236,18 @@ h2 {
     background-color: var(--btnhover-color);
 }
 
-.update-button {
+.atualizar, .copiar {
     width: 25px;
     height: 25px; /* Ajustar tamanho */
 }
 
-.update-button:hover {
-    width: 25px;
+.copiar:hover {
+    padding: 0.5rem;
+    background-color: rgba(255, 45, 87, 0.257);
+    border-radius: 1rem;
+}
+
+.atualizar:hover {
     padding: 0.5rem;
     background-color: #3168ff2b;
     border-radius: 1rem;
@@ -382,7 +384,6 @@ th, td {
 
 table tbody tr:hover {
     background-color: var(--row-hover-background);
-    padding: 0.7rem; /* Aumenta o padding quando o mouse está sobre a linha */
 }
 
 .headercomprado, .titulorecebimento {

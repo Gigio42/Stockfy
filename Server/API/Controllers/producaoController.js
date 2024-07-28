@@ -241,7 +241,7 @@ class ProducaoController {
         part_number: item.part_number,
         maquina: maquinaName,
         quantidade: itemMaquina.quantidade,
-        modificacao: "FINALIZADO",
+        modificacao: "PROCESSADO",
         modificado_por: executor, // usuario login
         data_modificacao: new Date().toLocaleDateString("pt-BR"),
         ordem: itemMaquina.ordem,
@@ -287,7 +287,8 @@ class ProducaoController {
             data: {
               chapa: `${chapa.largura} X ${chapa.comprimento} - ${chapa.vincos} - ${chapa.qualidade}/${chapa.onda}`,
               part_number: item.part_number,
-              modificacao: "PROCESSADA",
+              quantidade: 0,
+              modificacao: "FINALIZADA",
               modificado_por: executor, // usuario login
               data_modificacao: new Date().toLocaleDateString("pt-BR"),
               pedido_venda: item.pedido_venda.toString(),

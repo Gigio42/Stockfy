@@ -56,7 +56,7 @@ class ComprasController {
           chapa: `${cartao.largura} X ${cartao.comprimento} - ${cartao.vincos} - ${cartao.qualidade}/${cartao.onda}`,
           quantidade: cartao.quantidade_comprada,
           modificacao: cartao.status,
-          modificado_por: cartao.comprador, // usuario login
+          modificado_por: cartao.executor, // usuario login
           data_modificacao: cartao.data_compra,
           data_prevista: cartao.data_prevista,
         })),

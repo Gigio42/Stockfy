@@ -1,8 +1,8 @@
-import { getAll, add, deleteEntity } from "../Controllers/historicoController.js";
+import { getAll, deleteEntity, findChapaByCriteria } from "../Controllers/historicoController.js";
 
 async function historicoRoutes(fastify) {
   fastify.get("/", getAll);
-  fastify.post("/", add);
+  fastify.get("/buscar-chapa", findChapaByCriteria);
   fastify.delete("/:id", deleteEntity);
 }
 

@@ -19,9 +19,9 @@ th {
 }
 
 #resultsTable {
+  width: 100%;
   overflow-x: auto !important;
   max-width: 87vw;
-
 }
 
 /* Fonte para telas grandes (largura mínima de 1024px) */
@@ -57,85 +57,24 @@ th {
 main {
   padding: 0;
   width: 100%;
-  overflow: hidden;
-  
+  height: 100vh; /* Ocupa toda a altura da viewport */
+  display: flex;
 }
 
-.intoPartOfSideTop {
-  max-width: 87vw;
+header {
+  font-size: 1rem;
+  width: 100%;
+  background: #0f0f0f;
+  height: 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 h1 {
   margin-left: 1rem;
   font-size: 1.5rem;
   font-weight: normal;
-}
-
-::-webkit-scrollbar {
-  width: 10px;
-  /* largura da barra de rolagem */
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: #424242;
-  /* cor do 'thumb' (a parte que você arrasta) */
-  border-radius: 5px;
-  /* borda arredondada */
-}
-
-::-webkit-scrollbar-track {
-  background-color: #212121;
-  /* cor do fundo da barra de rolagem */
-}
-
-/* ======================================
-         Dark Mode Toggle Styles
-         ====================================== */
-.dark-mode-toggle input[type="checkbox"] {
-  display: none;
-}
-
-.dark-mode-toggle label {
-  margin-right: 1rem;
-  display: block;
-  width: 2.7em;
-  height: 1.5em;
-  background-color: #2a2a2a;
-  border-radius: 2rem;
-  position: relative;
-  cursor: pointer;
-}
-
-.dark-mode-toggle label:after {
-  content: "";
-  display: block;
-  width: 1.2em;
-  height: 1.2em;
-  background-color: #ffffff;
-  border-radius: 50%;
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  transition: transform 0.3s ease-in-out;
-}
-
-.dark-mode-toggle input[type="checkbox"]:checked + label {
-  background-color: #6eec07;
-}
-
-.dark-mode-toggle input[type="checkbox"]:checked + label:after {
-  transform: translateX(100%);
-}
-
-header {
-  font-size: 1rem;
-  width: 80%;
-  background: #0f0f0f;
-  width: 100%;
-  height: 3rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .botoesheader {
@@ -168,8 +107,10 @@ body {
   background-color: #2b2b2b;
   color: white;
   font-family: Arial, sans-serif;
-  overflow-y:hidden !important; 
+  height: 100vh;
+  overflow: hidden;
 }
+
 aside {
   width: 15vw;
   height: 100vh;
@@ -198,13 +139,11 @@ button {
   padding: 0.8rem;
 }
 
-.partoftop {
-  display: flex;
-
-}
 .partofside {
-  width: 100%;
-
+  width: 85vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .id-button {
@@ -251,17 +190,17 @@ th {
 .data {
   display: flex;
   justify-content: space-around;
-
   background: #5f5f5f;
 }
 #idsContainer {
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
-  margin-bottom: 20px;
+  margin-bottom: 0; /* Removido o espaço inferior */
   white-space: nowrap;
   padding: 1rem;
 }
+
 .modal {
   display: none; /* Certifique-se que isso muda para 'block' */
   position: fixed;
@@ -271,17 +210,41 @@ th {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0, 0, 0, 0.4); /* Cor de fundo com opacidade */
+  background-color: rgba(0, 0, 0, 0.8); /* Cor de fundo com opacidade */
   color: white;
+  display: none; /* Ocultar o modal */
+  justify-content: center;
+  align-items: center;
 }
 
 .modal-content {
   color: white;
-  background-color: #333333;
-  margin: 15% auto; /* Ajuste conforme necessário */
+  background-color: #0f0f0f;
   padding: 20px;
   border: 1px solid #888;
   width: 50%; /* Ajuste conforme necessário */
+  max-width: 600px; /* Limita o tamanho máximo do modal */
+  border-radius: 8px;
+}
+
+.modal-content p {
+  margin: 10px 0; /* Espaçamento entre os parágrafos */
+}
+
+.modal-content button {
+  background-color: #333333;
+  color: white;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s;
+  padding: 10px 20px;
+  margin-top: 20px;
+  border-radius: 5px;
+}
+
+.modal-content button:hover {
+  background-color: #555555;
 }
 
 #btnHistoricoPartNumber,
@@ -296,9 +259,7 @@ th {
   width: 80%;
   border: none;
   cursor: pointer; /* Adiciona o cursor de ponteiro para indicar que é um botão clicável */
-  transition:
-    background 0.3s,
-    color 0.3s; /* Transições suaves para hover e focus */
+  transition: background 0.3s, color 0.3s; /* Transições suaves para hover e focus */
 }
 
 #btnHistoricoPartNumber:hover,
@@ -321,4 +282,25 @@ th {
 #btnHistoricoMaquina:active {
   background: #4e3762;
   color: #bd70f2;
+}
+
+#tableContainer {
+  flex: 1;
+  overflow-y: auto; /* Permite rolagem vertical */
+  overflow-x: hidden; /* Impede a rolagem horizontal */
+}
+
+/* Estilização da barra de rolagem */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #424242;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #212121;
 }
