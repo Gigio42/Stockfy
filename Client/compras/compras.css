@@ -54,6 +54,7 @@ body {
 .dark-mode #btnConjugar,
 .dark-mode #btnAdicionarManualmente {
   color: #bcbcbc;
+  background: #252525;
 }
 
 #btnConjugar:hover,
@@ -63,7 +64,7 @@ body {
 
 .dark-mode #btnConjugar:hover,
 .dark-mode  #btnAdicionarManualmente:hover {
-  background: #343434;
+  background: #232323;
 }
 
 #stagedCardsContainer {
@@ -209,6 +210,7 @@ body {
 
 .celulaLinha {
   width: 25%;
+  text-align: center;
 }
 
 #adicionarMedidasForm {
@@ -434,6 +436,7 @@ pre {
   background: rgba(29, 135, 255, 0.156);
   color: rgb(29, 135, 255);
   border: solid 1px rgb(29, 135, 255);
+  padding: 0.4rem;
 }
 
 /*================================================== BARRA LATERAL =============================*/
