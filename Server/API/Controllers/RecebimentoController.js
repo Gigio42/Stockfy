@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 class RecebimentoController {
   constructor() {}
-
+  
   formatDate(dateString) {
     const date = new Date(dateString);
     const formattedDate = [
@@ -14,20 +14,20 @@ class RecebimentoController {
     ].join('/');
     return formattedDate;
   }
-
+  
   async updateRecebimento(data) {
     if (!Array.isArray(data)) {
       throw new Error("Data must be an array");
     }
-
+    
     const promises = data.map(async (item) => {
       if (!item.id_chapa) {
         throw new Error("id_chapa is undefined");
       }
-
+      
       const id_chapa_int = parseInt(item.id_chapa, 10);
       if (isNaN(id_chapa_int)) throw new Error("id_chapa must be a number");
-
+      
       const chapa = await prisma.chapas.findUnique({
         where: { id_chapa: id_chapa_int },
         select: {
@@ -41,10 +41,10 @@ class RecebimentoController {
       if (!chapa) {
         throw new Error(`Chapa with id ${item.id_chapa} not found`);
       }
-
+      
       const formattedDataRecebimento = this.formatDate(item.data_recebimento);
       const originalStatus = chapa.status; // Armazena o status original antes de qualquer modificação
-
+      
       let novoStatus;
       if (item.quantidade_recebida >= chapa.quantidade_comprada) {
         novoStatus = "RECEBIDO";
@@ -53,13 +53,13 @@ class RecebimentoController {
       } else {
         novoStatus = originalStatus;
       }
-  
+      
       const updateData = {
         data_recebimento: formattedDataRecebimento,
         status: novoStatus,
       };
-  
-
+      
+      
       // Só atualiza as quantidades se o status atual não for "RECEBIDO"
       if (originalStatus !== "RECEBIDO") {
         updateData.quantidade_recebida = {
@@ -69,21 +69,23 @@ class RecebimentoController {
           increment: item.quantidade_recebida
         };
       }
-
+      
       await prisma.chapas.update({
         where: { id_chapa: id_chapa_int },
         data: updateData,
       });
-
+      
       // Após o primeiro update, verifique se a quantidade recebida é maior que a comprada
       const updatedChapa = await prisma.chapas.findUnique({
         where: { id_chapa: id_chapa_int },
         select: { quantidade_recebida: true }
       });
-
-      if (updatedChapa.quantidade_recebida > chapa.quantidade_comprada) {
-        const excess = updatedChapa.quantidade_recebida - chapa.quantidade_comprada;
-        if (originalStatus !== "RECEBIDO") { // Só incrementa se o status original não era "RECEBIDO"
+      
+      
+      if (originalStatus !== "RECEBIDO") { // Só incrementa se o status original não era "RECEBIDO"
+        if (updatedChapa.quantidade_recebida > chapa.quantidade_comprada) {
+          const excess = updatedChapa.quantidade_recebida - chapa.quantidade_comprada;
+          
           await prisma.chapas.update({
             where: { id_chapa: id_chapa_int },
             data: {
@@ -94,29 +96,31 @@ class RecebimentoController {
             },
           });
         }
+        
+        await prisma.historico.createMany({
+          data: {
+            chapa: `${item.largura} X ${item.comprimento} - ${chapa.vincos} - ${item.qualidade}/${item.onda}`,
+            quantidade: item.quantidade_recebida,
+            modificacao: updateData.status,
+            modificado_por: item.senderName,
+            data_prevista: chapa.data_prevista,
+            data_modificacao: formattedDataRecebimento,
+          }
+        });
       }
-
-      await prisma.historico.createMany({
-        data: {
-          chapa: `${item.largura} X ${item.comprimento} - ${chapa.vincos} - ${item.qualidade}/${item.onda}`,
-          quantidade: item.quantidade_recebida,
-          modificacao: item.status,
-          modificado_por: item.senderName,
-          data_prevista: chapa.data_prevista,
-          data_modificacao: formattedDataRecebimento,
-        }
-      });
-
+      
+      
+      
       return 0;
     });
-
+    
     return await Promise.all(promises);
   }
-
+  
   async getChapasByIdCompra(id_compra) {
     id_compra = parseInt(id_compra, 10);
     if (isNaN(id_compra)) throw new Error("id_compra must be a number");
-
+    
     const chapas = await prisma.chapas.findMany({
       where: { id_compra },
       select: {
@@ -138,11 +142,11 @@ class RecebimentoController {
         valor_total: true,
       },
     });
-
+    
     if (!chapas.length) {
       throw new Error(`No chapas found with id_compra ${id_compra}`);
     }
-
+    
     return chapas;
   }
 }
