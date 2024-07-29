@@ -45,10 +45,20 @@ class RecebimentoController {
       const formattedDataRecebimento = this.formatDate(item.data_recebimento);
       const originalStatus = chapa.status; // Armazena o status original antes de qualquer modificação
 
+      let novoStatus;
+      if (item.quantidade_recebida >= chapa.quantidade_comprada) {
+        novoStatus = "RECEBIDO";
+      } else if (item.quantidade_recebida < chapa.quantidade_comprada) {
+        novoStatus = "PARCIALMENTE";
+      } else {
+        novoStatus = originalStatus;
+      }
+  
       const updateData = {
         data_recebimento: formattedDataRecebimento,
-        status: item.status,
+        status: novoStatus,
       };
+  
 
       // Só atualiza as quantidades se o status atual não for "RECEBIDO"
       if (originalStatus !== "RECEBIDO") {
