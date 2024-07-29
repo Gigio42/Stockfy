@@ -409,16 +409,17 @@ margin-bottom: 1rem;
     display: flex;
     width: 75%;
     color: #3d3d3d;
-    font-weight: bold;
     font-size: 1.2rem;
+
   }
   
   .dark-mode .textButtonli {
     display: flex;
     width: 75%;
     color: #d4d4d4;
-    font-weight: bold;
+    line-height: 1.2; /* Ajuste esse valor conforme necessário */
   }
+  
   
   .maquinaName {
     font-size: 90%;

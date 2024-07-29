@@ -1,26 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // HTML do modal
-    const modalHTML = `
-        <div id="supportModal" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
+    // HTML do modal de suporte
+    const supportModalHTML = `
+        <div id="supportModalWindow" class="supportModal">
+            <div class="supportModal-content">
+                <span class="supportClose">&times;</span>
                 <form id="supportForm">
                     <h2>Envie seu Feedback</h2>
-                    <label for="name">Nome:</label>
-                    <input type="text" id="name" name="name" required>
+                    <label for="supportName">Nome:</label>
+                    <input type="text" id="supportName" name="name" required>
                     
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
+                    <label for="supportEmail">Email:</label>
+                    <input type="email" id="supportEmail" name="email" required>
                     
-                    <label for="message">Mensagem:</label>
-                    <textarea id="message" name="message" rows="4" required></textarea>
+                    <label for="supportMessage">Mensagem:</label>
+                    <textarea id="supportMessage" name="message" rows="4" required></textarea>
                     
                     <button type="submit">Enviar</button>
                 </form>
             </div>
         </div>
         <style>
-            .modal {
+            .supportModal {
                 display: none;
                 position: fixed;
                 z-index: 1;
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 overflow: auto;
                 background-color: rgba(0, 0, 0, 0.5);
             }
-            .modal-content {
+            .supportModal-content {
                 background-color: #fefefe;
                 margin: 15% auto;
                 padding: 20px;
@@ -40,14 +40,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 max-width: 500px;
                 color: #000;
             }
-            .close {
+            .supportClose {
                 color: #aaa;
                 float: right;
                 font-size: 28px;
                 font-weight: bold;
             }
-            .close:hover,
-            .close:focus {
+            .supportClose:hover,
+            .supportClose:focus {
                 color: black;
                 text-decoration: none;
                 cursor: pointer;
@@ -78,36 +78,36 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
 
     // Adiciona o HTML do modal ao final do body
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    document.body.insertAdjacentHTML('beforeend', supportModalHTML);
 
     // Seletores dos elementos do modal
-    const modal = document.getElementById('supportModal');
-    const btn = document.getElementById('supportButton');
-    const closeBtn = document.getElementsByClassName('close')[0];
-    const form = document.getElementById('supportForm');
+    const supportModal = document.getElementById('supportModalWindow');
+    const supportBtn = document.getElementById('supportButton');
+    const supportCloseBtn = document.getElementsByClassName('supportClose')[0];
+    const supportForm = document.getElementById('supportForm');
 
     // Abre o modal
-    btn.addEventListener('click', () => {
-        modal.style.display = 'block';
+    supportBtn.addEventListener('click', () => {
+        supportModal.style.display = 'block';
     });
 
     // Fecha o modal quando clica no botão de fechar
-    closeBtn.addEventListener('click', () => {
-        modal.style.display = 'none';
+    supportCloseBtn.addEventListener('click', () => {
+        supportModal.style.display = 'none';
     });
 
     // Fecha o modal quando clica fora do modal
     window.addEventListener('click', (event) => {
-        if (event.target === modal) {
-            modal.style.display = 'none';
+        if (event.target === supportModal) {
+            supportModal.style.display = 'none';
         }
     });
 
     // Envia o formulário e fecha o modal
-    form.addEventListener('submit', (event) => {
+    supportForm.addEventListener('submit', (event) => {
         event.preventDefault();
 
-        const formData = new FormData(form);
+        const formData = new FormData(supportForm);
         const data = {
             name: formData.get('name'),
             email: formData.get('email'),
@@ -117,8 +117,8 @@ document.addEventListener('DOMContentLoaded', () => {
         emailjs.send('service_io4c8xa', 'template_ag8i135', data)
             .then(() => {
                 alert('Mensagem enviada com sucesso!');
-                form.reset();
-                modal.style.display = 'none';
+                supportForm.reset();
+                supportModal.style.display = 'none';
             })
             .catch(() => {
                 alert('Falha ao enviar a mensagem, tente novamente.');
