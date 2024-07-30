@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
+
+    if (localStorage.getItem("cargo") === "OPERADOR") {
+        window.location.href = "../home.html";
+      }
+
     const apiUrl = 'http://localhost:3000/historico/';
     let currentDisplay = 'part_number'; // Controla se estamos exibindo itens ou chapas
     let uniqueIds = new Set(); // Usado para armazenar IDs únicos

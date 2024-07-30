@@ -301,6 +301,25 @@ body {
   animation: slide-up 0.5s ease-out;
   border-radius: 1rem;
 }
+
+#supportButton {
+width: 100%;
+background: transparent;
+font-size: 1.5rem;
+color: #2BFF00;
+border: none;
+}
+
+
+#supportButton:hover {
+  background:#2bff0029;
+}
+
+.imgsuport {
+  width: 35px;
+  margin-right: 1rem;
+}
+
 .modal-content .close {
   align-self: flex-end;
   cursor: pointer;

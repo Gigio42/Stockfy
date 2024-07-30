@@ -117,6 +117,7 @@ model Usuarios {
   id_usuario Int    @id @default(autoincrement())
   username   String
   password   String
+  cargo      String@default("")
 
   maquinas Maquina[]
 

@@ -9,6 +9,10 @@ const PFP_API_URL = "https://api.dicebear.com/8.x/shapes/svg?seed=";
 const DARK_THEME_URL = "https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css";
 const LIGHT_THEME_URL = "https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bootstrap-4@4/bootstrap-4.css";
 
+
+if (localStorage.getItem("cargo") === "OPERADOR") {
+  window.location.href = "../home.html";
+}
 // Utilidade
 const redirectTo = (url) => (window.location.href = url);
 

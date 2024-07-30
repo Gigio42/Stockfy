@@ -21,8 +21,8 @@ export function criarTable(table, chapaData) {
           <option value="Sim" ${chapaData.vincos && chapaData.vincos.toLowerCase() === "não" ? "" : "selected"}>Sim</option>
           <option value="Não" ${chapaData.vincos && chapaData.vincos.toLowerCase() === "não" ? "selected" : ""}>Não</option>
       </select>`,
-      `<select style='color: var(--text-color);'>
-          ${["COMPRADO", "RECEBIDO", "PARCIALMENTE", "ATRASADO", "CANCELADO"].map((status) => `<option ${status === chapaData.status ? "selected" : ""}>${status}</option>`).join("")}
+      `<select class="status-select" style='color: var(--text-color);'>
+          ${["COMPRADO", "RECEBIDO", "PARCIALMENTE", "ATRASADO", "INDEFINIDO"].map((status) => `<option ${status === chapaData.status ? "selected" : ""}>${status}</option>`).join("")}
       </select>`
   ];
 
@@ -32,22 +32,45 @@ export function criarTable(table, chapaData) {
   });
 
   if (table.id === "bancoDados") {
-      let dataPrevistaCell = row.insertCell(-1);
-      let formattedDataPrevista = (chapaData.data_prevista || "").split("/").reverse().join("-");
-      dataPrevistaCell.innerHTML = `<input type='date' value='${formattedDataPrevista}' style='color: var(--text-color);'>`;
+    let dataPrevistaCell = row.insertCell(-1);
+    let formattedDataPrevista = (chapaData.data_prevista || "").split("/").reverse().join("-");
+    dataPrevistaCell.innerHTML = `<input type='date' value='${formattedDataPrevista}' style='color: var(--text-color);'>`;
 
-      let copiarCell = row.insertCell(-1);
-      let copiarButton = document.createElement("img");
-      copiarButton.src = "icons8-copy-48 (2).png";
-      copiarButton.className = "copiar";
-      copiarButton.addEventListener("click", function () {
-          copiarParaRecebimento(this);
-      });
-      copiarCell.appendChild(copiarButton);
-  } else if (table.id === "recebimento") {
+    // Validando e mudando o status
+    let hoje = new Date();
+    hoje.setHours(0, 0, 0, 0); // Início do dia de hoje
+    let dataPrevista = new Date(formattedDataPrevista + "T00:00:00");
+
+    let statusSelect = row.querySelector(".status-select");
+
+    if (chapaData.status === "COMPRADO") {
+        if (dataPrevista < hoje) {
+            statusSelect.value = "ATRASADO";
+        } else {
+            statusSelect.value = chapaData.status;
+        }
+    }
+
+    let copiarCell = row.insertCell(-1);
+    let copiarButton = document.createElement("img");
+    copiarButton.src = "icons8-copy-48 (2).png";
+    copiarButton.className = "copiar";
+    copiarButton.addEventListener("click", function () {
+        copiarParaRecebimento(this);
+    });
+    copiarCell.appendChild(copiarButton);
+} else if (table.id === "recebimento") {
       let dataRecebimentoCell = row.insertCell(-1);
       let todayDate = new Date().toISOString().slice(0, 10);
       dataRecebimentoCell.innerHTML = `<input type='date' value='${todayDate}' style='color: var(--text-color);'>`;
+
+      // Definindo status como INDEFINIDO e limitando as opções
+      let statusSelect = row.querySelector(".status-select");
+      statusSelect.innerHTML = `
+          <option value="INDEFINIDO" selected>INDEFINIDO</option>
+          <option value="RECEBIDO">RECEBIDO</option>
+          <option value="PARCIALMENTE">PARCIALMENTE</option>
+      `;
 
       const updateCell = row.insertCell(-1);
       let updateButton = document.createElement("img");
@@ -58,6 +81,7 @@ export function criarTable(table, chapaData) {
 
   comparar();
 }
+
 
 
 export function clearTable() {
@@ -191,10 +215,10 @@ function validar_status(rowBancoDados, rowRecebimento) {
 
   if (quantidadeRecebimento >= quantidadeBancoDados) {
     rowRecebimento.cells[9].querySelector("select").value = "RECEBIDO";
-    console.log("Status mudado para Recebido");
+    // console.log("Status mudado para Recebido");
   } else if (quantidadeRecebimento < quantidadeBancoDados) {
     rowRecebimento.cells[9].querySelector("select").value = "PARCIALMENTE";
-    console.log("Status mudado para Parcialmente");
+    // console.log("Status mudado para Parcialmente");
   }
 }
 

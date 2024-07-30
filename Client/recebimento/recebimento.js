@@ -3,6 +3,10 @@ import { fetchChapas } from "./scripts/connections.js";
 import { copiarTudo } from "./scripts/manipularTabela.js";
 import { processPDF, processXML } from "./scripts/processFile.js";
 
+if (localStorage.getItem("cargo") === "OPERADOR") {
+  window.location.href = "../home.html";
+}
+
 document.addEventListener("DOMContentLoaded", function() {
   console.log("DOM completamente carregado e analisado");
 

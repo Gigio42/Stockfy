@@ -15,6 +15,7 @@
         <div class="logo-container">
             <img class="logo" src="logoTransparente.png" alt="logo" />
         </div>
+        <div class="allelements">
         <div class="userdiv">
             <img class="mr-3 align-self-center" alt="Profile Pic" id="profilePic" style="width: 50px; height: 50px; border-radius: 50%" />
             <div class="media-body">
@@ -22,17 +23,21 @@
                 <p class="mb-0 text-muted" id="role">Administrador</p>
             </div>
         </div>
-        <div class="buttonsBlock">
+        <div class="Block">
             <div class="buttons">
+                <div class="tableandupload">
                 <button id="toggle-drop-zone">Tabela/Area de arquivo</button>
                 <input type="file" id="fileInput" style="display: none" accept=".pdf, text/xml" />
+
                 <button onclick="document.getElementById('fileInput').click()">Upload Arquivo</button>
+            </div>
                 <div class="buscar">
                     <input id="id_compra" placeholder="Digite o Id_compra:" />
                     <button id="buscarChapa">buscar</button>
                 </div>
             </div>
         </div>
+    </div>
     </aside>
     <main class="block1">
         <header>
@@ -102,7 +107,7 @@
                 </table>
             </div>
         </div>
-        <div class="divmargin"></div>
+ 
     </main>
     <div id="message-container"></div>
     <script type="module" src="recebimento.js"></script>

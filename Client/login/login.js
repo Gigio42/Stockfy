@@ -5,11 +5,6 @@ document.getElementById("login").addEventListener("click", function (event) {
   validaUsuario();
 });
 
-document.getElementById("signup").addEventListener("click", function (event) {
-  event.preventDefault();
-  cadastrarUsuario();
-});
-
 document.getElementById("toggleProducao").addEventListener("change", function () {
   var maquinaSelect = document.getElementById("maquinaSelectContainer");
   maquinaSelect.style.display = this.checked ? "block" : "none";
@@ -23,7 +18,9 @@ function validaUsuario() {
     .then((response) => response.json())
     .then((data) => {
       if (data.success) {
-        // Alterado de data.exists para data.success
+
+        localStorage.setItem("cargo", data.cargo);
+
         const nome = document.getElementById("username").value;
         localStorage.setItem("nome", nome);
 
@@ -47,40 +44,7 @@ function validaUsuario() {
     });
 }
 
-function cadastrarUsuario() {
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
 
-  // Validação de entrada
-  if (!username.trim()) {
-    alert("O nome do usuário não pode estar vazio.");
-    return;
-  }
-  if (password.length <= 4) {
-    alert("A senha deve ter mais de 4 caracteres.");
-    return;
-  }
-
-  const userData = { name: username, password: password };
-
-  fetch(`${BASE_URL}/user/add`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(userData),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (!data.success) {
-        alert(data.message || "Erro desconhecido ao cadastrar usuário.");
-      } else {
-        alert("Usuário cadastrado com sucesso!");
-      }
-    })
-    .catch((error) => {
-      console.error("Erro ao cadastrar usuário:", error);
-      alert("Falha ao conectar ao servidor!");
-    });
-}
 
 function carregarMaquinas() {
   fetch(`${BASE_URL}/adm/maquina`)
