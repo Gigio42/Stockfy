@@ -33,6 +33,23 @@ async function main() {
       });
     }
   }
+
+   // Criando usuário 'adm' se ele não existir
+   const existingUser = await prisma.usuarios.findFirst({
+    where: {
+      username: 'adm',
+    },
+  });
+
+  if (!existingUser) {
+    await prisma.usuarios.create({
+      data: {
+        username: 'adm',
+        password: 'adm',  // Importante considerar encriptar esta senha em uma aplicação real
+        cargo: 'adm',
+      },
+    });
+  }
 }
 
 main()
