@@ -1,5 +1,59 @@
 import BASE_URL from "../utils/config.js";
 
+  document.addEventListener("DOMContentLoaded", function () {
+    const registerUserButton = document.getElementById("registerUserButton");
+    const registerUserModal = document.getElementById("registerUserModal");
+    const closeRegisterUserModal = document.getElementById("closeRegisterUserModal");
+
+    // Abrir o modal
+    registerUserButton.addEventListener("click", function () {
+      registerUserModal.style.display = "flex";
+    });
+
+    // Fechar o modal
+    closeRegisterUserModal.addEventListener("click", function () {
+      registerUserModal.style.display = "none";
+    });
+
+    // Fechar o modal clicando fora do conteúdo do modal
+    window.addEventListener("click", function (event) {
+      if (event.target === registerUserModal) {
+        registerUserModal.style.display = "none";
+      }
+    });
+
+    // Enviar dados ao servidor
+    document.getElementById("submitRegisterUserButton").addEventListener("click", function () {
+      const username = document.getElementById("registerUserName").value;
+      const password = document.getElementById("registerUserPassword").value;
+      const role = document.getElementById("registerUserRole").value;
+
+      // Validação simples
+      if (username && password && role) {
+        // Envio de dados via POST
+        axios.post("http://localhost:3000/user/add", {
+          username: username,
+          password: password,
+          cargo: role,
+        })
+        .then(response => {
+          const { success, message } = response.data;
+          if (success) {
+            alert(message); // Mostra mensagem de sucesso
+            registerUserModal.style.display = "none"; // Fecha modal
+          } else {
+            alert(message); // Mostra mensagem de erro
+          }
+        })
+        .catch(error => {
+          console.error("Erro ao cadastrar usuário:", error);
+          alert("Erro ao cadastrar usuário. Tente novamente mais tarde.");
+        });
+      } else {
+        alert("Por favor, preencha todos os campos.");
+      }
+    });
+  });
 
 //============================================
 // Função para lidar com a lógica do Dark Mode

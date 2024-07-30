@@ -23,7 +23,9 @@ function validaUsuario() {
     .then((response) => response.json())
     .then((data) => {
       if (data.success) {
-        // Alterado de data.exists para data.success
+
+        localStorage.setItem("cargo", data.cargo);
+
         const nome = document.getElementById("username").value;
         localStorage.setItem("nome", nome);
 
