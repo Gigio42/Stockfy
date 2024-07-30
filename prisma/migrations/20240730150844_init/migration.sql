@@ -97,7 +97,8 @@ CREATE TABLE "Maquina" (
 CREATE TABLE "Usuarios" (
     "id_usuario" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "username" TEXT NOT NULL,
-    "password" TEXT NOT NULL
+    "password" TEXT NOT NULL,
+    "cargo" TEXT NOT NULL DEFAULT ''
 );
 
 -- CreateTable
