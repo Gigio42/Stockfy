@@ -65,7 +65,7 @@ header {
   font-size: 1rem;
   width: 100%;
   background: #0f0f0f;
-  height: 3rem;
+  height: 5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -89,11 +89,13 @@ h1 {
   flex-direction: row;
   justify-content: space-around;
   background: #0f0f0f;
-  height: 3rem;
+  height: 5rem;
   border: solid 1px #6a6a6a45;
   align-items: center;
   width: 100%;
   border-left: none;
+  border-bottom: solid 1px #353535;
+  box-sizing: border-box;
   border-radius: 0 !important;
 }
 .logoStockfy {
@@ -118,7 +120,7 @@ aside {
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-right: 2px solid #444444;
+  border-right: 1px solid #2f2f2f;
 }
 button {
   background-color: #333333;
