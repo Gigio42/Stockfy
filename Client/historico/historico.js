@@ -1,15 +1,18 @@
-document.addEventListener('DOMContentLoaded', function () {
+import BASE_URL from "../utils/config.js";
 
+
+document.addEventListener('DOMContentLoaded', function () {
+    
     if (localStorage.getItem("cargo") === "OPERADOR") {
         window.location.href = "../home.html";
-      }
-
-    const apiUrl = 'http://localhost:3000/historico/';
+    }
+    
+    const apiUrl = `${BASE_URL}/historico/`;
     let currentDisplay = 'part_number'; // Controla se estamos exibindo itens ou chapas
     let uniqueIds = new Set(); // Usado para armazenar IDs únicos
     let historicoGeral = []; // Armazena os dados recebidos na variável global
     let selectedDates = []; // Armazena as datas selecionadas
-
+    
     function parseDate(dateStr) {
         if (typeof dateStr === 'string') {
             const [day, month, year] = dateStr.split('/').map(Number);
@@ -19,21 +22,21 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         return null;
     }
-
+    
     function parseChapaId(chapaId) {
         const parts = chapaId.split(' - ');
         if (parts.length !== 3) {
             console.error('Formato inválido de chapaId:', chapaId);
             return null;
         }
-
+        
         const [medida, vincos, qualidadeOnda] = parts;
         const [qualidade, onda] = qualidadeOnda.split('/');
         if (!qualidade || !onda) {
             console.error('Formato inválido de qualidadeOnda:', qualidadeOnda);
             return null;
         }
-
+        
         return {
             medida: encodeURIComponent(medida.trim()),
             vincos: encodeURIComponent(vincos.trim()),
@@ -41,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
             onda: encodeURIComponent(onda.trim())
         };
     }
-
+    
     function fetchChapaInfo(chapaId) {
         // Divida o chapaId com base nos delimitadores esperados
         const [medida, vincos, qualidadeOnda] = chapaId.split(' - ');
@@ -51,39 +54,39 @@ document.addEventListener('DOMContentLoaded', function () {
             showModal(null, chapaId);
             return;
         }
-    
+        
         const [qualidade, onda] = qualidadeOnda.split('/');
-    
+        
         if (!qualidade || !onda) {
             console.error('Formato inválido de qualidadeOnda:', qualidadeOnda);
             showModal(null, chapaId);
             return;
         }
-    
+        
         // Encode the components for the URL
         const encodedMedida = encodeURIComponent(medida.trim());
         const encodedVincos = encodeURIComponent(vincos.trim());
         const encodedQualidade = encodeURIComponent(qualidade.trim());
         const encodedOnda = encodeURIComponent(onda.trim());
-    
-        const url = `http://localhost:3000/historico/buscar-chapa?medida=${encodedMedida}&vincos=${encodedVincos}&qualidade=${encodedQualidade}&onda=${encodedOnda}`;
-    
+        
+        const url = `${BASE_URL}/historico/buscar-chapa?medida=${encodedMedida}&vincos=${encodedVincos}&qualidade=${encodedQualidade}&onda=${encodedOnda}`;
+        
         fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                console.log('Fetched Chapa Data:', data); // Para depuração
-                showModal(data, chapaId);
-            })
-            .catch(error => {
-                console.error('Error fetching chapa info:', error);
-                showModal(null, chapaId);
-            });
+        .then(response => response.json())
+        .then(data => {
+            console.log('Fetched Chapa Data:', data); // Para depuração
+            showModal(data, chapaId);
+        })
+        .catch(error => {
+            console.error('Error fetching chapa info:', error);
+            showModal(null, chapaId);
+        });
     }
     
     function showModal(data, chapaId) {
         const modalContent = document.getElementById('modalContent');
         modalContent.innerHTML = '';
-    
+        
         const keysToShow = [
             'id_compra',
             'numero_cliente',
@@ -102,10 +105,10 @@ document.addEventListener('DOMContentLoaded', function () {
             'data_recebimento',
             'conjugado'
         ];
-    
+        
         const modalTitle = document.querySelector('#modal .modal-content p');
         modalTitle.textContent = `Detalhes da Chapa: ${chapaId}`;
-    
+        
         if (data && data.id_chapa !== undefined) {
             keysToShow.forEach(key => {
                 const p = document.createElement('p');
@@ -117,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function () {
             p.textContent = 'Chapa deletada';
             modalContent.appendChild(p);
         }
-    
+        
         document.getElementById('modal').style.display = 'flex'; // Exibe o modal
     }
     
@@ -127,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
     
-
+    
     // Configura o flatpickr para o input de calendário
     flatpickr("#dateRange", {
         mode: "range",
@@ -166,7 +169,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     });
-
+    
     function handleDateSelection(startDate, endDate) {
         if (startDate && endDate) {
             const filteredData = historicoGeral.filter(item => {
@@ -176,33 +179,33 @@ document.addEventListener('DOMContentLoaded', function () {
             updateTableAndIds(filteredData);
         }
     }
-
+    
     function createTable(displayType, data) {
         const table = document.getElementById('resultsTable');
         const thead = table.getElementsByTagName('thead')[0];
         const tbody = table.getElementsByTagName('tbody')[0];
         tbody.innerHTML = '';
         thead.innerHTML = '';
-
+        
         const headers = {
-            'part_number': ["Part Number", "Quantidade", "Modificação", "Modificado Por", "Data Modificação", "Máquina", "Ordem", "Pedido Venda", "Conjulgação", "Chapas"],
+            'part_number': ["Part Number", "Máquina", "Quantidade", "Modificação", "Modificado Por", "Data Modificação", "Ordem", "Pedido Venda", "Conjulgação", "Chapas"],
             'chapa': ["Chapa", "Quantidade", "Modificação", "Modificado Por", "Data Modificação", "Part Number", "Info"],
             'maquina': ["Máquina", "Part Number", "Quantidade", "Modificação", "Modificado Por", "Data Modificação", "Ordem", "Pedido Venda", "Conjulgação", "Chapas"]
         }[displayType];
-
+        
         const jsonKeys = {
-            'part_number': ["part_number", "quantidade", "modificacao", "modificado_por", "data_modificacao", "maquina", "ordem", "pedido_venda", "conjulgacao"],
+            'part_number': ["part_number", "maquina", "quantidade", "modificacao", "modificado_por", "data_modificacao", "ordem", "pedido_venda", "conjulgacao"],
             'chapa': ["chapa", "quantidade", "modificacao", "modificado_por", "data_modificacao", "part_number"],
             'maquina': ["maquina", "part_number", "quantidade", "modificacao", "modificado_por", "data_modificacao", "ordem", "pedido_venda", "conjulgacao"]
         }[displayType];
-
+        
         let rowHeader = thead.insertRow();
         headers.forEach(header => {
             let th = document.createElement('th');
             th.textContent = header;
             rowHeader.appendChild(th);
         });
-
+        
         data.forEach(item => {
             if (!item[jsonKeys[0]] || item[jsonKeys[0]].toString().trim() === "" || (displayType === 'chapa' && item.modificacao === 'PROGRAMADO') || (displayType === 'part_number' && item.modificacao === 'FINALIZADA')) {
                 return; // Não adiciona linhas com part_number ou chapa vazio, modificação PROGRAMADO ou FINALIZADA
@@ -218,7 +221,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         year: 'numeric'
                     });
                     cell.textContent = formattedDate;
-                } else if (key === 'part_number' && (displayType === 'chapa' || displayType === 'part_number')) {
+                    
+                } else if (key === 'part_number') {
                     const partNumber = item[key];
                     if (partNumber) {
                         const button = document.createElement('button');
@@ -245,7 +249,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     } else {
                         cell.textContent = '-';
                     }
-                } else if (key === 'maquina' && displayType === 'maquina') {
+                } else if (key === 'maquina') {
                     const maquina = item[key];
                     if (maquina) {
                         const button = document.createElement('button');
@@ -271,62 +275,56 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-
+    
     function addChapasButton(row, item) {
         let chapasCell = row.insertCell();
         let button = document.createElement('button');
         button.textContent = '➡️';
-
+        
         button.addEventListener('mouseover', function() {
             showChapasList(button, item.part_number, item.pedido_venda, item.data_modificacao);
         });
-
+        
         button.addEventListener('mouseout', function(event) {
             if (!event.relatedTarget || !event.relatedTarget.closest('#chapasList')) {
                 hideChapasList(); // Remove the list immediately
             }
         });
-
+        
         chapasCell.appendChild(button);
     }
-
+    
     function addInfoButton(row, chapaId) {
         let infoCell = row.insertCell();
         let button = document.createElement('button');
         button.textContent = 'ℹ️';
-
+        
         button.addEventListener('click', function() {
             console.log('Clicked Info for Chapa:', chapaId);
             fetchChapaInfo(chapaId);
         });
-
+        
         infoCell.appendChild(button);
     }
-
+    
+    
     function showChapasList(button, partNumber, pedidoVenda, dataModificacao) {
         const listContainer = document.createElement('div');
         listContainer.id = 'chapasList';
-        listContainer.style.position = 'absolute';
-        listContainer.style.backgroundColor = '#333';
-        listContainer.style.color = 'white';
-        listContainer.style.padding = '10px';
-        listContainer.style.border = '1px solid #555';
-        listContainer.style.zIndex = '1000';
-
         const rect = button.getBoundingClientRect();
         listContainer.style.left = `${rect.left + window.scrollX - 200}px`;
         listContainer.style.top = `${rect.top + window.scrollY}px`;
-
+        
         const filteredChapas = historicoGeral.filter(item => {
             return item.part_number === partNumber &&
-                   item.pedido_venda === pedidoVenda &&
-                   parseDate(item.data_modificacao) <= parseDate(dataModificacao);
+            item.pedido_venda === pedidoVenda &&
+            parseDate(item.data_modificacao) <= parseDate(dataModificacao);
         });
-
+        
         const uniqueChapas = new Set(filteredChapas.map(chapa => chapa.chapa).filter(chapa => chapa !== null));
         console.log('Filtered chapas:', filteredChapas);
         console.log('Unique chapas:', uniqueChapas);
-
+        
         if (uniqueChapas.size > 0) {
             let content = `<ul>`;
             uniqueChapas.forEach(chapaId => {
@@ -337,19 +335,19 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             listContainer.textContent = 'Nenhuma chapa encontrada.';
         }
-
+        
         listContainer.addEventListener('mouseout', function(event) {
             if (!event.relatedTarget || (!event.relatedTarget.closest('#chapasList') && !event.relatedTarget.closest('button'))) {
                 hideChapasList(); // Remove the list immediately
             }
         });
-
+        
         listContainer.addEventListener('mouseover', function() {
             clearTimeout(hideListTimeout); // Cancela o timeout ao mover o mouse para a lista
         });
-
+        
         document.body.appendChild(listContainer);
-
+        
         document.querySelectorAll('.chapa-button').forEach(button => {
             button.addEventListener('click', function() {
                 const chapaId = this.getAttribute('data-id');
@@ -359,18 +357,18 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     }
-
+    
     function hideChapasList() {
         const listContainer = document.getElementById('chapasList');
         if (listContainer) {
             listContainer.remove();
         }
     }
-
+    
     function fetchData(extraPath = '', params = {}) {
         let url = new URL(apiUrl + extraPath);
         Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
-
+        
         fetch(url)
         .then(response => response.json())
         .then(data => {
@@ -383,16 +381,16 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .catch(error => console.error('Error:', error));
     }
-
+    
     function updateTableAndIds(data) {
         updateTable(data);
         updateIds(data);
     }
-
+    
     function updateTable(data) {
         createTable(currentDisplay, data);
     }
-
+    
     function updateIds(data) {
         uniqueIds.clear(); // Limpa os IDs antigos
         data.forEach(item => {
@@ -404,9 +402,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 uniqueIds.add(item.maquina);
             }
         });
-
+        
         const idsContainer = document.getElementById('idsContainer');
-        idsContainer.innerHTML = ""; // Limpa o contêiner de IDs
+        idsContainer.innerHTML = ""; // Limpa o contêiner de IDs      
         uniqueIds.forEach(id => {
             const idDiv = document.createElement('button');
             idDiv.className = 'id-button';
@@ -418,7 +416,7 @@ document.addEventListener('DOMContentLoaded', function () {
             idsContainer.appendChild(idDiv);
         });
     }
-
+    
     function displayFilteredData(id, type) {
         console.log('Display filtered data for ID:', id, 'Type:', type);
         const keyMap = {
@@ -433,51 +431,51 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log('Filtered data:', filteredData);
         updateTable(filteredData);
     }
-
+    
     function updateDisplay(displayType) {
         currentDisplay = displayType;
         updateTableAndIds(historicoGeral);
     }
-
+    
     document.getElementById('btnHistoricoPartNumber').addEventListener('click', function () {
         updateDisplay('part_number');
     });
-
+    
     document.getElementById('btnHistoricoChapa').addEventListener('click', function () {
         updateDisplay('chapa');
     });
-
+    
     document.getElementById('btnHistoricoMaquina').addEventListener('click', function () {
         updateDisplay('maquina');
     });
-
+    
     document.getElementById('week').addEventListener('click', () => handleDateClick('week'));
     document.getElementById('month').addEventListener('click', () => handleDateClick('month'));
     document.getElementById('year').addEventListener('click', () => handleDateClick('year'));
-
+    
     function handleDateClick(period) {
         const now = new Date();
         let startDate, endDate = now;
-
+        
         switch (period) {
             case 'week':
-                startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7);
-                break;
+            startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7);
+            break;
             case 'month':
-                startDate = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
-                break;
+            startDate = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+            break;
             case 'year':
-                startDate = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate());
-                break;
+            startDate = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate());
+            break;
         }
-
+        
         const filteredData = historicoGeral.filter(item => {
             const itemDate = new Date(item.data_modificacao);
             return itemDate >= startDate && itemDate <= endDate;
         });
-
+        
         updateTableAndIds(filteredData);
     }
-
+    
     fetchData(); // Carrega dados iniciais
 });
