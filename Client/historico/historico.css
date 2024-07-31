@@ -122,6 +122,7 @@ aside {
   align-items: center;
   border-right: 1px solid #2f2f2f;
 }
+
 button {
   background-color: #333333;
   color: white;
@@ -154,10 +155,12 @@ button {
   border-radius: 0.5rem;
   margin-right: 1rem;
 }
+
 .id-button:hover {
   background: #4e3762;
   color: #bd70f2;
 }
+
 .id-button:focus {
   background: #4e3762;
   color: #bd70f2;
@@ -177,23 +180,23 @@ table {
   border: none;
 }
 
-table {
-  width: 100%;
-}
 th,
 td {
   padding: 8px;
   text-align: left;
   border: none;
 }
+
 th {
   background-color: #333333;
 }
+
 .data {
   display: flex;
   justify-content: space-around;
   background: #5f5f5f;
 }
+
 #idsContainer {
   display: flex;
   flex-wrap: nowrap;
@@ -204,7 +207,6 @@ th {
 }
 
 .modal {
-  display: none; /* Certifique-se que isso muda para 'block' */
   position: fixed;
   z-index: 1050; /* Suficientemente alto para estar sobre outros conteúdos */
   left: 0;
@@ -305,4 +307,39 @@ th {
 
 ::-webkit-scrollbar-track {
   background-color: #212121;
+}
+
+/* Estilo específico para #chapasList */
+#chapasList {
+  position: absolute;
+  background-color: #333;
+  color: white;
+  padding: 10px;
+  border: 1px solid #555;
+  z-index: 1000;
+}
+
+#chapasList ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+#chapasList li {
+  margin: 5px 0;
+}
+
+#chapasList button {
+  background: none;
+  color: inherit;
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  text-align: left;
+  width: 100%;
+  transition: background-color 0.3s;
+}
+
+#chapasList button:hover {
+  background-color: #555;
 }

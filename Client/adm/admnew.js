@@ -31,7 +31,7 @@ import BASE_URL from "../utils/config.js";
       // Validação simples
       if (username && password && role) {
         // Envio de dados via POST
-        axios.post("http://localhost:3000/user/add", {
+        axios.post(`${BASE_URL}/user/add`, {
           username: username,
           password: password,
           cargo: role,
