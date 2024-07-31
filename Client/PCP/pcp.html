@@ -53,7 +53,6 @@
                 </li>
                 <button id="supportButton"><img class = "imgsuport" src="./media/customer-support(1).png" alt="">Suporte</button>
               </ul>
-              
             </div>
           </nav>
         </aside>
@@ -177,16 +176,24 @@
             <div class="sk-cube sk-cube8"></div>
             <div class="sk-cube sk-cube9"></div>
           </div>
-          
+
           <!-- formulário de suporte -->
-          <script src="../utils/support/support.html"></script>
+          <!-- <button id="supportButton"><img class="imgsuport" src="./media/customer-support(1).png" alt="" />Suporte</button> -->
+          <link rel="stylesheet" type="text/css" href="../utils/support/support.css" />
+          <div id="supportContainer"></div>
+          <script src="../utils/support/support.js"></script>
           <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
           <script type="text/javascript">
             (function () {
-              emailjs.init({
-                publicKey: "Wxjb5ywlYMGd4zobl",
-              });
+              emailjs.init("Wxjb5ywlYMGd4zobl");
             })();
+
+            // Load support.html content
+            fetch("../utils/support/support.html")
+              .then((response) => response.text())
+              .then((data) => {
+                document.getElementById("supportContainer").innerHTML = data;
+              });
           </script>
         </main>
       </div>

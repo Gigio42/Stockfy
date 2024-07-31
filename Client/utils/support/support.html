@@ -1,127 +1,18 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // HTML do modal de suporte
-    const supportModalHTML = `
-        <div id="supportModalWindow" class="supportModal">
-            <div class="supportModal-content">
-                <span class="supportClose">&times;</span>
-                <form id="supportForm">
-                    <h2>Envie seu Feedback</h2>
-                    <label for="supportName">Nome:</label>
-                    <input type="text" id="supportName" name="name" required>
-                    
-                    <label for="supportEmail">Email:</label>
-                    <input type="email" id="supportEmail" name="email" required>
-                    
-                    <label for="supportMessage">Mensagem:</label>
-                    <textarea id="supportMessage" name="message" rows="4" required></textarea>
-                    
-                    <button type="submit">Enviar</button>
-                </form>
-            </div>
-        </div>
-        <style>
-            .supportModal {
-                display: none;
-                position: fixed;
-                z-index: 1;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                overflow: auto;
-                background-color: rgba(0, 0, 0, 0.5);
-            }
-            .supportModal-content {
-                background-color: #fefefe;
-                margin: 15% auto;
-                padding: 20px;
-                border: 1px solid #888;
-                width: 80%;
-                max-width: 500px;
-                color: #000;
-            }
-            .supportClose {
-                color: #aaa;
-                float: right;
-                font-size: 28px;
-                font-weight: bold;
-            }
-            .supportClose:hover,
-            .supportClose:focus {
-                color: black;
-                text-decoration: none;
-                cursor: pointer;
-            }
-            form {
-                display: flex;
-                flex-direction: column;
-            }
-            label {
-                margin-top: 10px;
-            }
-            input, textarea {
-                padding: 10px;
-                margin-top: 5px;
-            }
-            button {
-                margin-top: 20px;
-                padding: 10px;
-                background-color: #4CAF50;
-                color: white;
-                border: none;
-                cursor: pointer;
-            }
-            button:hover {
-                background-color: #45a049;
-            }
-        </style>
-    `;
-
-    // Adiciona o HTML do modal ao final do body
-    document.body.insertAdjacentHTML('beforeend', supportModalHTML);
-
-    // Seletores dos elementos do modal
-    const supportModal = document.getElementById('supportModalWindow');
-    const supportBtn = document.getElementById('supportButton');
-    const supportCloseBtn = document.getElementsByClassName('supportClose')[0];
-    const supportForm = document.getElementById('supportForm');
-
-    // Abre o modal
-    supportBtn.addEventListener('click', () => {
-        supportModal.style.display = 'block';
-    });
-
-    // Fecha o modal quando clica no botão de fechar
-    supportCloseBtn.addEventListener('click', () => {
-        supportModal.style.display = 'none';
-    });
-
-    // Fecha o modal quando clica fora do modal
-    window.addEventListener('click', (event) => {
-        if (event.target === supportModal) {
-            supportModal.style.display = 'none';
-        }
-    });
-
-    // Envia o formulário e fecha o modal
-    supportForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-
-        const formData = new FormData(supportForm);
-        const data = {
-            name: formData.get('name'),
-            email: formData.get('email'),
-            message: formData.get('message')
-        };
-
-        emailjs.send('service_io4c8xa', 'template_ag8i135', data)
-            .then(() => {
-                alert('Mensagem enviada com sucesso!');
-                supportForm.reset();
-                supportModal.style.display = 'none';
-            })
-            .catch(() => {
-                alert('Falha ao enviar a mensagem, tente novamente.');
-            });
-    });
-});
+<div id="supportModalWindow" class="supportModal">
+    <div class="supportModal-content">
+        <span class="supportClose">&times;</span>
+        <form id="supportForm">
+            <h2>Envie seu Feedback</h2>
+            <label for="supportName">Nome:</label>
+            <input type="text" id="supportName" name="name" required>
+            
+            <label for="supportEmail">Email:</label>
+            <input type="email" id="supportEmail" name="email" required>
+            
+            <label for="supportMessage">Mensagem:</label>
+            <textarea id="supportMessage" name="message" rows="4" required></textarea>
+            
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+</div>
