@@ -24,12 +24,15 @@ export function handleAddMeasureBtnClick() {
       icon: 'error',
       confirmButtonText: 'OK'
     });
+    console.log("Erro: Todos os campos são obrigatórios.");
     return;
   }
 
   const scale = 0.2;
   const larguraPx = largura * scale;
   const comprimentoPx = comprimento * scale;
+
+  console.log("Dimensões em pixels: largura =", larguraPx, "comprimento =", comprimentoPx);
 
   const unconfirmedStagedCards = document.querySelectorAll(
     ".staged-card:not(.confirmed)"
@@ -39,8 +42,11 @@ export function handleAddMeasureBtnClick() {
     const stagedCardId = stagedCardContainer.id;
     const id_chapa = stagedCardContainer.dataset.idChapa;
 
+    console.log("Processando card:", stagedCardId, "com chapa:", id_chapa);
+
     for (let i = 0; i < quantasVezes; i++) {
       const cardinconjugId = `cardinConjug-${Date.now()}-${cardIdCounter++}`;
+      console.log("Criando card:", cardinconjugId);
 
       const stagedCard = document.createElement("div");
       stagedCard.className = "cardinconjug";
@@ -52,10 +58,24 @@ export function handleAddMeasureBtnClick() {
       removeButton.className = "remove-card-btn";
       removeButton.textContent = "x";
       removeButton.addEventListener("click", () => {
+        // Remove o card da interface
         stagedCard.remove();
+        console.log("Card removido:", cardinconjugId);
+
+        // Remove os dados do card específico do array medidasConjugConfimed
         medidasConjugConfimed = medidasConjugConfimed.filter(
-          (medida) => medida.partNumber !== cardinconjugId
+          (medida) =>
+            !(medida.chapa === id_chapa &&
+              medida.largura === largura &&
+              medida.comprimento === comprimento &&
+              medida.quantidade === quantidade &&
+              medida.quantasVezes === quantasVezes &&
+              medida.partNumber === partNumber.toString())
         );
+
+        console.log("Dados após remoção:", medidasConjugConfimed);
+
+        // Atualiza o estado e processa medidas conjugadas
         addStateToHistory();
       });
 
@@ -92,12 +112,18 @@ export function handleAddMeasureBtnClick() {
 
       if (!medidaExiste) {
         medidasConjugConfimed.push(medidaConjug);
+        console.log("Medida adicionada ao array:", medidaConjug);
+      } else {
+        console.log("Medida já existente:", medidaConjug);
       }
     }
   });
 
   processarMedidasConjug(medidasConjugConfimed);
+  console.log("Medidas conjugadas processadas:", medidasConjugConfimed);
+
   addStateToHistory();
+  console.log("Estado atualizado.");
 }
 
 function processarMedidasConjug(medidasConjug) {

@@ -11,6 +11,9 @@ import { undoChanges, redoChanges } from "./modules/undoRedo.js";
 import { sendJSONDataToBackend } from "../sendToBackend.js";
 
 document.addEventListener('DOMContentLoaded', (event) => {
+
+  window.medidasConjugConfimed = [];
+
   // Função para limpar todos os inputs
   function clearAllInputs() {
       // Seleciona todos os elementos input
