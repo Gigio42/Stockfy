@@ -31,7 +31,7 @@ Sistema de Gerenciamento de Estoque desenvolvido para uma empresa gerenciar seu 
 
 1. Clone o repositório:
     ```sh
-    git clone https://github.com/Gigio42/PiSegundoSem.git
+    git clone https://github.com/Gigio42/Stockfy.git
     cd PiSegundoSem
     ```
 
