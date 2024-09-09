@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "sqlserver"
   url      = env("DATABASE_URL")
 }
 
@@ -69,7 +69,7 @@ model Chapa_Item {
   conjugacaoId  Int?
 
   item       Item         @relation(fields: [itemId], references: [id_item])
-  chapa      Chapas       @relation(fields: [chapaId], references: [id_chapa])
+  chapa      Chapas       @relation(fields: [chapaId], references: [id_chapa], onUpdate: NoAction, onDelete: NoAction)
   conjugacao Conjugacoes? @relation(fields: [conjugacaoId], references: [id_conjugacoes])
 }
 
