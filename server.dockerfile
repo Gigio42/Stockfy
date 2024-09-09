@@ -10,7 +10,7 @@
     RUN npm ci
     
     COPY Server ./Server
-    COPY prisma/postgresql ./prisma
+    COPY prisma ./prisma
     
     RUN npx prisma generate
     
