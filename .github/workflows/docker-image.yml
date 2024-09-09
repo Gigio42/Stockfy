@@ -30,7 +30,7 @@ jobs:
         file: ./client.dockerfile
         push: true
         platforms: linux/amd64,linux/arm64
-        tags: ghcr.io/gigio42/pisegundosem/client:latest
+        tags: ghcr.io/gigio42/Stockfy/client:latest
 
     - name: Build and push server Docker image
       uses: docker/build-push-action@v2
@@ -39,7 +39,7 @@ jobs:
         file: ./server.dockerfile
         push: true
         platforms: linux/amd64,linux/arm64
-        tags: ghcr.io/gigio42/pisegundosem/server:latest
+        tags: ghcr.io/gigio42/Stockfy/server:latest
 
     - name: Build and push database Docker image
       uses: docker/build-push-action@v2
@@ -48,4 +48,4 @@ jobs:
         file: ./database.dockerfile
         push: true
         platforms: linux/amd64,linux/arm64
-        tags: ghcr.io/gigio42/pisegundosem/database:latest
+        tags: ghcr.io/gigio42/Stockfy/database:latest
