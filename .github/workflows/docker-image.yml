@@ -48,4 +48,4 @@ jobs:
         file: ./database.dockerfile
         push: true
         platforms: linux/amd64,linux/arm64
-        tags: ghcr.io/gigio42/stockfy/database:latest
+        tags: ghcr.io/gigio42/stockfy/database:sql
