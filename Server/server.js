@@ -16,7 +16,7 @@ fastify.setValidatorCompiler(({ schema, method, url, httpPart }) => {
 
 fastify.register(cors);
 const port = process.env.PORT || 3000;
-const host = process.env.HOST || "localhost";
+const host = process.env.HOST || "0.0.0.0";
 
 fastify.get("/", async () => {
   return { text: "Hello, World!" };

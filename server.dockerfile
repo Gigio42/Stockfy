@@ -22,7 +22,7 @@
     COPY --from=build /usr/src/app .
     
     # Instalação do Dockerize
-    ENV DOCKERIZE_VERSION v0.6.1
+    ENV DOCKERIZE_VERSION=v0.6.1
     
     # Verifique a arquitetura e baixe a versão apropriada do Dockerize
     RUN if [ "$(uname -m)" = "x86_64" ]; then \

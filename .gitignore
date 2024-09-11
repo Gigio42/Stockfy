@@ -27,3 +27,5 @@ logs/
 # Binários
 node_modules/**/*.node
 /qodana.yaml
+dockerBuild.ps1
+dockerRun.ps1
